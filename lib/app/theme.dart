@@ -5,19 +5,19 @@ class FreeBetaTheme {
   static final ThemeData data = ThemeData(
     scaffoldBackgroundColor: FreeBetaColors.grayBackground,
     appBarTheme: AppBarTheme(
-      color: FreeBetaColors.greenDark,
+      color: FreeBetaColors.blueDark,
       elevation: 1,
       iconTheme: IconThemeData(
-        color: FreeBetaColors.grayDark,
+        color: FreeBetaColors.blueDark,
       ),
     ),
     colorScheme: ColorScheme(
-      primary: FreeBetaColors.greenBrand,
-      primaryVariant: FreeBetaColors.green,
-      secondary: FreeBetaColors.pink,
-      secondaryVariant: FreeBetaColors.purpleDark,
-      surface: FreeBetaColors.greenDark,
-      background: FreeBetaColors.black,
+      primary: FreeBetaColors.blueDark,
+      primaryVariant: FreeBetaColors.blue,
+      secondary: FreeBetaColors.green,
+      secondaryVariant: FreeBetaColors.greenDark,
+      surface: FreeBetaColors.blueDark,
+      background: FreeBetaColors.grayBackground,
       error: FreeBetaColors.red,
       onPrimary: FreeBetaColors.red,
       onSecondary: FreeBetaColors.red,

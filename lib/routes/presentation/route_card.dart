@@ -14,66 +14,44 @@ class RouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(FreeBetaSizes.m)),
-        boxShadow: [FreeBetaShadows.fluffy],
-        color: FreeBetaColors.white,
-      ),
+    return Padding(
+      padding: FreeBetaPadding.mVertical,
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          RouteColorIcon(route: route),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildTitleRow(context),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    route.routeColor.displayName,
-                    style: FreeBetaTextStyle.h2.copyWith(
-                      color: FreeBetaColors.green,
-                    ),
-                  ),
-                  Text(
-                    route.climbType.displayName,
-                    style: FreeBetaTextStyle.h2.copyWith(
-                      color: FreeBetaColors.green,
-                    ),
-                  ),
-                  Text(
-                    route.difficulty,
-                    style: FreeBetaTextStyle.h2.copyWith(
-                      color: FreeBetaColors.green,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+          Padding(
+            padding: EdgeInsets.only(right: FreeBetaSizes.xl),
+            child: RouteColorIcon(route: route),
+          ),
+          Expanded(child: _buildDifficulty()),
+          Expanded(child: _buildType()),
+          Padding(
+            padding: EdgeInsets.only(
+              left: FreeBetaSizes.xl,
+              right: FreeBetaSizes.s,
+            ),
+            child: Icon(
+              Icons.keyboard_arrow_right,
+              size: FreeBetaSizes.xxl,
+              color: FreeBetaColors.blueDark,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTitleRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        Text(
-          'Color',
-          style: FreeBetaTextStyle.h2,
-        ),
-        Text(
-          'Type',
-          style: FreeBetaTextStyle.h2,
-        ),
-        Text(
-          'Difficulty',
-          style: FreeBetaTextStyle.h2,
-        ),
-      ],
+  Widget _buildType() {
+    return Text(
+      route.climbType.displayName,
+      style: FreeBetaTextStyle.body3,
+    );
+  }
+
+  Widget _buildDifficulty() {
+    return Text(
+      route.difficulty,
+      style: FreeBetaTextStyle.body3,
     );
   }
 }

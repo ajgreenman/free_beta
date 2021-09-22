@@ -22,8 +22,18 @@ class RouteModel {
 }
 
 extension RouteModelListExtensions on List<RouteModel> {
-  List<RouteModel> sortByType() {
-    this.sort((a, b) => a.climbType.index.compareTo(b.climbType.index));
+  List<RouteModel> sortRoutes() {
+    this.sort((a, b) => _compareRoutes(a, b));
     return this;
+  }
+
+  int _compareRoutes(RouteModel a, RouteModel b) {
+    var typeComparison = a.location.index.compareTo(b.location.index);
+
+    if (typeComparison != 0) {
+      return typeComparison;
+    }
+
+    return a.section.index.compareTo(b.section.index);
   }
 }
