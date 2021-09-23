@@ -7,6 +7,7 @@ class RouteRemoteDataProvider {
   Future<List<RouteModel>> getRoutes() async {
     return [
       RouteModel(
+        routeKey: 1,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -21,6 +22,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
+        routeKey: 2,
         userRouteModel: UserRouteModel(
           isAttempted: false,
           isCompleted: false,
@@ -33,6 +35,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
+        routeKey: 3,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: false,
@@ -45,6 +48,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
+        routeKey: 4,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -59,6 +63,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
+        routeKey: 5,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -71,6 +76,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
+        routeKey: 6,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -83,6 +89,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v2-v4',
       ),
       RouteModel(
+        routeKey: 7,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -95,6 +102,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v2-v4',
       ),
       RouteModel(
+        routeKey: 8,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -107,6 +115,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
+        routeKey: 9,
         userRouteModel: UserRouteModel(
           isAttempted: false,
           isCompleted: false,
@@ -120,6 +129,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
+        routeKey: 10,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -134,6 +144,7 @@ class RouteRemoteDataProvider {
         difficulty: 'Speed',
       ),
       RouteModel(
+        routeKey: 11,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: false,
@@ -146,6 +157,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10',
       ),
       RouteModel(
+        routeKey: 1,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -160,6 +172,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10+',
       ),
       RouteModel(
+        routeKey: 12,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -172,6 +185,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.8',
       ),
       RouteModel(
+        routeKey: 13,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -185,6 +199,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.8',
       ),
       RouteModel(
+        routeKey: 14,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -197,6 +212,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.9',
       ),
       RouteModel(
+        routeKey: 15,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: true,
@@ -210,6 +226,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10',
       ),
       RouteModel(
+        routeKey: 16,
         userRouteModel: UserRouteModel(
           isAttempted: true,
           isCompleted: false,

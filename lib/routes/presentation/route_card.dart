@@ -21,7 +21,11 @@ class RouteCard extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.only(right: FreeBetaSizes.xl),
-            child: RouteColorIcon(route: route),
+            child: RouteColorIcon(
+              routeColor: route.routeColor,
+              isAttempted: route.userRouteModel.isAttempted,
+              isCompleted: route.userRouteModel.isCompleted,
+            ),
           ),
           Expanded(child: _buildDifficulty()),
           Expanded(child: _buildType()),

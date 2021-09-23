@@ -1,12 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 
 class RouteColorIcon extends StatelessWidget {
-  final RouteModel route;
+  final RouteColor routeColor;
+  final bool isAttempted;
+  final bool isCompleted;
 
-  const RouteColorIcon({Key? key, required this.route}) : super(key: key);
+  const RouteColorIcon({
+    Key? key,
+    required this.routeColor,
+    required this.isAttempted,
+    required this.isCompleted,
+  }) : super(key: key);
+
+  const RouteColorIcon.byColor({
+    required this.routeColor,
+  })  : isAttempted = true,
+        isCompleted = true;
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +34,19 @@ class RouteColorIcon extends StatelessWidget {
   }
 
   BoxDecoration _getColorDecoration() {
-    if (!route.userRouteModel.isAttempted) {
+    if (!isAttempted) {
       return BoxDecoration(
         border: Border.all(
-          color: route.routeColor.displayColor,
+          color: routeColor.displayColor,
           width: 3.0,
         ),
       );
     }
 
-    if (!route.userRouteModel.isCompleted) {
+    if (!isCompleted) {
       return BoxDecoration(
         border: Border.all(
-          color: route.routeColor.displayColor,
+          color: routeColor.displayColor,
           width: 2.0,
         ),
         gradient: LinearGradient(
@@ -43,14 +54,14 @@ class RouteColorIcon extends StatelessWidget {
           end: Alignment.bottomRight,
           colors: <Color>[
             FreeBetaColors.white,
-            route.routeColor.displayColor,
+            routeColor.displayColor,
           ],
         ),
       );
     }
 
     return BoxDecoration(
-      color: route.routeColor.displayColor,
+      color: routeColor.displayColor,
     );
   }
 }

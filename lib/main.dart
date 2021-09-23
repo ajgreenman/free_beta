@@ -10,7 +10,7 @@ void main() {
       child: Initalizer(
         child: MaterialApp(
           title: 'Free Beta',
-          theme: FreeBetaTheme.data,
+          theme: FreeBetaTheme.blueTheme,
           home: FreeBeta(),
         ),
       ),

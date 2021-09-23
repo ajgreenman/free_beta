@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FreeBetaTheme {
-  static final ThemeData data = ThemeData(
+  static final ThemeData blueTheme = ThemeData(
     scaffoldBackgroundColor: FreeBetaColors.grayBackground,
     appBarTheme: AppBarTheme(
       color: FreeBetaColors.blueDark,
@@ -19,10 +19,10 @@ class FreeBetaTheme {
       surface: FreeBetaColors.blueDark,
       background: FreeBetaColors.grayBackground,
       error: FreeBetaColors.red,
-      onPrimary: FreeBetaColors.red,
-      onSecondary: FreeBetaColors.red,
-      onSurface: FreeBetaColors.red,
-      onBackground: FreeBetaColors.red,
+      onPrimary: FreeBetaColors.white,
+      onSecondary: FreeBetaColors.black,
+      onSurface: FreeBetaColors.black,
+      onBackground: FreeBetaColors.black,
       onError: FreeBetaColors.red,
       brightness: Brightness.light,
     ),
@@ -36,6 +36,8 @@ class FreeBetaColors {
   static const blueLight = Color(0xFF296AFF);
   static const blue = Color(0xFF143A91);
   static const blueDark = Color(0xFF001239);
+
+  static const brown = Color(0xFF966d2f);
 
   static const grayBackground = Color(0xFFF9F9F9);
   static const grayLight = Color(0xFFC7C8CA);

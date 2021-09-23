@@ -2,6 +2,7 @@ import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
 class RouteModel {
+  final int routeKey;
   final UserRouteModel userRouteModel;
   final Location location;
   final Section section;
@@ -11,6 +12,7 @@ class RouteModel {
   final String? image;
 
   RouteModel({
+    required this.routeKey,
     required this.userRouteModel,
     required this.location,
     required this.section,
