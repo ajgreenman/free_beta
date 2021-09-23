@@ -19,43 +19,64 @@ class RouteCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: EdgeInsets.only(right: FreeBetaSizes.xl),
-            child: RouteColorIcon(
-              routeColor: route.routeColor,
-              isAttempted: route.userRouteModel.isAttempted,
-              isCompleted: route.userRouteModel.isCompleted,
-            ),
-          ),
-          Expanded(child: _buildDifficulty()),
-          Expanded(child: _buildType()),
-          Padding(
-            padding: EdgeInsets.only(
-              left: FreeBetaSizes.xl,
-              right: FreeBetaSizes.s,
-            ),
-            child: Icon(
-              Icons.keyboard_arrow_right,
-              size: FreeBetaSizes.xxl,
-              color: FreeBetaColors.blueDark,
-            ),
+          _buildColorIcon(),
+          _buildDifficulty(),
+          _buildType(),
+          Spacer(),
+          _buildFavoriteIcon(),
+          Icon(
+            Icons.keyboard_arrow_right,
+            size: FreeBetaSizes.xxl,
+            color: FreeBetaColors.blueDark,
           ),
         ],
       ),
     );
   }
 
+  Widget _buildColorIcon() {
+    return Padding(
+      padding: EdgeInsets.only(right: FreeBetaSizes.xl),
+      child: RouteColorIcon(
+        routeColor: route.routeColor,
+        isAttempted: route.userRouteModel?.isAttempted ?? false,
+        isCompleted: route.userRouteModel?.isCompleted ?? false,
+      ),
+    );
+  }
+
   Widget _buildType() {
-    return Text(
-      route.climbType.displayName,
-      style: FreeBetaTextStyle.body3,
+    return Expanded(
+      child: Text(
+        route.climbType.displayName,
+        style: FreeBetaTextStyle.body3,
+      ),
     );
   }
 
   Widget _buildDifficulty() {
-    return Text(
-      route.difficulty,
-      style: FreeBetaTextStyle.body3,
+    return Expanded(
+      child: Text(
+        route.difficulty,
+        style: FreeBetaTextStyle.body3,
+      ),
+    );
+  }
+
+  Widget _buildFavoriteIcon() {
+    return Padding(
+      padding: EdgeInsets.only(right: FreeBetaSizes.xl),
+      child: route.userRouteModel?.isFavorited ?? false
+          ? Icon(
+              Icons.star,
+              size: FreeBetaSizes.xl,
+              color: FreeBetaColors.blueDark,
+            )
+          : Icon(
+              Icons.star_outline,
+              size: FreeBetaSizes.xl,
+              color: FreeBetaColors.blueDark,
+            ),
     );
   }
 }

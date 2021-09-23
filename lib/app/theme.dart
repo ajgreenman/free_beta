@@ -27,6 +27,9 @@ class FreeBetaTheme {
       brightness: Brightness.light,
     ),
     textTheme: ThemeData.light().textTheme,
+    toggleableActiveColor: FreeBetaColors.blueDark,
+    unselectedWidgetColor: FreeBetaColors.blueDark,
+    dividerTheme: DividerThemeData(color: FreeBetaColors.blueDark),
   );
 }
 
@@ -79,6 +82,9 @@ class FreeBetaSizes {
   /// Size of 8.
   static const m = 8.0;
 
+  /// Size of 12.
+  static const ml = 12.0;
+
   /// Size of 16.
   static const l = 16.0;
 
@@ -94,6 +100,8 @@ class FreeBetaPadding {
       EdgeInsets.symmetric(horizontal: FreeBetaSizes.xs);
   static const sHorizontal = EdgeInsets.symmetric(horizontal: FreeBetaSizes.s);
   static const mHorizontal = EdgeInsets.symmetric(horizontal: FreeBetaSizes.m);
+  static const mlHorizontal =
+      EdgeInsets.symmetric(horizontal: FreeBetaSizes.ml);
   static const lHorizontal = EdgeInsets.symmetric(horizontal: FreeBetaSizes.l);
   static const xlHorizontal =
       EdgeInsets.symmetric(horizontal: FreeBetaSizes.xl);
@@ -103,6 +111,7 @@ class FreeBetaPadding {
   static const xsVerticle = EdgeInsets.symmetric(vertical: FreeBetaSizes.xs);
   static const sVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.s);
   static const mVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.m);
+  static const mlVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.ml);
   static const lVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.l);
   static const xlVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.xl);
   static const xxlVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.xxl);
@@ -118,6 +127,10 @@ class FreeBetaPadding {
   static const mAll = EdgeInsets.symmetric(
     horizontal: FreeBetaSizes.m,
     vertical: FreeBetaSizes.m,
+  );
+  static const mlAll = EdgeInsets.symmetric(
+    horizontal: FreeBetaSizes.ml,
+    vertical: FreeBetaSizes.ml,
   );
   static const lAll = EdgeInsets.symmetric(
     horizontal: FreeBetaSizes.l,

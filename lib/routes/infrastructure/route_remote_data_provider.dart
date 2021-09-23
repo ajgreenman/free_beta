@@ -1,4 +1,5 @@
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/enums/route_rating.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
 import 'models/route_model.dart';
@@ -12,7 +13,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: true,
           isFavorited: false,
-          rating: 1,
+          rating: RouteRating.one,
           notes: 'too easy',
         ),
         location: Location.low,
@@ -53,7 +54,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: true,
           isFavorited: true,
-          rating: 3,
+          rating: RouteRating.three,
           notes: 'campus life night',
         ),
         location: Location.low,
@@ -134,7 +135,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: true,
           isFavorited: true,
-          rating: 3,
+          rating: RouteRating.three,
           notes: 'Just gotta send it',
         ),
         location: Location.high,
@@ -162,7 +163,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: true,
           isFavorited: true,
-          rating: 2,
+          rating: RouteRating.two,
           notes: 'Go slow!',
         ),
         location: Location.mezzanine,
@@ -190,7 +191,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: true,
           isFavorited: false,
-          rating: 2,
+          rating: RouteRating.two,
         ),
         location: Location.high,
         routeColor: RouteColor.pink,
@@ -231,7 +232,7 @@ class RouteRemoteDataProvider {
           isAttempted: true,
           isCompleted: false,
           isFavorited: false,
-          rating: 1,
+          rating: RouteRating.one,
         ),
         location: Location.low,
         routeColor: RouteColor.purple,

@@ -3,23 +3,23 @@ import 'package:free_beta/user/user_route_model.dart';
 
 class RouteModel {
   final int routeKey;
-  final UserRouteModel userRouteModel;
   final Location location;
   final Section section;
   final String difficulty;
   final ClimbType climbType;
   final RouteColor routeColor;
   final String? image;
+  final UserRouteModel? userRouteModel;
 
   RouteModel({
     required this.routeKey,
-    required this.userRouteModel,
     required this.location,
     required this.section,
     required this.difficulty,
     required this.climbType,
     required this.routeColor,
     this.image,
+    this.userRouteModel,
   });
 }
 

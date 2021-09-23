@@ -6,7 +6,6 @@ import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/cubit/route_cubit.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/cubit/route_state.dart';
-import 'package:free_beta/routes/presentation/route_color_icon.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 
 class RouteListScreen extends StatefulWidget {
