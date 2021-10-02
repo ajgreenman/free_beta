@@ -2,17 +2,17 @@ import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
 class RouteModel {
-  final int routeKey;
+  final int id;
   final Location location;
   final Section section;
   final String difficulty;
   final ClimbType climbType;
   final RouteColor routeColor;
   final String? image;
-  final UserRouteModel? userRouteModel;
+  UserRouteModel? userRouteModel;
 
   RouteModel({
-    required this.routeKey,
+    required this.id,
     required this.location,
     required this.section,
     required this.difficulty,

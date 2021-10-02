@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:free_beta/routes/cubit/route_cubit.dart';
+import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
 import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/routes/infrastructure/route_service_facade.dart';
@@ -11,9 +12,20 @@ class RouteDomain {
         Provider<RouteRemoteDataProvider>.value(
           value: RouteRemoteDataProvider(),
         ),
-        ProxyProvider<RouteRemoteDataProvider, RouteRepository>(
-          update: (_, routeRemoteDataProvider, __) => RouteRepository(
+        Provider<RouteLocalDataProvider>.value(
+          value: RouteLocalDataProvider(),
+        ),
+        ProxyProvider2<RouteRemoteDataProvider, RouteLocalDataProvider,
+            RouteRepository>(
+          update: (
+            _,
+            routeRemoteDataProvider,
+            routeLocalDataProvider,
+            __,
+          ) =>
+              RouteRepository(
             routeRemoteDataProvider: routeRemoteDataProvider,
+            routeLocalDataProvider: routeLocalDataProvider,
           ),
         ),
         ProxyProvider<RouteRepository, RouteServiceFacade>(

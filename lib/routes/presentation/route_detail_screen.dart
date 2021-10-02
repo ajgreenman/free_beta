@@ -141,7 +141,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isAttempted,
+          value: _formModel.isAttempted ?? false,
           onChanged: (value) {
             if (value != _formModel.isAttempted) {
               setState(() {
@@ -169,7 +169,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isCompleted,
+          value: _formModel.isCompleted ?? false,
           onChanged: (value) {
             if (value != _formModel.isCompleted) {
               setState(() {
@@ -193,7 +193,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isFavorited,
+          value: _formModel.isFavorited ?? false,
           onChanged: (value) {
             log(value.toString());
             if (value != _formModel.isFavorited) {

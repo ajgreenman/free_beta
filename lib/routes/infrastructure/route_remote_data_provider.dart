@@ -1,6 +1,4 @@
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/enums/route_rating.dart';
-import 'package:free_beta/user/user_route_model.dart';
 
 import 'models/route_model.dart';
 
@@ -8,14 +6,7 @@ class RouteRemoteDataProvider {
   Future<List<RouteModel>> getRoutes() async {
     return [
       RouteModel(
-        routeKey: 1,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-          rating: RouteRating.one,
-          notes: 'too easy',
-        ),
+        id: 1,
         location: Location.low,
         routeColor: RouteColor.black,
         section: Section.low1,
@@ -23,12 +14,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
-        routeKey: 2,
-        userRouteModel: UserRouteModel(
-          isAttempted: false,
-          isCompleted: false,
-          isFavorited: false,
-        ),
+        id: 2,
         location: Location.low,
         routeColor: RouteColor.yellow,
         section: Section.low1,
@@ -36,12 +22,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
-        routeKey: 3,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: false,
-          isFavorited: false,
-        ),
+        id: 3,
         location: Location.low,
         routeColor: RouteColor.black,
         section: Section.low1,
@@ -49,14 +30,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
-        routeKey: 4,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: true,
-          rating: RouteRating.three,
-          notes: 'campus life night',
-        ),
+        id: 4,
         location: Location.low,
         routeColor: RouteColor.black,
         section: Section.low3,
@@ -64,12 +38,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
-        routeKey: 5,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 5,
         location: Location.low,
         routeColor: RouteColor.seafoam,
         section: Section.low3,
@@ -77,12 +46,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
-        routeKey: 6,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 6,
         location: Location.low,
         routeColor: RouteColor.blue,
         section: Section.low1,
@@ -90,12 +54,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v2-v4',
       ),
       RouteModel(
-        routeKey: 7,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 7,
         location: Location.low,
         routeColor: RouteColor.pink,
         section: Section.low2,
@@ -103,12 +62,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v2-v4',
       ),
       RouteModel(
-        routeKey: 8,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 8,
         location: Location.low,
         routeColor: RouteColor.pink,
         section: Section.low1,
@@ -116,13 +70,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v0-v2',
       ),
       RouteModel(
-        routeKey: 9,
-        userRouteModel: UserRouteModel(
-          isAttempted: false,
-          isCompleted: false,
-          isFavorited: false,
-          notes: 'A little too hard for right now',
-        ),
+        id: 9,
         location: Location.low,
         routeColor: RouteColor.blue,
         section: Section.low3,
@@ -130,14 +78,7 @@ class RouteRemoteDataProvider {
         difficulty: 'v4-v6',
       ),
       RouteModel(
-        routeKey: 10,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: true,
-          rating: RouteRating.three,
-          notes: 'Just gotta send it',
-        ),
+        id: 10,
         location: Location.high,
         routeColor: RouteColor.red,
         section: Section.high2,
@@ -145,12 +86,7 @@ class RouteRemoteDataProvider {
         difficulty: 'Speed',
       ),
       RouteModel(
-        routeKey: 11,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: false,
-          isFavorited: false,
-        ),
+        id: 11,
         location: Location.high,
         routeColor: RouteColor.seafoam,
         section: Section.high1,
@@ -158,14 +94,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10',
       ),
       RouteModel(
-        routeKey: 1,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: true,
-          rating: RouteRating.two,
-          notes: 'Go slow!',
-        ),
+        id: 1,
         location: Location.mezzanine,
         routeColor: RouteColor.purple,
         section: Section.mezzanine1,
@@ -173,12 +102,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10+',
       ),
       RouteModel(
-        routeKey: 12,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 12,
         location: Location.high,
         routeColor: RouteColor.purple,
         section: Section.high2,
@@ -186,13 +110,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.8',
       ),
       RouteModel(
-        routeKey: 13,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-          rating: RouteRating.two,
-        ),
+        id: 13,
         location: Location.high,
         routeColor: RouteColor.pink,
         section: Section.high2,
@@ -200,12 +118,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.8',
       ),
       RouteModel(
-        routeKey: 14,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: false,
-        ),
+        id: 14,
         location: Location.high,
         routeColor: RouteColor.green,
         section: Section.high2,
@@ -213,13 +126,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.9',
       ),
       RouteModel(
-        routeKey: 15,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: true,
-          isFavorited: true,
-          notes: 'Go fast...',
-        ),
+        id: 15,
         location: Location.high,
         routeColor: RouteColor.yellow,
         section: Section.high3,
@@ -227,13 +134,7 @@ class RouteRemoteDataProvider {
         difficulty: '5.10',
       ),
       RouteModel(
-        routeKey: 16,
-        userRouteModel: UserRouteModel(
-          isAttempted: true,
-          isCompleted: false,
-          isFavorited: false,
-          rating: RouteRating.one,
-        ),
+        id: 16,
         location: Location.low,
         routeColor: RouteColor.purple,
         section: Section.low4,
