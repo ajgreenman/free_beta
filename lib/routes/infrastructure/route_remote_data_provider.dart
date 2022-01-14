@@ -1,6 +1,9 @@
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:riverpod/riverpod.dart';
 
 import 'models/route_model.dart';
+
+final routeRemoteDataProvider = Provider((_) => RouteRemoteDataProvider());
 
 class RouteRemoteDataProvider {
   Future<List<RouteModel>> getRoutes() async {

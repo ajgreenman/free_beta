@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
-import 'package:free_beta/routes/cubit/route_cubit.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/cubit/route_state.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 
 class RouteListScreen extends StatefulWidget {
@@ -40,14 +37,13 @@ class _RouteListScreenState extends State<RouteListScreen> {
           ),
         ),
       ),
-      body: BlocBuilder<RouteCubit, RouteState>(
-        builder: (_, state) => state.routes.maybeWhen(
-          success: (routes) => _onSuccess(context, routes.sortRoutes()),
-          error: (_, __) => _onError(),
-          loading: () => CircularProgressIndicator(),
-          orElse: () => SizedBox.shrink(),
-        ),
-      ),
+      body: _onSuccess(context, []),
+      // builder: (_, state) => state.routes.maybeWhen(
+      //   success: (routes) => _onSuccess(context, routes.sortRoutes()),
+      //   error: (_, __) => _onError(),
+      //   loading: () => CircularProgressIndicator(),
+      //   orElse: () => SizedBox.shrink(),
+      // ),
     );
   }
 

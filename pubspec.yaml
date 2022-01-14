@@ -23,11 +23,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  equatable: ^2.0.0
-  flutter_bloc: ^7.0.1
+  flutter_riverpod: ^1.0.0
   path: ^1.8.0
-  provider: ^5.0.0
-  remote_state: ^2.0.0
   sqflite: ^2.0.0+4
 
 dev_dependencies:

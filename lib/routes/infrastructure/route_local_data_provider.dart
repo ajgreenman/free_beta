@@ -1,7 +1,10 @@
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/user/user_route_model.dart';
 import 'package:path/path.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:sqflite/sqflite.dart';
+
+final routeLocalDataProvider = Provider((_) => RouteLocalDataProvider());
 
 class RouteLocalDataProvider {
   static const USER_ROUTE_TABLE_NAME = 'userRoutes';
