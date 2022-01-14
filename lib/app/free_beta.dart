@@ -8,9 +8,9 @@ class FreeBeta extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key('free-beta-home'),
+      key: Key('free-beta'),
       appBar: AppBar(
-        title: Text('Elev8'),
+        title: Text('Free Beta'),
       ),
       body: Padding(
         padding: FreeBetaPadding.xxlHorizontal,

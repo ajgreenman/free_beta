@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Initalizer extends StatefulWidget {
   final Widget child;
@@ -15,5 +16,5 @@ class _InitalizerState extends State<Initalizer> {
   }
 
   @override
-  Widget build(_) => widget.child;
+  Widget build(_) => ProviderScope(child: widget.child);
 }

@@ -21,6 +21,14 @@ class RouteModel {
     this.image,
     this.userRouteModel,
   });
+
+  @override
+  String toString() {
+    return this.location.toString() +
+        '\n' +
+        this.userRouteModel.toString() +
+        '\n';
+  }
 }
 
 extension RouteModelListExtensions on List<RouteModel> {

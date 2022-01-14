@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 
-class RouteListScreen extends StatefulWidget {
+class RouteListScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return RouteListScreen();
@@ -18,14 +20,11 @@ class RouteListScreen extends StatefulWidget {
   _RouteListScreenState createState() => _RouteListScreenState();
 }
 
-class _RouteListScreenState extends State<RouteListScreen> {
-  int? _currentTypeFilter;
-  int? _currentColorFilter;
-
+class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key('free-beta-home'),
+      key: Key('route-list'),
       appBar: AppBar(
         title: Text('Elev8'),
         leading: IconButton(
@@ -37,18 +36,15 @@ class _RouteListScreenState extends State<RouteListScreen> {
           ),
         ),
       ),
-      body: _onSuccess(context, []),
-      // builder: (_, state) => state.routes.maybeWhen(
-      //   success: (routes) => _onSuccess(context, routes.sortRoutes()),
-      //   error: (_, __) => _onError(),
-      //   loading: () => CircularProgressIndicator(),
-      //   orElse: () => SizedBox.shrink(),
-      // ),
+      body: ref.watch(fetchRoutesProvider).when(
+            data: (routes) => _onSuccess(context, routes.sortRoutes()),
+            error: (error, stacktrace) => _onError(),
+            loading: () => _onLoading(),
+          ),
     );
   }
 
   Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
-    var filteredRoutes = _filterRoutes(routes);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -56,12 +52,22 @@ class _RouteListScreenState extends State<RouteListScreen> {
           padding: FreeBetaPadding.lAll,
           child: _buildFilterRow(context),
         ),
-        _buildRouteList(filteredRoutes),
+        _buildRouteList(routes),
       ],
     );
   }
 
+  Widget _onError() {
+    return Text('Sorry, an error occured.');
+  }
+
+  Widget _onLoading() {
+    return CircularProgressIndicator();
+  }
+
   Widget _buildFilterRow(BuildContext context) {
+    final routeColorFilter = ref.watch(routeColorFilterProvider);
+    final routeTypeFilter = ref.watch(routeTypeFilterProvider);
     return Column(
       children: [
         Row(
@@ -72,13 +78,12 @@ class _RouteListScreenState extends State<RouteListScreen> {
                 style: FreeBetaTextStyle.h3,
               ),
             ),
-            _buildDropDown(
-              context,
-              _currentTypeFilter,
+            _buildDropDown<ClimbType>(
               _getClimbTypes(),
-              (value) => setState(() {
-                _currentTypeFilter = value;
-              }),
+              (value) {
+                ref.read(routeTypeFilterProvider.notifier).state = value;
+              },
+              routeTypeFilter,
             ),
           ],
         ),
@@ -90,13 +95,12 @@ class _RouteListScreenState extends State<RouteListScreen> {
                 style: FreeBetaTextStyle.h3,
               ),
             ),
-            _buildDropDown(
-              context,
-              _currentColorFilter,
+            _buildDropDown<RouteColor?>(
               _getColors(),
-              (value) => setState(() {
-                _currentColorFilter = value;
-              }),
+              (value) {
+                ref.read(routeColorFilterProvider.notifier).state = value;
+              },
+              routeColorFilter,
             ),
           ],
         ),
@@ -104,16 +108,15 @@ class _RouteListScreenState extends State<RouteListScreen> {
     );
   }
 
-  Widget _buildDropDown(
-    BuildContext context,
-    int? value,
-    List<DropdownMenuItem<int?>> items,
-    void Function(int?) onChanged,
+  Widget _buildDropDown<T>(
+    List<DropdownMenuItem<T?>> items,
+    void Function(T?) onChanged,
+    T? value,
   ) {
     return Container(
       width: MediaQuery.of(context).size.width / 2,
       padding: FreeBetaPadding.mAll,
-      child: DropdownButtonFormField<int?>(
+      child: DropdownButtonFormField<T?>(
         decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
@@ -134,15 +137,11 @@ class _RouteListScreenState extends State<RouteListScreen> {
     );
   }
 
-  Widget _onError() {
-    return Text('Sorry, an error occured.');
-  }
-
-  List<DropdownMenuItem<int?>> _getClimbTypes() {
+  List<DropdownMenuItem<ClimbType?>> _getClimbTypes() {
     var climbTypeItems = ClimbType.values
         .map(
-          (climbType) => DropdownMenuItem<int?>(
-            value: climbType.index,
+          (climbType) => DropdownMenuItem<ClimbType?>(
+            value: climbType,
             child: Text(climbType.displayName),
           ),
         )
@@ -150,7 +149,7 @@ class _RouteListScreenState extends State<RouteListScreen> {
 
     climbTypeItems.insert(
       0,
-      DropdownMenuItem<int?>(
+      DropdownMenuItem<ClimbType?>(
         value: null,
         child: Text('Any'),
       ),
@@ -159,11 +158,11 @@ class _RouteListScreenState extends State<RouteListScreen> {
     return climbTypeItems;
   }
 
-  List<DropdownMenuItem<int?>> _getColors() {
+  List<DropdownMenuItem<RouteColor?>> _getColors() {
     var colorItems = RouteColor.values
         .map(
-          (routeColor) => DropdownMenuItem<int?>(
-            value: routeColor.index,
+          (routeColor) => DropdownMenuItem<RouteColor?>(
+            value: routeColor,
             child: Text(routeColor.displayName),
           ),
         )
@@ -171,28 +170,13 @@ class _RouteListScreenState extends State<RouteListScreen> {
 
     colorItems.insert(
       0,
-      DropdownMenuItem<int?>(
+      DropdownMenuItem<RouteColor?>(
         value: null,
         child: Text('Any'),
       ),
     );
 
     return colorItems;
-  }
-
-  List<RouteModel> _filterRoutes(List<RouteModel> routes) {
-    var filteredRoutes = routes;
-    if (_currentTypeFilter != null) {
-      filteredRoutes = filteredRoutes
-          .where((route) => route.climbType.index == _currentTypeFilter)
-          .toList();
-    }
-    if (_currentColorFilter != null) {
-      filteredRoutes = filteredRoutes
-          .where((route) => route.routeColor.index == _currentColorFilter)
-          .toList();
-    }
-    return filteredRoutes;
   }
 
   Widget _buildRouteList(List<RouteModel> routes) {
@@ -206,17 +190,21 @@ class _RouteListScreenState extends State<RouteListScreen> {
     }
 
     return Expanded(
-      child: ListView.separated(
-        shrinkWrap: true,
-        itemBuilder: (_, index) {
-          return InkWell(
-            onTap: () => Navigator.of(context)
-                .push(RouteDetailScreen.route(routes[index])),
-            child: RouteCard(route: routes[index]),
-          );
-        },
-        separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
-        itemCount: routes.length,
+      child: Padding(
+        padding: FreeBetaPadding.mAll,
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (_, index) {
+            return InkWell(
+              onTap: () => Navigator.of(context).push(
+                RouteDetailScreen.route(routes[index]),
+              ),
+              child: RouteCard(route: routes[index]),
+            );
+          },
+          separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+          itemCount: routes.length,
+        ),
       ),
     );
   }
