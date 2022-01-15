@@ -1,10 +1,13 @@
+import 'dart:async';
+
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_repository.dart';
+import 'package:free_beta/user/user_route_model.dart';
 import 'package:riverpod/riverpod.dart';
 
 final routeApiProvider = Provider((ref) {
-  return RouteServiceFacade(
+  return RouteApi(
     routeRepository: ref.watch(routeRepository),
   );
 });
@@ -13,9 +16,15 @@ final routeTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeColorFilterProvider = StateProvider<RouteColor?>((_) => null);
 
 final fetchRoutesProvider = FutureProvider((ref) async {
-  final routeServiceFacade = ref.watch(routeApiProvider);
+  final routeApi = ref.watch(routeApiProvider);
 
-  var routes = await routeServiceFacade.getRoutes();
+  return await routeApi.getRoutes();
+});
+
+final fetchFilteredRoutesProvider =
+    FutureProvider<List<RouteModel>>((ref) async {
+  final routes = await ref.watch(fetchRoutesProvider.future);
+
   Iterable<RouteModel> filteredRoutes = routes;
 
   final routeTypeFilter = ref.watch(routeTypeFilterProvider);
@@ -35,12 +44,16 @@ final fetchRoutesProvider = FutureProvider((ref) async {
   return filteredRoutes.toList();
 });
 
-class RouteServiceFacade {
+class RouteApi {
   final RouteRepository routeRepository;
 
-  RouteServiceFacade({required this.routeRepository});
+  RouteApi({required this.routeRepository});
 
   Future<List<RouteModel>> getRoutes() async {
     return routeRepository.getRoutes();
+  }
+
+  Future<void> saveRoute(UserRouteModel userRouteModel) async {
+    return routeRepository.saveRoute(userRouteModel);
   }
 }

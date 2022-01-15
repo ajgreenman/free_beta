@@ -1,6 +1,7 @@
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
+import 'package:free_beta/user/user_route_model.dart';
 import 'package:riverpod/riverpod.dart';
 
 final routeRepository = Provider((ref) {
@@ -20,6 +21,7 @@ class RouteRepository {
   });
 
   Future<List<RouteModel>> getRoutes() async {
+    print('fetching new routes');
     var routes = await routeRemoteDataProvider.getRoutes();
     var userRoutes = await routeLocalDataProvider.getUserRoutes();
     userRoutes.forEach((userRoute) {
@@ -28,5 +30,9 @@ class RouteRepository {
           .userRouteModel = userRoute;
     });
     return routes;
+  }
+
+  Future<void> saveRoute(UserRouteModel userRouteModel) async {
+    await routeLocalDataProvider.saveRoute(userRouteModel);
   }
 }

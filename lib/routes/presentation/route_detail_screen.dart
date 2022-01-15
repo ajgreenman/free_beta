@@ -1,13 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_color_icon.dart';
+import 'package:free_beta/user/user_route_model.dart';
 
-class RouteDetailScreen extends StatefulWidget {
+class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel) {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return RouteDetailScreen(routeModel: routeModel);
@@ -23,17 +24,17 @@ class RouteDetailScreen extends StatefulWidget {
   _RouteDetailScreenState createState() => _RouteDetailScreenState();
 }
 
-class _RouteDetailScreenState extends State<RouteDetailScreen> {
+class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   late RouteFormModel _formModel;
 
   @override
   void initState() {
     super.initState();
     _formModel = RouteFormModel(
-      isAttempted: widget.routeModel.userRouteModel?.isAttempted,
-      isCompleted: widget.routeModel.userRouteModel?.isCompleted,
-      isFavorited: widget.routeModel.userRouteModel?.isFavorited,
-      rating: widget.routeModel.userRouteModel?.rating ?? RouteRating.noRating,
+      isAttempted: widget.routeModel.userRouteModel?.isAttempted ?? false,
+      isCompleted: widget.routeModel.userRouteModel?.isCompleted ?? false,
+      isFavorited: widget.routeModel.userRouteModel?.isFavorited ?? false,
+      rating: widget.routeModel.userRouteModel?.rating,
       notes: widget.routeModel.userRouteModel?.notes,
     );
   }
@@ -59,6 +60,18 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        'Name',
+                        style: FreeBetaTextStyle.h4,
+                      ),
+                    ),
+                    Text(widget.routeModel.displayName),
+                  ],
+                ),
+                SizedBox(height: FreeBetaSizes.l),
                 Row(
                   children: [
                     Expanded(
@@ -140,12 +153,13 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isAttempted ?? false,
+          value: _formModel.isAttempted,
           onChanged: (value) {
+            if (value == null) return;
             if (value != _formModel.isAttempted) {
               setState(() {
                 _formModel.isAttempted = value;
-                if (!(value ?? false)) {
+                if (!(value)) {
                   _formModel.isCompleted = false;
                   _formModel.isFavorited = false;
                 }
@@ -168,11 +182,17 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isCompleted ?? false,
+          value: _formModel.isCompleted,
           onChanged: (value) {
+            if (value == null) return;
             if (value != _formModel.isCompleted) {
               setState(() {
                 _formModel.isCompleted = value;
+              });
+            }
+            if (value) {
+              setState(() {
+                _formModel.isAttempted = true;
               });
             }
           },
@@ -192,12 +212,17 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
         ),
         Checkbox(
           activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isFavorited ?? false,
+          value: _formModel.isFavorited,
           onChanged: (value) {
-            log(value.toString());
+            if (value == null) return;
             if (value != _formModel.isFavorited) {
               setState(() {
                 _formModel.isFavorited = value;
+              });
+            }
+            if (value) {
+              setState(() {
+                _formModel.isAttempted = true;
               });
             }
           },
@@ -262,7 +287,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
           onChanged: (value) {
             if (value != _formModel.rating) {
               setState(() {
-                _formModel.rating = value ?? RouteRating.noRating;
+                _formModel.rating = value;
               });
             }
           },
@@ -274,7 +299,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
           onChanged: (value) {
             if (value != _formModel.rating) {
               setState(() {
-                _formModel.rating = value ?? RouteRating.noRating;
+                _formModel.rating = value;
               });
             }
           },
@@ -286,7 +311,7 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
           onChanged: (value) {
             if (value != _formModel.rating) {
               setState(() {
-                _formModel.rating = value ?? RouteRating.noRating;
+                _formModel.rating = value;
               });
             }
           },
@@ -295,8 +320,17 @@ class _RouteDetailScreenState extends State<RouteDetailScreen> {
     );
   }
 
-  void _onSave() {
-    log('Saved!');
-    log(_formModel.toString());
+  Future<void> _onSave() async {
+    await ref.read(routeApiProvider).saveRoute(
+          UserRouteModel(
+            routeId: widget.routeModel.id,
+            isAttempted: _formModel.isAttempted,
+            isCompleted: _formModel.isCompleted,
+            isFavorited: _formModel.isFavorited,
+            rating: _formModel.rating,
+            notes: _formModel.notes,
+          ),
+        );
+    ref.refresh(fetchRoutesProvider);
   }
 }

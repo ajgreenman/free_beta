@@ -10,6 +10,7 @@ class RouteRemoteDataProvider {
     return [
       RouteModel(
         id: 1,
+        name: 'Seahorsin\' around',
         location: Location.low,
         routeColor: RouteColor.black,
         section: Section.low1,
@@ -18,6 +19,7 @@ class RouteRemoteDataProvider {
       ),
       RouteModel(
         id: 2,
+        name: 'Jugs and Crimps',
         location: Location.low,
         routeColor: RouteColor.yellow,
         section: Section.low1,
@@ -50,6 +52,7 @@ class RouteRemoteDataProvider {
       ),
       RouteModel(
         id: 6,
+        name: 'Campus!',
         location: Location.low,
         routeColor: RouteColor.blue,
         section: Section.low1,

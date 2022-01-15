@@ -3,6 +3,7 @@ import 'package:free_beta/user/user_route_model.dart';
 
 class RouteModel {
   final int id;
+  final String? name;
   final Location location;
   final Section section;
   final String difficulty;
@@ -13,6 +14,7 @@ class RouteModel {
 
   RouteModel({
     required this.id,
+    this.name,
     required this.location,
     required this.section,
     required this.difficulty,
@@ -21,14 +23,10 @@ class RouteModel {
     this.image,
     this.userRouteModel,
   });
+}
 
-  @override
-  String toString() {
-    return this.location.toString() +
-        '\n' +
-        this.userRouteModel.toString() +
-        '\n';
-  }
+extension RouteModelExtensions on RouteModel {
+  String get displayName => this.name ?? 'N/A';
 }
 
 extension RouteModelListExtensions on List<RouteModel> {

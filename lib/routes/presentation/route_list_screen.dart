@@ -36,15 +36,16 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
           ),
         ),
       ),
-      body: ref.watch(fetchRoutesProvider).when(
+      body: ref.watch(fetchFilteredRoutesProvider).when(
             data: (routes) => _onSuccess(context, routes.sortRoutes()),
-            error: (error, stacktrace) => _onError(),
+            error: (error, stackTrace) => _onError(error, stackTrace),
             loading: () => _onLoading(),
           ),
     );
   }
 
   Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
+    print(routes[0].userRouteModel.toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -57,12 +58,15 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     );
   }
 
-  Widget _onError() {
+  Widget _onError(Object error, StackTrace? stackTrace) {
+    print(error);
+    print(stackTrace);
+
     return Text('Sorry, an error occured.');
   }
 
   Widget _onLoading() {
-    return CircularProgressIndicator();
+    return Center(child: CircularProgressIndicator());
   }
 
   Widget _buildFilterRow(BuildContext context) {
