@@ -21,7 +21,6 @@ class RouteRepository {
   });
 
   Future<List<RouteModel>> getRoutes() async {
-    print('fetching new routes');
     var routes = await routeRemoteDataProvider.getRoutes();
     var userRoutes = await routeLocalDataProvider.getUserRoutes();
     userRoutes.forEach((userRoute) {

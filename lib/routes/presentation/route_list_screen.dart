@@ -45,7 +45,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
-    print(routes[0].userRouteModel.toString());
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -59,9 +58,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _onError(Object error, StackTrace? stackTrace) {
-    print(error);
-    print(stackTrace);
-
     return Text('Sorry, an error occured.');
   }
 

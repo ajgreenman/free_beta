@@ -26,6 +26,7 @@ class RouteDetailScreen extends ConsumerStatefulWidget {
 
 class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   late RouteFormModel _formModel;
+  bool dirtyForm = false;
 
   @override
   void initState() {
@@ -45,7 +46,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: _onBack,
           icon: Icon(
             Icons.keyboard_arrow_left,
             size: FreeBetaSizes.xxl,
@@ -155,16 +156,16 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           activeColor: FreeBetaColors.blueDark,
           value: _formModel.isAttempted,
           onChanged: (value) {
-            if (value == null) return;
-            if (value != _formModel.isAttempted) {
-              setState(() {
-                _formModel.isAttempted = value;
-                if (!(value)) {
-                  _formModel.isCompleted = false;
-                  _formModel.isFavorited = false;
-                }
-              });
-            }
+            if (value == null || value == _formModel.isAttempted) return;
+            dirtyForm = true;
+
+            setState(() {
+              _formModel.isAttempted = value;
+              if (!value) {
+                _formModel.isCompleted = false;
+                _formModel.isFavorited = false;
+              }
+            });
           },
         ),
       ],
@@ -184,17 +185,15 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           activeColor: FreeBetaColors.blueDark,
           value: _formModel.isCompleted,
           onChanged: (value) {
-            if (value == null) return;
-            if (value != _formModel.isCompleted) {
-              setState(() {
-                _formModel.isCompleted = value;
-              });
-            }
-            if (value) {
-              setState(() {
+            if (value == null || value == _formModel.isCompleted) return;
+            dirtyForm = true;
+
+            setState(() {
+              _formModel.isCompleted = value;
+              if (value) {
                 _formModel.isAttempted = true;
-              });
-            }
+              }
+            });
           },
         ),
       ],
@@ -214,17 +213,15 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           activeColor: FreeBetaColors.blueDark,
           value: _formModel.isFavorited,
           onChanged: (value) {
-            if (value == null) return;
-            if (value != _formModel.isFavorited) {
-              setState(() {
-                _formModel.isFavorited = value;
-              });
-            }
-            if (value) {
-              setState(() {
+            if (value == null || value == _formModel.isFavorited) return;
+            dirtyForm = true;
+
+            setState(() {
+              _formModel.isFavorited = value;
+              if (value) {
                 _formModel.isAttempted = true;
-              });
-            }
+              }
+            });
           },
         ),
       ],
@@ -245,6 +242,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         initialValue: _formModel.notes,
         onChanged: (value) {
           if (value != _formModel.notes) {
+            dirtyForm = true;
             setState(() {
               _formModel.notes = value;
             });
@@ -286,6 +284,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           groupValue: _formModel.rating,
           onChanged: (value) {
             if (value != _formModel.rating) {
+              dirtyForm = true;
               setState(() {
                 _formModel.rating = value;
               });
@@ -298,6 +297,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           groupValue: _formModel.rating,
           onChanged: (value) {
             if (value != _formModel.rating) {
+              dirtyForm = true;
               setState(() {
                 _formModel.rating = value;
               });
@@ -310,6 +310,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           groupValue: _formModel.rating,
           onChanged: (value) {
             if (value != _formModel.rating) {
+              dirtyForm = true;
               setState(() {
                 _formModel.rating = value;
               });
@@ -317,6 +318,20 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           },
         ),
       ],
+    );
+  }
+
+  void _onBack() async {
+    print('hi!');
+    print(dirtyForm);
+    if (!dirtyForm) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    await showDialog(
+      context: context,
+      builder: (_) => _AreYouSureDialog(),
     );
   }
 
@@ -332,5 +347,50 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           ),
         );
     ref.refresh(fetchRoutesProvider);
+
+    dirtyForm = false;
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            Text('Saved!'),
+            Spacer(),
+            Icon(Icons.check),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _AreYouSureDialog extends StatelessWidget {
+  const _AreYouSureDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Are you sure?"),
+      content:
+          Text("You have unsaved changes, are you sure you want to leave?"),
+      actions: [
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+        TextButton(
+          child: Text('Leave'),
+          onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
   }
 }
