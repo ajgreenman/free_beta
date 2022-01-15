@@ -22,6 +22,7 @@ class RouteCard extends StatelessWidget {
           _buildColorIcon(),
           _buildDifficulty(),
           _buildType(),
+          _buildName(),
           Spacer(),
           _buildFavoriteIcon(),
           Icon(
@@ -48,7 +49,16 @@ class RouteCard extends StatelessWidget {
   Widget _buildType() {
     return Expanded(
       child: Text(
-        route.climbType.displayName,
+        route.climbType.abbreviatedName,
+        style: FreeBetaTextStyle.body3,
+      ),
+    );
+  }
+
+  Widget _buildName() {
+    return Expanded(
+      child: Text(
+        route.truncatedDisplayName,
         style: FreeBetaTextStyle.body3,
       ),
     );

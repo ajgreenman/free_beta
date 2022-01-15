@@ -322,8 +322,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   void _onBack() async {
-    print('hi!');
-    print(dirtyForm);
     if (!dirtyForm) {
       Navigator.of(context).pop();
       return;

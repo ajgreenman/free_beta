@@ -27,6 +27,14 @@ class RouteModel {
 
 extension RouteModelExtensions on RouteModel {
   String get displayName => this.name ?? 'N/A';
+
+  String get truncatedDisplayName {
+    print(this.displayName.length);
+    if (this.displayName.length > 7) {
+      return this.displayName.substring(0, 7) + '...';
+    }
+    return this.displayName;
+  }
 }
 
 extension RouteModelListExtensions on List<RouteModel> {

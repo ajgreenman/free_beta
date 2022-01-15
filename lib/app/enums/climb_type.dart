@@ -18,4 +18,17 @@ extension ClimbTypeExtensions on ClimbType {
         return 'Auto-belay';
     }
   }
+
+  String get abbreviatedName {
+    switch (this) {
+      case ClimbType.boulder:
+        return 'B';
+      case ClimbType.topRope:
+        return 'TR';
+      case ClimbType.lead:
+        return 'L';
+      case ClimbType.autoBelay:
+        return 'AB';
+    }
+  }
 }
