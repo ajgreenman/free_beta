@@ -23,6 +23,7 @@ class RouteRepository {
   Future<List<RouteModel>> getRoutes() async {
     var routes = await routeRemoteDataProvider.getRoutes();
     var userRoutes = await routeLocalDataProvider.getUserRoutes();
+
     userRoutes.forEach((userRoute) {
       routes
           .firstWhere((route) => route.id == userRoute.routeId)

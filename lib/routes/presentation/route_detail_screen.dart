@@ -7,6 +7,7 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_color_icon.dart';
 import 'package:free_beta/user/user_route_model.dart';
+import 'package:intl/intl.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel) {
@@ -61,55 +62,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Name',
-                        style: FreeBetaTextStyle.h4,
-                      ),
-                    ),
-                    Text(widget.routeModel.displayName),
-                  ],
-                ),
-                SizedBox(height: FreeBetaSizes.l),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Difficulty',
-                        style: FreeBetaTextStyle.h4,
-                      ),
-                    ),
-                    Text(widget.routeModel.difficulty),
-                  ],
-                ),
-                SizedBox(height: FreeBetaSizes.l),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Type',
-                        style: FreeBetaTextStyle.h4,
-                      ),
-                    ),
-                    Text(widget.routeModel.climbType.displayName),
-                  ],
-                ),
-                SizedBox(height: FreeBetaSizes.l),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Color',
-                        style: FreeBetaTextStyle.h4,
-                      ),
-                    ),
-                    RouteColorIcon.byColor(
-                      routeColor: widget.routeModel.routeColor,
-                    ),
-                  ],
-                ),
+                ..._buildRouteInfo(),
                 Padding(
                   padding: FreeBetaPadding.lAll,
                   child: Divider(
@@ -361,6 +314,56 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       ),
     );
   }
+
+  List<Widget> _buildRouteInfo() {
+    return [
+      _buildRow(
+        'Name',
+        Text(widget.routeModel.name),
+      ),
+      SizedBox(height: FreeBetaSizes.l),
+      _buildRow(
+        'Difficulty',
+        Text(widget.routeModel.difficulty),
+      ),
+      SizedBox(height: FreeBetaSizes.l),
+      _buildRow(
+        'Type',
+        Text(widget.routeModel.climbType.displayName),
+      ),
+      SizedBox(height: FreeBetaSizes.l),
+      _buildRow(
+        'Color',
+        RouteColorIcon.byColor(
+          routeColor: widget.routeModel.routeColor,
+        ),
+      ),
+      SizedBox(height: FreeBetaSizes.l),
+      _buildRow(
+        'Created',
+        Text(DateFormat('MM/dd').format(widget.routeModel.creationDate)),
+      ),
+      if (widget.routeModel.removalDate != null) ...[
+        SizedBox(height: FreeBetaSizes.l),
+        _buildRow(
+          'Removed',
+          Text(DateFormat('MM/dd').format(widget.routeModel.removalDate!)),
+        ),
+      ]
+    ];
+  }
+
+  Widget _buildRow(String label, Widget value) => Row(
+        children: [
+          Expanded(
+            child: Text(
+              label,
+              style: FreeBetaTextStyle.h4,
+            ),
+          ),
+          value,
+        ],
+      );
 }
 
 class _AreYouSureDialog extends StatelessWidget {

@@ -2,54 +2,34 @@ import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
 class RouteModel {
-  final int id;
-  final String? name;
-  final Location location;
-  final Section section;
+  final String id;
+  final String name;
+  final String? image;
   final String difficulty;
   final ClimbType climbType;
   final RouteColor routeColor;
-  final String? image;
+  final DateTime creationDate;
+  final DateTime? removalDate;
   UserRouteModel? userRouteModel;
 
   RouteModel({
     required this.id,
-    this.name,
-    required this.location,
-    required this.section,
+    this.name = '',
+    this.image,
     required this.difficulty,
     required this.climbType,
     required this.routeColor,
-    this.image,
+    required this.creationDate,
+    this.removalDate,
     this.userRouteModel,
   });
 }
 
 extension RouteModelExtensions on RouteModel {
-  String get displayName => this.name ?? 'N/A';
-
   String get truncatedDisplayName {
-    print(this.displayName.length);
-    if (this.displayName.length > 7) {
-      return this.displayName.substring(0, 7) + '...';
+    if (this.name.length > 7) {
+      return this.name.substring(0, 7) + '...';
     }
-    return this.displayName;
-  }
-}
-
-extension RouteModelListExtensions on List<RouteModel> {
-  List<RouteModel> sortRoutes() {
-    this.sort((a, b) => _compareRoutes(a, b));
-    return this;
-  }
-
-  int _compareRoutes(RouteModel a, RouteModel b) {
-    var typeComparison = a.location.index.compareTo(b.location.index);
-
-    if (typeComparison != 0) {
-      return typeComparison;
-    }
-
-    return a.section.index.compareTo(b.section.index);
+    return this.name;
   }
 }

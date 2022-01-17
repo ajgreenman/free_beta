@@ -14,7 +14,10 @@ class RouteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return Container(
+      color: route.removalDate == null
+          ? FreeBetaColors.white
+          : FreeBetaColors.grayLight,
       padding: FreeBetaPadding.mVertical,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,

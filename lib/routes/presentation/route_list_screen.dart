@@ -37,7 +37,7 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
         ),
       ),
       body: ref.watch(fetchFilteredRoutesProvider).when(
-            data: (routes) => _onSuccess(context, routes.sortRoutes()),
+            data: (routes) => _onSuccess(context, routes),
             error: (error, stackTrace) => _onError(error, stackTrace),
             loading: () => _onLoading(),
           ),
@@ -58,6 +58,8 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _onError(Object error, StackTrace? stackTrace) {
+    print(error);
+    print(stackTrace);
     return Text('Sorry, an error occured.');
   }
 
@@ -191,19 +193,22 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
 
     return Expanded(
       child: Padding(
-        padding: FreeBetaPadding.mAll,
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (_, index) {
-            return InkWell(
-              onTap: () => Navigator.of(context).push(
-                RouteDetailScreen.route(routes[index]),
-              ),
-              child: RouteCard(route: routes[index]),
-            );
-          },
-          separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
-          itemCount: routes.length,
+        padding: FreeBetaPadding.mVertical,
+        child: RefreshIndicator(
+          child: ListView.separated(
+            shrinkWrap: true,
+            itemBuilder: (_, index) {
+              return InkWell(
+                onTap: () => Navigator.of(context).push(
+                  RouteDetailScreen.route(routes[index]),
+                ),
+                child: RouteCard(route: routes[index]),
+              );
+            },
+            separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+            itemCount: routes.length,
+          ),
+          onRefresh: () => ref.refresh(fetchFilteredRoutesProvider.future),
         ),
       ),
     );

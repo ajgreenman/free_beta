@@ -37,7 +37,7 @@ class RouteLocalDataProvider {
       ),
       onCreate: (db, version) {
         return db.execute(
-          'CREATE TABLE $USER_ROUTE_TABLE_NAME(routeId INTEGER PRIMARY KEY, isAttempted INTEGER, isCompleted INTEGER, isFavorited INTEGER, rating INTEGER, notes TEXT)',
+          'CREATE TABLE $USER_ROUTE_TABLE_NAME(routeId TEXT PRIMARY KEY, isAttempted INTEGER, isCompleted INTEGER, isFavorited INTEGER, rating INTEGER, notes TEXT)',
         );
       },
       version: 1,

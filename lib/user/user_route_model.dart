@@ -1,7 +1,7 @@
 import 'package:free_beta/app/enums/route_rating.dart';
 
 class UserRouteModel {
-  final int routeId;
+  final String routeId;
   final bool isAttempted;
   final bool isCompleted;
   final bool isFavorited;
@@ -17,7 +17,7 @@ class UserRouteModel {
     this.notes,
   });
 
-  UserRouteModel.initial(int routeId)
+  UserRouteModel.initial(String routeId)
       : routeId = routeId,
         isAttempted = false,
         isCompleted = false,
