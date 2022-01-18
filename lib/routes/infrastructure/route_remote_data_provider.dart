@@ -6,6 +6,9 @@ import 'models/route_model.dart';
 final routeRemoteDataProvider = Provider((_) => RouteRemoteDataProvider());
 
 class RouteRemoteDataProvider {
+  static final climbImage =
+      'https://firebasestorage.googleapis.com/v0/b/free-beta.appspot.com/o/climb.png?alt=media&token=9e291836-6637-4aea-826a-f096a1ad91ab';
+
   Future<List<RouteModel>> getRoutes() async {
     return [
       RouteModel(
@@ -25,14 +28,6 @@ class RouteRemoteDataProvider {
         creationDate: DateTime(2021, 12, 1),
       ),
       RouteModel(
-        id: '3',
-        routeColor: RouteColor.black,
-        climbType: ClimbType.boulder,
-        difficulty: 'v4-v6',
-        creationDate: DateTime(2021, 12, 1),
-        removalDate: DateTime(2022, 1, 1),
-      ),
-      RouteModel(
         id: '4',
         routeColor: RouteColor.black,
         climbType: ClimbType.boulder,
@@ -41,18 +36,24 @@ class RouteRemoteDataProvider {
       ),
       RouteModel(
         id: '5',
-        routeColor: RouteColor.seafoam,
+        name: 'Unnamed',
+        routeColor: RouteColor.yellow,
         climbType: ClimbType.boulder,
-        difficulty: 'v0-v2',
-        creationDate: DateTime(2021, 12, 1),
+        difficulty: 'v2-v4',
+        creationDate: DateTime(2021, 12, 23),
+        images: [climbImage],
       ),
       RouteModel(
         id: '6',
         name: 'Campus!',
-        routeColor: RouteColor.blue,
+        routeColor: RouteColor.seafoam,
         climbType: ClimbType.boulder,
         difficulty: 'v2-v4',
         creationDate: DateTime(2021, 12, 1),
+        images: [
+          climbImage,
+          climbImage,
+        ],
       ),
       RouteModel(
         id: '7',

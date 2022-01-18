@@ -70,6 +70,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                     thickness: 2,
                   ),
                 ),
+                ..._buildImages(),
+                Padding(
+                  padding: FreeBetaPadding.lAll,
+                  child: Divider(
+                    height: 2,
+                    thickness: 2,
+                  ),
+                ),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,6 +102,18 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildImages() {
+    if (widget.routeModel.images.isEmpty) return [Text('No available images')];
+
+    return widget.routeModel.images
+        .map(
+          (image) => ClipRRect(
+            child: Image.network(image),
+          ),
+        )
+        .toList();
   }
 
   Widget _buildAttempted() {

@@ -4,23 +4,23 @@ import 'package:free_beta/user/user_route_model.dart';
 class RouteModel {
   final String id;
   final String name;
-  final String? image;
   final String difficulty;
   final ClimbType climbType;
   final RouteColor routeColor;
   final DateTime creationDate;
   final DateTime? removalDate;
+  final List<String> images;
   UserRouteModel? userRouteModel;
 
   RouteModel({
     required this.id,
     this.name = '',
-    this.image,
     required this.difficulty,
     required this.climbType,
     required this.routeColor,
     required this.creationDate,
     this.removalDate,
+    this.images = const [],
     this.userRouteModel,
   });
 }

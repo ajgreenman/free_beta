@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.free_beta">
+    package="com.codej.free_beta">
    <application
         android:label="free_beta"
         android:icon="@mipmap/ic_launcher">
