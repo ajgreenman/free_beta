@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
@@ -23,6 +25,23 @@ class RouteModel {
     this.images = const [],
     this.userRouteModel,
   });
+
+  factory RouteModel.fromFirebase(String id, Map<String, dynamic> json) =>
+      RouteModel(
+        id: id,
+        name: json['name'],
+        climbType: ClimbType.values.firstWhere(
+          (climbType) => describeEnum(climbType) == json['climbType'],
+        ),
+        creationDate: (json['creationDate'] as Timestamp).toDate(),
+        routeColor: RouteColor.values.firstWhere(
+          (routeColor) => describeEnum(routeColor) == json['routeColor'],
+        ),
+        difficulty: json['difficulty'],
+        images: ((json['images'] as List<dynamic>?) ?? [])
+            .map((image) => image.toString())
+            .toList(),
+      );
 }
 
 extension RouteModelExtensions on RouteModel {

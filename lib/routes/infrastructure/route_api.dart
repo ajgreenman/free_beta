@@ -6,11 +6,11 @@ import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/user/user_route_model.dart';
 import 'package:riverpod/riverpod.dart';
 
-final routeApiProvider = Provider((ref) {
-  return RouteApi(
+final routeApiProvider = Provider(
+  (ref) => RouteApi(
     routeRepository: ref.watch(routeRepository),
-  );
-});
+  ),
+);
 
 final routeTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeColorFilterProvider = StateProvider<RouteColor?>((_) => null);

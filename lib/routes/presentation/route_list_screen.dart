@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -24,7 +23,6 @@ class RouteListScreen extends ConsumerStatefulWidget {
 class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   @override
   Widget build(BuildContext context) {
-    print(FirebaseFirestore.instance.collection('routes'));
     return Scaffold(
       key: Key('route-list'),
       appBar: AppBar(
@@ -210,7 +208,10 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
             separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
             itemCount: routes.length,
           ),
-          onRefresh: () => ref.refresh(fetchFilteredRoutesProvider.future),
+          onRefresh: () {
+            ref.refresh(fetchRoutesProvider);
+            return ref.read(fetchRoutesProvider.future);
+          },
         ),
       ),
     );

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "342618963864",
+    "project_id": "free-beta",
+    "storage_bucket": "free-beta.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:342618963864:android:1f7eb25738a376c266f5ed",
+        "android_client_info": {
+          "package_name": "com.codej.free_beta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "342618963864-af1dtdit1271ejo5ov4iel8avvd78rrs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs9TGyBpbVuWjnpU6xKHdHDDU5ibEOjg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "342618963864-af1dtdit1271ejo5ov4iel8avvd78rrs.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "342618963864-rujmf7mj3dv12jsob2s0mf1bg279m0dh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.codej.freeBeta"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
