@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     // ignore: missing_enum_constant_in_switch
     switch (defaultTargetPlatform) {
@@ -37,30 +40,21 @@ class DefaultFirebaseOptions {
     );
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCmIXDb-B9lpRzafSsERKraWdCaWnHjmFc',
-    appId: '1:342618963864:web:9f44b4063449d72766f5ed',
-    messagingSenderId: '342618963864',
-    projectId: 'free-beta',
-    authDomain: 'free-beta.firebaseapp.com',
-    storageBucket: 'free-beta.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBs9TGyBpbVuWjnpU6xKHdHDDU5ibEOjg0',
-    appId: '1:342618963864:android:1f7eb25738a376c266f5ed',
-    messagingSenderId: '342618963864',
-    projectId: 'free-beta',
-    storageBucket: 'free-beta.appspot.com',
+    apiKey: 'AIzaSyBMoZxdioDMSD8kmiq57wEwOialnRntJQg',
+    appId: '1:356903882644:android:41c86bd8e85f8255798981',
+    messagingSenderId: '356903882644',
+    projectId: 'free-beta-d83c0',
+    storageBucket: 'free-beta-d83c0.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCR9TRuwZpgql2UKE9lbjqkSRZbhpIDHnY',
-    appId: '1:342618963864:ios:9dca470f6bbeb72f66f5ed',
-    messagingSenderId: '342618963864',
-    projectId: 'free-beta',
-    storageBucket: 'free-beta.appspot.com',
-    iosClientId: '342618963864-rujmf7mj3dv12jsob2s0mf1bg279m0dh.apps.googleusercontent.com',
-    iosBundleId: 'com.codej.freeBeta',
+    apiKey: 'AIzaSyDvrSonigietR5siWJQr_gsESpYGGLTYWg',
+    appId: '1:356903882644:ios:1926bbbbc4963951798981',
+    messagingSenderId: '356903882644',
+    projectId: 'free-beta-d83c0',
+    storageBucket: 'free-beta-d83c0.appspot.com',
+    iosClientId: '356903882644-mu2bmme4pd87153124dq8rni1kofbm0c.apps.googleusercontent.com',
+    iosBundleId: 'com.codejsoftware.freeBeta',
   );
 }

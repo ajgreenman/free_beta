@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>342618963864-rujmf7mj3dv12jsob2s0mf1bg279m0dh.apps.googleusercontent.com</string>
+	<string>356903882644-mu2bmme4pd87153124dq8rni1kofbm0c.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.342618963864-rujmf7mj3dv12jsob2s0mf1bg279m0dh</string>
+	<string>com.googleusercontent.apps.356903882644-mu2bmme4pd87153124dq8rni1kofbm0c</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCR9TRuwZpgql2UKE9lbjqkSRZbhpIDHnY</string>
+	<string>AIzaSyDvrSonigietR5siWJQr_gsESpYGGLTYWg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>342618963864</string>
+	<string>356903882644</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.codej.freeBeta</string>
+	<string>com.codejsoftware.freeBeta</string>
 	<key>PROJECT_ID</key>
-	<string>free-beta</string>
+	<string>free-beta-d83c0</string>
 	<key>STORAGE_BUCKET</key>
-	<string>free-beta.appspot.com</string>
+	<string>free-beta-d83c0.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,10 +25,10 @@
 	<key>IS_APPINVITE_ENABLED</key>
 	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:342618963864:ios:9dca470f6bbeb72f66f5ed</string>
+	<string>1:356903882644:ios:1926bbbbc4963951798981</string>
 </dict>
 </plist>

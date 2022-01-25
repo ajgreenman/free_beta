@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/presentation/back_button.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/create_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -27,33 +29,16 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
       key: Key('route-list'),
       appBar: AppBar(
         title: Text('Elev8'),
-        leading: IconButton(
+        leading: FreeBetaBackButton(
           onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            size: FreeBetaSizes.xxl,
-            color: FreeBetaColors.white,
-          ),
         ),
+        actions: _buildActions(),
       ),
       body: ref.watch(fetchFilteredRoutesProvider).when(
-            data: (routes) => _onSuccess(context, routes),
+            data: (routes) => _onSuccess(context, routes.sortRoutes()),
             error: (error, stackTrace) => _onError(error, stackTrace),
             loading: () => _onLoading(),
           ),
-    );
-  }
-
-  Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: FreeBetaPadding.lAll,
-          child: _buildFilterRow(context),
-        ),
-        _buildRouteList(routes),
-      ],
     );
   }
 
@@ -67,6 +52,20 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     return Center(child: CircularProgressIndicator());
   }
 
+  Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: FreeBetaPadding.lAll,
+          child: _buildFilterRow(context),
+        ),
+        Divider(height: 1, thickness: 1),
+        _buildRouteList(routes),
+      ],
+    );
+  }
+
   Widget _buildFilterRow(BuildContext context) {
     final routeColorFilter = ref.watch(routeColorFilterProvider);
     final routeTypeFilter = ref.watch(routeTypeFilterProvider);
@@ -77,7 +76,7 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
             Expanded(
               child: Text(
                 'Filter by Type',
-                style: FreeBetaTextStyle.h3,
+                style: FreeBetaTextStyle.h4,
               ),
             ),
             _buildDropDown<ClimbType>(
@@ -94,7 +93,7 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
             Expanded(
               child: Text(
                 'Filter by Color',
-                style: FreeBetaTextStyle.h3,
+                style: FreeBetaTextStyle.h4,
               ),
             ),
             _buildDropDown<RouteColor?>(
@@ -181,38 +180,53 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     return colorItems;
   }
 
+  List<Widget> _buildActions() {
+    return [
+      IconButton(
+        onPressed: () => Navigator.of(context).push(
+          CreateRouteScreen.route(),
+        ),
+        icon: Icon(
+          Icons.settings,
+          size: FreeBetaSizes.xl,
+          color: FreeBetaColors.white,
+        ),
+      ),
+    ];
+  }
+
   Widget _buildRouteList(List<RouteModel> routes) {
     if (routes.isEmpty) {
       return Center(
-        child: Text(
-          'Sorry, no available routes',
-          style: FreeBetaTextStyle.h3,
+        child: Padding(
+          padding: EdgeInsets.only(top: FreeBetaSizes.l),
+          child: Text(
+            'Sorry, no available routes',
+            style: FreeBetaTextStyle.h3,
+          ),
         ),
       );
     }
 
     return Expanded(
-      child: Padding(
-        padding: FreeBetaPadding.mVertical,
-        child: RefreshIndicator(
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemBuilder: (_, index) {
-              return InkWell(
-                onTap: () => Navigator.of(context).push(
-                  RouteDetailScreen.route(routes[index]),
-                ),
-                child: RouteCard(route: routes[index]),
-              );
-            },
-            separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
-            itemCount: routes.length,
-          ),
-          onRefresh: () {
-            ref.refresh(fetchRoutesProvider);
-            return ref.read(fetchRoutesProvider.future);
+      child: RefreshIndicator(
+        child: ListView.separated(
+          shrinkWrap: true,
+          itemBuilder: (_, index) {
+            return InkWell(
+              onTap: () => Navigator.of(context).push(
+                RouteDetailScreen.route(routes[index]),
+              ),
+              child: RouteCard(route: routes[index]),
+            );
           },
+          separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+          itemCount: routes.length,
         ),
+        onRefresh: () {
+          ref.refresh(fetchRoutesProvider);
+          return ref.read(fetchRoutesProvider.future);
+        },
       ),
     );
   }

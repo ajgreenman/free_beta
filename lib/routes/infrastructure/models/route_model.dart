@@ -39,16 +39,32 @@ class RouteModel {
         ),
         difficulty: json['difficulty'],
         images: ((json['images'] as List<dynamic>?) ?? [])
-            .map((image) => image.toString())
+            .map((image) {
+              return image.toString();
+            })
+            .where((image) => image.isNotEmpty)
             .toList(),
       );
 }
 
 extension RouteModelExtensions on RouteModel {
+  String get displayName => this.name.isNotEmpty ? this.name : '(unnamed)';
+
   String get truncatedDisplayName {
     if (this.name.length > 7) {
       return this.name.substring(0, 7) + '...';
     }
     return this.name;
+  }
+}
+
+extension RouteModelListExtensions on List<RouteModel> {
+  List<RouteModel> sortRoutes() {
+    this.sort((a, b) => _compareRoutes(a, b));
+    return this;
+  }
+
+  int _compareRoutes(RouteModel a, RouteModel b) {
+    return a.creationDate.compareTo(b.creationDate);
   }
 }

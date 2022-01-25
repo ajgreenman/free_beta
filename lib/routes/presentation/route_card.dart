@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/route_color_icon.dart';
+import 'package:free_beta/routes/presentation/route_progress_icon.dart';
+import 'package:free_beta/routes/presentation/route_summary.dart';
 
 class RouteCard extends StatelessWidget {
   final RouteModel route;
@@ -15,19 +16,14 @@ class RouteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: route.removalDate == null
-          ? FreeBetaColors.white
-          : FreeBetaColors.grayLight,
-      padding: FreeBetaPadding.mVertical,
+      color: _getBackgroundColor(),
+      padding: FreeBetaPadding.mAll,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _buildColorIcon(),
-          _buildDifficulty(),
-          _buildType(),
-          _buildName(),
-          Spacer(),
           _buildFavoriteIcon(),
+          RouteSummary(route),
+          Spacer(),
+          _buildProgressIcon(),
           Icon(
             Icons.keyboard_arrow_right,
             size: FreeBetaSizes.xxl,
@@ -38,47 +34,9 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Widget _buildColorIcon() {
-    return Padding(
-      padding: EdgeInsets.only(right: FreeBetaSizes.xl),
-      child: RouteColorIcon(
-        routeColor: route.routeColor,
-        isAttempted: route.userRouteModel?.isAttempted ?? false,
-        isCompleted: route.userRouteModel?.isCompleted ?? false,
-      ),
-    );
-  }
-
-  Widget _buildType() {
-    return Expanded(
-      child: Text(
-        route.climbType.abbreviatedName,
-        style: FreeBetaTextStyle.body3,
-      ),
-    );
-  }
-
-  Widget _buildName() {
-    return Expanded(
-      child: Text(
-        route.truncatedDisplayName,
-        style: FreeBetaTextStyle.body3,
-      ),
-    );
-  }
-
-  Widget _buildDifficulty() {
-    return Expanded(
-      child: Text(
-        route.difficulty,
-        style: FreeBetaTextStyle.body3,
-      ),
-    );
-  }
-
   Widget _buildFavoriteIcon() {
     return Padding(
-      padding: EdgeInsets.only(right: FreeBetaSizes.xl),
+      padding: EdgeInsets.only(right: FreeBetaSizes.ml),
       child: route.userRouteModel?.isFavorited ?? false
           ? Icon(
               Icons.star,
@@ -91,5 +49,17 @@ class RouteCard extends StatelessWidget {
               color: FreeBetaColors.blueDark,
             ),
     );
+  }
+
+  Widget _buildProgressIcon() {
+    return RouteProgressIcon(
+      isAttempted: route.userRouteModel?.isAttempted ?? false,
+      isCompleted: route.userRouteModel?.isCompleted ?? false,
+    );
+  }
+
+  Color _getBackgroundColor() {
+    if (route.removalDate != null) return FreeBetaColors.grayLight;
+    return route.routeColor.displayColor.withOpacity(0.3);
   }
 }

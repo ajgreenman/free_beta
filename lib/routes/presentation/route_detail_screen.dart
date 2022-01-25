@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/presentation/back_button.dart';
+import 'package:free_beta/app/presentation/text_field.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
+import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
-import 'package:free_beta/routes/presentation/route_color_icon.dart';
+import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/user_route_model.dart';
-import 'package:intl/intl.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel) {
@@ -26,13 +27,13 @@ class RouteDetailScreen extends ConsumerStatefulWidget {
 }
 
 class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
-  late RouteFormModel _formModel;
+  late UserRouteFormModel _formModel;
   bool dirtyForm = false;
 
   @override
   void initState() {
     super.initState();
-    _formModel = RouteFormModel(
+    _formModel = UserRouteFormModel(
       isAttempted: widget.routeModel.userRouteModel?.isAttempted ?? false,
       isCompleted: widget.routeModel.userRouteModel?.isCompleted ?? false,
       isFavorited: widget.routeModel.userRouteModel?.isFavorited ?? false,
@@ -46,14 +47,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: _onBack,
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            size: FreeBetaSizes.xxl,
-            color: FreeBetaColors.white,
-          ),
-        ),
+        leading: FreeBetaBackButton(onPressed: _onBack),
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -62,22 +56,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                ..._buildRouteInfo(),
-                Padding(
-                  padding: FreeBetaPadding.lAll,
-                  child: Divider(
-                    height: 2,
-                    thickness: 2,
-                  ),
-                ),
+                RouteSummary(widget.routeModel, isDetailed: true),
+                _buildDivider(),
                 ..._buildImages(),
-                Padding(
-                  padding: FreeBetaPadding.lAll,
-                  child: Divider(
-                    height: 2,
-                    thickness: 2,
-                  ),
-                ),
+                _buildDivider(),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -208,10 +190,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         style: FreeBetaTextStyle.h4,
       ),
       SizedBox(height: FreeBetaSizes.m),
-      TextFormField(
-        maxLength: 600,
-        maxLines: 6,
-        style: FreeBetaTextStyle.body5,
+      FreeBetaTextField(
         initialValue: _formModel.notes,
         onChanged: (value) {
           if (value != _formModel.notes) {
@@ -221,22 +200,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             });
           }
         },
-        decoration: InputDecoration(
-          contentPadding: FreeBetaPadding.mlAll,
-          hintText: 'Enter notes here:\n\nex. flag your left foot',
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: FreeBetaColors.blueDark,
-              width: 2.0,
-            ),
-          ),
-          border: OutlineInputBorder(
-            borderSide: BorderSide(
-              color: FreeBetaColors.blueDark,
-              width: 2.0,
-            ),
-          ),
-        ),
       ),
     ];
   }
@@ -306,6 +269,16 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     );
   }
 
+  Widget _buildDivider() {
+    return Padding(
+      padding: FreeBetaPadding.lAll,
+      child: Divider(
+        height: 2,
+        thickness: 2,
+      ),
+    );
+  }
+
   Future<void> _onSave() async {
     await ref.read(routeApiProvider).saveRoute(
           UserRouteModel(
@@ -334,56 +307,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       ),
     );
   }
-
-  List<Widget> _buildRouteInfo() {
-    return [
-      _buildRow(
-        'Name',
-        Text(widget.routeModel.name),
-      ),
-      SizedBox(height: FreeBetaSizes.l),
-      _buildRow(
-        'Difficulty',
-        Text(widget.routeModel.difficulty),
-      ),
-      SizedBox(height: FreeBetaSizes.l),
-      _buildRow(
-        'Type',
-        Text(widget.routeModel.climbType.displayName),
-      ),
-      SizedBox(height: FreeBetaSizes.l),
-      _buildRow(
-        'Color',
-        RouteColorIcon.byColor(
-          routeColor: widget.routeModel.routeColor,
-        ),
-      ),
-      SizedBox(height: FreeBetaSizes.l),
-      _buildRow(
-        'Created',
-        Text(DateFormat('MM/dd').format(widget.routeModel.creationDate)),
-      ),
-      if (widget.routeModel.removalDate != null) ...[
-        SizedBox(height: FreeBetaSizes.l),
-        _buildRow(
-          'Removed',
-          Text(DateFormat('MM/dd').format(widget.routeModel.removalDate!)),
-        ),
-      ]
-    ];
-  }
-
-  Widget _buildRow(String label, Widget value) => Row(
-        children: [
-          Expanded(
-            child: Text(
-              label,
-              style: FreeBetaTextStyle.h4,
-            ),
-          ),
-          value,
-        ],
-      );
 }
 
 class _AreYouSureDialog extends StatelessWidget {

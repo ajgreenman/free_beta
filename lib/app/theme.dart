@@ -4,18 +4,18 @@ class FreeBetaTheme {
   static final ThemeData blueTheme = ThemeData(
     scaffoldBackgroundColor: FreeBetaColors.grayBackground,
     appBarTheme: AppBarTheme(
-      color: FreeBetaColors.blueDark,
+      color: FreeBetaColors.black,
       elevation: 1,
       iconTheme: IconThemeData(
-        color: FreeBetaColors.blueDark,
+        color: FreeBetaColors.black,
       ),
     ),
     colorScheme: ColorScheme(
-      primary: FreeBetaColors.blueDark,
+      primary: FreeBetaColors.black,
       primaryVariant: FreeBetaColors.blue,
       secondary: FreeBetaColors.green,
       secondaryVariant: FreeBetaColors.greenDark,
-      surface: FreeBetaColors.blueDark,
+      surface: FreeBetaColors.black,
       background: FreeBetaColors.grayBackground,
       error: FreeBetaColors.red,
       onPrimary: FreeBetaColors.white,
@@ -26,9 +26,9 @@ class FreeBetaTheme {
       brightness: Brightness.light,
     ),
     textTheme: ThemeData.light().textTheme,
-    toggleableActiveColor: FreeBetaColors.blueDark,
-    unselectedWidgetColor: FreeBetaColors.blueDark,
-    dividerTheme: DividerThemeData(color: FreeBetaColors.blueDark),
+    toggleableActiveColor: FreeBetaColors.black,
+    unselectedWidgetColor: FreeBetaColors.black,
+    dividerTheme: DividerThemeData(color: FreeBetaColors.black),
   );
 }
 
@@ -46,14 +46,14 @@ class FreeBetaColors {
   static const gray = Color(0xFF8A8D8F);
   static const grayDark = Color(0xFF414042);
 
-  static const greenBrand = Color(0xFF93F1CB);
-  static const green = Color(0xFF1EB377);
+  static const greenBrand = Color(0xFF78FFD4);
+  static const green = Color(0x16BD00);
   static const greenDark = Color(0xFF0C784C);
 
-  static const pink = Color(0xFFF93DFF);
+  static const pink = Color(0xFFFC5DE5);
 
   static const purpleBrand = Color(0xFFC161E4);
-  static const purple = Color(0xFF8000AB);
+  static const purple = Color(0xFF630085);
   static const purpleDark = Color(0xFF371343);
   static const purpleExtraDark = Color(0xFF240030);
 
