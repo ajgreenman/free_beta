@@ -47,7 +47,7 @@ class FreeBetaColors {
   static const grayDark = Color(0xFF414042);
 
   static const greenBrand = Color(0xFF78FFD4);
-  static const green = Color(0x16BD00);
+  static const green = Color(0xFF16BD00);
   static const greenDark = Color(0xFF0C784C);
 
   static const pink = Color(0xFFFC5DE5);

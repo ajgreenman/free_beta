@@ -51,8 +51,8 @@ extension RouteModelExtensions on RouteModel {
   String get displayName => this.name.isNotEmpty ? this.name : '(unnamed)';
 
   String get truncatedDisplayName {
-    if (this.name.length > 7) {
-      return this.name.substring(0, 7) + '...';
+    if (this.name.length > 30) {
+      return this.name.substring(0, 30) + '...';
     }
     return this.name;
   }

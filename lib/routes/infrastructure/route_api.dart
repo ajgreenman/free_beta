@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/user/user_route_model.dart';
@@ -55,5 +56,9 @@ class RouteApi {
 
   Future<void> saveRoute(UserRouteModel userRouteModel) async {
     return routeRepository.saveRoute(userRouteModel);
+  }
+
+  Future<void> addRoute(RouteFormModel routeFormModel) async {
+    return routeRepository.addRoute(routeFormModel);
   }
 }

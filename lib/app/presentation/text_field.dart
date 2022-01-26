@@ -24,13 +24,11 @@ class FreeBetaTextField extends StatelessWidget {
         hintText: 'Enter notes here:\n\nex. flag your left foot',
         enabledBorder: OutlineInputBorder(
           borderSide: BorderSide(
-            color: FreeBetaColors.blueDark,
             width: 2.0,
           ),
         ),
         border: OutlineInputBorder(
           borderSide: BorderSide(
-            color: FreeBetaColors.blueDark,
             width: 2.0,
           ),
         ),

@@ -7,6 +7,7 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/user_route_model.dart';
 
@@ -58,19 +59,18 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               children: [
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _buildDivider(),
-                ..._buildImages(),
+                _buildImages(),
                 _buildDivider(),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildAttempted(),
-                      _buildCompleted(),
-                      _buildFavorite(),
-                      SizedBox(height: FreeBetaSizes.m),
-                      ..._buildNotes(),
+                      _buildCheckboxRow('Attempted', _buildAttemptedCheckbox()),
+                      _buildCheckboxRow('Completed', _buildCompletedCheckbox()),
+                      _buildCheckboxRow('Favorited', _buildFavoritedCheckbox()),
                       SizedBox(height: FreeBetaSizes.m),
                       _buildRating(),
+                      ..._buildNotes(),
                       ElevatedButton(
                         onPressed: _onSave,
                         child: Text('Save'),
@@ -86,108 +86,80 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     );
   }
 
-  List<Widget> _buildImages() {
-    if (widget.routeModel.images.isEmpty) return [Text('No available images')];
-
-    return widget.routeModel.images
-        .map(
-          (image) => ClipRRect(
-            child: Image.network(image),
-          ),
-        )
-        .toList();
+  Widget _buildImages() {
+    return RouteImages(images: widget.routeModel.images);
   }
 
-  Widget _buildAttempted() {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            'Attempted',
-            style: FreeBetaTextStyle.h4,
+  Widget _buildCheckboxRow(String label, Checkbox checkbox) {
+    return Padding(
+      padding: FreeBetaPadding.sVertical,
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: FreeBetaTextStyle.body3,
           ),
-        ),
-        Checkbox(
-          activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isAttempted,
-          onChanged: (value) {
-            if (value == null || value == _formModel.isAttempted) return;
-            dirtyForm = true;
-
-            setState(() {
-              _formModel.isAttempted = value;
-              if (!value) {
-                _formModel.isCompleted = false;
-                _formModel.isFavorited = false;
-              }
-            });
-          },
-        ),
-      ],
+          Spacer(),
+          SizedBox.square(dimension: FreeBetaSizes.xl, child: checkbox),
+        ],
+      ),
     );
   }
 
-  Widget _buildCompleted() {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            'Completed',
-            style: FreeBetaTextStyle.h4,
-          ),
-        ),
-        Checkbox(
-          activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isCompleted,
-          onChanged: (value) {
-            if (value == null || value == _formModel.isCompleted) return;
-            dirtyForm = true;
+  Checkbox _buildAttemptedCheckbox() => Checkbox(
+        activeColor: FreeBetaColors.blueDark,
+        value: _formModel.isAttempted,
+        onChanged: (value) {
+          if (value == null || value == _formModel.isAttempted) return;
+          dirtyForm = true;
 
-            setState(() {
-              _formModel.isCompleted = value;
-              if (value) {
-                _formModel.isAttempted = true;
-              }
-            });
-          },
-        ),
-      ],
-    );
-  }
+          setState(() {
+            _formModel.isAttempted = value;
+            if (!value) {
+              _formModel.isCompleted = false;
+              _formModel.isFavorited = false;
+            }
+          });
+        },
+      );
 
-  Widget _buildFavorite() {
-    return Row(
-      children: [
-        Expanded(
-          child: Text(
-            'Favorited',
-            style: FreeBetaTextStyle.h4,
-          ),
-        ),
-        Checkbox(
-          activeColor: FreeBetaColors.blueDark,
-          value: _formModel.isFavorited,
-          onChanged: (value) {
-            if (value == null || value == _formModel.isFavorited) return;
-            dirtyForm = true;
+  Checkbox _buildCompletedCheckbox() => Checkbox(
+        activeColor: FreeBetaColors.blueDark,
+        value: _formModel.isCompleted,
+        onChanged: (value) {
+          if (value == null || value == _formModel.isCompleted) return;
+          dirtyForm = true;
 
-            setState(() {
-              _formModel.isFavorited = value;
-              if (value) {
-                _formModel.isAttempted = true;
-              }
-            });
-          },
-        ),
-      ],
-    );
-  }
+          setState(() {
+            _formModel.isCompleted = value;
+            if (value) {
+              _formModel.isAttempted = true;
+            }
+          });
+        },
+      );
+
+  Checkbox _buildFavoritedCheckbox() => Checkbox(
+        activeColor: FreeBetaColors.blueDark,
+        value: _formModel.isFavorited,
+        onChanged: (value) {
+          if (value == null || value == _formModel.isFavorited) return;
+          dirtyForm = true;
+
+          setState(() {
+            _formModel.isFavorited = value;
+            if (value) {
+              _formModel.isAttempted = true;
+            }
+          });
+        },
+      );
 
   List<Widget> _buildNotes() {
     return [
       Text(
         'Notes',
-        style: FreeBetaTextStyle.h4,
+        style: FreeBetaTextStyle.body3,
       ),
       SizedBox(height: FreeBetaSizes.m),
       FreeBetaTextField(
@@ -208,51 +180,16 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Expanded(
-          child: Text(
-            'Rating',
-            style: FreeBetaTextStyle.h4,
-          ),
+        Text(
+          'Rating',
+          style: FreeBetaTextStyle.body3,
         ),
-        Radio<RouteRating>(
-          toggleable: true,
-          value: RouteRating.one,
-          groupValue: _formModel.rating,
-          onChanged: (value) {
-            if (value != _formModel.rating) {
-              dirtyForm = true;
-              setState(() {
-                _formModel.rating = value;
-              });
-            }
-          },
-        ),
-        Radio<RouteRating>(
-          toggleable: true,
-          value: RouteRating.two,
-          groupValue: _formModel.rating,
-          onChanged: (value) {
-            if (value != _formModel.rating) {
-              dirtyForm = true;
-              setState(() {
-                _formModel.rating = value;
-              });
-            }
-          },
-        ),
-        Radio<RouteRating>(
-          toggleable: true,
-          value: RouteRating.three,
-          groupValue: _formModel.rating,
-          onChanged: (value) {
-            if (value != _formModel.rating) {
-              dirtyForm = true;
-              setState(() {
-                _formModel.rating = value;
-              });
-            }
-          },
-        ),
+        Spacer(),
+        _buildRatingRadio(RouteRating.one),
+        SizedBox(width: FreeBetaSizes.s),
+        _buildRatingRadio(RouteRating.two),
+        SizedBox(width: FreeBetaSizes.s),
+        _buildRatingRadio(RouteRating.three),
       ],
     );
   }
@@ -271,13 +208,30 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
   Widget _buildDivider() {
     return Padding(
-      padding: FreeBetaPadding.lAll,
+      padding: FreeBetaPadding.mlAll,
       child: Divider(
         height: 2,
         thickness: 2,
       ),
     );
   }
+
+  Widget _buildRatingRadio(RouteRating value) => SizedBox.square(
+        dimension: FreeBetaSizes.xxl,
+        child: Radio<RouteRating>(
+          toggleable: true,
+          value: value,
+          groupValue: _formModel.rating,
+          onChanged: (value) {
+            if (value != _formModel.rating) {
+              dirtyForm = true;
+              setState(() {
+                _formModel.rating = value;
+              });
+            }
+          },
+        ),
+      );
 
   Future<void> _onSave() async {
     await ref.read(routeApiProvider).saveRoute(
@@ -294,7 +248,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
     dirtyForm = false;
 
-    showDialog(
+    await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         content: Row(

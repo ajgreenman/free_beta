@@ -119,13 +119,13 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
       padding: FreeBetaPadding.mAll,
       child: DropdownButtonFormField<T?>(
         decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: FreeBetaColors.blueDark,
-                width: 2.0,
-              ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(
+              width: 2.0,
             ),
-            contentPadding: FreeBetaPadding.mAll),
+          ),
+          contentPadding: FreeBetaPadding.mAll,
+        ),
         icon: Icon(
           Icons.keyboard_arrow_down,
           size: FreeBetaSizes.xxl,

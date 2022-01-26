@@ -1,19 +1,20 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_color_square.dart';
+import 'package:intl/intl.dart';
 
-class CreateRouteForm extends StatefulWidget {
+class CreateRouteForm extends ConsumerStatefulWidget {
   const CreateRouteForm({Key? key}) : super(key: key);
 
   @override
   _CreateRouteFormState createState() => _CreateRouteFormState();
 }
 
-class _CreateRouteFormState extends State<CreateRouteForm> {
+class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
   RouteFormModel _formModel = RouteFormModel();
   @override
   Widget build(BuildContext context) {
@@ -41,9 +42,13 @@ class _CreateRouteFormState extends State<CreateRouteForm> {
               'Difficulty',
               (difficulty) => _formModel.difficulty = difficulty,
             ),
+            _buildDate(
+              context,
+              'Creation Date',
+            ),
             ElevatedButton(
               onPressed: _onCreate,
-              child: Text('Create'),
+              child: Text('Create Route'),
             ),
           ],
         ),
@@ -51,7 +56,7 @@ class _CreateRouteFormState extends State<CreateRouteForm> {
     );
   }
 
-  Widget _buildTextForm(String label, Function(String?) onSaved) {
+  Widget _buildTextForm(String label, Function(String?) onChanged) {
     return Column(
       children: [
         Row(
@@ -71,22 +76,25 @@ class _CreateRouteFormState extends State<CreateRouteForm> {
             Flexible(
               flex: 2,
               child: TextFormField(
-                onSaved: onSaved,
+                onChanged: onChanged,
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: FreeBetaColors.blueDark,
                       width: 2.0,
                     ),
                   ),
                   border: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: FreeBetaColors.blueDark,
                       width: 2.0,
                     ),
                   ),
-                  contentPadding:
-                      EdgeInsets.symmetric(horizontal: FreeBetaSizes.m),
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: FreeBetaSizes.m,
+                  ),
+                  hintStyle: FreeBetaTextStyle.h4.copyWith(
+                    color: FreeBetaColors.grayLight,
+                  ),
+                  hintText: 'Enter ${label.toLowerCase()}',
                 ),
                 style: FreeBetaTextStyle.h4,
               ),
@@ -125,11 +133,14 @@ class _CreateRouteFormState extends State<CreateRouteForm> {
                 decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: FreeBetaColors.blueDark,
                       width: 2.0,
                     ),
                   ),
                   contentPadding: FreeBetaPadding.mAll,
+                  hintStyle: FreeBetaTextStyle.h4.copyWith(
+                    color: FreeBetaColors.grayLight,
+                  ),
+                  hintText: 'Enter ${label.toLowerCase()}',
                 ),
                 icon: Icon(
                   Icons.keyboard_arrow_down,
@@ -148,8 +159,88 @@ class _CreateRouteFormState extends State<CreateRouteForm> {
     );
   }
 
+  Widget _buildDate(
+    BuildContext context,
+    String label,
+  ) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Row(
+                children: [
+                  Text(
+                    label,
+                    style: FreeBetaTextStyle.h4,
+                  ),
+                  Spacer(),
+                ],
+              ),
+            ),
+            Flexible(
+              flex: 2,
+              child: SizedBox(
+                width: double.infinity,
+                child: OutlinedButton(
+                  style: ButtonStyle(
+                    alignment: Alignment.centerLeft,
+                    backgroundColor: MaterialStateProperty.all(
+                      FreeBetaColors.white,
+                    ),
+                    side: MaterialStateProperty.all(
+                      BorderSide(
+                        width: 2,
+                      ),
+                    ),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(
+                        horizontal: FreeBetaSizes.m,
+                        vertical: FreeBetaSizes.ml,
+                      ),
+                    ),
+                  ),
+                  child: _buildDateLabel(label, _formModel.creationDate),
+                  onPressed: () async {
+                    var pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: _formModel.creationDate ?? DateTime.now(),
+                      firstDate: DateTime(2021),
+                      lastDate: DateTime.now(),
+                    );
+                    setState(() {
+                      _formModel.creationDate = pickedDate;
+                    });
+                  },
+                ),
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: FreeBetaSizes.m),
+      ],
+    );
+  }
+
   Future<void> _onCreate() async {
-    log(_formModel.toString());
+    await ref.read(routeApiProvider).addRoute(_formModel);
+  }
+
+  Widget _buildDateLabel(String fieldName, DateTime? date) {
+    if (date == null) {
+      return Text(
+        'Enter ${fieldName.toLowerCase()}',
+        style: FreeBetaTextStyle.h4.copyWith(
+          color: FreeBetaColors.grayLight,
+        ),
+      );
+    }
+
+    return Text(
+      DateFormat('MM/dd').format(date),
+      style: FreeBetaTextStyle.h4,
+    );
   }
 
   List<DropdownMenuItem<RouteColor?>> _getColors() => RouteColor.values

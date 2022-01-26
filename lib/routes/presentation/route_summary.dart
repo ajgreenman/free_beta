@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/climb_type.dart';
-import 'package:free_beta/app/enums/route_color.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -25,25 +24,35 @@ class RouteSummary extends StatelessWidget {
       children: [
         Row(
           children: [
-            _buildName(),
-            _buildColor(),
+            Row(
+              children: [
+                _buildName(),
+                _buildColor(),
+              ],
+            ),
+            ..._buildDate('Created', route.creationDate),
           ],
         ),
         Row(
           children: [
-            _buildType(),
-            _buildDivider(),
-            _buildDifficulty(),
+            Row(
+              children: [
+                _buildType(),
+                _buildDivider(),
+                _buildDifficulty(),
+              ],
+            ),
+            if (route.removalDate != null)
+              ..._buildDate('Removed', route.removalDate),
           ],
         ),
-        ..._buildDates(),
       ],
     );
   }
 
   Widget _buildName() {
     return Text(
-      route.name,
+      route.truncatedDisplayName,
       style: FreeBetaTextStyle.h4.copyWith(fontWeight: FontWeight.bold),
     );
   }
@@ -75,25 +84,27 @@ class RouteSummary extends StatelessWidget {
   Widget _buildColor() {
     if (!isDetailed) return SizedBox.shrink();
 
+    var colorSquare = RouteColorSquare(routeColor: route.routeColor);
+
+    if (route.name.isEmpty) {
+      return colorSquare;
+    }
+
     return Padding(
       padding: const EdgeInsets.only(left: FreeBetaSizes.m),
-      child: RouteColorSquare(routeColor: route.routeColor),
+      child: colorSquare,
     );
   }
 
-  List<Widget> _buildDates() {
+  List<Widget> _buildDate(String label, DateTime? date) {
     if (!isDetailed) return [];
 
     return [
-      _buildDate('Created', route.creationDate),
-      _buildDate('Removed', route.removalDate),
+      Spacer(),
+      Text(
+        label + ': ' + DateFormat('MM/dd').formatWithNull(date),
+        style: FreeBetaTextStyle.body3,
+      ),
     ];
-  }
-
-  Widget _buildDate(String label, DateTime? date) {
-    return Text(
-      label + ': ' + DateFormat('MM/dd').formatWithNull(date),
-      style: FreeBetaTextStyle.body3,
-    );
   }
 }
