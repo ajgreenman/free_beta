@@ -17,8 +17,7 @@ class RouteFormModel {
     this.routeColor,
     this.creationDate,
     this.removalDate,
-    this.images = const [],
-  });
+  }) : images = [];
 
   Map<String, dynamic> toJson() {
     return {

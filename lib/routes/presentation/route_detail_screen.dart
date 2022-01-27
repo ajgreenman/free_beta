@@ -176,45 +176,29 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     ];
   }
 
-  Widget _buildRating() {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Rating',
-          style: FreeBetaTextStyle.body3,
+  Widget _buildRating() => Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Rating',
+            style: FreeBetaTextStyle.body3,
+          ),
+          Spacer(),
+          _buildRatingRadio(RouteRating.one),
+          SizedBox(width: FreeBetaSizes.s),
+          _buildRatingRadio(RouteRating.two),
+          SizedBox(width: FreeBetaSizes.s),
+          _buildRatingRadio(RouteRating.three),
+        ],
+      );
+
+  Widget _buildDivider() => Padding(
+        padding: FreeBetaPadding.mlAll,
+        child: Divider(
+          height: 2,
+          thickness: 2,
         ),
-        Spacer(),
-        _buildRatingRadio(RouteRating.one),
-        SizedBox(width: FreeBetaSizes.s),
-        _buildRatingRadio(RouteRating.two),
-        SizedBox(width: FreeBetaSizes.s),
-        _buildRatingRadio(RouteRating.three),
-      ],
-    );
-  }
-
-  void _onBack() async {
-    if (!dirtyForm) {
-      Navigator.of(context).pop();
-      return;
-    }
-
-    await showDialog(
-      context: context,
-      builder: (_) => _AreYouSureDialog(),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Padding(
-      padding: FreeBetaPadding.mlAll,
-      child: Divider(
-        height: 2,
-        thickness: 2,
-      ),
-    );
-  }
+      );
 
   Widget _buildRatingRadio(RouteRating value) => SizedBox.square(
         dimension: FreeBetaSizes.xxl,
@@ -232,6 +216,18 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           },
         ),
       );
+
+  void _onBack() async {
+    if (!dirtyForm) {
+      Navigator.of(context).pop();
+      return;
+    }
+
+    await showDialog(
+      context: context,
+      builder: (_) => _AreYouSureDialog(),
+    );
+  }
 
   Future<void> _onSave() async {
     await ref.read(routeApiProvider).saveRoute(

@@ -30,7 +30,41 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
       appBar: AppBar(
         title: Text('Elev8'),
         leading: FreeBetaBackButton(
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            Navigator.of(context).pop();
+
+            // var imageApi = ref.read(imageApiProvider);
+            // var image = await imageApi.fetchImage();
+
+            // if (image == null) {
+            //   log('No image');
+            //   return;
+            // }
+
+            // var path = basename(image.path);
+            // log('Path: ' + path.toString());
+            // var file = File(path);
+            // log(file.toString());
+            // log(file.path.toString());
+
+            // String? url;
+            // var huh = FirebaseStorage.instance
+            //     .ref()
+            //     .child('uploads/$path')
+            //     .putFile(file);
+            // log(huh.toString());
+            // huh.then((snapshot) {
+            //   snapshot.ref.getDownloadURL().then((value) {
+            //     log('askdfj: ' + value);
+            //     url = value;
+            //   });
+            // }).catchError((error) {
+            //   log('hi');
+            //   log(error.toString());
+            // });
+
+            // log('Worked: ' + url.toString());
+          },
         ),
         actions: _buildActions(),
       ),
