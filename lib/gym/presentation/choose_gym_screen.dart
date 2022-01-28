@@ -25,7 +25,24 @@ class ChooseGymScreen extends StatelessWidget {
                 itemBuilder: (_, __) => ElevatedButton(
                   onPressed: () =>
                       Navigator.of(context).push(RouteListScreen.route()),
-                  child: Text('Elev8'),
+                  child: Text(
+                    'Elev8',
+                    style: FreeBetaTextStyle.h4.copyWith(
+                      color: FreeBetaColors.white,
+                    ),
+                  ),
+                  style: ButtonStyle(
+                    side: MaterialStateProperty.all(
+                      BorderSide(
+                        width: 2,
+                      ),
+                    ),
+                    padding: MaterialStateProperty.all(
+                      const EdgeInsets.symmetric(
+                        vertical: FreeBetaSizes.ml,
+                      ),
+                    ),
+                  ),
                 ),
                 separatorBuilder: (_, __) => SizedBox(
                   height: FreeBetaSizes.m,

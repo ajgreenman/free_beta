@@ -5,6 +5,9 @@ class FreeBetaTheme {
     scaffoldBackgroundColor: FreeBetaColors.grayBackground,
     appBarTheme: AppBarTheme(
       color: FreeBetaColors.black,
+      titleTextStyle: FreeBetaTextStyle.h3.copyWith(
+        color: FreeBetaColors.white,
+      ),
       elevation: 1,
       iconTheme: IconThemeData(
         color: FreeBetaColors.black,
