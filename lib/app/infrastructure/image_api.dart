@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-final imageApiProvider = Provider((_) => ImageApi());
+final imageApiProvider = Provider((_) => ImageApi(FirebaseStorage.instance));
 
 final fetchImageProvider = FutureProvider((ref) async {
   final imageApi = ref.watch(imageApiProvider);
@@ -14,13 +14,17 @@ final fetchImageProvider = FutureProvider((ref) async {
 });
 
 class ImageApi {
+  ImageApi(this._firebaseStorage);
+
+  final FirebaseStorage _firebaseStorage;
+
   Future<String?> fetchImage() async {
     var image = await ImagePicker().pickImage(source: ImageSource.camera);
     if (image == null) return null;
 
     var imageFile = File(image.path);
 
-    return FirebaseStorage.instance
+    return _firebaseStorage
         .ref()
         .child('uploads/$imageFile')
         .putFile(imageFile)

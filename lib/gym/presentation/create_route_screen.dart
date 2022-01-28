@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/create_route_form.dart';
 
-class CreateRouteScreen extends StatefulWidget {
+class CreateRouteScreen extends StatelessWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return CreateRouteScreen();
@@ -11,11 +11,6 @@ class CreateRouteScreen extends StatefulWidget {
 
   const CreateRouteScreen({Key? key}) : super(key: key);
 
-  @override
-  State<CreateRouteScreen> createState() => _CreateRouteScreenState();
-}
-
-class _CreateRouteScreenState extends State<CreateRouteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

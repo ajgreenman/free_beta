@@ -9,7 +9,7 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
-import 'package:free_beta/user/user_route_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel) {
@@ -48,6 +48,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
+        title: Text(widget.routeModel.name),
         leading: FreeBetaBackButton(onPressed: _onBack),
       ),
       body: GestureDetector(

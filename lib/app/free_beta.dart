@@ -1,44 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/routes/presentation/route_list_screen.dart';
+import 'package:free_beta/app/presentation/free_beta_bottom_navigation_bar.dart';
+import 'package:free_beta/gym/presentation/choose_gym_screen.dart';
+import 'package:free_beta/user/presentation/profile_screen.dart';
 
-class FreeBeta extends StatelessWidget {
+class FreeBeta extends StatefulWidget {
   const FreeBeta({Key? key}) : super(key: key);
+
+  @override
+  State<FreeBeta> createState() => _FreeBetaState();
+}
+
+class _FreeBetaState extends State<FreeBeta> {
+  int _currentIndex = 0;
+
+  static const List<Widget> _screens = [
+    ChooseGymScreen(),
+    ProfileScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: Key('free-beta'),
       appBar: AppBar(
-        title: Text('Free Beta'),
+        title: Center(child: Text('Free Beta')),
       ),
-      body: Padding(
-        padding: FreeBetaPadding.xxlHorizontal,
-        child: Column(
-          children: [
-            Padding(
-              padding: FreeBetaPadding.lVertical,
-              child: Text(
-                'Choose your gym',
-                style: FreeBetaTextStyle.h2,
-              ),
-            ),
-            Expanded(
-              child: ListView.separated(
-                itemBuilder: (_, __) => ElevatedButton(
-                  onPressed: () =>
-                      Navigator.of(context).push(RouteListScreen.route()),
-                  child: Text('Elev8'),
-                ),
-                separatorBuilder: (_, __) => SizedBox(
-                  height: FreeBetaSizes.m,
-                ),
-                itemCount: 1,
-              ),
-            ),
-          ],
-        ),
+      body: _screens[_currentIndex],
+      bottomNavigationBar: FreeBetaBottomNavigationBar(
+        currentIndex: _currentIndex,
+        navigateTo: _navigateTo,
       ),
     );
+  }
+
+  void _navigateTo(int index) {
+    if (index == _currentIndex) return;
+
+    setState(() {
+      _currentIndex = index;
+    });
   }
 }

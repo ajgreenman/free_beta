@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/user/user_route_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 
 class RouteModel {
   final String id;

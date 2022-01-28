@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/back_button.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/gym/presentation/create_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -32,41 +31,8 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
         leading: FreeBetaBackButton(
           onPressed: () {
             Navigator.of(context).pop();
-
-            // var imageApi = ref.read(imageApiProvider);
-            // var image = await imageApi.fetchImage();
-
-            // if (image == null) {
-            //   log('No image');
-            //   return;
-            // }
-
-            // var path = basename(image.path);
-            // log('Path: ' + path.toString());
-            // var file = File(path);
-            // log(file.toString());
-            // log(file.path.toString());
-
-            // String? url;
-            // var huh = FirebaseStorage.instance
-            //     .ref()
-            //     .child('uploads/$path')
-            //     .putFile(file);
-            // log(huh.toString());
-            // huh.then((snapshot) {
-            //   snapshot.ref.getDownloadURL().then((value) {
-            //     log('askdfj: ' + value);
-            //     url = value;
-            //   });
-            // }).catchError((error) {
-            //   log('hi');
-            //   log(error.toString());
-            // });
-
-            // log('Worked: ' + url.toString());
           },
         ),
-        actions: _buildActions(),
       ),
       body: ref.watch(fetchFilteredRoutesProvider).when(
             data: (routes) => _onSuccess(context, routes.sortRoutes()),
@@ -212,21 +178,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     );
 
     return colorItems;
-  }
-
-  List<Widget> _buildActions() {
-    return [
-      IconButton(
-        onPressed: () => Navigator.of(context).push(
-          CreateRouteScreen.route(),
-        ),
-        icon: Icon(
-          Icons.settings,
-          size: FreeBetaSizes.xl,
-          color: FreeBetaColors.white,
-        ),
-      ),
-    ];
   }
 
   Widget _buildRouteList(List<RouteModel> routes) {

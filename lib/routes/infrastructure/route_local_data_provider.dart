@@ -1,9 +1,24 @@
-import 'package:free_beta/user/user_route_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:path/path.dart';
 import 'package:riverpod/riverpod.dart';
 import 'package:sqflite/sqflite.dart';
 
 final routeLocalDataProvider = Provider((_) => RouteLocalDataProvider());
+
+final fetchUserRoutes = FutureProvider((ref) async {
+  var routeDataProvider = ref.watch(routeLocalDataProvider);
+  var routes = await routeDataProvider.getUserRoutes();
+
+  var attempted = routes.where((route) => route.isAttempted).length;
+  var completed = routes.where((route) => route.isCompleted).length;
+  var favorited = routes.where((route) => route.isFavorited).length;
+
+  return UserRoutes(
+    attempted: attempted,
+    completed: completed,
+    favorited: favorited,
+  );
+});
 
 class RouteLocalDataProvider {
   static const USER_ROUTE_TABLE_NAME = 'userRoutes';
@@ -43,4 +58,16 @@ class RouteLocalDataProvider {
       version: 1,
     );
   }
+}
+
+class UserRoutes {
+  UserRoutes({
+    required this.attempted,
+    required this.completed,
+    required this.favorited,
+  });
+
+  final int attempted;
+  final int completed;
+  final int favorited;
 }
