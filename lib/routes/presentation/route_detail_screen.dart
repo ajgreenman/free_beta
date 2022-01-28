@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/back_button.dart';
 import 'package:free_beta/app/presentation/text_field.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
@@ -38,7 +38,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       isAttempted: widget.routeModel.userRouteModel?.isAttempted ?? false,
       isCompleted: widget.routeModel.userRouteModel?.isCompleted ?? false,
       isFavorited: widget.routeModel.userRouteModel?.isFavorited ?? false,
-      rating: widget.routeModel.userRouteModel?.rating,
       notes: widget.routeModel.userRouteModel?.notes,
     );
   }
@@ -70,7 +69,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                       _buildCheckboxRow('Completed', _buildCompletedCheckbox()),
                       _buildCheckboxRow('Favorited', _buildFavoritedCheckbox()),
                       SizedBox(height: FreeBetaSizes.m),
-                      _buildRating(),
                       ..._buildNotes(),
                       ElevatedButton(
                         onPressed: _onSave,
@@ -101,7 +99,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             style: FreeBetaTextStyle.body3,
           ),
           Spacer(),
-          SizedBox.square(dimension: FreeBetaSizes.xl, child: checkbox),
+          SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
         ],
       ),
     );
@@ -177,44 +175,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     ];
   }
 
-  Widget _buildRating() => Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Rating',
-            style: FreeBetaTextStyle.body3,
-          ),
-          Spacer(),
-          _buildRatingRadio(RouteRating.one),
-          SizedBox(width: FreeBetaSizes.s),
-          _buildRatingRadio(RouteRating.two),
-          SizedBox(width: FreeBetaSizes.s),
-          _buildRatingRadio(RouteRating.three),
-        ],
-      );
-
   Widget _buildDivider() => Padding(
         padding: FreeBetaPadding.mlAll,
         child: Divider(
           height: 2,
           thickness: 2,
-        ),
-      );
-
-  Widget _buildRatingRadio(RouteRating value) => SizedBox.square(
-        dimension: FreeBetaSizes.xxl,
-        child: Radio<RouteRating>(
-          toggleable: true,
-          value: value,
-          groupValue: _formModel.rating,
-          onChanged: (value) {
-            if (value != _formModel.rating) {
-              dirtyForm = true;
-              setState(() {
-                _formModel.rating = value;
-              });
-            }
-          },
         ),
       );
 
@@ -237,11 +202,11 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             isAttempted: _formModel.isAttempted,
             isCompleted: _formModel.isCompleted,
             isFavorited: _formModel.isFavorited,
-            rating: _formModel.rating,
             notes: _formModel.notes,
           ),
         );
     ref.refresh(fetchRoutesProvider);
+    ref.refresh(fetchUserRoutesProvider);
 
     dirtyForm = false;
 

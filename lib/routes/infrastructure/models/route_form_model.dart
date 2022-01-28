@@ -34,11 +34,13 @@ class RouteFormModel {
   String toString() =>
       (this.name.toString()) +
       '\n' +
-      (this.difficulty.toString()) +
+      (this.routeColor?.displayName ?? '') +
       '\n' +
       (this.climbType?.displayName ?? '') +
       '\n' +
-      (this.routeColor?.displayName ?? '') +
+      (this.difficulty.toString()) +
       '\n' +
-      (this.creationDate.toString());
+      (this.creationDate.toString()) +
+      '\n' +
+      (this.images.length.toString());
 }

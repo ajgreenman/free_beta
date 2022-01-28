@@ -28,7 +28,8 @@ class ImageApi {
         .ref()
         .child('uploads/$imageFile')
         .putFile(imageFile)
-        .then((snapshot) => _downloadUrl(snapshot));
+        .then((snapshot) => _downloadUrl(snapshot))
+        .onError((error, stackTrace) => _onError(error, stackTrace));
   }
 
   Future<String?> _downloadUrl(TaskSnapshot snapshot) async {
@@ -43,5 +44,12 @@ class ImageApi {
         return null;
       },
     );
+  }
+
+  String? _onError(Object? error, StackTrace stackTrace) {
+    log(error.toString());
+    log(stackTrace.toString());
+
+    return null;
   }
 }

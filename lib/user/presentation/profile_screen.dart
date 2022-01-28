@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/user/presentation/profile_header.dart';
+import 'package:free_beta/user/presentation/gym_admin.dart';
 import 'package:free_beta/user/presentation/user_stats.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -18,8 +18,8 @@ class ProfileScreen extends ConsumerWidget {
       key: Key('profile'),
       body: Column(
         children: [
-          ProfileHeader(),
           UserStats(),
+          GymAdmin(),
         ],
       ),
     );

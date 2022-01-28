@@ -58,148 +58,150 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Widget _buildSignInForm() {
-    return Column(
-      children: [
-        Form(
-          key: _formKey,
-          child: Padding(
-            padding: FreeBetaPadding.mAll,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Email',
-                      style: FreeBetaTextStyle.h3,
-                    ),
-                    SizedBox(height: FreeBetaSizes.m),
-                    TextFormField(
-                      controller: _emailController,
-                      keyboardType: TextInputType.emailAddress,
-                      validator: (email) {
-                        if (email == null ||
-                            email.isEmpty ||
-                            !email.contains('@')) {
-                          return 'Please enter valid email';
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
-                          ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FreeBetaColors.red,
-                            width: 2.0,
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: FreeBetaSizes.m,
-                        ),
-                        hintStyle: FreeBetaTextStyle.h4.copyWith(
-                          color: FreeBetaColors.grayLight,
-                        ),
-                        hintText: 'Email',
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: FreeBetaPadding.mAll,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Email',
+                        style: FreeBetaTextStyle.h3,
                       ),
-                      style: FreeBetaTextStyle.h4,
-                    ),
-                  ],
-                ),
-                SizedBox(height: FreeBetaSizes.xl),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Password',
-                      style: FreeBetaTextStyle.h3,
-                    ),
-                    SizedBox(height: FreeBetaSizes.m),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      validator: (password) {
-                        if (password == null ||
-                            password.isEmpty ||
-                            password.length < 8) {
-                          return 'Password must be 8 characters';
-                        }
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
+                      SizedBox(height: FreeBetaSizes.m),
+                      TextFormField(
+                        controller: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (email) {
+                          if (email == null ||
+                              email.isEmpty ||
+                              !email.contains('@')) {
+                            return 'Please enter valid email';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2.0,
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            width: 2.0,
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2.0,
+                            ),
                           ),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: FreeBetaColors.red,
-                            width: 2.0,
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: FreeBetaColors.red,
+                              width: 2.0,
+                            ),
                           ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: FreeBetaSizes.m,
+                          ),
+                          hintStyle: FreeBetaTextStyle.h4.copyWith(
+                            color: FreeBetaColors.grayLight,
+                          ),
+                          hintText: 'Email',
                         ),
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: FreeBetaSizes.m,
-                        ),
-                        hintStyle: FreeBetaTextStyle.h4.copyWith(
-                          color: FreeBetaColors.grayLight,
-                        ),
-                        hintText: 'Password',
+                        style: FreeBetaTextStyle.h4,
                       ),
-                      style: FreeBetaTextStyle.h4,
+                    ],
+                  ),
+                  SizedBox(height: FreeBetaSizes.xl),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Password',
+                        style: FreeBetaTextStyle.h3,
+                      ),
+                      SizedBox(height: FreeBetaSizes.m),
+                      TextFormField(
+                        controller: _passwordController,
+                        obscureText: true,
+                        validator: (password) {
+                          if (password == null ||
+                              password.isEmpty ||
+                              password.length < 8) {
+                            return 'Password must be 8 characters';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2.0,
+                            ),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              width: 2.0,
+                            ),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: FreeBetaColors.red,
+                              width: 2.0,
+                            ),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: FreeBetaSizes.m,
+                          ),
+                          hintStyle: FreeBetaTextStyle.h4.copyWith(
+                            color: FreeBetaColors.grayLight,
+                          ),
+                          hintText: 'Password',
+                        ),
+                        style: FreeBetaTextStyle.h4,
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: FreeBetaSizes.xl),
+                  ElevatedButton(
+                    onPressed: _onPressed,
+                    child: Center(
+                      child: Text(
+                        'Sign In',
+                        style: FreeBetaTextStyle.h4.copyWith(
+                          color: FreeBetaColors.white,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-                SizedBox(height: FreeBetaSizes.xl),
-                ElevatedButton(
-                  onPressed: _onPressed,
-                  child: Center(
-                    child: Text(
-                      'Sign In',
-                      style: FreeBetaTextStyle.h4.copyWith(
-                        color: FreeBetaColors.white,
+                    style: ButtonStyle(
+                      side: MaterialStateProperty.all(
+                        BorderSide(
+                          width: 2,
+                        ),
+                      ),
+                      padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(
+                          vertical: FreeBetaSizes.ml,
+                        ),
                       ),
                     ),
                   ),
-                  style: ButtonStyle(
-                    side: MaterialStateProperty.all(
-                      BorderSide(
-                        width: 2,
-                      ),
-                    ),
-                    padding: MaterialStateProperty.all(
-                      const EdgeInsets.symmetric(
-                        vertical: FreeBetaSizes.ml,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-        Padding(
-          padding: FreeBetaPadding.lAll,
-          child: Text(
-            'Accounts are only needed to create and upload new routes. If you believe you need an account, please email AGreenman13@gmail.com.',
-            style: FreeBetaTextStyle.body3.copyWith(
-              color: FreeBetaColors.grayLight,
+          Padding(
+            padding: FreeBetaPadding.lAll,
+            child: Text(
+              'Accounts are only needed to create and upload new routes. If you believe you need an account, please email AGreenman13@gmail.com.',
+              style: FreeBetaTextStyle.body3.copyWith(
+                color: FreeBetaColors.grayLight,
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 

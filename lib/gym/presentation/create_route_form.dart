@@ -16,98 +16,115 @@ class CreateRouteForm extends ConsumerStatefulWidget {
 }
 
 class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
-  RouteFormModel _formModel = RouteFormModel();
-  bool _loadingImages = false;
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final _nameController = TextEditingController();
+  final _difficultyController = TextEditingController();
+  final _dateController = TextEditingController();
+  final _imageController = TextEditingController();
+
+  var _loadingImages = false;
+  var _formModel = RouteFormModel();
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Padding(
-        padding: FreeBetaPadding.mAll,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildTextForm(
-              'Name',
-              (name) => _formModel.name = name,
-            ),
-            _buildDropdown<RouteColor?>(
-              'Color',
-              _getColors(),
-              (routeColor) => _formModel.routeColor = routeColor,
-            ),
-            _buildDropdown<ClimbType?>(
-              'Type',
-              _getTypes(),
-              (climbType) => _formModel.climbType = climbType,
-            ),
-            _buildTextForm(
-              'Difficulty',
-              (difficulty) => _formModel.difficulty = difficulty,
-            ),
-            _buildButton(
-              context,
-              'Creation Date',
-              _buildDateButton(),
-            ),
-            _buildButton(
-              context,
-              'Images',
-              _buildImageButton(),
-            ),
-            _buildCreateRouteButton(),
-          ],
+    return SingleChildScrollView(
+      child: Form(
+        key: _formKey,
+        child: Padding(
+          padding: FreeBetaPadding.mAll,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildTextForm(
+                'Name',
+                (name) => _formModel.name = name,
+                _nameController,
+              ),
+              _buildDropdown<RouteColor?>(
+                'Color',
+                _getColors(),
+                (routeColor) => _formModel.routeColor = routeColor,
+              ),
+              _buildDropdown<ClimbType?>(
+                'Type',
+                _getTypes(),
+                (climbType) => _formModel.climbType = climbType,
+              ),
+              _buildTextForm(
+                'Difficulty',
+                (difficulty) => _formModel.difficulty = difficulty,
+                _difficultyController,
+              ),
+              _buildButtonForm(
+                'Creation Date',
+                'Enter creation date',
+                _onDatePressed,
+                _dateController,
+              ),
+              _buildButtonForm(
+                'Images',
+                'Add images (${_formModel.images.length})',
+                _onImagePressed,
+                _imageController,
+                isImageField: true,
+              ),
+              _buildCreateRouteButton(),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTextForm(String label, Function(String?) onChanged) {
+  Widget _buildTextForm(
+    String label,
+    Function(String?) onChanged,
+    TextEditingController controller,
+  ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  Text(
-                    label,
-                    style: FreeBetaTextStyle.h4,
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: TextFormField(
-                onChanged: onChanged,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2.0,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2.0,
-                    ),
-                  ),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: FreeBetaSizes.m,
-                  ),
-                  hintStyle: FreeBetaTextStyle.h4.copyWith(
-                    color: FreeBetaColors.grayLight,
-                  ),
-                  hintText: 'Enter ${label.toLowerCase()}',
-                ),
-                style: FreeBetaTextStyle.h4,
-              ),
-            ),
-          ],
+        Text(
+          label,
+          style: FreeBetaTextStyle.h3,
         ),
         SizedBox(height: FreeBetaSizes.m),
+        TextFormField(
+          controller: controller,
+          onChanged: onChanged,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return '$label is required';
+            }
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: FreeBetaColors.red,
+                width: 2.0,
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: FreeBetaSizes.m,
+            ),
+            hintStyle: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.grayLight,
+            ),
+            hintText: 'Enter ${label.toLowerCase()}',
+          ),
+          style: FreeBetaTextStyle.h4,
+        ),
+        SizedBox(height: FreeBetaSizes.l),
       ],
     );
   }
@@ -118,99 +135,130 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
     void Function(T?) onChanged,
   ) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  Text(
-                    label,
-                    style: FreeBetaTextStyle.h4,
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: DropdownButtonFormField<T?>(
-                decoration: InputDecoration(
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 2.0,
-                    ),
-                  ),
-                  contentPadding: FreeBetaPadding.mAll,
-                  hintStyle: FreeBetaTextStyle.h4.copyWith(
-                    color: FreeBetaColors.grayLight,
-                  ),
-                  hintText: 'Enter ${label.toLowerCase()}',
-                ),
-                icon: Icon(
-                  Icons.keyboard_arrow_down,
-                  size: FreeBetaSizes.xxl,
-                  color: FreeBetaColors.blueDark,
-                ),
-                items: items,
-                onChanged: onChanged,
-                style: FreeBetaTextStyle.h4,
-              ),
-            ),
-          ],
+        Text(
+          label,
+          style: FreeBetaTextStyle.h3,
         ),
         SizedBox(height: FreeBetaSizes.m),
+        DropdownButtonFormField<T?>(
+          decoration: InputDecoration(
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: FreeBetaColors.red,
+                width: 2.0,
+              ),
+            ),
+            contentPadding: FreeBetaPadding.mAll,
+            hintStyle: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.grayLight,
+            ),
+            hintText: 'Enter ${label.toLowerCase()}',
+          ),
+          icon: Icon(
+            Icons.keyboard_arrow_down,
+            size: FreeBetaSizes.xxl,
+            color: FreeBetaColors.blueDark,
+          ),
+          items: items,
+          onChanged: onChanged,
+          validator: (value) {
+            if (value == null) {
+              return '$label is required';
+            }
+          },
+          style: FreeBetaTextStyle.h4,
+        ),
+        SizedBox(height: FreeBetaSizes.l),
       ],
     );
   }
 
-  Widget _buildButton(
-    BuildContext context,
+  Widget _buildButtonForm(
     String label,
-    OutlinedButton button,
-  ) {
+    String hintText,
+    Function() onTap,
+    TextEditingController controller, {
+    bool isImageField = false,
+  }) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Row(
-                children: [
-                  Text(
-                    label,
-                    style: FreeBetaTextStyle.h4,
-                  ),
-                  Spacer(),
-                ],
-              ),
-            ),
-            Flexible(
-              flex: 2,
-              child: SizedBox(
-                width: double.infinity,
-                child: button,
-              ),
-            ),
-          ],
+        Text(
+          label,
+          style: FreeBetaTextStyle.h3,
         ),
         SizedBox(height: FreeBetaSizes.m),
+        TextFormField(
+          controller: controller,
+          onTap: onTap,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return '$label is required';
+            }
+          },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: FreeBetaColors.red,
+                width: 2.0,
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: FreeBetaSizes.m,
+            ),
+            hintStyle: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.grayLight,
+            ),
+            hintText: isImageField && _loadingImages ? 'Loading...' : hintText,
+          ),
+          style: FreeBetaTextStyle.h4,
+        ),
+        SizedBox(height: FreeBetaSizes.l),
       ],
     );
   }
 
-  OutlinedButton _buildDateButton() => OutlinedButton(
-        style: ButtonStyle(
-          alignment: Alignment.centerLeft,
-          backgroundColor: MaterialStateProperty.all(
-            FreeBetaColors.white,
-          ),
-          side: MaterialStateProperty.all(
-            BorderSide(
-              width: 2,
+  Widget _buildCreateRouteButton() => ElevatedButton(
+        onPressed: !_loadingImages ? _onCreateFormPressed : null,
+        child: Padding(
+          padding: FreeBetaPadding.xlHorizontal,
+          child: Text(
+            'Create Route',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
             ),
           ),
+        ),
+        style: ButtonStyle(
+          alignment: Alignment.centerLeft,
+          side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return BorderSide(
+                color: FreeBetaColors.grayLight,
+                width: 2,
+              );
+            }
+            return BorderSide(
+              width: 2,
+            );
+          }),
           padding: MaterialStateProperty.all(
             const EdgeInsets.symmetric(
               horizontal: FreeBetaSizes.m,
@@ -218,128 +266,57 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
             ),
           ),
         ),
-        child: _buildDateLabel('Creation Date', _formModel.creationDate),
-        onPressed: () async {
-          var pickedDate = await showDatePicker(
-            context: context,
-            initialDate: _formModel.creationDate ?? DateTime.now(),
-            firstDate: DateTime(2021),
-            lastDate: DateTime.now(),
-          );
-          setState(() {
-            _formModel.creationDate = pickedDate;
-          });
-        },
       );
 
-  OutlinedButton _buildImageButton() => OutlinedButton(
-        style: ButtonStyle(
-          alignment: Alignment.centerLeft,
-          backgroundColor: MaterialStateProperty.all(
-            FreeBetaColors.white,
-          ),
-          side: MaterialStateProperty.all(
-            BorderSide(
-              width: 2,
-            ),
-          ),
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(
-              horizontal: FreeBetaSizes.m,
-              vertical: FreeBetaSizes.ml,
-            ),
-          ),
-        ),
-        child: _buildImageLabel(_formModel.images),
-        onPressed: () async {
-          setState(() {
-            _loadingImages = true;
-          });
+  Future<void> _onDatePressed() async {
+    FocusScope.of(context).requestFocus(FocusNode());
 
-          var imageApi = ref.read(imageApiProvider);
-          var imageFile = await imageApi.fetchImage();
+    var pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _formModel.creationDate ?? DateTime.now(),
+      firstDate: DateTime(2021),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate == null) return;
 
-          setState(() {
-            _loadingImages = false;
-          });
-
-          if (imageFile == null) return;
-
-          setState(() {
-            _formModel.images.add(imageFile);
-          });
-        },
+    setState(() {
+      _formModel.creationDate = pickedDate;
+      _dateController.value = TextEditingValue(
+        text: DateFormat('MM/dd').format(pickedDate),
       );
+    });
+  }
 
-  Widget _buildCreateRouteButton() => Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Flexible(
-            child: SizedBox.shrink(),
-          ),
-          Flexible(
-            flex: 2,
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _onCreate,
-                child: Text(
-                  'Create Route',
-                  style: FreeBetaTextStyle.h4.copyWith(
-                    color: FreeBetaColors.white,
-                  ),
-                ),
-                style: ButtonStyle(
-                  alignment: Alignment.centerLeft,
-                  side: MaterialStateProperty.all(
-                    BorderSide(
-                      width: 2,
-                    ),
-                  ),
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(
-                      horizontal: FreeBetaSizes.m,
-                      vertical: FreeBetaSizes.ml,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
+  Future<void> _onImagePressed() async {
+    setState(() {
+      _loadingImages = true;
+    });
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    var imageApi = ref.read(imageApiProvider);
+    var imageFile = await imageApi.fetchImage();
+
+    setState(() {
+      _loadingImages = false;
+    });
+
+    if (imageFile == null) return;
+
+    setState(() {
+      _formModel.images.add(imageFile);
+      _imageController.value = TextEditingValue(
+        text: 'Add images (${_formModel.images.length})',
       );
+    });
+  }
 
-  Future<void> _onCreate() async {
+  Future<void> _onCreateFormPressed() async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
     await ref.read(routeApiProvider).addRoute(_formModel);
-  }
-
-  Widget _buildDateLabel(String fieldName, DateTime? date) {
-    if (date == null) {
-      return Text(
-        'Enter ${fieldName.toLowerCase()}',
-        style: FreeBetaTextStyle.h4.copyWith(
-          color: FreeBetaColors.grayLight,
-        ),
-      );
-    }
-
-    return Text(
-      DateFormat('MM/dd').format(date),
-      style: FreeBetaTextStyle.h4,
-    );
-  }
-
-  Widget _buildImageLabel(List<String> images) {
-    if (_loadingImages) {
-      return _LoadingImage();
-    }
-
-    return Text(
-      'Add images (${images.length})',
-      style: FreeBetaTextStyle.h4.copyWith(
-        color: FreeBetaColors.grayLight,
-      ),
-    );
   }
 
   List<DropdownMenuItem<RouteColor?>> _getColors() => RouteColor.values
@@ -369,34 +346,4 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
         ),
       )
       .toList();
-}
-
-class _LoadingImage extends StatelessWidget {
-  const _LoadingImage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          'Uploading image...',
-          style: FreeBetaTextStyle.h4.copyWith(
-            color: FreeBetaColors.grayLight,
-          ),
-        ),
-        Spacer(),
-        Padding(
-          padding: const EdgeInsets.only(
-            right: FreeBetaSizes.m,
-          ),
-          child: SizedBox.square(
-            dimension: FreeBetaSizes.xl,
-            child: CircularProgressIndicator(
-              color: FreeBetaColors.grayLight,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 }

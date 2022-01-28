@@ -5,7 +5,7 @@ import 'package:sqflite/sqflite.dart';
 
 final routeLocalDataProvider = Provider((_) => RouteLocalDataProvider());
 
-final fetchUserRoutes = FutureProvider((ref) async {
+final fetchUserRoutesProvider = FutureProvider((ref) async {
   var routeDataProvider = ref.watch(routeLocalDataProvider);
   var routes = await routeDataProvider.getUserRoutes();
 

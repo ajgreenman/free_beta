@@ -28,6 +28,7 @@ class FreeBetaTheme {
       onError: FreeBetaColors.red,
       brightness: Brightness.light,
     ),
+    disabledColor: FreeBetaColors.grayLight,
     textTheme: ThemeData.light().textTheme,
     toggleableActiveColor: FreeBetaColors.black,
     unselectedWidgetColor: FreeBetaColors.black,

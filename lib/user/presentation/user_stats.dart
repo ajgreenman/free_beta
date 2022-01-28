@@ -8,7 +8,7 @@ class UserStats extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchUserRoutes).when(
+    return ref.watch(fetchUserRoutesProvider).when(
           data: (userRoutes) => _onSuccess(userRoutes),
           loading: () => Center(
             child: CircularProgressIndicator(),
@@ -23,6 +23,11 @@ class UserStats extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'User Stats',
+            style: FreeBetaTextStyle.h3,
+          ),
+          SizedBox(height: FreeBetaSizes.m),
           _buildRow('Attempted', userRoutes.attempted),
           _buildRow('Completed', userRoutes.completed),
           _buildRow('Favorited', userRoutes.favorited),
