@@ -29,6 +29,25 @@ class _RouteImagesState extends State<RouteImages> {
                   child: ClipRRect(
                     child: Image.network(
                       image,
+                      loadingBuilder: (
+                        _,
+                        child,
+                        loadingProgress,
+                      ) {
+                        if (loadingProgress == null) return child;
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            CircularProgressIndicator(),
+                            SizedBox(height: FreeBetaSizes.ml),
+                            Text(
+                              'Loading images...',
+                              style: FreeBetaTextStyle.body3,
+                            ),
+                            SizedBox(height: FreeBetaSizes.ml),
+                          ],
+                        );
+                      },
                     ),
                   ),
                 ),

@@ -19,7 +19,10 @@ class ImageApi {
   final FirebaseStorage _firebaseStorage;
 
   Future<String?> fetchImage() async {
-    var image = await ImagePicker().pickImage(source: ImageSource.camera);
+    var image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+    );
     if (image == null) return null;
 
     var imageFile = File(image.path);

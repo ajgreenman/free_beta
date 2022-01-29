@@ -68,7 +68,7 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
                 _imageController,
                 isImageField: true,
               ),
-              _buildCreateRouteButton(),
+              _buildCreateRouteButton(context),
             ],
           ),
         ),
@@ -235,8 +235,9 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
     );
   }
 
-  Widget _buildCreateRouteButton() => ElevatedButton(
-        onPressed: !_loadingImages ? _onCreateFormPressed : null,
+  Widget _buildCreateRouteButton(BuildContext context) => ElevatedButton(
+        onPressed:
+            !_loadingImages ? () async => _onCreateFormPressed(context) : null,
         child: Padding(
           padding: FreeBetaPadding.xlHorizontal,
           child: Text(
@@ -311,12 +312,26 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
     });
   }
 
-  Future<void> _onCreateFormPressed() async {
+  Future<void> _onCreateFormPressed(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
 
     await ref.read(routeApiProvider).addRoute(_formModel);
+
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            Text('Route created!'),
+            Spacer(),
+            Icon(Icons.check),
+          ],
+        ),
+      ),
+    );
+    Navigator.of(context).pop();
   }
 
   List<DropdownMenuItem<RouteColor?>> _getColors() => RouteColor.values

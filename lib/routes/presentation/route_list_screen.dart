@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/back_button.dart';
+import 'package:free_beta/app/presentation/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
@@ -42,10 +43,15 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     );
   }
 
-  Widget _onError(Object error, StackTrace? stackTrace) {
-    print(error);
-    print(stackTrace);
-    return Text('Sorry, an error occured.');
+  Widget _onError(Object? error, StackTrace? stackTrace) {
+    return ErrorCard(
+      error: error,
+      stackTrace: stackTrace,
+      child: ElevatedButton(
+        onPressed: _refreshRoutes,
+        child: Text('Try again'),
+      ),
+    );
   }
 
   Widget _onLoading() {
@@ -208,11 +214,13 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
           separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
           itemCount: routes.length,
         ),
-        onRefresh: () {
-          ref.refresh(fetchRoutesProvider);
-          return ref.read(fetchRoutesProvider.future);
-        },
+        onRefresh: _refreshRoutes,
       ),
     );
+  }
+
+  Future<List<RouteModel>> _refreshRoutes() async {
+    ref.refresh(fetchRoutesProvider);
+    return ref.read(fetchRoutesProvider.future);
   }
 }
