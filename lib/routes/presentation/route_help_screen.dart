@@ -173,7 +173,6 @@ class RouteHelpScreen extends StatelessWidget {
         isAttempted: true,
         isCompleted: true,
         isFavorited: true,
-        notes: 'Who needs legs anyway?',
       ),
     ),
     RouteModel(
@@ -188,7 +187,6 @@ class RouteHelpScreen extends StatelessWidget {
         isAttempted: true,
         isCompleted: false,
         isFavorited: true,
-        notes: 'I need to work on my lead skills',
       ),
     ),
     RouteModel(
