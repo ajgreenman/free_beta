@@ -1,11 +1,8 @@
-import 'package:free_beta/app/enums/route_rating.dart';
-
 class UserRouteModel {
   final String routeId;
   final bool isAttempted;
   final bool isCompleted;
   final bool isFavorited;
-  final RouteRating? rating;
   final String? notes;
 
   UserRouteModel({
@@ -13,7 +10,6 @@ class UserRouteModel {
     required this.isAttempted,
     required this.isCompleted,
     required this.isFavorited,
-    this.rating,
     this.notes,
   });
 
@@ -22,7 +18,6 @@ class UserRouteModel {
         isAttempted = false,
         isCompleted = false,
         isFavorited = false,
-        rating = null,
         notes = null;
 
   Map<String, dynamic> toJson() {
@@ -31,7 +26,6 @@ class UserRouteModel {
       'isAttempted': _setBool(isAttempted),
       'isCompleted': _setBool(isCompleted),
       'isFavorited': _setBool(isFavorited),
-      'rating': rating?.index,
       'notes': notes,
     };
   }
@@ -42,7 +36,6 @@ class UserRouteModel {
       isAttempted: _getBool(json['isAttempted']),
       isCompleted: _getBool(json['isCompleted']),
       isFavorited: _getBool(json['isFavorited']),
-      rating: _getRouteRating(json['rating']),
       notes: json['notes'],
     );
   }
@@ -51,11 +44,8 @@ class UserRouteModel {
 
   static int _setBool(bool value) => value ? 1 : 0;
 
-  static RouteRating? _getRouteRating(dynamic dbValue) =>
-      dbValue != null ? RouteRating.values[dbValue] : null;
-
   @override
   String toString() {
-    return 'UserRouteModel: {routeId:$routeId, isAttempted:$isAttempted, isCompleted:$isCompleted, isFavorited:$isFavorited, rating:$rating, notes:$notes,';
+    return 'UserRouteModel: {routeId:$routeId, isAttempted:$isAttempted, isCompleted:$isCompleted, isFavorited:$isFavorited, notes:$notes,';
   }
 }

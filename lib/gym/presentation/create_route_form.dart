@@ -340,13 +340,13 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
           value: routeColor,
           child: Row(
             children: [
-              Text(routeColor.displayName),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: FreeBetaSizes.m,
+                  right: FreeBetaSizes.m,
                 ),
                 child: RouteColorSquare(routeColor: routeColor),
               ),
+              Text(routeColor.displayName),
             ],
           ),
         ),

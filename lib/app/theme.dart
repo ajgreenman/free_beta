@@ -63,6 +63,8 @@ class FreeBetaColors {
 
   static const red = Color(0xFFFF333D);
 
+  static const warning = Color(0xFFFFA600);
+
   static const white = Color(0xFFFFFFFF);
 
   static const yellowBrand = Color(0xFFF2FC62);

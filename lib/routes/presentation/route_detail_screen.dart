@@ -12,16 +12,20 @@ import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
-  static Route<dynamic> route(RouteModel routeModel) {
+  static Route<dynamic> route(RouteModel routeModel, {isHelp = false}) {
     return MaterialPageRoute<dynamic>(builder: (context) {
-      return RouteDetailScreen(routeModel: routeModel);
+      return RouteDetailScreen(routeModel: routeModel, isHelp: isHelp);
     });
   }
 
   final RouteModel routeModel;
+  final bool isHelp;
 
-  const RouteDetailScreen({Key? key, required this.routeModel})
-      : super(key: key);
+  const RouteDetailScreen({
+    Key? key,
+    required this.routeModel,
+    this.isHelp = false,
+  }) : super(key: key);
 
   @override
   _RouteDetailScreenState createState() => _RouteDetailScreenState();
@@ -57,9 +61,32 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                if (widget.isHelp)
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.warning_amber,
+                            color: FreeBetaColors.warning,
+                          ),
+                          SizedBox(width: FreeBetaSizes.l),
+                          Flexible(
+                            child: Text(
+                              'This is a sample route, your changes cannot be saved.',
+                              style: FreeBetaTextStyle.h4.copyWith(
+                                color: FreeBetaColors.grayLight,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      _buildDivider(),
+                    ],
+                  ),
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _buildDivider(),
-                _buildImages(),
+                RouteImages(images: widget.routeModel.images),
                 _buildDivider(),
                 Form(
                   child: Column(
@@ -71,7 +98,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                       SizedBox(height: FreeBetaSizes.m),
                       ..._buildNotes(),
                       ElevatedButton(
-                        onPressed: _onSave,
+                        onPressed: widget.isHelp ? null : _onSave,
                         child: Text('Save'),
                       ),
                     ],
@@ -83,10 +110,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         ),
       ),
     );
-  }
-
-  Widget _buildImages() {
-    return RouteImages(images: widget.routeModel.images);
   }
 
   Widget _buildCheckboxRow(String label, Checkbox checkbox) {
@@ -184,7 +207,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       );
 
   void _onBack() async {
-    if (!dirtyForm) {
+    if (!dirtyForm || widget.isHelp) {
       Navigator.of(context).pop();
       return;
     }

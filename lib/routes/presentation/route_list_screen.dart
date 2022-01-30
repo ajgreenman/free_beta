@@ -7,7 +7,9 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
+import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
+import 'package:free_beta/routes/presentation/route_help_screen.dart';
 
 class RouteListScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {
@@ -34,12 +36,27 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
             Navigator.of(context).pop();
           },
         ),
+        actions: [
+          _buildHelpButton(),
+        ],
       ),
       body: ref.watch(fetchFilteredRoutesProvider).when(
             data: (routes) => _onSuccess(context, routes.sortRoutes()),
             error: (error, stackTrace) => _onError(error, stackTrace),
             loading: () => _onLoading(),
           ),
+    );
+  }
+
+  Widget _buildHelpButton() {
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        RouteHelpScreen.route(),
+      ),
+      icon: Icon(
+        Icons.help_outlined,
+        color: FreeBetaColors.white,
+      ),
     );
   }
 
@@ -170,7 +187,17 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
         .map(
           (routeColor) => DropdownMenuItem<RouteColor?>(
             value: routeColor,
-            child: Text(routeColor.displayName),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: FreeBetaSizes.m,
+                  ),
+                  child: RouteColorSquare(routeColor: routeColor),
+                ),
+                Text(routeColor.displayName),
+              ],
+            ),
           ),
         )
         .toList();
