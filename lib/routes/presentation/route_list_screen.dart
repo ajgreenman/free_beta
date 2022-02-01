@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/back_button.dart';
 import 'package:free_beta/app/presentation/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 
@@ -40,180 +38,35 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
           _buildHelpButton(),
         ],
       ),
-      body: ref.watch(fetchFilteredRoutesProvider).when(
-            data: (routes) => _onSuccess(context, routes.sortRoutes()),
-            error: (error, stackTrace) => _onError(error, stackTrace),
-            loading: () => _onLoading(),
-          ),
-    );
-  }
-
-  Widget _buildHelpButton() {
-    return IconButton(
-      onPressed: () => Navigator.of(context).push(
-        RouteHelpScreen.route(),
-      ),
-      icon: Icon(
-        Icons.help_outlined,
-        color: FreeBetaColors.white,
-      ),
-    );
-  }
-
-  Widget _onError(Object? error, StackTrace? stackTrace) {
-    return ErrorCard(
-      error: error,
-      stackTrace: stackTrace,
-      child: ElevatedButton(
-        onPressed: _refreshRoutes,
-        child: Text('Try again'),
-      ),
-    );
-  }
-
-  Widget _onLoading() {
-    return Center(child: CircularProgressIndicator());
-  }
-
-  Widget _onSuccess(BuildContext context, List<RouteModel> routes) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: FreeBetaPadding.lAll,
-          child: _buildFilterRow(context),
-        ),
-        Divider(height: 1, thickness: 1),
-        _buildRouteList(routes),
-      ],
-    );
-  }
-
-  Widget _buildFilterRow(BuildContext context) {
-    final routeColorFilter = ref.watch(routeColorFilterProvider);
-    final routeTypeFilter = ref.watch(routeTypeFilterProvider);
-    return Column(
-      children: [
-        Row(
+      body: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Expanded(
-              child: Text(
-                'Filter by Type',
-                style: FreeBetaTextStyle.h4,
-              ),
+            Padding(
+              padding: FreeBetaPadding.mAll,
+              child: _buildFilterText(context),
             ),
-            _buildDropDown<ClimbType>(
-              _getClimbTypes(),
-              (value) {
-                ref.read(routeTypeFilterProvider.notifier).state = value;
-              },
-              routeTypeFilter,
-            ),
+            _buildFilterCounts(),
+            Divider(height: 1, thickness: 1),
+            _buildBody(),
           ],
         ),
-        Row(
-          children: [
-            Expanded(
-              child: Text(
-                'Filter by Color',
-                style: FreeBetaTextStyle.h4,
-              ),
-            ),
-            _buildDropDown<RouteColor?>(
-              _getColors(),
-              (value) {
-                ref.read(routeColorFilterProvider.notifier).state = value;
-              },
-              routeColorFilter,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDropDown<T>(
-    List<DropdownMenuItem<T?>> items,
-    void Function(T?) onChanged,
-    T? value,
-  ) {
-    return Container(
-      width: MediaQuery.of(context).size.width / 2,
-      padding: FreeBetaPadding.mAll,
-      child: DropdownButtonFormField<T?>(
-        decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(
-              width: 2.0,
-            ),
-          ),
-          contentPadding: FreeBetaPadding.mAll,
-        ),
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          size: FreeBetaSizes.xxl,
-          color: FreeBetaColors.blueDark,
-        ),
-        value: value,
-        items: items,
-        onChanged: onChanged,
       ),
     );
   }
 
-  List<DropdownMenuItem<ClimbType?>> _getClimbTypes() {
-    var climbTypeItems = ClimbType.values
-        .map(
-          (climbType) => DropdownMenuItem<ClimbType?>(
-            value: climbType,
-            child: Text(climbType.displayName),
+  Widget _buildBody() {
+    return ref.watch(fetchTextFilteredRoutesProvider).when(
+          data: (routeFilterModel) => _onSuccess(
+            routeFilterModel.filteredRoutes.sortRoutes(),
           ),
-        )
-        .toList();
-
-    climbTypeItems.insert(
-      0,
-      DropdownMenuItem<ClimbType?>(
-        value: null,
-        child: Text('Any'),
-      ),
-    );
-
-    return climbTypeItems;
+          error: (error, stackTrace) => _onError(error, stackTrace),
+          loading: () => _onLoading(),
+        );
   }
 
-  List<DropdownMenuItem<RouteColor?>> _getColors() {
-    var colorItems = RouteColor.values
-        .map(
-          (routeColor) => DropdownMenuItem<RouteColor?>(
-            value: routeColor,
-            child: Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    right: FreeBetaSizes.m,
-                  ),
-                  child: RouteColorSquare(routeColor: routeColor),
-                ),
-                Text(routeColor.displayName),
-              ],
-            ),
-          ),
-        )
-        .toList();
-
-    colorItems.insert(
-      0,
-      DropdownMenuItem<RouteColor?>(
-        value: null,
-        child: Text('Any'),
-      ),
-    );
-
-    return colorItems;
-  }
-
-  Widget _buildRouteList(List<RouteModel> routes) {
+  Widget _onSuccess(List<RouteModel> routes) {
     if (routes.isEmpty) {
       return Center(
         child: Padding(
@@ -242,6 +95,87 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
           itemCount: routes.length,
         ),
         onRefresh: _refreshRoutes,
+      ),
+    );
+  }
+
+  Widget _onError(Object? error, StackTrace? stackTrace) {
+    return ErrorCard(
+      error: error,
+      stackTrace: stackTrace,
+      child: ElevatedButton(
+        onPressed: _refreshRoutes,
+        child: Text('Try again'),
+      ),
+    );
+  }
+
+  Widget _onLoading() {
+    return Center(child: CircularProgressIndicator());
+  }
+
+  Widget _buildFilterCounts() {
+    var routeFilterModel = ref
+        .watch(fetchTextFilteredRoutesProvider)
+        .whenOrNull(data: (value) => value);
+
+    if (routeFilterModel == null ||
+        (routeFilterModel.filter?.isEmpty ?? true)) {
+      return SizedBox.shrink();
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: FreeBetaSizes.m,
+        bottom: FreeBetaSizes.m,
+      ),
+      child: Text(
+        'Showing ${routeFilterModel.filteredRoutes.length} ' +
+            'of ${routeFilterModel.routes.length}',
+      ),
+    );
+  }
+
+  Widget _buildFilterText(BuildContext context) {
+    var routeFilterText = ref.watch(routeTextFilterProvider);
+    return TextFormField(
+      initialValue: routeFilterText,
+      onChanged: (value) {
+        ref.read(routeTextFilterProvider.notifier).state = value;
+      },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            width: 1.0,
+          ),
+          borderRadius: BorderRadius.circular(FreeBetaSizes.xl),
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: FreeBetaSizes.ml,
+        ),
+        hintStyle: FreeBetaTextStyle.h4.copyWith(
+          color: FreeBetaColors.grayLight,
+        ),
+        hintText: 'Type to filter routes',
+      ),
+      style: FreeBetaTextStyle.h4,
+    );
+  }
+
+  Widget _buildHelpButton() {
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        RouteHelpScreen.route(),
+      ),
+      icon: Icon(
+        Icons.help_outlined,
+        color: FreeBetaColors.white,
       ),
     );
   }

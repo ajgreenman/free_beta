@@ -37,6 +37,7 @@ class RouteHelpScreen extends StatelessWidget {
             Divider(height: 1, thickness: 1),
             ListView.separated(
               shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (_, index) {
                 return InkWell(
                   onTap: () => Navigator.of(context).push(
@@ -104,7 +105,7 @@ class RouteHelpScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              'The previous screen provides an overview of all available routes and allows you to filter them based on type of climb and color. You can enter your progress with each route by tapping into a specific route. Below is a list of sample routes to help learn the symbols:',
+              'The previous screen provides an overview of all available routes and allows you to filter them. You can enter your progress with each route by tapping into a specific route. Below is a list of sample routes to help learn the symbols:',
             ),
           ),
         ],
