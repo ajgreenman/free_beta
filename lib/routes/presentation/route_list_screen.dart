@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/presentation/back_button.dart';
 import 'package:free_beta/app/presentation/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
-import 'package:free_beta/routes/presentation/route_help_screen.dart';
 
 class RouteListScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {
@@ -27,17 +25,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: Key('route-list'),
-      appBar: AppBar(
-        title: Text('Elev8'),
-        leading: FreeBetaBackButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-        actions: [
-          _buildHelpButton(),
-        ],
-      ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Column(
@@ -165,18 +152,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
         hintText: 'Type to filter routes',
       ),
       style: FreeBetaTextStyle.h4,
-    );
-  }
-
-  Widget _buildHelpButton() {
-    return IconButton(
-      onPressed: () => Navigator.of(context).push(
-        RouteHelpScreen.route(),
-      ),
-      icon: Icon(
-        Icons.help_outlined,
-        color: FreeBetaColors.white,
-      ),
     );
   }
 
