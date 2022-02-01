@@ -1,6 +1,8 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/presentation/route_image_screen.dart';
+import 'package:free_beta/routes/presentation/widgets/route_image.dart';
 
 class RouteImages extends StatefulWidget {
   const RouteImages({Key? key, required this.images}) : super(key: key);
@@ -24,34 +26,7 @@ class _RouteImagesState extends State<RouteImages> {
         CarouselSlider(
           carouselController: _carouselController,
           items: widget.images
-              .map(
-                (image) => Container(
-                  child: ClipRRect(
-                    child: Image.network(
-                      image,
-                      loadingBuilder: (
-                        _,
-                        child,
-                        loadingProgress,
-                      ) {
-                        if (loadingProgress == null) return child;
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            CircularProgressIndicator(),
-                            SizedBox(height: FreeBetaSizes.ml),
-                            Text(
-                              'Loading images...',
-                              style: FreeBetaTextStyle.body3,
-                            ),
-                            SizedBox(height: FreeBetaSizes.ml),
-                          ],
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              )
+              .map((imageUrl) => _buildCachedImage(imageUrl))
               .toList(),
           options: CarouselOptions(
             height: 256,
@@ -65,6 +40,19 @@ class _RouteImagesState extends State<RouteImages> {
         ),
         _buildImageDots(),
       ],
+    );
+  }
+
+  Widget _buildCachedImage(String imageUrl) {
+    var tag = 'imageHero';
+    return GestureDetector(
+      child: RouteImage(
+        tag: tag,
+        imageUrl: imageUrl,
+      ),
+      onTap: () => Navigator.of(context).push(
+        RouteImageScreen.route(tag, imageUrl),
+      ),
     );
   }
 
