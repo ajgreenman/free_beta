@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/presentation/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 
@@ -7,25 +8,23 @@ class UserStats extends ConsumerWidget {
   const UserStats({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchUserRoutesProvider).when(
-          data: (userRoutes) => _onSuccess(userRoutes),
-          loading: () => Center(
-            child: CircularProgressIndicator(),
-          ),
-          error: (error, stackTrace) => _onError(error, stackTrace),
-        );
-  }
+  Widget build(BuildContext context, WidgetRef ref) =>
+      ref.watch(fetchUserRoutesProvider).when(
+            data: (userRoutes) => _onSuccess(userRoutes),
+            loading: () => Center(
+              child: CircularProgressIndicator(),
+            ),
+            error: (error, stackTrace) => _onError(error, stackTrace),
+          );
 
   Widget _onSuccess(UserRoutes userRoutes) {
-    return Padding(
-      padding: FreeBetaPadding.mlAll,
+    return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'User Stats',
-            style: FreeBetaTextStyle.h3,
+            style: FreeBetaTextStyle.h2,
           ),
           SizedBox(height: FreeBetaSizes.m),
           _buildRow('Attempted', userRoutes.attempted),

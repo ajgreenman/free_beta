@@ -237,7 +237,7 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
 
   Widget _buildCreateRouteButton(BuildContext context) => ElevatedButton(
         onPressed:
-            !_loadingImages ? () async => _onCreateFormPressed(context) : null,
+            !_loadingImages ? () async => _onCreateRoutePressed(context) : null,
         child: Padding(
           padding: FreeBetaPadding.xlHorizontal,
           child: Text(
@@ -312,7 +312,7 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
     });
   }
 
-  Future<void> _onCreateFormPressed(BuildContext context) async {
+  Future<void> _onCreateRoutePressed(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }

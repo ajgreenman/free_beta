@@ -4,15 +4,15 @@ import 'package:free_beta/app/theme.dart';
 class FreeBetaBackButton extends StatelessWidget {
   const FreeBetaBackButton({
     Key? key,
-    required this.onPressed,
+    this.onPressed,
   }) : super(key: key);
 
-  final Function() onPressed;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: onPressed,
+      onPressed: onPressed ?? () => Navigator.of(context).pop(),
       icon: Icon(
         Icons.keyboard_arrow_left,
         size: FreeBetaSizes.xxl,

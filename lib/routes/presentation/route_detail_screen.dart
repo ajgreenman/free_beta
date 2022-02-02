@@ -186,6 +186,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       SizedBox(height: FreeBetaSizes.m),
       FreeBetaTextField(
         initialValue: _formModel.notes,
+        hintText: 'Enter notes here:\n\nex. flag your left foot',
         onChanged: (value) {
           if (value != _formModel.notes) {
             dirtyForm = true;

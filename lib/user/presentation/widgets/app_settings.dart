@@ -1,33 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/info_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/gym/presentation/create_route_screen.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/presentation/contact_developer_screen.dart';
 
-class GymAdmin extends ConsumerWidget {
-  const GymAdmin({Key? key}) : super(key: key);
+class AppSettings extends StatelessWidget {
+  const AppSettings({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) =>
-      ref.watch(authenticationProvider).when(
-            data: (user) {
-              if (user == null) {
-                return SizedBox.shrink();
-              }
-              return _buildAuthenticated(context);
-            },
-            loading: () => SizedBox.shrink(),
-            error: (_, __) => SizedBox.shrink(),
-          );
-
-  Widget _buildAuthenticated(BuildContext context) {
+  Widget build(BuildContext context) {
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Gym Admin',
+            'Contact',
             style: FreeBetaTextStyle.h2,
           ),
           SizedBox(height: FreeBetaSizes.l),
@@ -42,11 +28,11 @@ class GymAdmin extends ConsumerWidget {
       children: [
         ElevatedButton(
           onPressed: () =>
-              Navigator.of(context).push(CreateRouteScreen.route()),
+              Navigator.of(context).push(ContactDeveloperScreen.route()),
           child: Padding(
             padding: FreeBetaPadding.xlHorizontal,
             child: Text(
-              'Create Route',
+              'Contact Developer',
               style: FreeBetaTextStyle.h4.copyWith(
                 color: FreeBetaColors.white,
               ),

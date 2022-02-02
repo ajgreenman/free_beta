@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/presentation/back_button.dart';
+import 'package:free_beta/app/presentation/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
@@ -21,14 +23,7 @@ class RouteHelpScreen extends StatelessWidget {
     return Scaffold(
       key: Key('help'),
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.of(context).pop(),
-          icon: Icon(
-            Icons.keyboard_arrow_left,
-            size: FreeBetaSizes.xxl,
-            color: FreeBetaColors.white,
-          ),
-        ),
+        leading: FreeBetaBackButton(),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -89,11 +84,7 @@ class RouteHelpScreen extends StatelessWidget {
   }
 
   Widget _buildHelpText() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: FreeBetaSizes.l,
-        horizontal: FreeBetaSizes.m,
-      ),
+    return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

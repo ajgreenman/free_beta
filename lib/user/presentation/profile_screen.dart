@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/user/presentation/gym_admin.dart';
-import 'package:free_beta/user/presentation/user_stats.dart';
+import 'package:free_beta/user/presentation/widgets/app_settings.dart';
+import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
+import 'package:free_beta/user/presentation/widgets/user_stats.dart';
 
 class ProfileScreen extends ConsumerWidget {
   static Route<dynamic> route() {
@@ -18,8 +19,9 @@ class ProfileScreen extends ConsumerWidget {
       key: Key('profile'),
       body: Column(
         children: [
-          UserStats(),
           GymAdmin(),
+          UserStats(),
+          AppSettings(),
         ],
       ),
     );
