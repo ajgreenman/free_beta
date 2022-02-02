@@ -56,34 +56,12 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Padding(
-          padding: FreeBetaPadding.xxlAll,
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: FreeBetaPadding.lAll,
             child: Column(
               children: [
-                if (widget.isHelp)
-                  Column(
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.warning_amber,
-                            color: FreeBetaColors.warning,
-                          ),
-                          SizedBox(width: FreeBetaSizes.l),
-                          Flexible(
-                            child: Text(
-                              'This is a sample route, your changes cannot be saved.',
-                              style: FreeBetaTextStyle.h4.copyWith(
-                                color: FreeBetaColors.grayLight,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      _buildDivider(),
-                    ],
-                  ),
+                if (widget.isHelp) _buildHelp(),
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _buildDivider(),
                 RouteImages(images: widget.routeModel.images),
@@ -200,12 +178,37 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Widget _buildDivider() => Padding(
-        padding: FreeBetaPadding.mlAll,
+        padding: const EdgeInsets.symmetric(vertical: FreeBetaSizes.ml),
         child: Divider(
           height: 2,
           thickness: 2,
         ),
       );
+
+  Widget _buildHelp() {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.warning_amber,
+              color: FreeBetaColors.warning,
+            ),
+            SizedBox(width: FreeBetaSizes.l),
+            Flexible(
+              child: Text(
+                'This is a sample route, your changes cannot be saved.',
+                style: FreeBetaTextStyle.h4.copyWith(
+                  color: FreeBetaColors.grayLight,
+                ),
+              ),
+            ),
+          ],
+        ),
+        _buildDivider(),
+      ],
+    );
+  }
 
   void _onBack() async {
     if (!dirtyForm || widget.isHelp) {

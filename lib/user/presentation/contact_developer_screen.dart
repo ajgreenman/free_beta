@@ -62,6 +62,7 @@ class _ContactDeveloperScreenState
 
   Widget _buildName() {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           'Name',
