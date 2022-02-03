@@ -39,6 +39,7 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
                 'Name',
                 (name) => _formModel.name = name,
                 _nameController,
+                skipValidation: true,
               ),
               _buildDropdown<RouteColor?>(
                 'Color',
@@ -79,8 +80,9 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
   Widget _buildTextForm(
     String label,
     Function(String?) onChanged,
-    TextEditingController controller,
-  ) {
+    TextEditingController controller, {
+    bool skipValidation = false,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,6 +95,8 @@ class _CreateRouteFormState extends ConsumerState<CreateRouteForm> {
           controller: controller,
           onChanged: onChanged,
           validator: (value) {
+            if (skipValidation) return null;
+
             if (value == null || value.isEmpty) {
               return '$label is required';
             }
