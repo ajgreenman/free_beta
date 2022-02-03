@@ -1,8 +1,8 @@
-import 'dart:developer';
-
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/back_button.dart';
+import 'package:free_beta/app/presentation/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 
@@ -26,7 +26,16 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authenticationState = ref.watch(authenticationProvider);
+    var authenticationState = ref.watch(authenticationProvider);
+
+    ref.listen(authenticationProvider, (_, current) {
+      if (current == null) return;
+      var user = current as AsyncData<User?>;
+      if (user.value != null) {
+        Navigator.of(context).pop();
+      }
+    });
+
     return Scaffold(
       key: Key('sign-in'),
       appBar: AppBar(
@@ -38,18 +47,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           if (data == null) {
             return _buildSignInForm();
           }
-          Navigator.of(context).pop();
+          return _buildLoading();
         },
-        loading: () => Center(
-          child: CircularProgressIndicator(),
+        loading: () => _buildLoading(),
+        error: (error, stackTrace) => ErrorCard(
+          error: error,
+          stackTrace: stackTrace,
         ),
-        error: (error, stackTrace) {
-          log(error.toString());
-          log(stackTrace.toString());
-        },
       ),
     );
   }
+
+  Widget _buildLoading() => Center(
+        child: CircularProgressIndicator(),
+      );
 
   Widget _buildSignInForm() {
     return GestureDetector(
