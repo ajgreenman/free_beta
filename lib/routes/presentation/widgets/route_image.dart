@@ -4,18 +4,16 @@ import 'package:free_beta/app/theme.dart';
 
 class RouteImage extends StatelessWidget {
   const RouteImage({
-    required this.tag,
     required this.imageUrl,
     Key? key,
   }) : super(key: key);
 
-  final String tag;
   final String imageUrl;
 
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'imageHero',
+      tag: imageUrl,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         placeholder: (_, __) => _buildImageLoader(),

@@ -44,14 +44,17 @@ class _RouteImagesState extends State<RouteImages> {
   }
 
   Widget _buildCachedImage(String imageUrl) {
-    var tag = 'imageHero';
     return GestureDetector(
       child: RouteImage(
-        tag: tag,
         imageUrl: imageUrl,
       ),
       onTap: () => Navigator.of(context).push(
-        RouteImageScreen.route(tag, imageUrl),
+        RouteImageScreen.route(
+          images: widget.images,
+          initialIndex: _currentImage,
+          onSwipeLeft: _onSwipeLeft,
+          onSwipeRight: _onSwipeRight,
+        ),
       ),
     );
   }
@@ -78,5 +81,21 @@ class _RouteImagesState extends State<RouteImages> {
         );
       }).toList(),
     );
+  }
+
+  void _onSwipeLeft() {
+    if (_currentImage <= 0) return;
+    _carouselController.previousPage();
+    setState(() {
+      _currentImage--;
+    });
+  }
+
+  void _onSwipeRight() {
+    if (_currentImage >= widget.images.length - 1) return;
+    _carouselController.nextPage();
+    setState(() {
+      _currentImage++;
+    });
   }
 }
