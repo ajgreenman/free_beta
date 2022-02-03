@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
@@ -26,10 +27,14 @@ class RouteRepository {
     var userRoutes = await routeLocalDataProvider.getUserRoutes();
 
     userRoutes.forEach((userRoute) {
-      routes
-          .firstWhere((route) => route.id == userRoute.routeId)
-          .userRouteModel = userRoute;
+      var route = routes.firstWhereOrNull(
+        (route) => route.id == userRoute.routeId,
+      );
+      if (route == null) return;
+
+      route.userRouteModel = userRoute;
     });
+
     return routes;
   }
 
