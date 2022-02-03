@@ -1,8 +1,8 @@
 enum ClimbType {
   boulder,
   topRope,
-  lead,
   autoBelay,
+  lead,
 }
 
 extension ClimbTypeExtensions on ClimbType {
