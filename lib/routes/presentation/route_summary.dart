@@ -26,8 +26,8 @@ class RouteSummary extends StatelessWidget {
           children: [
             Row(
               children: [
-                _buildName(),
                 _buildColor(),
+                _buildName(),
               ],
             ),
             ..._buildDate('Created', route.creationDate),
@@ -91,7 +91,7 @@ class RouteSummary extends StatelessWidget {
     }
 
     return Padding(
-      padding: const EdgeInsets.only(left: FreeBetaSizes.m),
+      padding: const EdgeInsets.only(right: FreeBetaSizes.m),
       child: colorSquare,
     );
   }

@@ -98,7 +98,10 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _onLoading() {
-    return Center(child: CircularProgressIndicator());
+    return Padding(
+      padding: FreeBetaPadding.xxlVertical,
+      child: Center(child: CircularProgressIndicator()),
+    );
   }
 
   Widget _buildFilterCounts() {

@@ -34,6 +34,7 @@ class RouteModel {
           (climbType) => describeEnum(climbType) == json['climbType'],
         ),
         creationDate: (json['creationDate'] as Timestamp).toDate(),
+        removalDate: (json['removalDate'] as Timestamp?)?.toDate(),
         routeColor: RouteColor.values.firstWhere(
           (routeColor) => describeEnum(routeColor) == json['routeColor'],
         ),

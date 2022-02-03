@@ -21,7 +21,9 @@ final routeTextFilterProvider = StateProvider<String?>((_) => null);
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
-  return await routeApi.getRoutes();
+  return (await routeApi.getRoutes())
+      .where((route) => route.removalDate == null)
+      .toList();
 });
 
 final fetchTextFilteredRoutesProvider =
