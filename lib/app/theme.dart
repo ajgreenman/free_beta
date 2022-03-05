@@ -98,6 +98,9 @@ class FreeBetaSizes {
 
   /// Size of 32.
   static const xxl = 32.0;
+
+  /// Size of 64.
+  static const xxxl = 64.0;
 }
 
 class FreeBetaPadding {

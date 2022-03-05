@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/presentation/free_beta_bottom_navigation_bar.dart';
+import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
