@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/presentation/back_button.dart';
-import 'package:free_beta/app/presentation/error_card.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 

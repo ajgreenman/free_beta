@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/presentation/back_button.dart';
-import 'package:free_beta/app/presentation/info_card.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/presentation/info_card.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 

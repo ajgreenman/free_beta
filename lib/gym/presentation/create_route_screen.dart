@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/presentation/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/gym/presentation/create_route_form.dart';
 
 class CreateRouteScreen extends StatelessWidget {

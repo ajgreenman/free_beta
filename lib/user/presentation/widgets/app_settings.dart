@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/presentation/info_card.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/presentation/contact_developer_screen.dart';
 

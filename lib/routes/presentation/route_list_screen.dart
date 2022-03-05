@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/presentation/error_card.dart';
+import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
