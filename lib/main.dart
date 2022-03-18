@@ -39,7 +39,7 @@ class _AppState extends State<App> {
     return _hasLoaded
         ? FreeBeta()
         : AppLoading(
-            onPressed: () => setState(() => _hasLoaded = true),
+            onComplete: () => setState(() => _hasLoaded = true),
           );
   }
 }

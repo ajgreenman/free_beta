@@ -110,7 +110,7 @@ class _LogoClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(covariant CustomClipper<Path> old) => old != this;
+  bool shouldReclip(covariant CustomClipper<Path> old) => false;
 }
 
 class _LogoPainter extends CustomPainter {
@@ -128,5 +128,5 @@ class _LogoPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter old) => old != this;
+  bool shouldRepaint(covariant CustomPainter old) => false;
 }
