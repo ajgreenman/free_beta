@@ -53,10 +53,12 @@ class _CopyrightText extends StatelessWidget {
   Widget build(BuildContext context) {
     final copyrightYear = DateTime.now().year;
 
-    return Text(
-      '© $copyrightYear Free Beta',
-      style: FreeBetaTextStyle.body3.copyWith(
-        color: FreeBetaColors.grayLight,
+    return Center(
+      child: Text(
+        '© $copyrightYear Free Beta',
+        style: FreeBetaTextStyle.body3.copyWith(
+          color: FreeBetaColors.grayLight,
+        ),
       ),
     );
   }
