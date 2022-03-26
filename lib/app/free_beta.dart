@@ -40,7 +40,6 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
   }
 
   Widget _getAction(BuildContext context) {
-    print(_currentIndex);
     if (_currentIndex == 0) {
       return _buildHelpButton();
     }
