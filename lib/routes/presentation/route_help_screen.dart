@@ -23,12 +23,22 @@ class RouteHelpScreen extends StatelessWidget {
     return Scaffold(
       key: Key('help'),
       appBar: AppBar(
+        title: Text(
+          'Route List Guide',
+        ),
         leading: FreeBetaBackButton(),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            _buildHelpText(),
+            InfoCard(
+              child: Padding(
+                padding: FreeBetaPadding.mAll,
+                child: Text(
+                  'The previous screen provides an overview of all available routes and allows you to filter them. You can enter your progress with each route by tapping into a specific route. Below is a list of sample routes to help learn the symbols:',
+                ),
+              ),
+            ),
             Divider(height: 1, thickness: 1),
             ListView.separated(
               shrinkWrap: true,
@@ -80,27 +90,6 @@ class RouteHelpScreen extends StatelessWidget {
           'Attempted and completed',
         ),
       ],
-    );
-  }
-
-  Widget _buildHelpText() {
-    return InfoCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Route List Guide',
-            style: FreeBetaTextStyle.h1,
-          ),
-          SizedBox(height: FreeBetaSizes.m),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              'The previous screen provides an overview of all available routes and allows you to filter them. You can enter your progress with each route by tapping into a specific route. Below is a list of sample routes to help learn the symbols:',
-            ),
-          ),
-        ],
-      ),
     );
   }
 
