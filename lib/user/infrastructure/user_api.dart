@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,10 +17,11 @@ class UserApi {
   Stream<User?> get authenticationStream => _firebaseAuth.authStateChanges();
 
   Future<bool> signIn(String email, String password) async {
+    log('Email: $email\nPassword: $password');
     return await _firebaseAuth
         .signInWithEmailAndPassword(
-          email: email,
-          password: password,
+          email: email.trim(),
+          password: password.trim(),
         )
         .then((_) => true)
         .onError((_, __) => false);

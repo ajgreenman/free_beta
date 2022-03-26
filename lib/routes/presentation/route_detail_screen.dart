@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/text_field.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/edit_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
@@ -10,6 +11,7 @@ import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
+import 'package:free_beta/user/infrastructure/user_api.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel, {isHelp = false}) {
@@ -53,6 +55,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       appBar: AppBar(
         title: Text(widget.routeModel.name),
         leading: FreeBetaBackButton(onPressed: _onBack),
+        actions: [_buildEditButton(context)],
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -88,6 +91,26 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         ),
       ),
     );
+  }
+
+  Widget _buildEditButton(BuildContext context) {
+    var button = ref.watch(authenticationProvider).whenOrNull(
+      data: (user) {
+        if (user != null) {
+          return IconButton(
+            onPressed: () => Navigator.of(context).push(
+              EditRouteScreen.route(widget.routeModel),
+            ),
+            icon: Icon(
+              Icons.edit,
+              color: FreeBetaColors.white,
+            ),
+          );
+        }
+      },
+    );
+
+    return button ?? SizedBox.shrink();
   }
 
   Widget _buildCheckboxRow(String label, Checkbox checkbox) {

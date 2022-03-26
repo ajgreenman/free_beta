@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
-import 'package:free_beta/gym/presentation/create_route_form.dart';
+import 'package:free_beta/gym/presentation/route_form.dart';
 
 class CreateRouteScreen extends StatelessWidget {
   static Route<dynamic> route() {
@@ -19,7 +19,7 @@ class CreateRouteScreen extends StatelessWidget {
         title: Text('Create Route'),
         leading: FreeBetaBackButton(),
       ),
-      body: CreateRouteForm(),
+      body: RouteForm(),
     );
   }
 }

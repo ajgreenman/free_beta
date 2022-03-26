@@ -17,6 +17,10 @@ class GymAdmin extends StatelessWidget {
             ),
             SizedBox(height: FreeBetaSizes.l),
             _buildActions(context),
+            SizedBox(height: FreeBetaSizes.l),
+            Text(
+              'To edit a route, first go your route in the Routes tab. Then, tap the pencil icon in the top right corner of the screen.',
+            ),
           ],
         ),
       );
