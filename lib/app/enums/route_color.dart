@@ -7,13 +7,13 @@ enum RouteColor {
   gray,
   green,
   orange,
-  other,
   pink,
   purple,
   red,
   seafoam,
-  unknown,
+  white,
   yellow,
+  unknown,
 }
 
 extension RouteColorExtensions on RouteColor {
@@ -29,8 +29,6 @@ extension RouteColorExtensions on RouteColor {
         return 'Green';
       case RouteColor.orange:
         return 'Orange';
-      case RouteColor.other:
-        return 'Other';
       case RouteColor.pink:
         return 'Pink';
       case RouteColor.purple:
@@ -41,6 +39,8 @@ extension RouteColorExtensions on RouteColor {
         return 'Seafoam';
       case RouteColor.unknown:
         return 'Unknown';
+      case RouteColor.white:
+        return 'White';
       case RouteColor.yellow:
         return 'Yellow';
       default:
@@ -60,8 +60,6 @@ extension RouteColorExtensions on RouteColor {
         return FreeBetaColors.green;
       case RouteColor.orange:
         return FreeBetaColors.warning;
-      case RouteColor.other:
-        return FreeBetaColors.white;
       case RouteColor.pink:
         return FreeBetaColors.pink;
       case RouteColor.purple:
@@ -71,6 +69,8 @@ extension RouteColorExtensions on RouteColor {
       case RouteColor.seafoam:
         return FreeBetaColors.greenBrand;
       case RouteColor.unknown:
+        return FreeBetaColors.white;
+      case RouteColor.white:
         return FreeBetaColors.white;
       case RouteColor.yellow:
         return FreeBetaColors.yellowBrand;

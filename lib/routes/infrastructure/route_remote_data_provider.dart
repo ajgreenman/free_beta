@@ -34,4 +34,14 @@ class RouteRemoteDataProvider {
         .then((value) => log(value.toString()))
         .catchError((error) => log(error.toString()));
   }
+
+  Future<void> updateRoute(
+    RouteModel routeModel,
+    RouteFormModel routeFormModel,
+  ) async {
+    await firestore
+        .doc(routeModel.id)
+        .update(routeFormModel.toJson())
+        .catchError((error) => log(error.toString()));
+  }
 }

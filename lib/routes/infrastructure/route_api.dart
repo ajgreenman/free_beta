@@ -26,6 +26,14 @@ final fetchRoutesProvider = FutureProvider((ref) async {
       .toList();
 });
 
+final fetchRemovedRoutesProvider = FutureProvider((ref) async {
+  final routeApi = ref.watch(routeApiProvider);
+
+  return (await routeApi.getRoutes())
+      .where((route) => route.removalDate != null)
+      .toList();
+});
+
 final fetchTextFilteredRoutesProvider =
     FutureProvider<RouteFilterModel>((ref) async {
   final routes = await ref.watch(fetchRoutesProvider.future);
@@ -90,5 +98,15 @@ class RouteApi {
 
   Future<void> addRoute(RouteFormModel routeFormModel) async {
     return routeRepository.addRoute(routeFormModel);
+  }
+
+  Future<void> updateRoute(
+    RouteModel routeModel,
+    RouteFormModel routeFormModel,
+  ) async {
+    return routeRepository.updateRoute(
+      routeModel,
+      routeFormModel,
+    );
   }
 }

@@ -8,6 +8,7 @@ class FreeBetaButtonInput extends StatelessWidget {
     required this.hintText,
     required this.onTap,
     required this.controller,
+    this.isRequired = true,
     this.isImageField = false,
   }) : super(key: key);
 
@@ -15,6 +16,7 @@ class FreeBetaButtonInput extends StatelessWidget {
   final String hintText;
   final Function() onTap;
   final TextEditingController controller;
+  final bool isRequired;
   final bool isImageField;
 
   @override
@@ -31,7 +33,7 @@ class FreeBetaButtonInput extends StatelessWidget {
           controller: controller,
           onTap: onTap,
           validator: (value) {
-            if (value == null || value.isEmpty) {
+            if (isRequired && (value == null || value.isEmpty)) {
               return '$label is required';
             }
           },

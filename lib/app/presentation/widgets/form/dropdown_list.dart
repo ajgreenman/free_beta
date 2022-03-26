@@ -7,11 +7,13 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
     required this.label,
     required this.onChanged,
     required this.items,
+    this.initialValue,
   }) : super(key: key);
 
   final String label;
   final void Function(T?) onChanged;
   final List<DropdownMenuItem<T?>> items;
+  final T? initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
             }
           },
           style: FreeBetaTextStyle.h4,
+          value: initialValue,
         ),
         SizedBox(height: FreeBetaSizes.l),
       ],

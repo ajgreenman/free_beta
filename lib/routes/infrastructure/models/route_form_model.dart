@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 
 class RouteFormModel {
   String? name;
@@ -17,10 +18,22 @@ class RouteFormModel {
     this.routeColor,
     this.creationDate,
     this.removalDate,
-  }) : images = [];
+    this.images = const [],
+  });
+
+  factory RouteFormModel.fromRouteModel(RouteModel routeModel) =>
+      RouteFormModel(
+        name: routeModel.name,
+        climbType: routeModel.climbType,
+        creationDate: routeModel.creationDate,
+        removalDate: routeModel.removalDate,
+        routeColor: routeModel.routeColor,
+        difficulty: routeModel.difficulty,
+        images: routeModel.images,
+      );
 
   Map<String, dynamic> toJson() {
-    return {
+    var json = {
       'name': name,
       'climbType': climbType!.name,
       'difficulty': difficulty,
@@ -28,6 +41,12 @@ class RouteFormModel {
       'creationDate': Timestamp.fromDate(creationDate!),
       'images': images,
     };
+
+    if (removalDate != null) {
+      json.putIfAbsent('removalDate', () => Timestamp.fromDate(removalDate!));
+    }
+
+    return json;
   }
 
   @override
@@ -41,6 +60,8 @@ class RouteFormModel {
       (this.difficulty.toString()) +
       '\n' +
       (this.creationDate.toString()) +
+      '\n' +
+      (this.removalDate.toString()) +
       '\n' +
       (this.images.length.toString());
 }

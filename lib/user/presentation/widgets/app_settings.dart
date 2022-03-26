@@ -24,35 +24,30 @@ class AppSettings extends StatelessWidget {
   }
 
   Widget _buildActions(BuildContext context) {
-    return Row(
-      children: [
-        ElevatedButton(
-          onPressed: () =>
-              Navigator.of(context).push(ContactDeveloperScreen.route()),
-          child: Padding(
-            padding: FreeBetaPadding.xlHorizontal,
-            child: Text(
-              'Contact Developer',
-              style: FreeBetaTextStyle.h4.copyWith(
-                color: FreeBetaColors.white,
-              ),
-            ),
-          ),
-          style: ButtonStyle(
-            side: MaterialStateProperty.all(
-              BorderSide(
-                width: 2,
-              ),
-            ),
-            padding: MaterialStateProperty.all(
-              const EdgeInsets.symmetric(
-                vertical: FreeBetaSizes.ml,
-              ),
-            ),
+    return ElevatedButton(
+      onPressed: () =>
+          Navigator.of(context).push(ContactDeveloperScreen.route()),
+      child: Padding(
+        padding: FreeBetaPadding.xlHorizontal,
+        child: Text(
+          'Contact Developer',
+          style: FreeBetaTextStyle.h4.copyWith(
+            color: FreeBetaColors.white,
           ),
         ),
-        Spacer(),
-      ],
+      ),
+      style: ButtonStyle(
+        side: MaterialStateProperty.all(
+          BorderSide(
+            width: 2,
+          ),
+        ),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            vertical: FreeBetaSizes.ml,
+          ),
+        ),
+      ),
     );
   }
 }

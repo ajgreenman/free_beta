@@ -4,6 +4,7 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/presentation/widgets/app_settings.dart';
 import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
+import 'package:free_beta/user/presentation/widgets/removed_routes.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -21,9 +22,12 @@ class ProfileScreen extends ConsumerWidget {
       key: Key('profile'),
       body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _getGymAdmin(ref),
             UserStats(),
+            _getGymAdmin(ref),
+            RemovedRoutes(),
             AppSettings(),
             _CopyrightText(),
           ],

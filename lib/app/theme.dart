@@ -13,6 +13,7 @@ class FreeBetaTheme {
         color: FreeBetaColors.black,
       ),
     ),
+    canvasColor: FreeBetaColors.grayBackground,
     colorScheme: ColorScheme(
       primary: FreeBetaColors.black,
       primaryVariant: FreeBetaColors.blue,

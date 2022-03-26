@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/free_beta.dart';
 import 'package:free_beta/app/initializer.dart';
 import 'package:free_beta/app/presentation/app_loading.dart';
@@ -14,11 +15,13 @@ void main() async {
   );
 
   runApp(
-    Initalizer(
-      child: MaterialApp(
-        title: 'Free Beta',
-        theme: FreeBetaTheme.blueTheme,
-        home: App(),
+    ProviderScope(
+      child: Initializer(
+        child: MaterialApp(
+          title: 'Free Beta',
+          theme: FreeBetaTheme.blueTheme,
+          home: App(),
+        ),
       ),
     ),
   );

@@ -23,41 +23,57 @@ class RouteForm extends ConsumerStatefulWidget {
 
 class _RouteFormState extends ConsumerState<RouteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final _nameController = TextEditingController();
-  final _difficultyController = TextEditingController();
-  final _dateController = TextEditingController();
-  final _imageController = TextEditingController();
+  late TextEditingController _nameController;
+  late TextEditingController _difficultyController;
+  late TextEditingController _creationDateController;
+  late TextEditingController _removalDateController;
+  late TextEditingController _imageController;
 
   var _loadingImages = false;
-  var _formModel = RouteFormModel();
+  late RouteFormModel _formModel;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.editRouteModel == null) return;
+    if (widget.editRouteModel != null) {
+      _setupEdit();
+    } else {
+      _setupCreate();
+    }
   }
 
-  Future<void> _onCreateRoutePressed(BuildContext context) async {
-    if (!(_formKey.currentState?.validate() ?? false)) {
-      return;
-    }
-
-    await ref.read(routeApiProvider).addRoute(_formModel);
-
-    await showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        content: Row(
-          children: [
-            Text('Route created!'),
-            Spacer(),
-            Icon(Icons.check),
-          ],
-        ),
-      ),
+  void _setupEdit() {
+    var routeModel = widget.editRouteModel!;
+    _formModel = RouteFormModel.fromRouteModel(
+      routeModel,
     );
-    Navigator.of(context).pop();
+    _nameController = TextEditingController(
+      text: routeModel.name,
+    );
+    _difficultyController = TextEditingController(
+      text: routeModel.difficulty,
+    );
+    _creationDateController = TextEditingController(
+      text: DateFormat('MM/dd').format(routeModel.creationDate),
+    );
+    _removalDateController = TextEditingController(
+      text: routeModel.removalDate != null
+          ? DateFormat('MM/dd').format(routeModel.removalDate!)
+          : '',
+    );
+    _imageController = TextEditingController(
+      text: _imageHintText,
+    );
+  }
+
+  void _setupCreate() {
+    _formModel = RouteFormModel();
+    _nameController = TextEditingController();
+    _difficultyController = TextEditingController();
+    _creationDateController = TextEditingController();
+    _removalDateController = TextEditingController();
+    _imageController = TextEditingController();
   }
 
   @override
@@ -80,11 +96,13 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 label: 'Color',
                 items: _getColors(),
                 onChanged: (routeColor) => _formModel.routeColor = routeColor,
+                initialValue: widget.editRouteModel?.routeColor,
               ),
               FreeBetaDropdownList<ClimbType?>(
                 label: 'Type',
                 items: _getTypes(),
                 onChanged: (climbType) => _formModel.climbType = climbType,
+                initialValue: widget.editRouteModel?.climbType,
               ),
               FreeBetaTextInput(
                 label: 'Difficulty',
@@ -94,19 +112,27 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               FreeBetaButtonInput(
                 label: 'Creation Date',
                 hintText: 'Enter creation date',
-                onTap: _onDatePressed,
-                controller: _dateController,
+                onTap: _onCreationDatePressed,
+                controller: _creationDateController,
               ),
+              if (widget.editRouteModel != null)
+                FreeBetaButtonInput(
+                  label: 'Removal Date',
+                  hintText: 'Enter removal date',
+                  onTap: _onRemovalDatePressed,
+                  controller: _removalDateController,
+                  isRequired: false,
+                ),
               FreeBetaButtonInput(
                 label: 'Images',
-                hintText: _loadingImages
-                    ? 'Loading...'
-                    : 'Add images (${_formModel.images.length})',
+                hintText: _imageHintText,
                 onTap: _onImagePressed,
                 controller: _imageController,
                 isImageField: true,
               ),
-              _buildCreateRouteButton(context),
+              widget.editRouteModel == null
+                  ? _buildCreateRouteButton(context)
+                  : _buildEditRouteButton(context),
             ],
           ),
         ),
@@ -148,7 +174,88 @@ class _RouteFormState extends ConsumerState<RouteForm> {
         ),
       );
 
-  Future<void> _onDatePressed() async {
+  Future<void> _onCreateRoutePressed(BuildContext context) async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
+    await ref.read(routeApiProvider).addRoute(_formModel);
+
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            Text('Route created!'),
+            Spacer(),
+            Icon(Icons.check),
+          ],
+        ),
+      ),
+    );
+    Navigator.of(context).pop();
+  }
+
+  Widget _buildEditRouteButton(BuildContext context) => ElevatedButton(
+        onPressed:
+            !_loadingImages ? () async => _onEditRoutePressed(context) : null,
+        child: Padding(
+          padding: FreeBetaPadding.xlHorizontal,
+          child: Text(
+            'Update Route',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
+          ),
+        ),
+        style: ButtonStyle(
+          alignment: Alignment.centerLeft,
+          side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+            if (states.contains(MaterialState.disabled)) {
+              return BorderSide(
+                color: FreeBetaColors.grayLight,
+                width: 2,
+              );
+            }
+            return BorderSide(
+              width: 2,
+            );
+          }),
+          padding: MaterialStateProperty.all(
+            const EdgeInsets.symmetric(
+              horizontal: FreeBetaSizes.m,
+              vertical: FreeBetaSizes.ml,
+            ),
+          ),
+        ),
+      );
+
+  Future<void> _onEditRoutePressed(BuildContext context) async {
+    if (!(_formKey.currentState?.validate() ?? false)) {
+      return;
+    }
+
+    await ref.read(routeApiProvider).updateRoute(
+          widget.editRouteModel!,
+          _formModel,
+        );
+
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            Text('Route updated!'),
+            Spacer(),
+            Icon(Icons.check),
+          ],
+        ),
+      ),
+    );
+    Navigator.of(context).pop();
+  }
+
+  Future<void> _onCreationDatePressed() async {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedDate = await showDatePicker(
@@ -161,7 +268,26 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
     setState(() {
       _formModel.creationDate = pickedDate;
-      _dateController.value = TextEditingValue(
+      _creationDateController.value = TextEditingValue(
+        text: DateFormat('MM/dd').format(pickedDate),
+      );
+    });
+  }
+
+  Future<void> _onRemovalDatePressed() async {
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    var pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _formModel.removalDate ?? DateTime.now(),
+      firstDate: DateTime(2021),
+      lastDate: DateTime.now(),
+    );
+    if (pickedDate == null) return;
+
+    setState(() {
+      _formModel.removalDate = pickedDate;
+      _removalDateController.value = TextEditingValue(
         text: DateFormat('MM/dd').format(pickedDate),
       );
     });
@@ -218,4 +344,14 @@ class _RouteFormState extends ConsumerState<RouteForm> {
         ),
       )
       .toList();
+
+  String get _imageHintText {
+    if (_loadingImages) {
+      return 'Loading...';
+    }
+    if (_formModel.images.length > 0) {
+      return 'Add more images (${_formModel.images.length})';
+    }
+    return 'Add images (${_formModel.images.length})';
+  }
 }

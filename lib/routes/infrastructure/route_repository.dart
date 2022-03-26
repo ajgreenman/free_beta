@@ -45,4 +45,14 @@ class RouteRepository {
   Future<void> addRoute(RouteFormModel routeFormModel) async {
     await routeRemoteDataProvider.addRoute(routeFormModel);
   }
+
+  Future<void> updateRoute(
+    RouteModel routeModel,
+    RouteFormModel routeFormModel,
+  ) async {
+    await routeRemoteDataProvider.updateRoute(
+      routeModel,
+      routeFormModel,
+    );
+  }
 }

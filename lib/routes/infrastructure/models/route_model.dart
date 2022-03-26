@@ -83,60 +83,66 @@ extension RouteModelListExtensions on List<RouteModel> {
         return 0;
       case 'v0-v2':
         return 1;
-      case 'v2-v4':
+      case 'v1-v3':
         return 2;
-      case 'v4-v6':
+      case 'v2-v4':
         return 3;
-      case 'v6-v8':
+      case 'v3-v5':
         return 4;
-      case 'v8+':
+      case 'v4-v6':
         return 5;
-      case '5.5':
+      case 'v5-v7':
         return 6;
-      case '5.6':
+      case 'v6-v8':
         return 7;
-      case '5.7':
+      case 'v8+':
         return 8;
-      case '5.8':
-        return 9;
-      case '5.8-':
-        return 10;
-      case '5.8':
-        return 11;
-      case '5.8+':
-        return 12;
-      case '5.9-':
-        return 13;
-      case '5.9':
-        return 14;
-      case '5.9+':
-        return 15;
-      case '5.10-':
-        return 16;
-      case '5.10':
-        return 17;
-      case '5.10+':
-        return 18;
-      case '5.11-':
-        return 19;
-      case '5.11':
-        return 20;
-      case '5.11+':
-        return 21;
-      case '5.12-':
-        return 22;
-      case '5.12':
-        return 23;
-      case '5.12+':
-        return 24;
-      case '5.13-':
-        return 25;
-      case '5.13':
-        return 26;
-      case '5.13+':
-        return 27;
-      default:
+      case '5.5':
         return 100;
+      case '5.6':
+        return 101;
+      case '5.7':
+        return 102;
+      case '5.8':
+        return 103;
+      case '5.8-':
+        return 104;
+      case '5.8':
+        return 105;
+      case '5.8+':
+        return 106;
+      case '5.9-':
+        return 107;
+      case '5.9':
+        return 108;
+      case '5.9+':
+        return 109;
+      case '5.10-':
+        return 110;
+      case '5.10':
+        return 111;
+      case '5.10+':
+        return 112;
+      case '5.11-':
+        return 113;
+      case '5.11':
+        return 114;
+      case '5.11+':
+        return 115;
+      case '5.12-':
+        return 116;
+      case '5.12':
+        return 117;
+      case '5.12+':
+        return 118;
+      case '5.13-':
+        return 119;
+      case '5.13':
+        return 120;
+      case '5.13+':
+        return 121;
+      default:
+        return 1000;
     }
   }
 }
