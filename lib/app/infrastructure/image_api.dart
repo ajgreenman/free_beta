@@ -7,10 +7,13 @@ import 'package:image_picker/image_picker.dart';
 
 final imageApiProvider = Provider((_) => ImageApi(FirebaseStorage.instance));
 
-final fetchImageProvider = FutureProvider((ref) async {
+final fetchImageProvider = FutureProvider.family<String?, ImageSource>((
+  ref,
+  imageSource,
+) async {
   final imageApi = ref.watch(imageApiProvider);
 
-  return await imageApi.fetchImage();
+  return await imageApi.fetchImage(imageSource);
 });
 
 class ImageApi {
@@ -18,9 +21,9 @@ class ImageApi {
 
   final FirebaseStorage _firebaseStorage;
 
-  Future<String?> fetchImage() async {
+  Future<String?> fetchImage(ImageSource imageSource) async {
     var image = await ImagePicker().pickImage(
-      source: ImageSource.camera,
+      source: imageSource,
       imageQuality: 50,
     );
     if (image == null) return null;

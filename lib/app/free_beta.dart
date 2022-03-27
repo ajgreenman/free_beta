@@ -30,7 +30,9 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
       key: Key('free-beta'),
       appBar: AppBar(
         title: Text('Free Beta'),
-        actions: [_getAction(context)],
+        actions: [
+          _getAction(context),
+        ],
       ),
       body: _screens[_currentIndex],
       bottomNavigationBar: FreeBetaBottomNavigationBar(
@@ -42,12 +44,25 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
 
   Widget _getAction(BuildContext context) {
     if (_currentIndex == 0) {
-      return _buildHelpButton();
+      return _HelpButton();
     }
-    return _buildAuthenticationButton(context);
+    return _AuthenticationButton();
   }
 
-  Widget _buildHelpButton() {
+  void _navigateTo(int index) {
+    if (index == _currentIndex) return;
+
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+}
+
+class _HelpButton extends StatelessWidget {
+  const _HelpButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return IconButton(
       onPressed: () => Navigator.of(context).push(
         RouteHelpScreen.route(),
@@ -58,8 +73,13 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
       ),
     );
   }
+}
 
-  Widget _buildAuthenticationButton(BuildContext context) {
+class _AuthenticationButton extends ConsumerWidget {
+  const _AuthenticationButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     var button = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
         if (user == null || user.isAnonymous) {
@@ -75,28 +95,9 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
             ),
           );
         }
-        return TextButton(
-          onPressed: () async {
-            await ref.read(userApiProvider).signOut();
-          },
-          child: Text(
-            'Sign Out',
-            style: FreeBetaTextStyle.body4.copyWith(
-              color: FreeBetaColors.white,
-            ),
-          ),
-        );
       },
     );
 
     return button ?? SizedBox.shrink();
-  }
-
-  void _navigateTo(int index) {
-    if (index == _currentIndex) return;
-
-    setState(() {
-      _currentIndex = index;
-    });
   }
 }

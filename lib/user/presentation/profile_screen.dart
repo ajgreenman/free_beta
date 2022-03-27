@@ -26,17 +26,24 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserStats(),
-            _getGymAdmin(ref),
             RemovedRoutes(),
             AppSettings(),
+            _GymAdmin(ref),
             _CopyrightText(),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget _getGymAdmin(WidgetRef ref) {
+class _GymAdmin extends StatelessWidget {
+  const _GymAdmin(this.ref, {Key? key}) : super(key: key);
+
+  final WidgetRef ref;
+
+  @override
+  Widget build(BuildContext context) {
     var value = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
         if (user != null && !user.isAnonymous) return GymAdmin();

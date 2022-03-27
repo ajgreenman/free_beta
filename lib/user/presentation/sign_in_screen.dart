@@ -259,21 +259,21 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (!result) {
       await showDialog(
         context: context,
-        builder: (_) => _InvalidLoginDialog(),
+        builder: (_) => _InvalidSignInDialog(),
       );
     }
   }
 }
 
-class _InvalidLoginDialog extends StatelessWidget {
-  const _InvalidLoginDialog({
+class _InvalidSignInDialog extends StatelessWidget {
+  const _InvalidSignInDialog({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Invalid login"),
+      title: Text("Invalid sign in"),
       content: Text("Email/Password combination is incorrect"),
     );
   }

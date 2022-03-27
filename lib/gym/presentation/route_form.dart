@@ -10,6 +10,7 @@ import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_color_square.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class RouteForm extends ConsumerStatefulWidget {
@@ -126,7 +127,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               FreeBetaButtonInput(
                 label: 'Images',
                 hintText: _imageHintText,
-                onTap: _onImagePressed,
+                onTap: () => _onImagePressed(context),
                 controller: _imageController,
                 isImageField: true,
               ),
@@ -295,7 +296,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     });
   }
 
-  Future<void> _onImagePressed() async {
+  Future<void> _onImagePressed(BuildContext context) async {
     setState(() {
       _loadingImages = true;
     });
@@ -303,7 +304,8 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var imageApi = ref.read(imageApiProvider);
-    var imageFile = await imageApi.fetchImage();
+    var imageSource = await chooseOption(context);
+    var imageFile = await imageApi.fetchImage(imageSource);
 
     setState(() {
       _loadingImages = false;
@@ -358,5 +360,39 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       return 'Add more images (${_formModel.images!.length})';
     }
     return 'Add images (0)';
+  }
+
+  Future<ImageSource> chooseOption(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (_) => _ImageSourceDialog(),
+    );
+  }
+}
+
+class _ImageSourceDialog extends StatelessWidget {
+  const _ImageSourceDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Upload image'),
+      actions: [
+        ElevatedButton(
+          child: Text('Camera'),
+          onPressed: () {
+            Navigator.of(context).pop(ImageSource.camera);
+          },
+        ),
+        ElevatedButton(
+          child: Text('Photos'),
+          onPressed: () {
+            Navigator.of(context).pop(ImageSource.gallery);
+          },
+        ),
+      ],
+    );
   }
 }

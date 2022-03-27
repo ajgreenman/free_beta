@@ -41,7 +41,11 @@ class UserStats extends ConsumerWidget {
   Widget _onError(Object error, StackTrace? stackTrace) {
     print(error);
     print(stackTrace);
-    return Text('Sorry, an error occured.');
+    return InfoCard(
+      child: Text(
+        'Because you have an account, you must sign in to see your user stats.',
+      ),
+    );
   }
 
   Widget _buildRow(String label, int count) {
