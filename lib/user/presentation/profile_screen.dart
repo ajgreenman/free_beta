@@ -39,7 +39,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget _getGymAdmin(WidgetRef ref) {
     var value = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
-        if (user != null) return GymAdmin();
+        if (user != null && !user.isAnonymous) return GymAdmin();
       },
     );
     return value ?? SizedBox.shrink();

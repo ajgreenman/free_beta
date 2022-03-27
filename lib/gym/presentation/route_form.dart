@@ -239,6 +239,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
           widget.editRouteModel!,
           _formModel,
         );
+    ref.refresh(fetchRoutesProvider);
 
     await showDialog(
       context: context,
@@ -252,6 +253,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
         ),
       ),
     );
+    Navigator.of(context).pop();
     Navigator.of(context).pop();
   }
 
@@ -310,9 +312,12 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     if (imageFile == null) return;
 
     setState(() {
-      _formModel.images.add(imageFile);
+      if (_formModel.images == null) {
+        _formModel.images = [];
+      }
+      _formModel.images!.add(imageFile);
       _imageController.value = TextEditingValue(
-        text: 'Add images (${_formModel.images.length})',
+        text: 'Add images (${_formModel.images!.length})',
       );
     });
   }
@@ -349,9 +354,9 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     if (_loadingImages) {
       return 'Loading...';
     }
-    if (_formModel.images.length > 0) {
-      return 'Add more images (${_formModel.images.length})';
+    if (_formModel.images != null && _formModel.images!.length > 0) {
+      return 'Add more images (${_formModel.images!.length})';
     }
-    return 'Add images (${_formModel.images.length})';
+    return 'Add images (0)';
   }
 }

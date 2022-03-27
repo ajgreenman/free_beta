@@ -11,9 +11,7 @@ class UserStats extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(fetchUserRoutesProvider).when(
             data: (userRoutes) => _onSuccess(userRoutes),
-            loading: () => Center(
-              child: CircularProgressIndicator(),
-            ),
+            loading: () => _UserStatsSkeleton(),
             error: (error, stackTrace) => _onError(error, stackTrace),
           );
 
@@ -51,6 +49,47 @@ class UserStats extends ConsumerWidget {
         Spacer(),
         Text(
           count.toString(),
+          style: FreeBetaTextStyle.body2.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _UserStatsSkeleton extends StatelessWidget {
+  const _UserStatsSkeleton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'User Stats',
+            style: FreeBetaTextStyle.h2,
+          ),
+          SizedBox(height: FreeBetaSizes.m),
+          _buildRow('Attempted'),
+          _buildRow('Completed'),
+          _buildRow('Favorited'),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRow(String label) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: FreeBetaTextStyle.h4,
+        ),
+        Spacer(),
+        Text(
+          '?',
           style: FreeBetaTextStyle.body2.copyWith(
             fontWeight: FontWeight.bold,
           ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
@@ -18,8 +19,8 @@ class FreeBeta extends ConsumerStatefulWidget {
 class _FreeBetaState extends ConsumerState<FreeBeta> {
   int _currentIndex = 0;
 
-  static const List<Widget> _screens = [
-    RouteListScreen(),
+  static List<Widget> _screens = [
+    RouteListScreen(routeProvider: fetchFilteredRoutes),
     ProfileScreen(),
   ];
 
@@ -61,7 +62,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
   Widget _buildAuthenticationButton(BuildContext context) {
     var button = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
-        if (user == null) {
+        if (user == null || user.isAnonymous) {
           return TextButton(
             onPressed: () => Navigator.of(context).push(
               SignInScreen.route(),

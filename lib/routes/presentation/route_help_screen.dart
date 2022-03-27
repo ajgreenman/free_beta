@@ -135,6 +135,7 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.green,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
+        userId: 'user1',
         routeId: '001',
         isAttempted: true,
         isCompleted: true,
@@ -150,6 +151,7 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.purple,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
+        userId: 'user1',
         routeId: '002',
         isAttempted: true,
         isCompleted: true,
@@ -164,6 +166,7 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.blue,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
+        userId: 'user1',
         routeId: '003',
         isAttempted: true,
         isCompleted: false,
@@ -178,6 +181,7 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.yellow,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
+        userId: 'user1',
         routeId: '004',
         isAttempted: false,
         isCompleted: false,
@@ -192,6 +196,7 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.black,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
+        userId: 'user1',
         routeId: '005',
         isAttempted: true,
         isCompleted: true,

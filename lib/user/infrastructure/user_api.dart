@@ -1,23 +1,28 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
 
-final userApiProvider = Provider((_) => UserApi(FirebaseAuth.instance));
+final userApiProvider = Provider((_) => UserApi(
+      FirebaseAuth.instance,
+      FirebaseFirestore.instance.collection('gyms'),
+    ));
 
 final authenticationProvider = StreamProvider((ref) {
   return ref.watch(userApiProvider).authenticationStream;
 });
 
 class UserApi {
-  UserApi(this._firebaseAuth);
+  UserApi(this._firebaseAuth, this._firestoreGyms);
 
   final FirebaseAuth _firebaseAuth;
+  final CollectionReference<Map<String, dynamic>> _firestoreGyms;
 
   Stream<User?> get authenticationStream => _firebaseAuth.authStateChanges();
 
   Future<bool> signIn(String email, String password) async {
-    log('Email: $email\nPassword: $password');
     return await _firebaseAuth
         .signInWithEmailAndPassword(
           email: email.trim(),
@@ -27,11 +32,47 @@ class UserApi {
         .onError((_, __) => false);
   }
 
-  Future<void> signUp(String email, String password) async {
-    await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
+  Future<bool> signUp(
+    String email,
+    String password,
+  ) async {
+    if (_firebaseAuth.currentUser == null) return false;
+
+    var credential = EmailAuthProvider.credential(
+      email: email.trim(),
+      password: password.trim(),
     );
+
+    return await _firebaseAuth.currentUser!
+        .linkWithCredential(credential)
+        .then((userCredential) {
+      log('Anonymous account upgrade for $email');
+      return true;
+    }).onError((error, stackTrace) {
+      log('Error linking account for $email\n${error.toString()}\n${stackTrace.toString()}');
+      return false;
+    });
+  }
+
+  Future<bool> checkGymPassword(String input) async {
+    List<GymModel> gyms = [];
+
+    await _firestoreGyms.get().then(
+          (gymCollection) => gymCollection.docs.forEach(
+            (json) {
+              gyms.add(
+                GymModel.fromFirebase(json.id, json.data()),
+              );
+            },
+          ),
+        );
+
+    if (gyms.isEmpty) return false;
+
+    var elevate = gyms.where((gym) => gym.name == 'Elev8');
+    if (elevate.isEmpty) return false;
+
+    return elevate.first.password == input;
   }
 
   Future<void> signOut() async {

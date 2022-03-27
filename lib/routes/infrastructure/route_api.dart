@@ -34,16 +34,27 @@ final fetchRemovedRoutesProvider = FutureProvider((ref) async {
       .toList();
 });
 
-final fetchTextFilteredRoutesProvider =
-    FutureProvider<RouteFilterModel>((ref) async {
+final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
   final routes = await ref.watch(fetchRoutesProvider.future);
+  final filter = ref.watch(routeTextFilterProvider);
+  return _getFilteredRoutes(routes, filter);
+});
 
-  Iterable<RouteModel> filteredRoutes = routes;
+final fetchFilteredRemovedRoutes =
+    FutureProvider<RouteFilterModel>((ref) async {
+  final routes = await ref.watch(fetchRemovedRoutesProvider.future);
+  final filter = ref.watch(routeTextFilterProvider);
+  return _getFilteredRoutes(routes, filter);
+});
 
-  final routeTextFilter = ref.watch(routeTextFilterProvider);
-  if (routeTextFilter != null) {
-    var filterText = routeTextFilter.toLowerCase();
-    filteredRoutes = filteredRoutes.where(
+RouteFilterModel _getFilteredRoutes(
+  List<RouteModel> unfilteredRoutes,
+  String? filter,
+) {
+  Iterable<RouteModel> filteredRoutes = unfilteredRoutes;
+  if (filter != null) {
+    var filterText = filter.toLowerCase();
+    filteredRoutes = unfilteredRoutes.where(
       (route) {
         return route.name.toLowerCase().contains(filterText) ||
             route.routeColor.displayName.toLowerCase().contains(filterText) ||
@@ -54,11 +65,11 @@ final fetchTextFilteredRoutesProvider =
   }
 
   return RouteFilterModel(
-    filter: routeTextFilter,
-    routes: routes,
+    filter: filter,
+    routes: unfilteredRoutes,
     filteredRoutes: filteredRoutes.toList(),
   );
-});
+}
 
 final fetchFilteredRoutesProvider =
     FutureProvider<List<RouteModel>>((ref) async {

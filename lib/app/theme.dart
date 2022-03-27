@@ -46,7 +46,7 @@ class FreeBetaColors {
 
   static const brown = Color(0xFF966d2f);
 
-  static const grayBackground = Color(0xFFF9F9F9);
+  static const grayBackground = Color(0xFFF0F0F0);
   static const grayLight = Color(0xFFC7C8CA);
   static const gray = Color(0xFF8A8D8F);
   static const grayDark = Color(0xFF414042);

@@ -2,19 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
-import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/route_detail_screen.dart';
+import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
 class RouteListScreen extends ConsumerStatefulWidget {
-  static Route<dynamic> route() {
+  static Route<dynamic> route({
+    required FutureProvider<RouteFilterModel> routeProvider,
+    AppBar? appBar,
+  }) {
     return MaterialPageRoute<dynamic>(builder: (context) {
-      return RouteListScreen();
+      return RouteListScreen(
+        routeProvider: routeProvider,
+        appBar: appBar,
+      );
     });
   }
 
-  const RouteListScreen({Key? key}) : super(key: key);
+  const RouteListScreen({
+    Key? key,
+    required this.routeProvider,
+    this.appBar,
+  }) : super(key: key);
+
+  final FutureProvider<RouteFilterModel> routeProvider;
+  final AppBar? appBar;
 
   @override
   _RouteListScreenState createState() => _RouteListScreenState();
@@ -24,7 +37,8 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key('route-list'),
+      key: Key('route-list-screen'),
+      appBar: widget.appBar,
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Column(
@@ -44,46 +58,14 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _buildBody() {
-    return ref.watch(fetchTextFilteredRoutesProvider).when(
-          data: (routeFilterModel) => _onSuccess(
-            routeFilterModel.filteredRoutes.sortRoutes(),
+    return ref.watch(widget.routeProvider).when(
+          data: (routeFilterModel) => RouteList(
+            routes: routeFilterModel.filteredRoutes.sortRoutes(),
+            onRefresh: _refreshRoutes,
           ),
           error: (error, stackTrace) => _onError(error, stackTrace),
           loading: () => _onLoading(),
         );
-  }
-
-  Widget _onSuccess(List<RouteModel> routes) {
-    if (routes.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: FreeBetaSizes.l),
-          child: Text(
-            'Sorry, no available routes',
-            style: FreeBetaTextStyle.h3,
-          ),
-        ),
-      );
-    }
-
-    return Expanded(
-      child: RefreshIndicator(
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (_, index) {
-            return InkWell(
-              onTap: () => Navigator.of(context).push(
-                RouteDetailScreen.route(routes[index]),
-              ),
-              child: RouteCard(route: routes[index]),
-            );
-          },
-          separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
-          itemCount: routes.length,
-        ),
-        onRefresh: _refreshRoutes,
-      ),
-    );
   }
 
   Widget _onError(Object? error, StackTrace? stackTrace) {
@@ -105,9 +87,8 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _buildFilterCounts() {
-    var routeFilterModel = ref
-        .watch(fetchTextFilteredRoutesProvider)
-        .whenOrNull(data: (value) => value);
+    var routeFilterModel =
+        ref.watch(widget.routeProvider).whenOrNull(data: (value) => value);
 
     if (routeFilterModel == null ||
         (routeFilterModel.filter?.isEmpty ?? true)) {
@@ -158,8 +139,7 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     );
   }
 
-  Future<List<RouteModel>> _refreshRoutes() async {
+  Future<void> _refreshRoutes() async {
     ref.refresh(fetchRoutesProvider);
-    return ref.read(fetchRoutesProvider.future);
   }
 }

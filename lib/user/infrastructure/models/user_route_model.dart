@@ -1,4 +1,5 @@
 class UserRouteModel {
+  final String userId;
   final String routeId;
   final bool isAttempted;
   final bool isCompleted;
@@ -6,6 +7,7 @@ class UserRouteModel {
   final String? notes;
 
   UserRouteModel({
+    required this.userId,
     required this.routeId,
     required this.isAttempted,
     required this.isCompleted,
@@ -13,8 +15,9 @@ class UserRouteModel {
     this.notes,
   });
 
-  UserRouteModel.initial(String routeId)
-      : routeId = routeId,
+  UserRouteModel.initial(String userId, String routeId)
+      : userId = userId,
+        routeId = routeId,
         isAttempted = false,
         isCompleted = false,
         isFavorited = false,
@@ -22,6 +25,7 @@ class UserRouteModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'userId': userId,
       'routeId': routeId,
       'isAttempted': _setBool(isAttempted),
       'isCompleted': _setBool(isCompleted),
@@ -32,6 +36,7 @@ class UserRouteModel {
 
   factory UserRouteModel.fromJson(Map<String, dynamic> json) {
     return UserRouteModel(
+      userId: json['userId'],
       routeId: json['routeId'],
       isAttempted: _getBool(json['isAttempted']),
       isCompleted: _getBool(json['isCompleted']),
@@ -46,6 +51,6 @@ class UserRouteModel {
 
   @override
   String toString() {
-    return 'UserRouteModel: {routeId:$routeId, isAttempted:$isAttempted, isCompleted:$isCompleted, isFavorited:$isFavorited, notes:$notes,';
+    return 'UserRouteModel: {userId:$userId, routeId:$routeId, isAttempted:$isAttempted, isCompleted:$isCompleted, isFavorited:$isFavorited, notes:$notes,';
   }
 }

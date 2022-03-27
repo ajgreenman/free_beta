@@ -96,7 +96,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   Widget _buildEditButton(BuildContext context) {
     var button = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
-        if (user != null) {
+        if (user != null && !user.isAnonymous) {
           return IconButton(
             onPressed: () => Navigator.of(context).push(
               EditRouteScreen.route(widget.routeModel),
@@ -246,15 +246,15 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Future<void> _onSave() async {
-    await ref.read(routeApiProvider).saveRoute(
-          UserRouteModel(
-            routeId: widget.routeModel.id,
-            isAttempted: _formModel.isAttempted,
-            isCompleted: _formModel.isCompleted,
-            isFavorited: _formModel.isFavorited,
-            notes: _formModel.notes,
-          ),
-        );
+    // await ref.read(routeApiProvider).saveRoute(
+    //       UserRouteModel(
+    //         routeId: widget.routeModel.id,
+    //         isAttempted: _formModel.isAttempted,
+    //         isCompleted: _formModel.isCompleted,
+    //         isFavorited: _formModel.isFavorited,
+    //         notes: _formModel.notes,
+    //       ),
+    //     );
     ref.refresh(fetchRoutesProvider);
     ref.refresh(fetchUserRoutesProvider);
 

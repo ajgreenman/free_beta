@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 
 class RemovedRoutes extends StatelessWidget {
@@ -17,8 +19,15 @@ class RemovedRoutes extends StatelessWidget {
           ),
           SizedBox(height: FreeBetaSizes.l),
           ElevatedButton(
-            onPressed: () =>
-                Navigator.of(context).push(RouteListScreen.route()),
+            onPressed: () => Navigator.of(context).push(
+              RouteListScreen.route(
+                routeProvider: fetchFilteredRemovedRoutes,
+                appBar: AppBar(
+                  title: Text('Removed Routes'),
+                  leading: FreeBetaBackButton(),
+                ),
+              ),
+            ),
             child: Padding(
               padding: FreeBetaPadding.xlHorizontal,
               child: Text(

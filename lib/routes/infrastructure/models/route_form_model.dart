@@ -9,7 +9,7 @@ class RouteFormModel {
   RouteColor? routeColor;
   DateTime? creationDate;
   DateTime? removalDate;
-  List<String> images;
+  List<String>? images;
 
   RouteFormModel({
     this.name,
@@ -18,7 +18,7 @@ class RouteFormModel {
     this.routeColor,
     this.creationDate,
     this.removalDate,
-    this.images = const [],
+    this.images,
   });
 
   factory RouteFormModel.fromRouteModel(RouteModel routeModel) =>
@@ -51,17 +51,17 @@ class RouteFormModel {
 
   @override
   String toString() =>
-      (this.name.toString()) +
+      (name.toString()) +
       '\n' +
-      (this.routeColor?.displayName ?? '') +
+      (routeColor?.displayName ?? '') +
       '\n' +
-      (this.climbType?.displayName ?? '') +
+      (climbType?.displayName ?? '') +
       '\n' +
-      (this.difficulty.toString()) +
+      (difficulty.toString()) +
       '\n' +
-      (this.creationDate.toString()) +
+      (creationDate.toString()) +
       '\n' +
-      (this.removalDate.toString()) +
+      (removalDate.toString()) +
       '\n' +
-      (this.images.length.toString());
+      ((images?.length ?? 0).toString());
 }

@@ -1,52 +1,45 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
-import 'package:free_beta/user/presentation/create_account_screen.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(builder: (context) {
-      return SignInScreen();
+      return SignUpScreen();
     });
   }
 
-  const SignInScreen({Key? key}) : super(key: key);
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<SignUpScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+class _SignInScreenState extends ConsumerState<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
+  final _gymPasswordController = TextEditingController();
+  String? _gymPasswordErrorMessage;
 
   @override
   Widget build(BuildContext context) {
     var authenticationState = ref.watch(authenticationProvider);
 
-    ref.listen(authenticationProvider, (_, current) {
-      if (current == null) return;
-      var user = current as AsyncData<User?>;
-      if (user.value != null) {
-        Navigator.of(context).pop();
-      }
-    });
-
     return Scaffold(
-      key: Key('sign-in'),
+      key: Key('create-account'),
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text('Create Account'),
         leading: FreeBetaBackButton(),
       ),
       body: authenticationState.when(
         data: (user) {
           if (user == null || user.isAnonymous) {
-            return _buildSignInForm();
+            return _buildCreateAccountForm();
           }
           return _buildLoading();
         },
@@ -63,7 +56,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         child: CircularProgressIndicator(),
       );
 
-  Widget _buildSignInForm() {
+  Widget _buildCreateAccountForm() {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SingleChildScrollView(
@@ -172,48 +165,101 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       ],
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
-                    ElevatedButton(
-                      onPressed: _onSignIn,
-                      child: Center(
-                        child: Text(
-                          'Sign In',
-                          style: FreeBetaTextStyle.h4.copyWith(
-                            color: FreeBetaColors.white,
-                          ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Confirm Password',
+                          style: FreeBetaTextStyle.h3,
                         ),
-                      ),
-                      style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                          BorderSide(
-                            width: 2,
+                        SizedBox(height: FreeBetaSizes.m),
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          obscureText: true,
+                          validator: (password) {
+                            if (password == null ||
+                                password != _passwordController.text) {
+                              return 'Passwords do not match';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FreeBetaColors.red,
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: FreeBetaSizes.m,
+                            ),
+                            hintStyle: FreeBetaTextStyle.h4.copyWith(
+                              color: FreeBetaColors.grayLight,
+                            ),
+                            hintText: 'Confirm Password',
                           ),
+                          style: FreeBetaTextStyle.h4,
                         ),
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                            vertical: FreeBetaSizes.ml,
-                          ),
-                        ),
-                      ),
+                      ],
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
-                    Padding(
-                      padding: FreeBetaPadding.mHorizontal,
-                      child: Text(
-                        'Need an account?',
-                        style: FreeBetaTextStyle.h2,
-                      ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Gym Password',
+                          style: FreeBetaTextStyle.h3,
+                        ),
+                        SizedBox(height: FreeBetaSizes.m),
+                        TextFormField(
+                          controller: _gymPasswordController,
+                          validator: (password) {
+                            if (password == null || password.isEmpty) {
+                              return 'Please enter the gym password';
+                            }
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                width: 2.0,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: FreeBetaColors.red,
+                                width: 2.0,
+                              ),
+                            ),
+                            contentPadding: EdgeInsets.symmetric(
+                              horizontal: FreeBetaSizes.m,
+                            ),
+                            hintStyle: FreeBetaTextStyle.h4.copyWith(
+                              color: FreeBetaColors.grayLight,
+                            ),
+                            hintText: 'Gym Password',
+                            errorText: _gymPasswordErrorMessage,
+                          ),
+                          style: FreeBetaTextStyle.h4,
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: FreeBetaPadding.mAll,
-                      child: Text(
-                        'Currently, accounts are only needed by route setters to create and upload new routes.',
-                        style: FreeBetaTextStyle.body3,
-                      ),
-                    ),
+                    SizedBox(height: FreeBetaSizes.xl),
                     ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        SignUpScreen.route(),
-                      ),
+                      onPressed: _onCreateAccount,
                       child: Center(
                         child: Text(
                           'Create Account',
@@ -239,19 +285,49 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 ),
               ),
             ),
+            Padding(
+              padding: FreeBetaPadding.lAll,
+              child: Text(
+                'Currently, accounts are only needed for route setters to create and upload new routes. If you believe you need an account, please contact a gym owner or email AGreenman13@gmail.com.',
+                style: FreeBetaTextStyle.body3.copyWith(
+                  color: FreeBetaColors.grayLight,
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
 
-  void _onSignIn() async {
+  void _onCreateAccount() async {
+    setState(() {
+      _gymPasswordErrorMessage = null;
+    });
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
 
     final userApi = ref.read(userApiProvider);
-    var result = await userApi.signIn(
+    var checkPassword = await userApi.checkGymPassword(
+      _gymPasswordController.text,
+    );
+
+    if (!checkPassword) {
+      _gymPasswordController.text = '';
+
+      setState(() {
+        _gymPasswordErrorMessage = 'Invalid gym password';
+      });
+
+      await showDialog(
+        context: context,
+        builder: (_) => _InvalidGymPasswordDialog(),
+      );
+      return;
+    }
+
+    var result = await userApi.signUp(
       _emailController.text,
       _passwordController.text,
     );
@@ -259,22 +335,59 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     if (!result) {
       await showDialog(
         context: context,
-        builder: (_) => _InvalidLoginDialog(),
+        builder: (_) => _UnableToCreateDialog(),
       );
+      return;
     }
+
+    await showDialog(
+      context: context,
+      builder: (_) => _AccountCreatedDialog(),
+    );
+    Navigator.of(context).pop();
   }
 }
 
-class _InvalidLoginDialog extends StatelessWidget {
-  const _InvalidLoginDialog({
+class _AccountCreatedDialog extends StatelessWidget {
+  const _AccountCreatedDialog({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text("Invalid login"),
-      content: Text("Email/Password combination is incorrect"),
+      title: Text("Success!"),
+      content: Text("Your account was successfully created! Please sign in."),
+    );
+  }
+}
+
+class _InvalidGymPasswordDialog extends StatelessWidget {
+  const _InvalidGymPasswordDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Invalid gym password"),
+      content:
+          Text("The gym password you entered is incorrect, please try again."),
+    );
+  }
+}
+
+class _UnableToCreateDialog extends StatelessWidget {
+  const _UnableToCreateDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Unable to create account"),
+      content: Text(
+          "Something went wrong and we were unable to create your account, please try again later."),
     );
   }
 }

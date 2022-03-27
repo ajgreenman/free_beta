@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:free_beta/app/theme.dart';
 
 class FreeBetaTextField extends StatelessWidget {
-  const FreeBetaTextField(
-      {Key? key,
-      this.initialValue,
-      this.hintText,
-      this.validator,
-      this.onChanged,
-      this.controller})
-      : super(key: key);
+  const FreeBetaTextField({
+    Key? key,
+    this.initialValue,
+    this.hintText,
+    this.validator,
+    this.onChanged,
+    this.controller,
+    this.keyboardType,
+  }) : super(key: key);
 
   final String? initialValue;
   final String? hintText;
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +25,7 @@ class FreeBetaTextField extends StatelessWidget {
       controller: controller,
       maxLength: 600,
       maxLines: 6,
+      keyboardType: keyboardType,
       style: FreeBetaTextStyle.body5,
       initialValue: initialValue,
       onChanged: onChanged,
