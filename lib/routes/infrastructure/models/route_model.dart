@@ -29,7 +29,7 @@ class RouteModel {
   factory RouteModel.fromFirebase(String id, Map<String, dynamic> json) =>
       RouteModel(
         id: id,
-        name: json['name'],
+        name: json['name'] ?? '',
         climbType: ClimbType.values.firstWhere(
           (climbType) => describeEnum(climbType) == json['climbType'],
         ),

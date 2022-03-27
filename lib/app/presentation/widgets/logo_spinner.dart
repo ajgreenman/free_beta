@@ -178,6 +178,16 @@ class StaggeredLogo extends StatelessWidget {
             ),
           ),
         ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: FreeBetaPadding.xxlVertical,
+            child: Text(
+              'Tap anywhere to skip...',
+              style: FreeBetaTextStyle.h3,
+            ),
+          ),
+        ),
       ],
     );
   }

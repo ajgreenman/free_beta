@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/routes/infrastructure/route_local_data_provider.dart';
+import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
+import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 
 class UserStats extends ConsumerWidget {
   const UserStats({Key? key}) : super(key: key);
@@ -15,7 +16,11 @@ class UserStats extends ConsumerWidget {
             error: (error, stackTrace) => _onError(error, stackTrace),
           );
 
-  Widget _onSuccess(UserRoutes userRoutes) {
+  Widget _onSuccess(UserStatsModel? userStatsModel) {
+    if (userStatsModel == null) {
+      return _onError('Invalid user', null);
+    }
+
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,9 +30,9 @@ class UserStats extends ConsumerWidget {
             style: FreeBetaTextStyle.h2,
           ),
           SizedBox(height: FreeBetaSizes.m),
-          _buildRow('Attempted', userRoutes.attempted),
-          _buildRow('Completed', userRoutes.completed),
-          _buildRow('Favorited', userRoutes.favorited),
+          _buildRow('Attempted', userStatsModel.attempted),
+          _buildRow('Completed', userStatsModel.completed),
+          _buildRow('Favorited', userStatsModel.favorited),
         ],
       ),
     );

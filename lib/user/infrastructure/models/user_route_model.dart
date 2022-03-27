@@ -25,7 +25,7 @@ class UserRouteModel {
 
   Map<String, dynamic> toJson() {
     return {
-      'userId': userId,
+      'id': userId,
       'routeId': routeId,
       'isAttempted': _setBool(isAttempted),
       'isCompleted': _setBool(isCompleted),
@@ -36,7 +36,7 @@ class UserRouteModel {
 
   factory UserRouteModel.fromJson(Map<String, dynamic> json) {
     return UserRouteModel(
-      userId: json['userId'],
+      userId: json['id'],
       routeId: json['routeId'],
       isAttempted: _getBool(json['isAttempted']),
       isCompleted: _getBool(json['isCompleted']),
