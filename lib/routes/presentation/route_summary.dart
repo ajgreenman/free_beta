@@ -31,6 +31,7 @@ class RouteSummary extends StatelessWidget {
         Row(
           children: [
             Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 _buildColor(),
                 _buildName(),
@@ -57,9 +58,11 @@ class RouteSummary extends StatelessWidget {
   }
 
   Widget _buildName() {
-    return Text(
-      route.truncatedDisplayName,
-      style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
+    return Flexible(
+      child: Text(
+        route.truncatedDisplayName(isDetailed ? 20 : 30),
+        style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
+      ),
     );
   }
 

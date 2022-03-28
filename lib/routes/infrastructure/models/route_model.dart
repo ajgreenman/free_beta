@@ -51,9 +51,9 @@ class RouteModel {
 extension RouteModelExtensions on RouteModel {
   String get displayName => this.name.isNotEmpty ? this.name : '(unnamed)';
 
-  String get truncatedDisplayName {
-    if (this.name.length > 30) {
-      return this.name.substring(0, 30) + '...';
+  String truncatedDisplayName(int limit) {
+    if (this.name.length > limit) {
+      return this.name.substring(0, limit) + '...';
     }
     return this.name;
   }
