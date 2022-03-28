@@ -1,46 +1,42 @@
+import 'dart:developer';
+
 class UserRouteModel {
+  final String id;
   final String userId;
   final String routeId;
-  final bool isAttempted;
   final bool isCompleted;
   final bool isFavorited;
+  final int attempts;
   final String? notes;
 
   UserRouteModel({
     required this.userId,
     required this.routeId,
-    required this.isAttempted,
     required this.isCompleted,
     required this.isFavorited,
+    this.attempts = 0,
     this.notes,
-  });
-
-  UserRouteModel.initial(String userId, String routeId)
-      : userId = userId,
-        routeId = routeId,
-        isAttempted = false,
-        isCompleted = false,
-        isFavorited = false,
-        notes = null;
+  }) : id = '$userId-$routeId';
 
   Map<String, dynamic> toJson() {
     return {
-      'id': userId,
+      'id': id,
+      'userId': userId,
       'routeId': routeId,
-      'isAttempted': _setBool(isAttempted),
       'isCompleted': _setBool(isCompleted),
       'isFavorited': _setBool(isFavorited),
+      'attempts': attempts,
       'notes': notes,
     };
   }
 
   factory UserRouteModel.fromJson(Map<String, dynamic> json) {
     return UserRouteModel(
-      userId: json['id'],
+      userId: json['userId'],
       routeId: json['routeId'],
-      isAttempted: _getBool(json['isAttempted']),
       isCompleted: _getBool(json['isCompleted']),
       isFavorited: _getBool(json['isFavorited']),
+      attempts: json['attempts'] ?? 0,
       notes: json['notes'],
     );
   }
@@ -51,6 +47,6 @@ class UserRouteModel {
 
   @override
   String toString() {
-    return 'UserRouteModel: {userId:$userId, routeId:$routeId, isAttempted:$isAttempted, isCompleted:$isCompleted, isFavorited:$isFavorited, notes:$notes,';
+    return 'UserRouteModel: {id:$id, userId:$userId, routeId:$routeId, isCompleted:$isCompleted, isFavorited:$isFavorited, attempts:$attempts, notes:$notes,';
   }
 }

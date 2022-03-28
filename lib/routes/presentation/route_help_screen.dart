@@ -137,7 +137,7 @@ class RouteHelpScreen extends StatelessWidget {
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '001',
-        isAttempted: true,
+        attempts: 1,
         isCompleted: true,
         isFavorited: false,
         notes: 'Great warmup',
@@ -153,7 +153,7 @@ class RouteHelpScreen extends StatelessWidget {
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '002',
-        isAttempted: true,
+        attempts: 4,
         isCompleted: true,
         isFavorited: true,
       ),
@@ -168,7 +168,7 @@ class RouteHelpScreen extends StatelessWidget {
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '003',
-        isAttempted: true,
+        attempts: 2,
         isCompleted: false,
         isFavorited: true,
       ),
@@ -183,7 +183,7 @@ class RouteHelpScreen extends StatelessWidget {
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '004',
-        isAttempted: false,
+        attempts: 0,
         isCompleted: false,
         isFavorited: false,
       ),
@@ -198,7 +198,7 @@ class RouteHelpScreen extends StatelessWidget {
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '005',
-        isAttempted: true,
+        attempts: 4,
         isCompleted: true,
         isFavorited: false,
         notes: 'Too easy',

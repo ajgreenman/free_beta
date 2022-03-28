@@ -16,6 +16,12 @@ class RouteSummary extends StatelessWidget {
   final bool isDetailed;
   final RouteModel route;
 
+  TextStyle get textStyle =>
+      isDetailed ? FreeBetaTextStyle.body2 : FreeBetaTextStyle.body3;
+
+  TextStyle get headingTextStyle =>
+      isDetailed ? FreeBetaTextStyle.h3 : FreeBetaTextStyle.h4;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -53,7 +59,7 @@ class RouteSummary extends StatelessWidget {
   Widget _buildName() {
     return Text(
       route.truncatedDisplayName,
-      style: FreeBetaTextStyle.h4.copyWith(fontWeight: FontWeight.bold),
+      style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
     );
   }
 
@@ -62,7 +68,7 @@ class RouteSummary extends StatelessWidget {
       padding: FreeBetaPadding.sHorizontal,
       child: Text(
         '|',
-        style: FreeBetaTextStyle.body3.copyWith(fontWeight: FontWeight.bold),
+        style: textStyle.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -70,21 +76,24 @@ class RouteSummary extends StatelessWidget {
   Widget _buildType() {
     return Text(
       route.climbType.displayName,
-      style: FreeBetaTextStyle.body3,
+      style: textStyle,
     );
   }
 
   Widget _buildDifficulty() {
     return Text(
       route.difficulty,
-      style: FreeBetaTextStyle.body3,
+      style: textStyle,
     );
   }
 
   Widget _buildColor() {
     if (!isDetailed) return SizedBox.shrink();
 
-    var colorSquare = RouteColorSquare(routeColor: route.routeColor);
+    var colorSquare = RouteColorSquare(
+      routeColor: route.routeColor,
+      size: FreeBetaSizes.xl,
+    );
 
     if (route.name.isEmpty) {
       return colorSquare;
@@ -103,7 +112,7 @@ class RouteSummary extends StatelessWidget {
       Spacer(),
       Text(
         label + ': ' + DateFormat('MM/dd').formatWithNull(date),
-        style: FreeBetaTextStyle.body3,
+        style: textStyle,
       ),
     ];
   }

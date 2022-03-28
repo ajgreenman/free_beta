@@ -140,6 +140,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Future<void> _refreshRoutes() async {
-    ref.refresh(fetchRoutesProvider);
+    ref.refresh(widget.routeProvider);
   }
 }

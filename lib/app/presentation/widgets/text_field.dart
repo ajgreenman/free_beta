@@ -23,10 +23,10 @@ class FreeBetaTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      maxLength: 600,
-      maxLines: 6,
+      maxLength: 500,
+      maxLines: 5,
       keyboardType: keyboardType,
-      style: FreeBetaTextStyle.body5,
+      style: FreeBetaTextStyle.body3,
       initialValue: initialValue,
       onChanged: onChanged,
       validator: validator,

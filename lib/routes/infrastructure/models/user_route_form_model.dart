@@ -1,13 +1,13 @@
 class UserRouteFormModel {
-  bool isAttempted;
   bool isCompleted;
   bool isFavorited;
+  int attempts;
   String? notes;
 
   UserRouteFormModel({
-    required this.isAttempted,
     required this.isCompleted,
     required this.isFavorited,
+    this.attempts = 0,
     this.notes,
   });
 }

@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/form/number_input.dart';
 import 'package:free_beta/app/presentation/widgets/text_field.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/edit_route_screen.dart';
@@ -41,9 +44,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   void initState() {
     super.initState();
     _formModel = UserRouteFormModel(
-      isAttempted: widget.routeModel.userRouteModel?.isAttempted ?? false,
       isCompleted: widget.routeModel.userRouteModel?.isCompleted ?? false,
       isFavorited: widget.routeModel.userRouteModel?.isFavorited ?? false,
+      attempts: widget.routeModel.userRouteModel?.attempts ?? 0,
       notes: widget.routeModel.userRouteModel?.notes,
     );
   }
@@ -73,14 +76,19 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildCheckboxRow('Attempted', _buildAttemptedCheckbox()),
+                      _buildAttemptsRow(),
                       _buildCheckboxRow('Completed', _buildCompletedCheckbox()),
                       _buildCheckboxRow('Favorited', _buildFavoritedCheckbox()),
-                      SizedBox(height: FreeBetaSizes.m),
+                      SizedBox(height: FreeBetaSizes.ml),
                       ..._buildNotes(),
                       ElevatedButton(
                         onPressed: widget.isHelp ? null : _onSave,
-                        child: Text('Save'),
+                        child: Text(
+                          'Save',
+                          style: FreeBetaTextStyle.body2.copyWith(
+                            color: FreeBetaColors.white,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -120,31 +128,41 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         children: [
           Text(
             label,
-            style: FreeBetaTextStyle.body3,
+            style: FreeBetaTextStyle.body2,
           ),
           Spacer(),
           SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
+          SizedBox(width: FreeBetaSizes.m),
         ],
       ),
     );
   }
 
-  Checkbox _buildAttemptedCheckbox() => Checkbox(
-        activeColor: FreeBetaColors.blueDark,
-        value: _formModel.isAttempted,
-        onChanged: (value) {
-          if (value == null || value == _formModel.isAttempted) return;
-          dirtyForm = true;
+  Widget _buildAttemptsRow() {
+    return Padding(
+      padding: FreeBetaPadding.sVertical,
+      child: Row(
+        children: [
+          Text(
+            'Attempts',
+            style: FreeBetaTextStyle.body2,
+          ),
+          Spacer(),
+          FreeBetaNumberInput(
+            value: _formModel.attempts,
+            onChanged: (value) {
+              if (value == _formModel.attempts) return;
+              dirtyForm = true;
 
-          setState(() {
-            _formModel.isAttempted = value;
-            if (!value) {
-              _formModel.isCompleted = false;
-              _formModel.isFavorited = false;
-            }
-          });
-        },
-      );
+              setState(() {
+                _formModel.attempts = value;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   Checkbox _buildCompletedCheckbox() => Checkbox(
         activeColor: FreeBetaColors.blueDark,
@@ -155,8 +173,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
           setState(() {
             _formModel.isCompleted = value;
-            if (value) {
-              _formModel.isAttempted = true;
+            if (value && _formModel.attempts == 0) {
+              _formModel.attempts++;
             }
           });
         },
@@ -171,8 +189,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
           setState(() {
             _formModel.isFavorited = value;
-            if (value) {
-              _formModel.isAttempted = true;
+            if (value && _formModel.attempts == 0) {
+              _formModel.attempts++;
             }
           });
         },
@@ -182,9 +200,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return [
       Text(
         'Notes',
-        style: FreeBetaTextStyle.body3,
+        style: FreeBetaTextStyle.body2,
       ),
-      SizedBox(height: FreeBetaSizes.m),
+      SizedBox(height: FreeBetaSizes.ml),
       FreeBetaTextField(
         initialValue: _formModel.notes,
         hintText: 'Enter notes here:\n\nex. flag your left foot',
@@ -254,9 +272,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           UserRouteModel(
             userId: user!.uid,
             routeId: widget.routeModel.id,
-            isAttempted: _formModel.isAttempted,
             isCompleted: _formModel.isCompleted,
             isFavorited: _formModel.isFavorited,
+            attempts: _formModel.attempts,
             notes: _formModel.notes,
           ),
         );

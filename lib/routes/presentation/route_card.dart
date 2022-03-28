@@ -59,7 +59,7 @@ class RouteCard extends StatelessWidget {
 
   Widget _buildProgressIcon() {
     return RouteProgressIcon(
-      isAttempted: route.userRouteModel?.isAttempted ?? false,
+      isAttempted: (route.userRouteModel?.attempts ?? 0) > 0,
       isCompleted: route.userRouteModel?.isCompleted ?? false,
     );
   }
