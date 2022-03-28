@@ -64,8 +64,5 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Color _getBackgroundColor() {
-    if (route.removalDate != null) return FreeBetaColors.grayLight;
-    return route.routeColor.displayColor.withOpacity(0.3);
-  }
+  Color _getBackgroundColor() => route.routeColor.displayColor.withOpacity(0.3);
 }

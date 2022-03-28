@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/presentation/create_account_screen.dart';
@@ -196,43 +197,50 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                       ),
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
-                    Padding(
-                      padding: FreeBetaPadding.mHorizontal,
-                      child: Text(
-                        'Need an account?',
-                        style: FreeBetaTextStyle.h2,
-                      ),
-                    ),
-                    Padding(
-                      padding: FreeBetaPadding.mAll,
-                      child: Text(
-                        'Currently, accounts are only needed by route setters to create and upload new routes.',
-                        style: FreeBetaTextStyle.body3,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.of(context).push(
-                        SignUpScreen.route(),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Create Account',
-                          style: FreeBetaTextStyle.h4.copyWith(
-                            color: FreeBetaColors.white,
+                    InfoCard(
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: FreeBetaPadding.mHorizontal,
+                            child: Text(
+                              'Need an account?',
+                              style: FreeBetaTextStyle.h2,
+                            ),
                           ),
-                        ),
-                      ),
-                      style: ButtonStyle(
-                        side: MaterialStateProperty.all(
-                          BorderSide(
-                            width: 2,
+                          Padding(
+                            padding: FreeBetaPadding.mAll,
+                            child: Text(
+                              'Currently, accounts are only needed by route setters to create and upload new routes.',
+                              style: FreeBetaTextStyle.body3,
+                            ),
                           ),
-                        ),
-                        padding: MaterialStateProperty.all(
-                          const EdgeInsets.symmetric(
-                            vertical: FreeBetaSizes.ml,
+                          SizedBox(height: FreeBetaSizes.xl),
+                          ElevatedButton(
+                            onPressed: () => Navigator.of(context).push(
+                              SignUpScreen.route(),
+                            ),
+                            child: Center(
+                              child: Text(
+                                'Create Account',
+                                style: FreeBetaTextStyle.h4.copyWith(
+                                  color: FreeBetaColors.white,
+                                ),
+                              ),
+                            ),
+                            style: ButtonStyle(
+                              side: MaterialStateProperty.all(
+                                BorderSide(
+                                  width: 2,
+                                ),
+                              ),
+                              padding: MaterialStateProperty.all(
+                                const EdgeInsets.symmetric(
+                                  vertical: FreeBetaSizes.ml,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
+                        ],
                       ),
                     ),
                   ],
