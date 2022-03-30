@@ -20,7 +20,10 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
   int _currentIndex = 0;
 
   static List<Widget> _screens = [
-    RouteListScreen(routeProvider: fetchFilteredRoutes),
+    RouteListScreen(
+      routeProvider: fetchFilteredRoutes,
+      refreshProvider: fetchRoutesProvider,
+    ),
     ProfileScreen(),
   ];
 

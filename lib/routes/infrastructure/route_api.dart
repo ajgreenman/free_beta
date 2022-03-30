@@ -14,8 +14,6 @@ final routeApiProvider = Provider(
   ),
 );
 
-final routeTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
-final routeColorFilterProvider = StateProvider<RouteColor?>((_) => null);
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
 
 final fetchRoutesProvider = FutureProvider((ref) async {
@@ -70,29 +68,6 @@ RouteFilterModel _getFilteredRoutes(
     filteredRoutes: filteredRoutes.toList(),
   );
 }
-
-final fetchFilteredRoutesProvider =
-    FutureProvider<List<RouteModel>>((ref) async {
-  final routes = await ref.watch(fetchRoutesProvider.future);
-
-  Iterable<RouteModel> filteredRoutes = routes;
-
-  final routeTypeFilter = ref.watch(routeTypeFilterProvider);
-  if (routeTypeFilter != null) {
-    filteredRoutes = routes.where(
-      (route) => route.climbType == routeTypeFilter,
-    );
-  }
-
-  final routeColorFilter = ref.watch(routeColorFilterProvider);
-  if (routeColorFilter != null) {
-    filteredRoutes = filteredRoutes.where(
-      (route) => route.routeColor == routeColorFilter,
-    );
-  }
-
-  return filteredRoutes.toList();
-});
 
 class RouteApi {
   final RouteRepository routeRepository;

@@ -22,6 +22,7 @@ class RemovedRoutes extends StatelessWidget {
             onPressed: () => Navigator.of(context).push(
               RouteListScreen.route(
                 routeProvider: fetchFilteredRemovedRoutes,
+                refreshProvider: fetchRemovedRoutesProvider,
                 appBar: AppBar(
                   title: Text('Removed Routes'),
                   leading: FreeBetaBackButton(),

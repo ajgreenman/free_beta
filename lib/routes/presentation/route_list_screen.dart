@@ -10,11 +10,13 @@ import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 class RouteListScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route({
     required FutureProvider<RouteFilterModel> routeProvider,
+    required FutureProvider<List<RouteModel>> refreshProvider,
     AppBar? appBar,
   }) {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return RouteListScreen(
         routeProvider: routeProvider,
+        refreshProvider: refreshProvider,
         appBar: appBar,
       );
     });
@@ -23,10 +25,12 @@ class RouteListScreen extends ConsumerStatefulWidget {
   const RouteListScreen({
     Key? key,
     required this.routeProvider,
+    required this.refreshProvider,
     this.appBar,
   }) : super(key: key);
 
   final FutureProvider<RouteFilterModel> routeProvider;
+  final FutureProvider<List<RouteModel>> refreshProvider;
   final AppBar? appBar;
 
   @override
@@ -140,6 +144,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Future<void> _refreshRoutes() async {
-    ref.refresh(widget.routeProvider);
+    ref.refresh(widget.refreshProvider);
   }
 }
