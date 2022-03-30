@@ -5,6 +5,7 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
+import 'package:free_beta/routes/presentation/widgets/route_filter_bar.dart';
 import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
 class RouteListScreen extends ConsumerStatefulWidget {
@@ -48,12 +49,9 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: FreeBetaPadding.mAll,
-              child: _buildFilterText(context),
+            RouteFilterBar(
+              routeProvider: widget.routeProvider,
             ),
-            _buildFilterCounts(),
-            Divider(height: 1, thickness: 1),
             _buildBody(),
           ],
         ),
@@ -87,59 +85,6 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
     return Padding(
       padding: FreeBetaPadding.xxlVertical,
       child: Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget _buildFilterCounts() {
-    var routeFilterModel =
-        ref.watch(widget.routeProvider).whenOrNull(data: (value) => value);
-
-    if (routeFilterModel == null ||
-        (routeFilterModel.filter?.isEmpty ?? true)) {
-      return SizedBox.shrink();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: FreeBetaSizes.m,
-        bottom: FreeBetaSizes.m,
-      ),
-      child: Text(
-        'Showing ${routeFilterModel.filteredRoutes.length} ' +
-            'of ${routeFilterModel.routes.length}',
-      ),
-    );
-  }
-
-  Widget _buildFilterText(BuildContext context) {
-    var routeFilterText = ref.watch(routeTextFilterProvider);
-    return TextFormField(
-      initialValue: routeFilterText,
-      onChanged: (value) {
-        ref.read(routeTextFilterProvider.notifier).state = value;
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(FreeBetaSizes.xl),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: FreeBetaSizes.ml,
-        ),
-        hintStyle: FreeBetaTextStyle.h4.copyWith(
-          color: FreeBetaColors.grayLight,
-        ),
-        hintText: 'Type to filter routes',
-      ),
-      style: FreeBetaTextStyle.h4,
     );
   }
 
