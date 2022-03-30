@@ -80,7 +80,16 @@ class _AreYouSureDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Are you sure?"),
-      content: Text("Are you sure you want to delete this route?"),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Are you sure you want to delete this route?"),
+          SizedBox(height: FreeBetaSizes.m),
+          Text(
+              "Deleting a route means it won't show up on the Removed Routes screen. Instead, to remove a route, simply edit the route and set a Removal Date."),
+        ],
+      ),
       actions: [
         TextButton(
           child: Text('Cancel'),

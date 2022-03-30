@@ -4,8 +4,73 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 
-class RouteFilterBar extends ConsumerWidget {
-  const RouteFilterBar({
+class RouteFilterBar extends SliverPersistentHeaderDelegate {
+  RouteFilterBar({required this.routeProvider});
+
+  final FutureProvider<RouteFilterModel> routeProvider;
+
+  static const _filterBarHeight = 72.0;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    // = shrinkOffset > 100 ? 0.0 : (100 - shrinkOffset) / 100;
+    return Stack(
+      children: [
+        Container(
+          height: maxExtent,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                FreeBetaColors.yellowFilterBar,
+                FreeBetaColors.greenFilterBar,
+                FreeBetaColors.purpleFilterBar,
+              ],
+              stops: [
+                0.0,
+                0.7,
+                0.9,
+              ],
+            ),
+          ),
+        ),
+        // Positioned(
+        //   bottom: minExtent,
+        //   left: FreeBetaSizes.m,
+        //   right: FreeBetaSizes.m,
+        //   child: Opacity(
+        //     opacity: fadeOpacity,
+        //     child: Text('how r ya now'),
+        //   ),
+        // ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: _FilterTextField(routeProvider: routeProvider),
+        ),
+      ],
+    );
+  }
+
+  @override
+  double get minExtent => _filterBarHeight;
+
+  @override
+  double get maxExtent => _filterBarHeight;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
+      oldDelegate.maxExtent != maxExtent || oldDelegate.minExtent != minExtent;
+}
+
+class _FilterTextField extends ConsumerWidget {
+  const _FilterTextField({
     Key? key,
     required this.routeProvider,
   }) : super(key: key);
@@ -14,92 +79,49 @@ class RouteFilterBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container(
-      height: 200,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            FreeBetaColors.yellowBrand.withOpacity(0.3),
-            FreeBetaColors.greenBrand.withOpacity(0.3),
-            FreeBetaColors.purpleBrand.withOpacity(0.2),
-          ],
-          stops: [
-            0.0,
-            0.7,
-            0.9,
-          ],
-        ),
-      ),
-      child: Padding(
-        padding: FreeBetaPadding.mAll,
-        child: _buildFilterText(context, ref),
-      ),
-      // child: Column(
-      //   mainAxisSize: MainAxisSize.min,
-      //   children: [
-      //     Padding(
-      //       padding: FreeBetaPadding.mAll,
-      //       child: _buildFilterText(context, ref),
-      //     ),
-      //     _buildFilterCounts(ref),
-      //     Divider(height: 1, thickness: 1),
-      //   ],
-      // ),
-    );
-  }
-
-  Widget _buildFilterCounts(WidgetRef ref) {
-    var routeFilterModel =
-        ref.watch(routeProvider).whenOrNull(data: (value) => value);
-
-    if (routeFilterModel == null ||
-        (routeFilterModel.filter?.isEmpty ?? true)) {
-      return SizedBox.shrink();
-    }
-
-    return Padding(
-      padding: const EdgeInsets.only(
-        left: FreeBetaSizes.m,
-        bottom: FreeBetaSizes.m,
-      ),
-      child: Text(
-        'Showing ${routeFilterModel.filteredRoutes.length} ' +
-            'of ${routeFilterModel.routes.length}',
-      ),
-    );
-  }
-
-  Widget _buildFilterText(BuildContext context, WidgetRef ref) {
     var routeFilterText = ref.watch(routeTextFilterProvider);
-    return TextFormField(
-      initialValue: routeFilterText,
-      onChanged: (value) {
-        ref.read(routeTextFilterProvider.notifier).state = value;
-      },
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.0,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: FreeBetaPadding.mAll,
+          child: TextFormField(
+            initialValue: routeFilterText,
+            onChanged: (value) {
+              ref.read(routeTextFilterProvider.notifier).state = value;
+            },
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(FreeBetaSizes.xl),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 1.0,
+                ),
+                borderRadius: BorderRadius.circular(FreeBetaSizes.xl),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: FreeBetaSizes.ml,
+              ),
+              hintStyle: FreeBetaTextStyle.h4.copyWith(
+                color: FreeBetaColors.grayDark,
+              ),
+              hintText: 'Type to filter routes',
+            ),
+            style: FreeBetaTextStyle.h4,
           ),
-          borderRadius: BorderRadius.circular(16.0),
         ),
-        enabledBorder: OutlineInputBorder(
-          borderSide: BorderSide(
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(FreeBetaSizes.xl),
-        ),
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: FreeBetaSizes.ml,
-        ),
-        hintStyle: FreeBetaTextStyle.h4.copyWith(
-          color: FreeBetaColors.grayDark,
-        ),
-        hintText: 'Type to filter routes',
-      ),
-      style: FreeBetaTextStyle.h4,
+        Divider(height: 1, thickness: 1),
+      ],
     );
   }
 }

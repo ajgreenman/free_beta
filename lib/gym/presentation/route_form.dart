@@ -93,6 +93,13 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 controller: _nameController,
                 skipValidation: true,
               ),
+              FreeBetaButtonInput(
+                label: 'Images',
+                hintText: _imageHintText,
+                onTap: () => _onImagePressed(context),
+                controller: _imageController,
+                isImageField: true,
+              ),
               FreeBetaDropdownList<RouteColor?>(
                 label: 'Color',
                 items: _getColors(),
@@ -124,13 +131,6 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                   controller: _removalDateController,
                   isRequired: false,
                 ),
-              FreeBetaButtonInput(
-                label: 'Images',
-                hintText: _imageHintText,
-                onTap: () => _onImagePressed(context),
-                controller: _imageController,
-                isImageField: true,
-              ),
               widget.editRouteModel == null
                   ? _buildCreateRouteButton(context)
                   : _buildEditRouteButton(context),

@@ -27,16 +27,14 @@ class RouteList extends StatelessWidget {
       );
     }
 
-    return Expanded(
-      child: RefreshIndicator(
-        child: ListView.separated(
-          shrinkWrap: true,
-          itemBuilder: (_, index) => RouteCard(route: routes[index]),
-          separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
-          itemCount: routes.length,
-        ),
-        onRefresh: onRefresh,
+    return RefreshIndicator(
+      child: ListView.separated(
+        shrinkWrap: true,
+        itemBuilder: (_, index) => RouteCard(route: routes[index]),
+        separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+        itemCount: routes.length,
       ),
+      onRefresh: onRefresh,
     );
   }
 }

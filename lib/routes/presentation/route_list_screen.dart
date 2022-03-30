@@ -4,7 +4,6 @@ import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/filter_bar.dart';
 import 'package:free_beta/routes/presentation/widgets/route_filter_bar.dart';
 import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
@@ -45,26 +44,18 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
       key: Key('route-list-screen'),
       appBar: widget.appBar,
       body: GestureDetector(
-          onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-          child: CustomScrollView(
-            slivers: [
-              SliverPersistentHeader(
-                delegate: SliverFilterAppBar(),
-                pinned: true,
-              ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    return Container(
-                      height: 20,
-                      child: Text('Route $index'),
-                    );
-                  },
-                  childCount: 50,
-                ),
-              ),
-            ],
-          )),
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: NestedScrollView(
+          controller: ScrollController(),
+          headerSliverBuilder: (_, __) => [
+            SliverPersistentHeader(
+              delegate: RouteFilterBar(routeProvider: widget.routeProvider),
+              pinned: true,
+            ),
+          ],
+          body: _buildBody(),
+        ),
+      ),
     );
   }
 
