@@ -45,14 +45,15 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
       appBar: widget.appBar,
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            RouteFilterBar(
-              routeProvider: widget.routeProvider,
+        child: NestedScrollView(
+          controller: ScrollController(),
+          headerSliverBuilder: (_, __) => [
+            SliverPersistentHeader(
+              delegate: RouteFilterBar(routeProvider: widget.routeProvider),
+              pinned: true,
             ),
-            _buildBody(),
           ],
+          body: _buildBody(),
         ),
       ),
     );

@@ -51,12 +51,14 @@ class FreeBetaColors {
   static const gray = Color(0xFF8A8D8F);
   static const grayDark = Color(0xFF414042);
 
+  static const greenFilterBar = Color(0xFFCAFAEB);
   static const greenBrand = Color(0xFF78FFD4);
   static const green = Color(0xFF16BD00);
   static const greenDark = Color(0xFF0C784C);
 
   static const pink = Color(0xFFFC5DE5);
 
+  static const purpleFilterBar = Color(0xFFEFCAFC);
   static const purpleBrand = Color(0xFFC161E4);
   static const purple = Color(0xFF630085);
   static const purpleDark = Color(0xFF371343);
@@ -68,6 +70,7 @@ class FreeBetaColors {
 
   static const white = Color(0xFFFFFFFF);
 
+  static const yellowFilterBar = Color(0xFFFCFFCF);
   static const yellowBrand = Color(0xFFF2FC62);
   static const yellowLight = Color(0xFFFCFFCC);
 }
