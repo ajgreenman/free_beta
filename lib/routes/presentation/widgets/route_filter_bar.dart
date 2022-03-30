@@ -14,38 +14,39 @@ class RouteFilterBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-                FreeBetaColors.yellowBrand.withOpacity(0.3),
-                FreeBetaColors.greenBrand.withOpacity(0.3),
-                FreeBetaColors.purpleBrand.withOpacity(0.2),
-              ],
-              stops: [
-                0.0,
-                0.7,
-                0.9,
-              ],
-            ),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: FreeBetaPadding.mAll,
-                child: _buildFilterText(context, ref),
-              ),
-              _buildFilterCounts(ref),
-            ],
-          ),
+    return Container(
+      height: 200,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            FreeBetaColors.yellowBrand.withOpacity(0.3),
+            FreeBetaColors.greenBrand.withOpacity(0.3),
+            FreeBetaColors.purpleBrand.withOpacity(0.2),
+          ],
+          stops: [
+            0.0,
+            0.7,
+            0.9,
+          ],
         ),
-        Divider(height: 1, thickness: 1),
-      ],
+      ),
+      child: Padding(
+        padding: FreeBetaPadding.mAll,
+        child: _buildFilterText(context, ref),
+      ),
+      // child: Column(
+      //   mainAxisSize: MainAxisSize.min,
+      //   children: [
+      //     Padding(
+      //       padding: FreeBetaPadding.mAll,
+      //       child: _buildFilterText(context, ref),
+      //     ),
+      //     _buildFilterCounts(ref),
+      //     Divider(height: 1, thickness: 1),
+      //   ],
+      // ),
     );
   }
 
