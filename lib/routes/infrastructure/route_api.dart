@@ -95,4 +95,12 @@ class RouteApi {
       routeFormModel,
     );
   }
+
+  Future<void> deleteRoute(
+    RouteModel routeModel,
+  ) async {
+    return routeRepository.deleteRoute(
+      routeModel,
+    );
+  }
 }

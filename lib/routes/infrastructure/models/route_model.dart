@@ -12,6 +12,7 @@ class RouteModel {
   final DateTime creationDate;
   final DateTime? removalDate;
   final List<String> images;
+  final bool isDeleted;
   UserRouteModel? userRouteModel;
 
   RouteModel({
@@ -23,6 +24,7 @@ class RouteModel {
     required this.creationDate,
     this.removalDate,
     this.images = const [],
+    this.isDeleted = false,
     this.userRouteModel,
   });
 
@@ -39,6 +41,7 @@ class RouteModel {
           (routeColor) => describeEnum(routeColor) == json['routeColor'],
         ),
         difficulty: json['difficulty'],
+        isDeleted: _getBool(json['isDeleted']),
         images: ((json['images'] as List<dynamic>?) ?? [])
             .map((image) {
               return image.toString();
@@ -46,9 +49,9 @@ class RouteModel {
             .where((image) => image.isNotEmpty)
             .toList(),
       );
-}
 
-extension RouteModelExtensions on RouteModel {
+  static bool _getBool(bool? value) => value != null && value;
+
   String get displayName => this.name.isNotEmpty ? this.name : '(unnamed)';
 
   String truncatedDisplayName(int limit) {

@@ -76,6 +76,15 @@ class RouteRemoteDataProvider {
             (error) => log('Error in updateRoute: ' + error.toString()));
   }
 
+  Future<void> deleteRoute(
+    RouteModel routeModel,
+  ) async {
+    await _firestoreRoutes
+        .doc(routeModel.id)
+        .update({'isDeleted': true}).catchError(
+            (error) => log('Error in deleteRoute: ' + error.toString()));
+  }
+
   Future<void> saveUserRoute(UserRouteModel userRouteModel) async {
     await _firestoreUsers
         .doc(userRouteModel.userId)
