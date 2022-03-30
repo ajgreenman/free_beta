@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class UserRouteModel {
   final String id;
   final String userId;

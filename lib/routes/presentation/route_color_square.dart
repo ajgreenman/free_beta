@@ -17,7 +17,10 @@ class RouteColorSquare extends StatelessWidget {
     return SizedBox.square(
       dimension: size,
       child: DecoratedBox(
-        decoration: BoxDecoration(color: routeColor.displayColor),
+        decoration: BoxDecoration(
+          border: Border.all(),
+          color: routeColor.displayColor,
+        ),
       ),
     );
   }
