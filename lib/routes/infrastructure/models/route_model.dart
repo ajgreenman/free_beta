@@ -50,7 +50,7 @@ class RouteModel {
             .toList(),
       );
 
-  static bool _getBool(dynamic dbValue) => dbValue == 1 ? true : false;
+  static bool _getBool(bool? value) => value != null && value;
 
   String get displayName => this.name.isNotEmpty ? this.name : '(unnamed)';
 

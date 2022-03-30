@@ -44,7 +44,7 @@ class RouteRepository {
       });
     }
 
-    return routes;
+    return routes.where((route) => !route.isDeleted).toList();
   }
 
   Future<void> saveRoute(UserRouteModel userRouteModel) async {
@@ -62,6 +62,14 @@ class RouteRepository {
     await routeRemoteDataProvider.updateRoute(
       routeModel,
       routeFormModel,
+    );
+  }
+
+  Future<void> deleteRoute(
+    RouteModel routeModel,
+  ) async {
+    await routeRemoteDataProvider.deleteRoute(
+      routeModel,
     );
   }
 }
