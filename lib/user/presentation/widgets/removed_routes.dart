@@ -10,48 +10,31 @@ class RemovedRoutes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InfoCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Removed Routes',
-            style: FreeBetaTextStyle.h2,
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          RouteListScreen.route(
+            routeProvider: fetchFilteredRemovedRoutes,
+            refreshProvider: fetchRemovedRoutesProvider,
+            appBar: AppBar(
+              title: Text('Removed Routes'),
+              leading: FreeBetaBackButton(),
+            ),
           ),
-          SizedBox(height: FreeBetaSizes.l),
-          ElevatedButton(
-            onPressed: () => Navigator.of(context).push(
-              RouteListScreen.route(
-                routeProvider: fetchFilteredRemovedRoutes,
-                refreshProvider: fetchRemovedRoutesProvider,
-                appBar: AppBar(
-                  title: Text('Removed Routes'),
-                  leading: FreeBetaBackButton(),
-                ),
-              ),
+        ),
+        child: Row(
+          children: [
+            Text(
+              'View removed routes',
+              style: FreeBetaTextStyle.h3,
             ),
-            child: Padding(
-              padding: FreeBetaPadding.xlHorizontal,
-              child: Text(
-                'View Removed Routes',
-                style: FreeBetaTextStyle.h4.copyWith(
-                  color: FreeBetaColors.white,
-                ),
-              ),
+            Spacer(),
+            Icon(
+              Icons.keyboard_arrow_right,
+              size: FreeBetaSizes.xxl,
+              color: FreeBetaColors.blueDark,
             ),
-            style: ButtonStyle(
-              side: MaterialStateProperty.all(
-                BorderSide(
-                  width: 2,
-                ),
-              ),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(
-                  vertical: FreeBetaSizes.ml,
-                ),
-              ),
-            ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }

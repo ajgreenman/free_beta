@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
-import 'package:free_beta/user/presentation/widgets/app_settings.dart';
+import 'package:free_beta/user/presentation/contact_developer_screen.dart';
 import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
 import 'package:free_beta/user/presentation/widgets/removed_routes.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats.dart';
@@ -27,8 +27,8 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             UserStats(),
             RemovedRoutes(),
-            AppSettings(),
             _GymAdmin(ref),
+            _ContactDeveloper(),
             _CopyrightText(),
           ],
         ),
@@ -50,6 +50,20 @@ class _GymAdmin extends StatelessWidget {
       },
     );
     return value ?? SizedBox.shrink();
+  }
+}
+
+class _ContactDeveloper extends StatelessWidget {
+  const _ContactDeveloper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: () => Navigator.of(context).push(
+        ContactDeveloperScreen.route(),
+      ),
+      child: Text('Contact Developer'),
+    );
   }
 }
 
