@@ -24,6 +24,7 @@ void main() async {
     ProviderScope(
       child: Initializer(
         child: MaterialApp(
+          debugShowCheckedModeBanner: false,
           title: 'Free Beta',
           theme: FreeBetaTheme.blueTheme,
           home: App(),

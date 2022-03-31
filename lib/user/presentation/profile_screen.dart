@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/presentation/contact_developer_screen.dart';
@@ -27,9 +28,44 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             UserStats(),
             RemovedRoutes(),
+            _StatsPlaceholder(),
             _GymAdmin(ref),
             _ContactDeveloper(),
             _CopyrightText(),
+            SizedBox(height: FreeBetaSizes.m),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _StatsPlaceholder extends StatelessWidget {
+  const _StatsPlaceholder({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: Container(
+        height: 200,
+        child: Column(
+          children: [
+            Text(
+              'More statistics coming soon!',
+              style: FreeBetaTextStyle.h2,
+            ),
+            SizedBox(height: FreeBetaSizes.l),
+            Container(
+              height: 150,
+              decoration: BoxDecoration(
+                border: Border.all(),
+                boxShadow: [FreeBetaShadows.fluffy],
+                borderRadius: BorderRadius.circular(FreeBetaSizes.ml),
+              ),
+              child: Center(
+                child: Text('More statistics coming soon!'),
+              ),
+            ),
           ],
         ),
       ),

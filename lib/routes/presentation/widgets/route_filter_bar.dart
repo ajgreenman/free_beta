@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/presentation/route_color_square.dart';
 
 class RouteFilterBar extends SliverPersistentHeaderDelegate {
   RouteFilterBar({required this.routeProvider});
 
   final FutureProvider<RouteFilterModel> routeProvider;
 
-  static const _filterBarHeight = 72.0;
+  static const _filterBarHeight = 64.0;
 
   @override
   Widget build(
@@ -17,7 +20,7 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    // = shrinkOffset > 100 ? 0.0 : (100 - shrinkOffset) / 100;
+    var fadeOpacity = shrinkOffset > 100 ? 0.0 : (100 - shrinkOffset) / 100;
     return Stack(
       children: [
         Container(
@@ -39,15 +42,21 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
             ),
           ),
         ),
-        // Positioned(
-        //   bottom: minExtent,
-        //   left: FreeBetaSizes.m,
-        //   right: FreeBetaSizes.m,
-        //   child: Opacity(
-        //     opacity: fadeOpacity,
-        //     child: Text('how r ya now'),
-        //   ),
-        // ),
+        Positioned(
+          bottom: minExtent + FreeBetaSizes.m,
+          left: FreeBetaSizes.m,
+          right: FreeBetaSizes.m,
+          child: Opacity(
+            opacity: fadeOpacity,
+            child: Row(
+              children: [
+                Flexible(child: _ClimbTypeFilter()),
+                SizedBox(width: FreeBetaSizes.xl),
+                Flexible(child: _RouteColorFilter()),
+              ],
+            ),
+          ),
+        ),
         Positioned(
           bottom: 0,
           left: 0,
@@ -62,7 +71,7 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
   double get minExtent => _filterBarHeight;
 
   @override
-  double get maxExtent => _filterBarHeight;
+  double get maxExtent => _filterBarHeight * 2.5;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
@@ -123,5 +132,83 @@ class _FilterTextField extends ConsumerWidget {
         Divider(height: 1, thickness: 1),
       ],
     );
+  }
+}
+
+class _ClimbTypeFilter extends ConsumerWidget {
+  const _ClimbTypeFilter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FreeBetaDropdownList<ClimbType?>(
+      label: 'Filter Type',
+      hintText: 'Tap to filter',
+      borderWidth: 1.0,
+      items: _getTypes(),
+      onChanged: (climbType) {
+        ref.read(routeClimbTypeFilterProvider.notifier).state = climbType;
+      },
+    );
+  }
+
+  List<DropdownMenuItem<ClimbType?>> _getTypes() {
+    var climbTypes = [
+      DropdownMenuItem<ClimbType?>(child: Text('-')),
+    ];
+
+    climbTypes.addAll(
+      ClimbType.values.map(
+        (climbType) => DropdownMenuItem<ClimbType?>(
+          value: climbType,
+          child: Text(climbType.displayName),
+        ),
+      ),
+    );
+
+    return climbTypes;
+  }
+}
+
+class _RouteColorFilter extends ConsumerWidget {
+  const _RouteColorFilter({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return FreeBetaDropdownList<RouteColor?>(
+      label: 'Filter Color',
+      hintText: 'Tap to filter',
+      borderWidth: 1.0,
+      items: _getColors(),
+      onChanged: (routeColor) {
+        ref.read(routeRouteColorFilterProvider.notifier).state = routeColor;
+      },
+    );
+  }
+
+  List<DropdownMenuItem<RouteColor?>> _getColors() {
+    var routeColors = [
+      DropdownMenuItem<RouteColor?>(child: Text('-')),
+    ];
+
+    routeColors.addAll(
+      RouteColor.values.map(
+        (routeColor) => DropdownMenuItem<RouteColor?>(
+          value: routeColor,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: FreeBetaSizes.m,
+                ),
+                child: RouteColorSquare(routeColor: routeColor),
+              ),
+              Text(routeColor.displayName),
+            ],
+          ),
+        ),
+      ),
+    );
+
+    return routeColors;
   }
 }
