@@ -15,6 +15,8 @@ final routeApiProvider = Provider(
 );
 
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
+final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
+final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
 
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
@@ -34,24 +36,40 @@ final fetchRemovedRoutesProvider = FutureProvider((ref) async {
 
 final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
   final routes = await ref.watch(fetchRoutesProvider.future);
-  final filter = ref.watch(routeTextFilterProvider);
-  return _getFilteredRoutes(routes, filter);
+  final textFilter = ref.watch(routeTextFilterProvider);
+  final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
+  final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  return _getFilteredRoutes(
+    routes,
+    textFilter,
+    climbTypeFilter,
+    routeColorFilter,
+  );
 });
 
 final fetchFilteredRemovedRoutes =
     FutureProvider<RouteFilterModel>((ref) async {
   final routes = await ref.watch(fetchRemovedRoutesProvider.future);
-  final filter = ref.watch(routeTextFilterProvider);
-  return _getFilteredRoutes(routes, filter);
+  final textFilter = ref.watch(routeTextFilterProvider);
+  final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
+  final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  return _getFilteredRoutes(
+    routes,
+    textFilter,
+    climbTypeFilter,
+    routeColorFilter,
+  );
 });
 
 RouteFilterModel _getFilteredRoutes(
   List<RouteModel> unfilteredRoutes,
-  String? filter,
+  String? textFilter,
+  ClimbType? climbTypeFilter,
+  RouteColor? routeColorFilter,
 ) {
   Iterable<RouteModel> filteredRoutes = unfilteredRoutes;
-  if (filter != null) {
-    var filterText = filter.toLowerCase();
+  if (textFilter != null) {
+    var filterText = textFilter.toLowerCase();
     filteredRoutes = unfilteredRoutes.where(
       (route) {
         return route.name.toLowerCase().contains(filterText) ||
@@ -62,8 +80,17 @@ RouteFilterModel _getFilteredRoutes(
     );
   }
 
+  if (climbTypeFilter != null) {
+    filteredRoutes =
+        filteredRoutes.where((route) => route.climbType == climbTypeFilter);
+  }
+
+  if (routeColorFilter != null) {
+    filteredRoutes =
+        filteredRoutes.where((route) => route.routeColor == routeColorFilter);
+  }
+
   return RouteFilterModel(
-    filter: filter,
     routes: unfilteredRoutes,
     filteredRoutes: filteredRoutes.toList(),
   );

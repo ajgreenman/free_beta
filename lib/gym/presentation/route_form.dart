@@ -106,12 +106,14 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 onChanged: (routeColor) => _formModel.routeColor = routeColor,
                 initialValue: widget.editRouteModel?.routeColor,
               ),
+              SizedBox(height: FreeBetaSizes.l),
               FreeBetaDropdownList<ClimbType?>(
                 label: 'Type',
                 items: _getTypes(),
                 onChanged: (climbType) => _formModel.climbType = climbType,
                 initialValue: widget.editRouteModel?.climbType,
               ),
+              SizedBox(height: FreeBetaSizes.l),
               FreeBetaTextInput(
                 label: 'Difficulty',
                 onChanged: (difficulty) => _formModel.difficulty = difficulty,
