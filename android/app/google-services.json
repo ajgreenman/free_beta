@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:356903882644:android:41c86bd8e85f8255798981",
+        "mobilesdk_app_id": "1:356903882644:android:ebe39b6a29ec6372798981",
         "android_client_info": {
-          "package_name": "com.codejsoftware.free_beta"
+          "package_name": "com.codejsoftware.freeBeta"
         }
       },
       "oauth_client": [

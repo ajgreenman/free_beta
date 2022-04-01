@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codejsoftware.free_beta">
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="Free Beta"
         android:icon="@mipmap/launcher_icon">
