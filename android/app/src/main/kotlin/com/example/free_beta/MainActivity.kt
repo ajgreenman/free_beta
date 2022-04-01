@@ -1,4 +1,4 @@
-package com.codejsoftware.free_beta
+package com.codejsoftware.freeBeta
 
 import io.flutter.embedding.android.FlutterActivity
 
