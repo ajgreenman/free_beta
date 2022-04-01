@@ -192,22 +192,26 @@ class _RouteColorFilter extends ConsumerWidget {
 
     routeColors.addAll(
       RouteColor.values.map(
-        (routeColor) => DropdownMenuItem<RouteColor?>(
-          value: routeColor,
-          child: Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: FreeBetaSizes.m,
+        (routeColor) {
+          return DropdownMenuItem<RouteColor?>(
+            value: routeColor,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(
+                    right: FreeBetaSizes.m,
+                  ),
+                  child: RouteColorSquare(routeColor: routeColor),
                 ),
-                child: RouteColorSquare(routeColor: routeColor),
-              ),
-              Text(routeColor.displayName),
-            ],
-          ),
-        ),
+                Text(routeColor.displayName),
+              ],
+            ),
+          );
+        },
       ),
     );
+
+    routeColors.removeWhere((menuItem) => menuItem.value == RouteColor.unknown);
 
     return routeColors;
   }

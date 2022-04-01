@@ -52,7 +52,7 @@ class _StatsPlaceholder extends StatelessWidget {
           children: [
             Text(
               'More statistics coming soon!',
-              style: FreeBetaTextStyle.h2,
+              style: FreeBetaTextStyle.h3,
             ),
             SizedBox(height: FreeBetaSizes.l),
             Container(
