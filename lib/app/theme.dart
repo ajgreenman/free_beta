@@ -16,9 +16,7 @@ class FreeBetaTheme {
     canvasColor: FreeBetaColors.grayBackground,
     colorScheme: ColorScheme(
       primary: FreeBetaColors.black,
-      primaryVariant: FreeBetaColors.blue,
       secondary: FreeBetaColors.green,
-      secondaryVariant: FreeBetaColors.greenDark,
       surface: FreeBetaColors.black,
       background: FreeBetaColors.grayBackground,
       error: FreeBetaColors.red,

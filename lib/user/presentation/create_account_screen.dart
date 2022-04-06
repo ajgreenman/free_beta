@@ -90,6 +90,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                 !email.contains('@')) {
                               return 'Please enter valid email';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -138,6 +139,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                 password.length < 8) {
                               return 'Password must be 8 characters';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -185,6 +187,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                                 password != _passwordController.text) {
                               return 'Passwords do not match';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -230,6 +233,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                             if (password == null || password.isEmpty) {
                               return 'Please enter the gym password';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(

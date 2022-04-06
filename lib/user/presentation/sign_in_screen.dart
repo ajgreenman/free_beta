@@ -92,6 +92,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 !email.contains('@')) {
                               return 'Please enter valid email';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
@@ -140,6 +141,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                                 password.length < 8) {
                               return 'Password must be 8 characters';
                             }
+                            return null;
                           },
                           decoration: InputDecoration(
                             border: OutlineInputBorder(

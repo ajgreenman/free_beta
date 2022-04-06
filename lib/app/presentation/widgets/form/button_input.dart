@@ -36,6 +36,7 @@ class FreeBetaButtonInput extends StatelessWidget {
             if (isRequired && (value == null || value.isEmpty)) {
               return '$label is required';
             }
+            return null;
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(

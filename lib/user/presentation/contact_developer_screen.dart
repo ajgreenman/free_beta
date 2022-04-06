@@ -75,6 +75,7 @@ class _ContactDeveloperScreenState
             if (name == null || name.isEmpty) {
               return 'Please enter a name';
             }
+            return null;
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(
@@ -169,6 +170,7 @@ class _ContactDeveloperScreenState
             if (comments == null || comments.isEmpty) {
               return 'Please enter comments';
             }
+            return null;
           },
         ),
         SizedBox(height: FreeBetaSizes.l),

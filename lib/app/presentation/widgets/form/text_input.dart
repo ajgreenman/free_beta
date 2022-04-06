@@ -34,6 +34,7 @@ class FreeBetaTextInput extends StatelessWidget {
             if (value == null || value.isEmpty) {
               return '$label is required';
             }
+            return null;
           },
           decoration: InputDecoration(
             border: OutlineInputBorder(

@@ -59,6 +59,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
             if (value == null) {
               return '$label is required';
             }
+            return null;
           },
           style: FreeBetaTextStyle.h4,
           value: initialValue,
