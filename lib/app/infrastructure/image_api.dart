@@ -24,6 +24,8 @@ class ImageApi {
   Future<String?> fetchImage(ImageSource imageSource) async {
     var image = await ImagePicker().pickImage(
       source: imageSource,
+      maxHeight: 1200,
+      maxWidth: 900,
       imageQuality: 50,
     );
     if (image == null) return null;
