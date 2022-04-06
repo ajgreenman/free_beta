@@ -158,7 +158,14 @@ class _AttemptedFilter extends ConsumerStatefulWidget {
 }
 
 class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
-  bool? attemptedFilter;
+  late bool? attemptedFilter;
+
+  @override
+  void initState() {
+    super.initState();
+    attemptedFilter = ref.read(routeAttemptedFilterProvider.notifier).state;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -255,6 +262,7 @@ class _ClimbTypeFilter extends ConsumerWidget {
       onChanged: (climbType) {
         ref.read(routeClimbTypeFilterProvider.notifier).state = climbType;
       },
+      initialValue: ref.read(routeClimbTypeFilterProvider.notifier).state,
     );
   }
 
@@ -289,6 +297,7 @@ class _RouteColorFilter extends ConsumerWidget {
       onChanged: (routeColor) {
         ref.read(routeRouteColorFilterProvider.notifier).state = routeColor;
       },
+      initialValue: ref.read(routeRouteColorFilterProvider.notifier).state,
     );
   }
 
