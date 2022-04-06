@@ -15,9 +15,6 @@ class ErrorCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(error);
-    print(stackTrace);
-
     return Center(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

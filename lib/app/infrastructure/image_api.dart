@@ -1,11 +1,13 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:image_picker/image_picker.dart';
 
-final imageApiProvider = Provider((_) => ImageApi(FirebaseStorage.instance));
+final imageApiProvider = Provider(
+  (ref) => ImageApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider)),
+);
 
 final fetchImageProvider = FutureProvider.family<String?, ImageSource>((
   ref,
@@ -17,9 +19,10 @@ final fetchImageProvider = FutureProvider.family<String?, ImageSource>((
 });
 
 class ImageApi {
-  ImageApi(this._firebaseStorage);
+  ImageApi(this._firebaseStorage, this._crashlyticsApi);
 
   final FirebaseStorage _firebaseStorage;
+  final CrashlyticsApi _crashlyticsApi;
 
   Future<String?> fetchImage(ImageSource imageSource) async {
     var image = await ImagePicker().pickImage(
@@ -37,7 +40,12 @@ class ImageApi {
         .child('uploads/$imageFile')
         .putFile(imageFile)
         .then((snapshot) => _downloadUrl(snapshot))
-        .onError((error, stackTrace) => _onError(error, stackTrace));
+        .onError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(error, stackTrace, 'ImageApi', 'fetchImage');
+        return null;
+      },
+    );
   }
 
   Future<String?> _downloadUrl(TaskSnapshot snapshot) async {
@@ -48,16 +56,9 @@ class ImageApi {
         )
         .onError(
       (error, stackTrace) {
-        log(error.toString() + '\n\n' + stackTrace.toString());
+        _crashlyticsApi.logError(error, stackTrace, 'ImageApi', 'downloadUrl');
         return null;
       },
     );
-  }
-
-  String? _onError(Object? error, StackTrace stackTrace) {
-    log(error.toString());
-    log(stackTrace.toString());
-
-    return null;
   }
 }

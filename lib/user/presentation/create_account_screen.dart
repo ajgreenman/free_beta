@@ -1,24 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 
-class SignUpScreen extends ConsumerStatefulWidget {
+class CreateAccountScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {
     return MaterialPageRoute<dynamic>(builder: (context) {
-      return SignUpScreen();
+      return CreateAccountScreen();
     });
   }
 
-  const SignUpScreen({Key? key}) : super(key: key);
+  const CreateAccountScreen({Key? key}) : super(key: key);
 
   @override
-  ConsumerState<SignUpScreen> createState() => _SignInScreenState();
+  ConsumerState<CreateAccountScreen> createState() =>
+      _CreateAccountScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignUpScreen> {
+class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -42,10 +44,18 @@ class _SignInScreenState extends ConsumerState<SignUpScreen> {
               return _Loading();
             },
             loading: () => _Loading(),
-            error: (error, stackTrace) => ErrorCard(
-              error: error,
-              stackTrace: stackTrace,
-            ),
+            error: (error, stackTrace) {
+              ref.read(crashlyticsApiProvider).logError(
+                    error,
+                    stackTrace,
+                    'CreateAccountScreen',
+                    'authenticationProvider',
+                  );
+              return ErrorCard(
+                error: error,
+                stackTrace: stackTrace,
+              );
+            },
           ),
     );
   }

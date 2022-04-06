@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
@@ -71,6 +72,12 @@ class _RouteListScreenState extends ConsumerState<RouteListScreen> {
   }
 
   Widget _onError(Object? error, StackTrace? stackTrace) {
+    ref.read(crashlyticsApiProvider).logError(
+          error,
+          stackTrace,
+          'RouteListScreen',
+          'routeProvider',
+        );
     return ErrorCard(
       error: error,
       stackTrace: stackTrace,

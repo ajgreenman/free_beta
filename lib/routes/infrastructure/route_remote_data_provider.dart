@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
@@ -9,7 +10,8 @@ import 'package:riverpod/riverpod.dart';
 
 import 'models/route_model.dart';
 
-final routeRemoteDataProvider = Provider((_) => RouteRemoteDataProvider());
+final routeRemoteDataProvider = Provider(
+    (ref) => RouteRemoteDataProvider(ref.read(crashlyticsApiProvider)));
 
 final fetchUserRoutesProvider = FutureProvider((ref) async {
   var routeDataProvider = ref.watch(routeRemoteDataProvider);
@@ -33,6 +35,10 @@ final fetchUserRoutesProvider = FutureProvider((ref) async {
 });
 
 class RouteRemoteDataProvider {
+  RouteRemoteDataProvider(this._crashlyticsApi);
+
+  final CrashlyticsApi _crashlyticsApi;
+
   CollectionReference<Map<String, dynamic>> get _firestoreRoutes =>
       FirebaseFirestore.instance.collection('routes');
   CollectionReference<Map<String, dynamic>> get _firestoreUsers =>
@@ -50,7 +56,16 @@ class RouteRemoteDataProvider {
             ),
           ),
         )
-        .catchError((error) => log('Error in getRoutes: ' + error.toString()));
+        .catchError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'getRoutes',
+        );
+      },
+    );
 
     return routes;
   }
@@ -59,7 +74,16 @@ class RouteRemoteDataProvider {
     await _firestoreRoutes
         .add(routeFormModel.toJson())
         .then((value) => log(value.toString()))
-        .catchError((error) => log('Error in addRoute: ' + error.toString()));
+        .catchError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'addRoute',
+        );
+      },
+    );
   }
 
   Future<void> updateRoute(
@@ -70,7 +94,15 @@ class RouteRemoteDataProvider {
         .doc(routeModel.id)
         .update(routeFormModel.toJson())
         .catchError(
-            (error) => log('Error in updateRoute: ' + error.toString()));
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'updateRoute',
+        );
+      },
+    );
   }
 
   Future<void> deleteRoute(
@@ -79,7 +111,15 @@ class RouteRemoteDataProvider {
     await _firestoreRoutes
         .doc(routeModel.id)
         .update({'isDeleted': true}).catchError(
-            (error) => log('Error in deleteRoute: ' + error.toString()));
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'deleteRoute',
+        );
+      },
+    );
   }
 
   Future<void> saveUserRoute(UserRouteModel userRouteModel) async {
@@ -89,7 +129,15 @@ class RouteRemoteDataProvider {
         .doc(userRouteModel.id)
         .set(userRouteModel.toJson())
         .catchError(
-            (error) => log('Error in saveUserRoute: ' + error.toString()));
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'saveUserRoute',
+        );
+      },
+    );
   }
 
   Future<List<UserRouteModel>> getUserRoutes(String userId) async {
@@ -106,7 +154,15 @@ class RouteRemoteDataProvider {
           ),
         )
         .catchError(
-            (error) => log('Error in getUserRoutes: ' + error.toString()));
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'getUserRoutes',
+        );
+      },
+    );
 
     return userRoutes;
   }

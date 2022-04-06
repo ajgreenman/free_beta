@@ -3,11 +3,13 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
 
-final userApiProvider = Provider((_) => UserApi(
+final userApiProvider = Provider((ref) => UserApi(
       FirebaseAuth.instance,
       FirebaseFirestore.instance,
+      ref.read(crashlyticsApiProvider),
     ));
 
 final authenticationProvider = StreamProvider((ref) {
@@ -15,10 +17,11 @@ final authenticationProvider = StreamProvider((ref) {
 });
 
 class UserApi {
-  UserApi(this._firebaseAuth, this._firestoreGyms);
+  UserApi(this._firebaseAuth, this._firestoreGyms, this._crashlyticsApi);
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestoreGyms;
+  final CrashlyticsApi _crashlyticsApi;
 
   Stream<User?> get authenticationStream => _firebaseAuth.authStateChanges();
 
@@ -29,7 +32,17 @@ class UserApi {
           password: password.trim(),
         )
         .then((_) => true)
-        .onError((_, __) => false);
+        .onError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'UserApi',
+          'signIn',
+        );
+        return false;
+      },
+    );
   }
 
   Future<bool> signUp(
@@ -48,10 +61,17 @@ class UserApi {
         .then((userCredential) {
       log('Anonymous account upgrade for $email');
       return true;
-    }).onError((error, stackTrace) {
-      log('Error linking account for $email\n${error.toString()}\n${stackTrace.toString()}');
-      return false;
-    });
+    }).onError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'UserApi',
+          'signUp',
+        );
+        return false;
+      },
+    );
   }
 
   Future<bool> checkGymPassword(String input) async {

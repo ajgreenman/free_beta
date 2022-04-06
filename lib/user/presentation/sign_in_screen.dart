@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
@@ -41,10 +42,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               return _buildLoading();
             },
             loading: () => _buildLoading(),
-            error: (error, stackTrace) => ErrorCard(
-              error: error,
-              stackTrace: stackTrace,
-            ),
+            error: (error, stackTrace) {
+              ref.read(crashlyticsApiProvider).logError(
+                    error,
+                    stackTrace,
+                    'SignInScreen',
+                    'authenticationProvider',
+                  );
+              return ErrorCard(
+                error: error,
+                stackTrace: stackTrace,
+              );
+            },
           ),
     );
   }
@@ -206,7 +215,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                           SizedBox(height: FreeBetaSizes.xl),
                           ElevatedButton(
                             onPressed: () => Navigator.of(context).push(
-                              SignUpScreen.route(),
+                              CreateAccountScreen.route(),
                             ),
                             child: Center(
                               child: Text(

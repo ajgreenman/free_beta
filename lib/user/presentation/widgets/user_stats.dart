@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
@@ -11,14 +12,15 @@ class UserStats extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(fetchUserRoutesProvider).when(
-            data: (userRoutes) => _onSuccess(userRoutes),
+            data: (userRoutes) => _onSuccess(userRoutes, ref),
             loading: () => _UserStatsSkeleton(),
-            error: (error, stackTrace) => _onError(error, stackTrace),
+            error: (error, stackTrace) =>
+                _onError(ref, error, stackTrace, 'fetchUserRoutesProvider'),
           );
 
-  Widget _onSuccess(UserStatsModel? userStatsModel) {
+  Widget _onSuccess(UserStatsModel? userStatsModel, WidgetRef ref) {
     if (userStatsModel == null) {
-      return _onError('Invalid user', null);
+      return _onError(ref, 'Invalid user', null, '_onSuccess');
     }
 
     return InfoCard(
@@ -38,9 +40,18 @@ class UserStats extends ConsumerWidget {
     );
   }
 
-  Widget _onError(Object error, StackTrace? stackTrace) {
-    print(error);
-    print(stackTrace);
+  Widget _onError(
+    WidgetRef ref,
+    Object error,
+    StackTrace? stackTrace,
+    String methodName,
+  ) {
+    ref.read(crashlyticsApiProvider).logError(
+          error,
+          stackTrace,
+          'UserStats',
+          methodName,
+        );
     return InfoCard(
       child: Text(
         'Because you have an account, you must sign in to see your user stats.',
