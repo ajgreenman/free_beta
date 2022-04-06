@@ -100,10 +100,10 @@ RouteFilterModel _getFilteredRoutes(
     filteredRoutes = filteredRoutes.where((route) {
       if (routeAttemptedFilter && route.userRouteModel == null) return false;
       if (!routeAttemptedFilter && route.userRouteModel == null) return true;
-      if (routeAttemptedFilter && route.userRouteModel!.attempts > 0) {
+      if (routeAttemptedFilter && route.userRouteModel!.isAttempted) {
         return true;
       }
-      if (!routeAttemptedFilter && route.userRouteModel!.attempts <= 0) {
+      if (!routeAttemptedFilter && !route.userRouteModel!.isAttempted) {
         return true;
       }
       return false;

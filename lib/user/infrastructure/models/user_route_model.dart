@@ -43,6 +43,8 @@ class UserRouteModel {
 
   static int _setBool(bool value) => value ? 1 : 0;
 
+  bool get isAttempted => attempts > 0;
+
   @override
   String toString() {
     return 'UserRouteModel: {id:$id, userId:$userId, routeId:$routeId, isCompleted:$isCompleted, isFavorited:$isFavorited, attempts:$attempts, notes:$notes,';

@@ -21,7 +21,7 @@ final fetchUserRoutesProvider = FutureProvider((ref) async {
   }
   var routes = await routeDataProvider.getUserRoutes(user.uid);
 
-  var attempted = routes.where((route) => route.attempts > 0).length;
+  var attempted = routes.where((route) => route.isAttempted).length;
   var completed = routes.where((route) => route.isCompleted).length;
   var favorited = routes.where((route) => route.isFavorited).length;
 
