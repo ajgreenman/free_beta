@@ -24,6 +24,12 @@ void main() async {
     ProviderScope(
       child: Initializer(
         child: MaterialApp(
+          builder: (context, child) {
+            return MediaQuery(
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              child: child!,
+            );
+          },
           debugShowCheckedModeBanner: false,
           title: 'Free Beta',
           theme: FreeBetaTheme.blueTheme,

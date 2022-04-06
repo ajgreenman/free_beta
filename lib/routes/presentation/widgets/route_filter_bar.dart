@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -13,6 +15,18 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
   final FutureProvider<RouteFilterModel> routeProvider;
 
   static const _filterBarHeight = 64.0;
+  static const _attemptedFilterHeight = 32.0;
+  static const _routeFilterHeight = 86.0;
+
+  @override
+  double get minExtent => _filterBarHeight;
+
+  @override
+  double get maxExtent =>
+      _filterBarHeight +
+      _attemptedFilterHeight +
+      _routeFilterHeight +
+      FreeBetaSizes.m * 3;
 
   @override
   Widget build(
@@ -43,7 +57,7 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
           ),
         ),
         Positioned(
-          bottom: minExtent + FreeBetaSizes.m,
+          bottom: minExtent + _attemptedFilterHeight + FreeBetaSizes.m * 2,
           left: FreeBetaSizes.m,
           right: FreeBetaSizes.m,
           child: Opacity(
@@ -58,6 +72,15 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
           ),
         ),
         Positioned(
+          bottom: minExtent + FreeBetaSizes.m,
+          left: FreeBetaSizes.m,
+          right: FreeBetaSizes.m,
+          child: Opacity(
+            opacity: fadeOpacity,
+            child: _AttemptedFilter(),
+          ),
+        ),
+        Positioned(
           bottom: 0,
           left: 0,
           right: 0,
@@ -66,12 +89,6 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
       ],
     );
   }
-
-  @override
-  double get minExtent => _filterBarHeight;
-
-  @override
-  double get maxExtent => _filterBarHeight * 2.5;
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
@@ -130,6 +147,98 @@ class _FilterTextField extends ConsumerWidget {
           ),
         ),
         Divider(height: 1, thickness: 1),
+      ],
+    );
+  }
+}
+
+class _AttemptedFilter extends ConsumerStatefulWidget {
+  const _AttemptedFilter({Key? key}) : super(key: key);
+
+  @override
+  ConsumerState<_AttemptedFilter> createState() => __AttemptedFilterState();
+}
+
+class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
+  bool? attemptedFilter;
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Flexible(
+          child: InkWell(
+            onTap: () {
+              if (attemptedFilter == true) {
+                setState(() => attemptedFilter = null);
+              } else {
+                setState(() => attemptedFilter = true);
+              }
+              ref.read(routeAttemptedFilterProvider.notifier).state =
+                  attemptedFilter;
+            },
+            child: _buildCheckboxRow(
+              'Attempted',
+              Checkbox(
+                activeColor: FreeBetaColors.blueDark,
+                value: attemptedFilter == true,
+                onChanged: (value) {
+                  if (value == null) return;
+                  if (attemptedFilter == true) {
+                    setState(() => attemptedFilter = null);
+                  } else {
+                    setState(() => attemptedFilter = true);
+                  }
+                  ref.read(routeAttemptedFilterProvider.notifier).state =
+                      attemptedFilter;
+                },
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: FreeBetaSizes.xl),
+        Flexible(
+          child: InkWell(
+            onTap: () {
+              if (attemptedFilter == false) {
+                setState(() => attemptedFilter = null);
+              } else {
+                setState(() => attemptedFilter = false);
+              }
+              ref.read(routeAttemptedFilterProvider.notifier).state =
+                  attemptedFilter;
+            },
+            child: _buildCheckboxRow(
+              'Unattempted',
+              Checkbox(
+                activeColor: FreeBetaColors.blueDark,
+                value: attemptedFilter == false,
+                onChanged: (value) {
+                  if (value == null) return;
+                  if (attemptedFilter == false) {
+                    setState(() => attemptedFilter = null);
+                  } else {
+                    setState(() => attemptedFilter = false);
+                  }
+                  ref.read(routeAttemptedFilterProvider.notifier).state =
+                      attemptedFilter;
+                },
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildCheckboxRow(String label, Checkbox checkbox) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: FreeBetaTextStyle.body2,
+        ),
+        Spacer(),
+        SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
       ],
     );
   }

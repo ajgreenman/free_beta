@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
@@ -17,6 +18,7 @@ final routeApiProvider = Provider(
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
 final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
+final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
 
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
@@ -39,11 +41,13 @@ final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
   final textFilter = ref.watch(routeTextFilterProvider);
   final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
   final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  final routeAttemptedFilter = ref.watch(routeAttemptedFilterProvider);
   return _getFilteredRoutes(
     routes,
     textFilter,
     climbTypeFilter,
     routeColorFilter,
+    routeAttemptedFilter,
   );
 });
 
@@ -53,11 +57,13 @@ final fetchFilteredRemovedRoutes =
   final textFilter = ref.watch(routeTextFilterProvider);
   final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
   final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  final routeAttemptedFilter = ref.watch(routeAttemptedFilterProvider);
   return _getFilteredRoutes(
     routes,
     textFilter,
     climbTypeFilter,
     routeColorFilter,
+    routeAttemptedFilter,
   );
 });
 
@@ -66,6 +72,7 @@ RouteFilterModel _getFilteredRoutes(
   String? textFilter,
   ClimbType? climbTypeFilter,
   RouteColor? routeColorFilter,
+  bool? routeAttemptedFilter,
 ) {
   Iterable<RouteModel> filteredRoutes = unfilteredRoutes;
   if (textFilter != null) {
@@ -88,6 +95,21 @@ RouteFilterModel _getFilteredRoutes(
   if (routeColorFilter != null) {
     filteredRoutes =
         filteredRoutes.where((route) => route.routeColor == routeColorFilter);
+  }
+
+  if (routeAttemptedFilter != null) {
+    log(filteredRoutes.length.toString());
+    filteredRoutes = filteredRoutes.where((route) {
+      if (routeAttemptedFilter && route.userRouteModel == null) return false;
+      if (!routeAttemptedFilter && route.userRouteModel == null) return true;
+      if (routeAttemptedFilter && route.userRouteModel!.attempts > 0) {
+        return true;
+      }
+      if (!routeAttemptedFilter && route.userRouteModel!.attempts <= 0) {
+        return true;
+      }
+      return false;
+    });
   }
 
   return RouteFilterModel(
