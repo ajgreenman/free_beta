@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -28,35 +27,25 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var authenticationState = ref.watch(authenticationProvider);
-
-    ref.listen(authenticationProvider, (_, current) {
-      if (current == null) return;
-      var user = current as AsyncData<User?>;
-      if (user.value != null) {
-        Navigator.of(context).pop();
-      }
-    });
-
     return Scaffold(
       key: Key('sign-in'),
       appBar: AppBar(
         title: Text('Sign In'),
         leading: FreeBetaBackButton(),
       ),
-      body: authenticationState.when(
-        data: (user) {
-          if (user == null || user.isAnonymous) {
-            return _buildSignInForm();
-          }
-          return _buildLoading();
-        },
-        loading: () => _buildLoading(),
-        error: (error, stackTrace) => ErrorCard(
-          error: error,
-          stackTrace: stackTrace,
-        ),
-      ),
+      body: ref.watch(authenticationProvider).when(
+            data: (user) {
+              if (user == null || user.isAnonymous) {
+                return _buildSignInForm(context);
+              }
+              return _buildLoading();
+            },
+            loading: () => _buildLoading(),
+            error: (error, stackTrace) => ErrorCard(
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          ),
     );
   }
 
@@ -64,7 +53,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         child: CircularProgressIndicator(),
       );
 
-  Widget _buildSignInForm() {
+  Widget _buildSignInForm(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: SingleChildScrollView(
@@ -174,7 +163,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
                     ElevatedButton(
-                      onPressed: _onSignIn,
+                      onPressed: () => _onSignIn(context),
                       child: Center(
                         child: Text(
                           'Sign In',
@@ -253,7 +242,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  void _onSignIn() async {
+  void _onSignIn(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) {
       return;
     }
@@ -270,6 +259,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         builder: (_) => _InvalidSignInDialog(),
       );
     }
+    Navigator.of(context).pop();
+    ref.refresh(authenticationProvider);
   }
 }
 

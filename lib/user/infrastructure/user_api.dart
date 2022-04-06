@@ -7,18 +7,18 @@ import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
 
 final userApiProvider = Provider((_) => UserApi(
       FirebaseAuth.instance,
-      FirebaseFirestore.instance.collection('gyms'),
+      FirebaseFirestore.instance,
     ));
 
 final authenticationProvider = StreamProvider((ref) {
-  return ref.watch(userApiProvider).authenticationStream;
+  return ref.read(userApiProvider).authenticationStream;
 });
 
 class UserApi {
   UserApi(this._firebaseAuth, this._firestoreGyms);
 
   final FirebaseAuth _firebaseAuth;
-  final CollectionReference<Map<String, dynamic>> _firestoreGyms;
+  final FirebaseFirestore _firestoreGyms;
 
   Stream<User?> get authenticationStream => _firebaseAuth.authStateChanges();
 
@@ -57,7 +57,7 @@ class UserApi {
   Future<bool> checkGymPassword(String input) async {
     List<GymModel> gyms = [];
 
-    await _firestoreGyms.get().then(
+    await _firestoreGyms.collection('gyms').get().then(
           (gymCollection) => gymCollection.docs.forEach(
             (json) {
               gyms.add(
@@ -72,7 +72,7 @@ class UserApi {
     var elevate = gyms.where((gym) => gym.name == 'Elev8');
     if (elevate.isEmpty) return false;
 
-    return elevate.first.password == input;
+    return elevate.first.password == input.trim();
   }
 
   Future<void> signOut() async {
