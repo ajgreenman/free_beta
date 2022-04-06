@@ -16,6 +16,7 @@ class RouteImages extends StatefulWidget {
 class _RouteImagesState extends State<RouteImages> {
   var _currentImage = 0;
   final _carouselController = CarouselController();
+  final _imageHeight = 256.0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +26,19 @@ class _RouteImagesState extends State<RouteImages> {
       children: [
         CarouselSlider(
           carouselController: _carouselController,
-          items: widget.images
-              .map((imageUrl) => _buildCachedImage(imageUrl))
-              .toList(),
+          items: [
+            for (var image in widget.images)
+              _CachedImage(
+                imageUrl: image,
+                images: widget.images,
+                currentImage: _currentImage,
+                imageHeight: _imageHeight,
+                onSwipeLeft: _onSwipeLeft,
+                onSwipeRight: _onSwipeRight,
+              ),
+          ],
           options: CarouselOptions(
-            height: 256,
+            height: _imageHeight,
             enableInfiniteScroll: false,
             onPageChanged: (index, reason) {
               setState(() {
@@ -38,48 +47,11 @@ class _RouteImagesState extends State<RouteImages> {
             },
           ),
         ),
-        _buildImageDots(),
-      ],
-    );
-  }
-
-  Widget _buildCachedImage(String imageUrl) {
-    return GestureDetector(
-      child: RouteImage(
-        imageUrl: imageUrl,
-      ),
-      onTap: () => Navigator.of(context).push(
-        RouteImageScreen.route(
-          images: widget.images,
-          initialIndex: _currentImage,
-          onSwipeLeft: _onSwipeLeft,
-          onSwipeRight: _onSwipeRight,
+        _ImageDots(
+          currentImage: _currentImage,
+          numberOfImages: widget.images.length,
         ),
-      ),
-    );
-  }
-
-  Widget _buildImageDots() {
-    if (widget.images.length <= 1) return SizedBox.shrink();
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: widget.images.asMap().entries.map((entry) {
-        return Container(
-          width: FreeBetaSizes.m,
-          height: FreeBetaSizes.m,
-          margin: EdgeInsets.symmetric(
-            vertical: FreeBetaSizes.m,
-            horizontal: FreeBetaSizes.s,
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _currentImage == entry.key
-                ? FreeBetaColors.black
-                : FreeBetaColors.gray,
-          ),
-        );
-      }).toList(),
+      ],
     );
   }
 
@@ -97,5 +69,78 @@ class _RouteImagesState extends State<RouteImages> {
     setState(() {
       _currentImage++;
     });
+  }
+}
+
+class _CachedImage extends StatelessWidget {
+  const _CachedImage({
+    Key? key,
+    required this.imageUrl,
+    required this.images,
+    required this.currentImage,
+    required this.imageHeight,
+    required this.onSwipeLeft,
+    required this.onSwipeRight,
+  }) : super(key: key);
+
+  final String imageUrl;
+  final List<String> images;
+  final int currentImage;
+  final double imageHeight;
+  final void Function() onSwipeLeft;
+  final void Function() onSwipeRight;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      child: RouteImage(
+        imageUrl: imageUrl,
+      ),
+      onTap: () => Navigator.of(context).push(
+        RouteImageScreen.route(
+          images: images,
+          initialIndex: currentImage,
+          onSwipeLeft: onSwipeLeft,
+          onSwipeRight: onSwipeRight,
+        ),
+      ),
+    );
+  }
+}
+
+class _ImageDots extends StatelessWidget {
+  const _ImageDots({
+    Key? key,
+    required this.currentImage,
+    required this.numberOfImages,
+  }) : super(key: key);
+
+  final int currentImage;
+  final int numberOfImages;
+
+  @override
+  Widget build(BuildContext context) {
+    if (numberOfImages <= 1) return SizedBox.shrink();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(
+        numberOfImages,
+        (index) => Container(
+          width: FreeBetaSizes.m,
+          height: FreeBetaSizes.m,
+          margin: EdgeInsets.symmetric(
+            vertical: FreeBetaSizes.m,
+            horizontal: FreeBetaSizes.s,
+          ),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: index == currentImage
+                ? FreeBetaColors.black
+                : FreeBetaColors.gray,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -28,33 +28,27 @@ class _SignInScreenState extends ConsumerState<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var authenticationState = ref.watch(authenticationProvider);
-
     return Scaffold(
       key: Key('create-account'),
       appBar: AppBar(
         title: Text('Create Account'),
         leading: FreeBetaBackButton(),
       ),
-      body: authenticationState.when(
-        data: (user) {
-          if (user == null || user.isAnonymous) {
-            return _buildCreateAccountForm();
-          }
-          return _buildLoading();
-        },
-        loading: () => _buildLoading(),
-        error: (error, stackTrace) => ErrorCard(
-          error: error,
-          stackTrace: stackTrace,
-        ),
-      ),
+      body: ref.watch(authenticationProvider).when(
+            data: (user) {
+              if (user == null || user.isAnonymous) {
+                return _buildCreateAccountForm();
+              }
+              return _Loading();
+            },
+            loading: () => _Loading(),
+            error: (error, stackTrace) => ErrorCard(
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          ),
     );
   }
-
-  Widget _buildLoading() => Center(
-        child: CircularProgressIndicator(),
-      );
 
   Widget _buildCreateAccountForm() {
     return GestureDetector(
@@ -345,6 +339,15 @@ class _SignInScreenState extends ConsumerState<SignUpScreen> {
       builder: (_) => _AccountCreatedDialog(),
     );
     Navigator.of(context).pop();
+  }
+}
+
+class _Loading extends StatelessWidget {
+  const _Loading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return CircularProgressIndicator();
   }
 }
 

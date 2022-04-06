@@ -66,6 +66,8 @@ class FreeBetaColors {
 
   static const red = Color(0xFFFF333D);
 
+  static const wallColor = Color(0xFFC3BEAF);
+
   static const warning = Color(0xFFFFA600);
 
   static const white = Color(0xFFFFFFFF);

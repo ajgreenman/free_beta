@@ -10,11 +10,8 @@ import 'package:riverpod/riverpod.dart';
 final routeRepository = Provider((ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
-    user: ref.watch(authenticationProvider).maybeWhen(
-          data: (user) {
-            if (user != null) return user;
-          },
-          orElse: () => null,
+    user: ref.watch(authenticationProvider).whenOrNull<User?>(
+          data: (user) => user,
         ),
   );
 });

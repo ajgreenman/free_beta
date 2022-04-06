@@ -67,9 +67,9 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
               children: [
                 if (widget.isHelp) _buildHelp(),
                 RouteSummary(widget.routeModel, isDetailed: true),
-                _buildDivider(),
+                _DetailScreenDivider(),
                 RouteImages(images: widget.routeModel.images),
-                _buildDivider(),
+                _DetailScreenDivider(),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,23 +100,23 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Widget _buildEditButton(BuildContext context) {
-    var button = ref.watch(authenticationProvider).whenOrNull(
-      data: (user) {
-        if (user != null && !user.isAnonymous) {
-          return IconButton(
-            onPressed: () => Navigator.of(context).push(
-              EditRouteScreen.route(widget.routeModel),
-            ),
-            icon: Icon(
-              Icons.edit,
-              color: FreeBetaColors.white,
-            ),
-          );
-        }
-      },
-    );
+    var user = ref.watch(authenticationProvider).whenOrNull(
+          data: (user) => user,
+        );
 
-    return button ?? SizedBox.shrink();
+    if (user != null && !user.isAnonymous) {
+      return IconButton(
+        onPressed: () => Navigator.of(context).push(
+          EditRouteScreen.route(widget.routeModel),
+        ),
+        icon: Icon(
+          Icons.edit,
+          color: FreeBetaColors.white,
+        ),
+      );
+    }
+
+    return SizedBox.shrink();
   }
 
   Widget _buildCheckboxRow(String label, Checkbox checkbox) {
@@ -216,14 +216,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     ];
   }
 
-  Widget _buildDivider() => Padding(
-        padding: const EdgeInsets.symmetric(vertical: FreeBetaSizes.ml),
-        child: Divider(
-          height: 2,
-          thickness: 2,
-        ),
-      );
-
   Widget _buildHelp() {
     return Column(
       children: [
@@ -244,7 +236,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             ),
           ],
         ),
-        _buildDivider(),
+        _DetailScreenDivider(),
       ],
     );
   }
@@ -291,6 +283,21 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             Icon(Icons.check),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _DetailScreenDivider extends StatelessWidget {
+  const _DetailScreenDivider({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: FreeBetaSizes.ml),
+      child: Divider(
+        height: 2,
+        thickness: 2,
       ),
     );
   }

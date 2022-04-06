@@ -13,11 +13,8 @@ final routeRemoteDataProvider = Provider((_) => RouteRemoteDataProvider());
 
 final fetchUserRoutesProvider = FutureProvider((ref) async {
   var routeDataProvider = ref.watch(routeRemoteDataProvider);
-  var user = ref.watch(authenticationProvider).maybeWhen(
-        data: (user) {
-          if (user != null) return user;
-        },
-        orElse: () => null,
+  var user = ref.watch(authenticationProvider).whenOrNull(
+        data: (user) => user,
       );
   if (user == null) {
     return null;

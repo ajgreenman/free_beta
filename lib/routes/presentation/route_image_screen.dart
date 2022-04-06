@@ -6,8 +6,8 @@ class RouteImageScreen extends StatefulWidget {
   static Route<dynamic> route({
     required List<String> images,
     required int initialIndex,
-    required Function() onSwipeLeft,
-    required Function() onSwipeRight,
+    required void Function() onSwipeLeft,
+    required void Function() onSwipeRight,
   }) {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return RouteImageScreen(

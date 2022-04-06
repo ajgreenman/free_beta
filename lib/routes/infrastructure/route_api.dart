@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';

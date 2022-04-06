@@ -16,21 +16,28 @@ class RouteImage extends StatelessWidget {
       tag: imageUrl,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
-        placeholder: (_, __) => _buildImageLoader(),
+        placeholder: (_, __) => _LoadingColumn(),
       ),
     );
   }
+}
 
-  Widget _buildImageLoader() => Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          CircularProgressIndicator(),
-          SizedBox(height: FreeBetaSizes.ml),
-          Text(
-            'Loading images...',
-            style: FreeBetaTextStyle.body3,
-          ),
-          SizedBox(height: FreeBetaSizes.ml),
-        ],
-      );
+class _LoadingColumn extends StatelessWidget {
+  const _LoadingColumn({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        CircularProgressIndicator(),
+        SizedBox(height: FreeBetaSizes.ml),
+        Text(
+          'Loading images...',
+          style: FreeBetaTextStyle.body3,
+        ),
+        SizedBox(height: FreeBetaSizes.ml),
+      ],
+    );
+  }
 }
