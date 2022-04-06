@@ -98,7 +98,6 @@ RouteFilterModel _getFilteredRoutes(
   }
 
   if (routeAttemptedFilter != null) {
-    log(filteredRoutes.length.toString());
     filteredRoutes = filteredRoutes.where((route) {
       if (routeAttemptedFilter && route.userRouteModel == null) return false;
       if (!routeAttemptedFilter && route.userRouteModel == null) return true;
