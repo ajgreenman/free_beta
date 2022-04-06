@@ -36,6 +36,11 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
                 width: borderWidth,
               ),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: borderWidth,
+              ),
+            ),
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: FreeBetaColors.red,
