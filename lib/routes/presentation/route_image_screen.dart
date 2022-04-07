@@ -49,30 +49,33 @@ class _RouteImageScreenState extends State<RouteImageScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: FreeBetaColors.black,
-      body: GestureDetector(
-        child: Center(
-          child: RouteImage(
-            imageUrl: widget.images[_currentIndex],
+      body: InteractiveViewer(
+        maxScale: 3.0,
+        child: GestureDetector(
+          child: Center(
+            child: RouteImage(
+              imageUrl: widget.images[_currentIndex],
+            ),
           ),
-        ),
-        onTap: () => Navigator.of(context).pop(),
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity == null) return;
+          onTap: () => Navigator.of(context).pop(),
+          onHorizontalDragEnd: (details) {
+            if (details.primaryVelocity == null) return;
 
-          if (details.primaryVelocity! > 0) {
-            if (_currentIndex <= 0) return;
-            setState(() {
-              _currentIndex--;
-            });
-            widget.onSwipeLeft();
-          } else if (details.primaryVelocity! < 0) {
-            if (_currentIndex >= widget.images.length - 1) return;
-            setState(() {
-              _currentIndex++;
-            });
-            widget.onSwipeRight();
-          }
-        },
+            if (details.primaryVelocity! > 0) {
+              if (_currentIndex <= 0) return;
+              setState(() {
+                _currentIndex--;
+              });
+              widget.onSwipeLeft();
+            } else if (details.primaryVelocity! < 0) {
+              if (_currentIndex >= widget.images.length - 1) return;
+              setState(() {
+                _currentIndex++;
+              });
+              widget.onSwipeRight();
+            }
+          },
+        ),
       ),
     );
   }
