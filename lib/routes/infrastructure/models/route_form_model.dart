@@ -39,11 +39,13 @@ class RouteFormModel {
       'difficulty': difficulty,
       'routeColor': routeColor!.name,
       'creationDate': Timestamp.fromDate(creationDate!),
+      'isActive': true,
       'images': images,
     };
 
     if (removalDate != null) {
       json.putIfAbsent('removalDate', () => Timestamp.fromDate(removalDate!));
+      json.update('isActive', (value) => false);
     }
 
     return json;

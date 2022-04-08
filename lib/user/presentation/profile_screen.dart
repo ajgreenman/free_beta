@@ -45,12 +45,12 @@ class _GymAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var value = ref.watch(authenticationProvider).whenOrNull(
+    var widget = ref.watch(authenticationProvider).whenOrNull(
       data: (user) {
         if (user != null && !user.isAnonymous) return GymAdmin();
       },
     );
-    return value ?? SizedBox.shrink();
+    return widget ?? SizedBox.shrink();
   }
 }
 

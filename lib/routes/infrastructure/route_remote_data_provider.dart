@@ -48,6 +48,33 @@ class RouteRemoteDataProvider {
   Future<List<RouteModel>> getRoutes() async {
     List<RouteModel> routes = [];
     await _firestoreRoutes
+        .where('isActive', isEqualTo: true)
+        .get()
+        .then(
+          (routeCollection) => routeCollection.docs.forEach(
+            (json) => routes.add(
+              RouteModel.fromFirebase(json.id, json.data()),
+            ),
+          ),
+        )
+        .catchError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'getRoutes',
+        );
+      },
+    );
+
+    return routes;
+  }
+
+  Future<List<RouteModel>> getRemovedRoutes() async {
+    List<RouteModel> routes = [];
+    await _firestoreRoutes
+        .where('isActive', isEqualTo: false)
         .get()
         .then(
           (routeCollection) => routeCollection.docs.forEach(

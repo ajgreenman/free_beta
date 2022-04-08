@@ -22,17 +22,13 @@ final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
-  return (await routeApi.getRoutes())
-      .where((route) => route.removalDate == null)
-      .toList();
+  return await routeApi.getRoutes();
 });
 
 final fetchRemovedRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
-  return (await routeApi.getRoutes())
-      .where((route) => route.removalDate != null)
-      .toList();
+  return await routeApi.getRemovedRoutes();
 });
 
 final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
@@ -123,6 +119,10 @@ class RouteApi {
 
   Future<List<RouteModel>> getRoutes() async {
     return routeRepository.getRoutes();
+  }
+
+  Future<List<RouteModel>> getRemovedRoutes() async {
+    return routeRepository.getRemovedRoutes();
   }
 
   Future<void> saveRoute(UserRouteModel userRouteModel) async {

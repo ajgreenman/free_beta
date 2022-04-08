@@ -44,6 +44,25 @@ class RouteRepository {
     return routes.where((route) => !route.isDeleted).toList();
   }
 
+  Future<List<RouteModel>> getRemovedRoutes() async {
+    var routes = await routeRemoteDataProvider.getRemovedRoutes();
+
+    if (user != null) {
+      var userRoutes = await routeRemoteDataProvider.getUserRoutes(user!.uid);
+
+      userRoutes.forEach((userRoute) {
+        var route = routes.firstWhereOrNull(
+          (route) => route.id == userRoute.routeId,
+        );
+        if (route == null) return;
+
+        route.userRouteModel = userRoute;
+      });
+    }
+
+    return routes.where((route) => !route.isDeleted).toList();
+  }
+
   Future<void> saveRoute(UserRouteModel userRouteModel) async {
     await routeRemoteDataProvider.saveUserRoute(userRouteModel);
   }
