@@ -4,35 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
-import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:riverpod/riverpod.dart';
 
 import 'models/route_model.dart';
 
 final routeRemoteDataProvider = Provider(
     (ref) => RouteRemoteDataProvider(ref.read(crashlyticsApiProvider)));
-
-final fetchUserRoutesProvider = FutureProvider((ref) async {
-  var routeDataProvider = ref.watch(routeRemoteDataProvider);
-  var user = ref.watch(authenticationProvider).whenOrNull(
-        data: (user) => user,
-      );
-  if (user == null) {
-    return null;
-  }
-  var routes = await routeDataProvider.getUserRoutes(user.uid);
-
-  var attempted = routes.where((route) => route.isAttempted).length;
-  var completed = routes.where((route) => route.isCompleted).length;
-  var favorited = routes.where((route) => route.isFavorited).length;
-
-  return UserStatsModel(
-    attempted: attempted,
-    completed: completed,
-    favorited: favorited,
-  );
-});
 
 class RouteRemoteDataProvider {
   RouteRemoteDataProvider(this._crashlyticsApi);

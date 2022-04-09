@@ -4,6 +4,7 @@ import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:riverpod/riverpod.dart';
 
@@ -24,6 +25,12 @@ class RouteRepository {
     required this.routeRemoteDataProvider,
     required this.user,
   });
+
+  Future<UserStatsModel> getUserStats() async {
+    var routes = await getRoutes();
+
+    return UserStatsModel.fromRouteList(routes);
+  }
 
   Future<List<RouteModel>> getRoutes() async {
     var routes = await routeRemoteDataProvider.getRoutes();

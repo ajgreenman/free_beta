@@ -5,7 +5,7 @@ import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/presentation/contact_developer_screen.dart';
 import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
 import 'package:free_beta/user/presentation/widgets/removed_routes.dart';
-import 'package:free_beta/user/presentation/widgets/user_stats.dart';
+import 'package:free_beta/user/presentation/widgets/user_stats_card.dart';
 
 class ProfileScreen extends ConsumerWidget {
   static Route<dynamic> route() {
@@ -25,7 +25,7 @@ class ProfileScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            UserStats(),
+            UserStatsCard(),
             RemovedRoutes(),
             _GymAdmin(ref),
             _ContactDeveloper(),

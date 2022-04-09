@@ -8,7 +8,6 @@ import 'package:free_beta/gym/presentation/edit_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
-import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
@@ -269,7 +268,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
           ),
         );
     ref.refresh(fetchRoutesProvider);
-    ref.refresh(fetchUserRoutesProvider);
+    ref.refresh(fetchUserStatsProvider);
 
     dirtyForm = false;
 
