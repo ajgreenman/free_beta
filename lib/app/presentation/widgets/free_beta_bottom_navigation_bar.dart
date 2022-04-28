@@ -25,6 +25,10 @@ class FreeBetaBottomNavigationBar extends StatelessWidget {
           icon: Icons.format_list_bulleted,
         ),
         _buildNavbarItem(
+          label: 'Maps',
+          icon: Icons.map_outlined,
+        ),
+        _buildNavbarItem(
           label: 'Profile',
           icon: Icons.account_box,
         ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/gym_map_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
@@ -24,6 +25,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
       routeProvider: fetchFilteredRoutes,
       refreshProvider: fetchRoutesProvider,
     ),
+    GymMapScreen(),
     ProfileScreen(),
   ];
 
@@ -49,7 +51,10 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
     if (_currentIndex == 0) {
       return _HelpButton();
     }
-    return _AuthenticationButton();
+    if (_currentIndex == 2) {
+      return _AuthenticationButton();
+    }
+    return SizedBox.shrink();
   }
 
   void _navigateTo(int index) {

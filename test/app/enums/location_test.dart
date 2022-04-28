@@ -3,13 +3,13 @@ import 'package:free_beta/app/enums/enums.dart';
 
 void main() {
   test('location display name returns properly', () {
-    var boulder = Location.low.displayName;
+    var boulder = WallLocation.boulder.displayName;
     expect(boulder, 'Boulder Area');
 
-    var mezzanine = Location.mezzanine.displayName;
+    var mezzanine = WallLocation.mezzanine.displayName;
     expect(mezzanine, 'Mezzanine');
 
-    var tallWall = Location.high.displayName;
+    var tallWall = WallLocation.tall.displayName;
     expect(tallWall, 'Tall Wall');
   });
 }
