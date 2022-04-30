@@ -52,6 +52,17 @@ extension WallLocationExtensions on WallLocation {
         return 3.0 / 5.0;
     }
   }
+
+  WallSection wallSection(int index) {
+    switch (this) {
+      case WallLocation.boulder:
+        return _boulderSections[index];
+      case WallLocation.mezzanine:
+        return _mezzanineSections[index];
+      case WallLocation.tall:
+        return _tallSections[index];
+    }
+  }
 }
 
 var _boulderSections = [

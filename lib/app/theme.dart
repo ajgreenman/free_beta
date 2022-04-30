@@ -75,6 +75,47 @@ class FreeBetaColors {
   static const yellowLight = Color(0xFFFCFFCC);
 }
 
+class FreeBetaGradients {
+  static const filterBar = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      FreeBetaColors.yellowFilterBar,
+      FreeBetaColors.greenFilterBar,
+      FreeBetaColors.purpleFilterBar,
+    ],
+    stops: [
+      0.0,
+      0.7,
+      0.9,
+    ],
+  );
+
+  static const reverseFilterBar = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      FreeBetaColors.purpleFilterBar,
+      FreeBetaColors.greenFilterBar,
+      FreeBetaColors.yellowFilterBar,
+    ],
+    stops: [
+      0.0,
+      0.7,
+      0.9,
+    ],
+  );
+
+  static const sheen = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [
+      FreeBetaColors.grayDark,
+      FreeBetaColors.gray,
+    ],
+  );
+}
+
 class FreeBetaSizes {
   /// Size of 0.
   static const none = 0.0;

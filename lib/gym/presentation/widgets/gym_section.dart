@@ -3,42 +3,50 @@ import 'package:free_beta/app/infrastructure/models/wall_section.dart';
 import 'package:free_beta/app/theme.dart';
 
 class GymSection extends StatelessWidget {
-  const GymSection({
-    required this.color,
+  GymSection({
     required this.wallSection,
     required this.size,
-    this.onTap,
+    this.isSelected = false,
     Key? key,
-  }) : super(key: key);
+  })  : boxDecoration = BoxDecoration(
+          gradient: FreeBetaGradients.sheen,
+        ),
+        super(key: key);
 
-  final Color color;
+  GymSection.withColor({
+    Key? key,
+    required Color color,
+    required this.wallSection,
+    required this.size,
+    this.isSelected = false,
+  })  : boxDecoration = BoxDecoration(
+          color: color,
+        ),
+        super(key: key);
+
+  final BoxDecoration boxDecoration;
   final WallSection wallSection;
   final Size size;
-  final Function()? onTap;
+  final bool isSelected;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox.fromSize(
       size: size,
-      child: InkWell(
-        onTap: onTap?.call(),
-        child: Stack(
-          children: [
-            ClipPath(
-              clipper: _SectionClipper(
-                path: _path,
-              ),
-              child: Container(
-                color: color,
-              ),
+      child: Stack(
+        children: [
+          ClipPath(
+            clipper: _SectionClipper(
+              path: _path,
             ),
-            CustomPaint(
-              painter: _SectionPainter(
-                path: _path,
-              ),
+            child: Container(
+              decoration: boxDecoration,
             ),
-          ],
-        ),
+          ),
+          CustomPaint(
+            painter: _SectionPainter(path: _path, isSelected: isSelected),
+          ),
+        ],
       ),
     );
   }
@@ -82,14 +90,16 @@ class _SectionClipper extends CustomClipper<Path> {
 class _SectionPainter extends CustomPainter {
   _SectionPainter({
     required this.path,
+    required this.isSelected,
   });
 
   final Path path;
+  final bool isSelected;
 
   @override
   void paint(Canvas canvas, Size _) {
     final paint = Paint()
-      ..color = FreeBetaColors.black
+      ..color = isSelected ? FreeBetaColors.white : FreeBetaColors.black
       ..style = PaintingStyle.stroke
       ..strokeWidth = FreeBetaSizes.xxs;
 

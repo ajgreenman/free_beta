@@ -30,7 +30,7 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
   Widget build(
     BuildContext context,
     double shrinkOffset,
-    bool overlapsContent,
+    bool _,
   ) {
     var fadeOpacity = shrinkOffset > 100 ? 0.0 : (100 - shrinkOffset) / 100;
     return Stack(

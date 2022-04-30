@@ -1,0 +1,81 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/enums/wall_location.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/error_card.dart';
+import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/widgets/wall_section_filter_bar.dart';
+import 'package:free_beta/routes/infrastructure/models/route_model.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/presentation/widgets/route_list.dart';
+
+class RouteLocationListScreen extends ConsumerWidget {
+  static Route<dynamic> route({
+    required WallLocation wallLocation,
+    required int wallLocationIndex,
+    VoidCallback? onBack,
+  }) {
+    return MaterialPageRoute<dynamic>(builder: (context) {
+      return RouteLocationListScreen(
+        wallLocation: wallLocation,
+        wallLocationIndex: wallLocationIndex,
+        onBack: onBack,
+      );
+    });
+  }
+
+  const RouteLocationListScreen({
+    required this.wallLocation,
+    required this.wallLocationIndex,
+    this.onBack,
+    Key? key,
+  }) : super(key: key);
+
+  final WallLocation wallLocation;
+  final int wallLocationIndex;
+  final VoidCallback? onBack;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: FreeBetaBackButton(
+          onPressed: onBack,
+        ),
+      ),
+      body: NestedScrollView(
+        controller: ScrollController(),
+        headerSliverBuilder: (_, __) => [
+          SliverPersistentHeader(
+            delegate: WallSectionFilterBar(
+              wallLocation: wallLocation,
+              wallLocationIndex: wallLocationIndex,
+            ),
+          ),
+        ],
+        body: ref.watch(fetchFilteredRoutes).when(
+              data: (routeFilterModel) => RouteList(
+                routes: routeFilterModel.filteredRoutes.sortRoutes(),
+                onRefresh: () => _refreshRoutes(ref),
+              ),
+              error: (error, stackTrace) => ErrorCard(
+                error: error,
+                stackTrace: stackTrace,
+                child: ElevatedButton(
+                  onPressed: () => _refreshRoutes(ref),
+                  child: Text('Try again'),
+                ),
+              ),
+              loading: () => Padding(
+                padding: FreeBetaPadding.xxlVertical,
+                child: Center(child: CircularProgressIndicator()),
+              ),
+            ),
+      ),
+    );
+  }
+
+  Future<void> _refreshRoutes(WidgetRef ref) async {
+    ref.refresh(fetchRoutesProvider);
+  }
+}
