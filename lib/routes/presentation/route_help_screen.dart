@@ -133,6 +133,8 @@ class RouteHelpScreen extends StatelessWidget {
       difficulty: 'v0-v2',
       climbType: ClimbType.boulder,
       routeColor: RouteColor.green,
+      wallLocation: WallLocation.boulder,
+      wallLocationIndex: 0,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',
@@ -149,6 +151,8 @@ class RouteHelpScreen extends StatelessWidget {
       difficulty: '5.11+',
       climbType: ClimbType.topRope,
       routeColor: RouteColor.purple,
+      wallLocation: WallLocation.mezzanine,
+      wallLocationIndex: 0,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',
@@ -164,6 +168,8 @@ class RouteHelpScreen extends StatelessWidget {
       difficulty: '5.9',
       climbType: ClimbType.lead,
       routeColor: RouteColor.blue,
+      wallLocation: WallLocation.tall,
+      wallLocationIndex: 0,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',
@@ -179,6 +185,8 @@ class RouteHelpScreen extends StatelessWidget {
       difficulty: 'v4-v6',
       climbType: ClimbType.boulder,
       routeColor: RouteColor.yellow,
+      wallLocation: WallLocation.boulder,
+      wallLocationIndex: 0,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',
@@ -194,6 +202,8 @@ class RouteHelpScreen extends StatelessWidget {
       difficulty: '5.6',
       climbType: ClimbType.topRope,
       routeColor: RouteColor.black,
+      wallLocation: WallLocation.tall,
+      wallLocationIndex: 0,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',

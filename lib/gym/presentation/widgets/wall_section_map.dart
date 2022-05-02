@@ -7,52 +7,63 @@ import 'package:free_beta/gym/presentation/widgets/gym_section.dart';
 class WallSectionMap extends StatelessWidget {
   const WallSectionMap({
     required this.wallLocation,
-    required this.sectionWidth,
     this.highlightedSection,
+    this.sectionPadding = FreeBetaSizes.s,
     this.onPressed,
     Key? key,
   }) : super(key: key);
 
   final WallLocation wallLocation;
-  final double sectionWidth;
   final int? highlightedSection;
+  final double sectionPadding;
   final Function(int)? onPressed;
 
   @override
   Widget build(BuildContext context) {
-    var availableWidth = sectionWidth - FreeBetaSizes.xxl;
-    return Stack(
-      alignment: Alignment.center,
-      children: wallLocation.sections.mapIndexed((i, section) {
-        var left =
-            ((i + 1) * FreeBetaSizes.s) + availableWidth * section.widthOffset;
-        return Positioned(
-          left: left,
-          child: GestureDetector(
-            onTap: onPressed == null ? null : () => onPressed!(i),
-            child: highlightedSection != null && highlightedSection == i
-                ? GymSection(
-                    wallSection: section,
-                    size: Size(
-                      availableWidth * section.widthRatio,
-                      availableWidth * wallLocation.heightRatio,
-                    ),
-                  )
-                : GymSection.withColor(
-                    color: _getColor(i),
-                    wallSection: section,
-                    size: Size(
-                      availableWidth * section.widthRatio,
-                      availableWidth * wallLocation.heightRatio,
-                    ),
-                  ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        var availableWidth = constraints.maxWidth -
+            (wallLocation.sections.length - 1) * sectionPadding;
+        var height = availableWidth * wallLocation.heightRatio;
+        return SizedBox(
+          height: height,
+          child: Stack(
+            alignment: Alignment.center,
+            children: wallLocation.sections.mapIndexed((i, section) {
+              return Positioned(
+                left: i * sectionPadding + availableWidth * section.widthOffset,
+                child: GestureDetector(
+                  onTap: onPressed == null ? null : () => onPressed!(i),
+                  child: highlightedSection != null && highlightedSection == i
+                      ? GymSection(
+                          wallSection: section,
+                          size: Size(
+                            availableWidth * section.widthRatio,
+                            height,
+                          ),
+                        )
+                      : GymSection.withColor(
+                          color: _getColor(i),
+                          wallSection: section,
+                          size: Size(
+                            availableWidth * section.widthRatio,
+                            height,
+                          ),
+                        ),
+                ),
+              );
+            }).toList(),
           ),
         );
-      }).toList(),
+      },
     );
   }
 
   Color _getColor(int index) {
+    if (highlightedSection != null) {
+      return FreeBetaColors.white;
+    }
+
     var opacity = highlightedSection != null ? 0.1 : 0.7;
 
     switch (index % 3) {

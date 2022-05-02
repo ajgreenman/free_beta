@@ -106,12 +106,18 @@ class FreeBetaGradients {
     ],
   );
 
-  static const sheen = LinearGradient(
+  static const highlight = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [
-      FreeBetaColors.grayDark,
-      FreeBetaColors.gray,
+      FreeBetaColors.yellowFilterBar,
+      FreeBetaColors.greenFilterBar,
+      FreeBetaColors.purpleFilterBar,
+    ],
+    stops: [
+      0.0,
+      0.3,
+      0.6,
     ],
   );
 }

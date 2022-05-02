@@ -7,6 +7,8 @@ class RouteFormModel {
   String? difficulty;
   ClimbType? climbType;
   RouteColor? routeColor;
+  WallLocation? wallLocation;
+  int? wallLocationIndex;
   DateTime? creationDate;
   DateTime? removalDate;
   List<String>? images;
@@ -16,21 +18,26 @@ class RouteFormModel {
     this.difficulty,
     this.climbType,
     this.routeColor,
+    this.wallLocation,
+    this.wallLocationIndex,
     this.creationDate,
     this.removalDate,
     this.images,
   });
 
-  factory RouteFormModel.fromRouteModel(RouteModel routeModel) =>
-      RouteFormModel(
-        name: routeModel.name,
-        climbType: routeModel.climbType,
-        creationDate: routeModel.creationDate,
-        removalDate: routeModel.removalDate,
-        routeColor: routeModel.routeColor,
-        difficulty: routeModel.difficulty,
-        images: routeModel.images,
-      );
+  factory RouteFormModel.fromRouteModel(RouteModel routeModel) {
+    return RouteFormModel(
+      name: routeModel.name,
+      climbType: routeModel.climbType,
+      wallLocation: routeModel.wallLocation,
+      wallLocationIndex: routeModel.wallLocationIndex,
+      creationDate: routeModel.creationDate,
+      removalDate: routeModel.removalDate,
+      routeColor: routeModel.routeColor,
+      difficulty: routeModel.difficulty,
+      images: routeModel.images,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     var json = {
@@ -38,6 +45,8 @@ class RouteFormModel {
       'climbType': climbType!.name,
       'difficulty': difficulty,
       'routeColor': routeColor!.name,
+      'wallLocation': wallLocation!.name,
+      'wallLocationIndex': wallLocationIndex,
       'creationDate': Timestamp.fromDate(creationDate!),
       'isActive': true,
       'images': images,
@@ -60,6 +69,10 @@ class RouteFormModel {
       (climbType?.displayName ?? '') +
       '\n' +
       (difficulty.toString()) +
+      '\n' +
+      (wallLocation.toString()) +
+      '\n' +
+      (wallLocationIndex.toString()) +
       '\n' +
       (creationDate.toString()) +
       '\n' +

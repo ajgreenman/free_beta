@@ -11,7 +11,7 @@ class RouteList extends StatelessWidget {
   }) : super(key: key);
 
   final List<RouteModel> routes;
-  final Future<void> Function() onRefresh;
+  final Future<void> Function()? onRefresh;
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +27,15 @@ class RouteList extends StatelessWidget {
       );
     }
 
+    if (onRefresh == null) {
+      return ListView.separated(
+        shrinkWrap: true,
+        itemBuilder: (_, index) => RouteCard(route: routes[index]),
+        separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+        itemCount: routes.length,
+      );
+    }
+
     return RefreshIndicator(
       child: ListView.separated(
         shrinkWrap: true,
@@ -34,7 +43,7 @@ class RouteList extends StatelessWidget {
         separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
         itemCount: routes.length,
       ),
-      onRefresh: onRefresh,
+      onRefresh: onRefresh!,
     );
   }
 }

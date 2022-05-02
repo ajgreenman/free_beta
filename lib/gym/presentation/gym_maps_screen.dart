@@ -15,8 +15,6 @@ class GymMapsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _thumbnailWidth = MediaQuery.of(context).size.width * 0.8;
-
     return Scaffold(
       key: Key('gym_maps'),
       body: SingleChildScrollView(
@@ -37,13 +35,8 @@ class GymMapsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: FreeBetaSizes.m),
                     Center(
-                      child: SizedBox(
-                        height: _thumbnailWidth * location.heightRatio,
-                        width: _thumbnailWidth + FreeBetaSizes.xxl,
-                        child: WallSectionMap(
-                          sectionWidth: _thumbnailWidth,
-                          wallLocation: location,
-                        ),
+                      child: WallSectionMap(
+                        wallLocation: location,
                       ),
                     ),
                   ],

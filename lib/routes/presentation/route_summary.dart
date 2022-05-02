@@ -60,7 +60,7 @@ class RouteSummary extends StatelessWidget {
   Widget _buildName() {
     return Flexible(
       child: Text(
-        route.truncatedDisplayName(isDetailed ? 20 : 30),
+        route.truncatedDisplayName(isDetailed ? 17 : 30),
         style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
       ),
     );

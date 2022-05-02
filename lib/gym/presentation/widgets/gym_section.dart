@@ -9,7 +9,7 @@ class GymSection extends StatelessWidget {
     this.isSelected = false,
     Key? key,
   })  : boxDecoration = BoxDecoration(
-          gradient: FreeBetaGradients.sheen,
+          gradient: FreeBetaGradients.highlight,
         ),
         super(key: key);
 

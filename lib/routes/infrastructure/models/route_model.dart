@@ -9,6 +9,8 @@ class RouteModel {
   final String difficulty;
   final ClimbType climbType;
   final RouteColor routeColor;
+  final WallLocation wallLocation;
+  final int wallLocationIndex;
   final DateTime creationDate;
   final DateTime? removalDate;
   final List<String> images;
@@ -21,6 +23,8 @@ class RouteModel {
     required this.difficulty,
     required this.climbType,
     required this.routeColor,
+    required this.wallLocation,
+    required this.wallLocationIndex,
     required this.creationDate,
     this.removalDate,
     this.images = const [],
@@ -32,22 +36,26 @@ class RouteModel {
       RouteModel(
         id: id,
         name: json['name'] ?? '',
+        difficulty: json['difficulty'],
         climbType: ClimbType.values.firstWhere(
           (climbType) => describeEnum(climbType) == json['climbType'],
         ),
-        creationDate: (json['creationDate'] as Timestamp).toDate(),
-        removalDate: (json['removalDate'] as Timestamp?)?.toDate(),
         routeColor: RouteColor.values.firstWhere(
           (routeColor) => describeEnum(routeColor) == json['routeColor'],
         ),
-        difficulty: json['difficulty'],
-        isDeleted: _getBool(json['isDeleted']),
+        wallLocation: WallLocation.values.firstWhere(
+          (wallLocation) => describeEnum(wallLocation) == json['wallLocation'],
+        ),
+        wallLocationIndex: json['wallLocationIndex'],
+        creationDate: (json['creationDate'] as Timestamp).toDate(),
+        removalDate: (json['removalDate'] as Timestamp?)?.toDate(),
         images: ((json['images'] as List<dynamic>?) ?? [])
             .map((image) {
               return image.toString();
             })
             .where((image) => image.isNotEmpty)
             .toList(),
+        isDeleted: _getBool(json['isDeleted']),
       );
 
   static bool _getBool(bool? value) => value != null && value;

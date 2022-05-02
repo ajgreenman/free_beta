@@ -5,20 +5,26 @@ import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
 
 class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
   WallSectionFilterBar({
+    required this.width,
     required this.wallLocation,
     required this.wallLocationIndex,
+    required this.onPressed,
   });
 
+  final double width;
   final WallLocation wallLocation;
   final int wallLocationIndex;
+  final Function(int)? onPressed;
 
-  final _sectionSize = 500.0;
+  double get _availableWidth => width - FreeBetaSizes.l * 2;
+  double get _availableHeight =>
+      _availableWidth * wallLocation.heightRatio + FreeBetaSizes.l * 2;
 
   @override
   double get minExtent => 0.0;
 
   @override
-  double get maxExtent => _sectionSize * wallLocation.heightRatio;
+  double get maxExtent => _availableHeight;
 
   @override
   Widget build(
@@ -26,20 +32,16 @@ class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
     double shrinkOffset,
     bool overlapsContent,
   ) {
-    var width = MediaQuery.of(context).size.width * 0.9;
     return Container(
-      padding: FreeBetaPadding.lVertical,
+      padding: FreeBetaPadding.lAll,
       decoration: BoxDecoration(
         border: Border(bottom: BorderSide()),
       ),
       child: Center(
-        child: SizedBox(
-          width: width,
-          child: WallSectionMap(
-            wallLocation: wallLocation,
-            sectionWidth: width,
-            highlightedSection: wallLocationIndex,
-          ),
+        child: WallSectionMap(
+          wallLocation: wallLocation,
+          highlightedSection: wallLocationIndex,
+          onPressed: onPressed,
         ),
       ),
     );

@@ -5,6 +5,7 @@ import 'package:free_beta/app/infrastructure/image_api.dart';
 import 'package:free_beta/app/presentation/widgets/form/button_input.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/presentation/widgets/form/text_input.dart';
+import 'package:free_beta/app/presentation/widgets/form/wall_section_input.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -100,6 +101,29 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 controller: _imageController,
                 isImageField: true,
               ),
+              FreeBetaDropdownList<WallLocation?>(
+                label: 'Location',
+                items: _getLocations(),
+                onChanged: (wallLocation) {
+                  if (_formModel.wallLocation != wallLocation) {
+                    setState(() {
+                      _formModel.wallLocation = wallLocation;
+                    });
+                  }
+                },
+                initialValue: widget.editRouteModel?.wallLocation,
+              ),
+              SizedBox(height: FreeBetaSizes.l),
+              if (_formModel.wallLocation != null) ...[
+                FreeBetaWallSectionInput(
+                  label: 'Select section',
+                  wallLocation: _formModel.wallLocation!,
+                  value: _formModel.wallLocationIndex,
+                  onChanged: (i) =>
+                      setState((() => _formModel.wallLocationIndex = i)),
+                ),
+                SizedBox(height: FreeBetaSizes.l),
+              ],
               FreeBetaDropdownList<RouteColor?>(
                 label: 'Color',
                 items: _getColors(),
@@ -325,6 +349,15 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       );
     });
   }
+
+  List<DropdownMenuItem<WallLocation?>> _getLocations() => WallLocation.values
+      .map(
+        (wallLocation) => DropdownMenuItem<WallLocation?>(
+          value: wallLocation,
+          child: Text(wallLocation.displayName),
+        ),
+      )
+      .toList();
 
   List<DropdownMenuItem<RouteColor?>> _getColors() => RouteColor.values
       .map(

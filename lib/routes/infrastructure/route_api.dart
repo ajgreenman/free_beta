@@ -25,6 +25,9 @@ final routeTextFilterProvider = StateProvider<String?>((_) => null);
 final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
 final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
+final routeWallLocationFilterProvider =
+    StateProvider<WallLocation?>((_) => null);
+final routeWallLocationIndexFilterProvider = StateProvider<int?>((_) => null);
 
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
@@ -71,6 +74,20 @@ final fetchFilteredRemovedRoutes =
   );
 });
 
+final fetchLocationFilteredRoutes =
+    FutureProvider<RouteFilterModel>((ref) async {
+  final routeApi = ref.watch(routeApiProvider);
+  final routes = await ref.watch(fetchRoutesProvider.future);
+  final wallLocationFilter = ref.watch(routeWallLocationFilterProvider);
+  final wallLocationIndexFilter =
+      ref.watch(routeWallLocationIndexFilterProvider);
+  return routeApi.getLocationFilteredRoutes(
+    routes,
+    wallLocationFilter,
+    wallLocationIndexFilter,
+  );
+});
+
 class RouteApi {
   final RouteRepository routeRepository;
 
@@ -111,6 +128,27 @@ class RouteApi {
   ) async {
     return routeRepository.deleteRoute(
       routeModel,
+    );
+  }
+
+  RouteFilterModel getLocationFilteredRoutes(
+    List<RouteModel> unfilteredRoutes,
+    WallLocation? wallLocationFilter,
+    int? wallLocationIndexFilter,
+  ) {
+    Iterable<RouteModel> filteredRoutes = unfilteredRoutes;
+    if (wallLocationFilter != null) {
+      filteredRoutes = filteredRoutes
+          .where((route) => route.wallLocation == wallLocationFilter);
+    }
+    if (wallLocationIndexFilter != null) {
+      filteredRoutes = filteredRoutes
+          .where((route) => route.wallLocationIndex == wallLocationIndexFilter);
+    }
+
+    return RouteFilterModel(
+      routes: unfilteredRoutes,
+      filteredRoutes: filteredRoutes.toList(),
     );
   }
 

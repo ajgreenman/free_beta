@@ -13,13 +13,11 @@ class RouteLocationListScreen extends ConsumerWidget {
   static Route<dynamic> route({
     required WallLocation wallLocation,
     required int wallLocationIndex,
-    VoidCallback? onBack,
   }) {
     return MaterialPageRoute<dynamic>(builder: (context) {
       return RouteLocationListScreen(
         wallLocation: wallLocation,
         wallLocationIndex: wallLocationIndex,
-        onBack: onBack,
       );
     });
   }
@@ -27,36 +25,36 @@ class RouteLocationListScreen extends ConsumerWidget {
   const RouteLocationListScreen({
     required this.wallLocation,
     required this.wallLocationIndex,
-    this.onBack,
     Key? key,
   }) : super(key: key);
 
   final WallLocation wallLocation;
   final int wallLocationIndex;
-  final VoidCallback? onBack;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(
-        leading: FreeBetaBackButton(
-          onPressed: onBack,
-        ),
+        leading: FreeBetaBackButton(),
       ),
       body: NestedScrollView(
         controller: ScrollController(),
         headerSliverBuilder: (_, __) => [
           SliverPersistentHeader(
             delegate: WallSectionFilterBar(
+              width: MediaQuery.of(context).size.width,
               wallLocation: wallLocation,
               wallLocationIndex: wallLocationIndex,
+              onPressed: (index) => ref
+                  .read(routeWallLocationIndexFilterProvider.notifier)
+                  .state = index,
             ),
           ),
         ],
-        body: ref.watch(fetchFilteredRoutes).when(
+        body: ref.watch(fetchLocationFilteredRoutes).when(
               data: (routeFilterModel) => RouteList(
                 routes: routeFilterModel.filteredRoutes.sortRoutes(),
-                onRefresh: () => _refreshRoutes(ref),
+                onRefresh: null,
               ),
               error: (error, stackTrace) => ErrorCard(
                 error: error,
