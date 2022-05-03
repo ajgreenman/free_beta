@@ -45,9 +45,6 @@ class RouteLocationListScreen extends ConsumerWidget {
               width: MediaQuery.of(context).size.width,
               wallLocation: wallLocation,
               wallLocationIndex: wallLocationIndex,
-              onPressed: (index) => ref
-                  .read(routeWallLocationIndexFilterProvider.notifier)
-                  .state = index,
             ),
           ),
         ],

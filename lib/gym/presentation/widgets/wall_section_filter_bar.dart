@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
 
 class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
   WallSectionFilterBar({
     required this.width,
     required this.wallLocation,
     required this.wallLocationIndex,
-    required this.onPressed,
   });
 
   final double width;
   final WallLocation wallLocation;
   final int wallLocationIndex;
-  final Function(int)? onPressed;
 
   double get _availableWidth => width - FreeBetaSizes.l * 2;
   double get _availableHeight =>
@@ -38,10 +38,9 @@ class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
         border: Border(bottom: BorderSide()),
       ),
       child: Center(
-        child: WallSectionMap(
+        child: _WallSectionMapFilter(
           wallLocation: wallLocation,
-          highlightedSection: wallLocationIndex,
-          onPressed: onPressed,
+          wallLocationIndex: wallLocationIndex,
         ),
       ),
     );
@@ -50,4 +49,44 @@ class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) =>
       oldDelegate.maxExtent != maxExtent || oldDelegate.minExtent != minExtent;
+}
+
+class _WallSectionMapFilter extends ConsumerStatefulWidget {
+  const _WallSectionMapFilter({
+    Key? key,
+    required this.wallLocation,
+    required this.wallLocationIndex,
+  }) : super(key: key);
+
+  final WallLocation wallLocation;
+  final int wallLocationIndex;
+
+  @override
+  ConsumerState<_WallSectionMapFilter> createState() =>
+      _WallSectionMapFilterState();
+}
+
+class _WallSectionMapFilterState extends ConsumerState<_WallSectionMapFilter> {
+  late int _wallLocationIndex;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _wallLocationIndex = widget.wallLocationIndex;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return WallSectionMap(
+      wallLocation: widget.wallLocation,
+      highlightedSection: _wallLocationIndex,
+      onPressed: (index) {
+        setState(() {
+          _wallLocationIndex = index;
+        });
+        ref.read(routeWallLocationIndexFilterProvider.notifier).state = index;
+      },
+    );
+  }
 }
