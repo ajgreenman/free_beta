@@ -62,9 +62,9 @@ class RouteFilterBar extends SliverPersistentHeaderDelegate {
             opacity: fadeOpacity,
             child: Row(
               children: [
-                Flexible(child: _ClimbTypeFilter()),
-                SizedBox(width: FreeBetaSizes.xl),
                 Flexible(child: _RouteColorFilter()),
+                SizedBox(width: FreeBetaSizes.xl),
+                Flexible(child: _ClimbTypeFilter()),
               ],
             ),
           ),
@@ -255,7 +255,7 @@ class _ClimbTypeFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FreeBetaDropdownList<ClimbType?>(
-      label: 'Filter Type',
+      label: 'Style',
       hintText: 'Tap to filter',
       borderWidth: 1.0,
       items: _getTypes(),
@@ -290,7 +290,7 @@ class _RouteColorFilter extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FreeBetaDropdownList<RouteColor?>(
-      label: 'Filter Color',
+      label: 'Color',
       hintText: 'Tap to filter',
       borderWidth: 1.0,
       items: _getColors(),

@@ -34,7 +34,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
     return Scaffold(
       key: Key('free-beta'),
       appBar: AppBar(
-        title: Text('Free Beta'),
+        title: Text('Climb Elev8'),
         actions: [
           _getAction(context),
         ],

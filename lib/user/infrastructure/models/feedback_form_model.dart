@@ -15,7 +15,7 @@ class FeedbackFormModel {
     return {
       'to': 'a.j.greenman@gmail.com',
       'message': {
-        'subject': 'Free Beta Feedback - ${category.name}',
+        'subject': 'Climb Elev8 Feedback - ${category.name}',
         'text': 'From: $name\nComments: $comments',
       },
     };

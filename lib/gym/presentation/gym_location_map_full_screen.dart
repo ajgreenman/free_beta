@@ -52,6 +52,7 @@ class _GymLocationMapFullScreenState
 
   @override
   Widget build(BuildContext context) {
+    var orientation = MediaQuery.of(context).orientation;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.wallLocation.displayName),
@@ -66,77 +67,45 @@ class _GymLocationMapFullScreenState
       ),
       backgroundColor: FreeBetaColors.grayDark,
       body: Center(
-        child: Padding(
-          padding: FreeBetaPadding.mAll,
-          child: WallSectionMap(
-            onPressed: (index) {
-              SystemChrome.setPreferredOrientations(
-                [DeviceOrientation.portraitUp],
-              );
-              ref.read(routeWallLocationFilterProvider.notifier).state =
-                  widget.wallLocation;
-              ref.read(routeWallLocationIndexFilterProvider.notifier).state =
-                  index;
-              return Navigator.of(context).push(
-                RouteLocationListScreen.route(
-                  wallLocation: widget.wallLocation,
-                  wallLocationIndex: index,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (orientation == Orientation.portrait) ...[
+              Text(
+                'Tap a section to filter routes',
+                style: FreeBetaTextStyle.h3.copyWith(
+                  color: FreeBetaColors.white,
                 ),
-              );
-            },
-            wallLocation: widget.wallLocation,
-          ),
+              ),
+              SizedBox(height: FreeBetaSizes.xxl),
+            ],
+            Padding(
+              padding: FreeBetaPadding.mAll,
+              child: WallSectionMap(
+                onPressed: (index) {
+                  SystemChrome.setPreferredOrientations(
+                    [DeviceOrientation.portraitUp],
+                  );
+                  ref.read(routeWallLocationFilterProvider.notifier).state =
+                      widget.wallLocation;
+                  ref
+                      .read(routeWallLocationIndexFilterProvider.notifier)
+                      .state = index;
+                  return Navigator.of(context).push(
+                    RouteLocationListScreen.route(
+                      wallLocation: widget.wallLocation,
+                      wallLocationIndex: index,
+                    ),
+                  );
+                },
+                wallLocation: widget.wallLocation,
+              ),
+            ),
+            if (orientation == Orientation.portrait)
+              SizedBox(height: FreeBetaSizes.xxxl),
+          ],
         ),
       ),
-      floatingActionButton: _buildRotationButton(context),
     );
-  }
-
-  FloatingActionButton _buildRotationButton(BuildContext context) {
-    return MediaQuery.of(context).orientation == Orientation.portrait
-        ? FloatingActionButton.large(
-            onPressed: () {
-              SystemChrome.setPreferredOrientations(
-                [
-                  DeviceOrientation.landscapeRight,
-                  DeviceOrientation.landscapeLeft,
-                ],
-              );
-              SystemChrome.setPreferredOrientations(
-                [
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                  DeviceOrientation.landscapeRight,
-                  DeviceOrientation.landscapeLeft,
-                ],
-              );
-            },
-            backgroundColor: FreeBetaColors.grayLight,
-            child: const Icon(
-              Icons.screen_rotation,
-            ),
-          )
-        : FloatingActionButton.large(
-            onPressed: () {
-              SystemChrome.setPreferredOrientations(
-                [
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                ],
-              );
-              SystemChrome.setPreferredOrientations(
-                [
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                  DeviceOrientation.landscapeRight,
-                  DeviceOrientation.landscapeLeft,
-                ],
-              );
-            },
-            backgroundColor: FreeBetaColors.grayLight,
-            child: const Icon(
-              Icons.screen_rotation,
-            ),
-          );
   }
 }

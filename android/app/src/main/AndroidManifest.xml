@@ -2,7 +2,7 @@
     package="com.codejsoftware.freeBeta">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="Free Beta - Elev8"
+        android:label="Climb Elev8"
         android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"

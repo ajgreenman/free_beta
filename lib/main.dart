@@ -41,7 +41,7 @@ void main() async {
             );
           },
           debugShowCheckedModeBanner: false,
-          title: 'Free Beta',
+          title: 'Climb Elev8',
           theme: FreeBetaTheme.blueTheme,
           home: App(),
         ),

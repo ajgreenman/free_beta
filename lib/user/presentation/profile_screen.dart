@@ -77,7 +77,7 @@ class _CopyrightText extends StatelessWidget {
 
     return Center(
       child: Text(
-        '© $copyrightYear Free Beta',
+        '© $copyrightYear Climb Elev8',
         style: FreeBetaTextStyle.body3.copyWith(
           color: FreeBetaColors.grayLight,
         ),

@@ -170,9 +170,9 @@ class StaggeredLogo extends StatelessWidget {
             transform: Matrix4.identity()
               ..translate(0.0, (nameOffset.value * 1000) - 1000),
             child: Text(
-              'FREE BETA',
+              'CLIMB ELEV8',
               style: TextStyle(
-                fontSize: 40,
+                fontSize: 32,
                 fontWeight: FontWeight.bold,
               ),
             ),
