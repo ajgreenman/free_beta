@@ -87,7 +87,7 @@ class _AreYouSureDialog extends StatelessWidget {
           Text("Are you sure you want to delete this route?"),
           SizedBox(height: FreeBetaSizes.m),
           Text(
-              "Deleting a route means it won't show up on the Removed Routes screen. Instead, to remove a route, simply edit the route and set a Removal Date."),
+              "Deleting a route means it won't show up on the Removed Routes screen. Instead, to remove a route, simply set a Removal Date."),
         ],
       ),
       actions: [

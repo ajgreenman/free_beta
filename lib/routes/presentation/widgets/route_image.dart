@@ -15,6 +15,8 @@ class RouteImage extends StatelessWidget {
     return Hero(
       tag: imageUrl,
       child: CachedNetworkImage(
+        memCacheHeight: 768,
+        memCacheWidth: 576,
         imageUrl: imageUrl,
         placeholder: (_, __) => _LoadingColumn(),
       ),
