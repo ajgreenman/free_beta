@@ -92,6 +92,8 @@ extension RouteModelListExtensions on List<RouteModel> {
     switch (route.difficulty.toLowerCase()) {
       case 'vb':
         return 0;
+      case 'v0':
+        return 0;
       case 'v0-v2':
         return 1;
       case 'v1-v3':

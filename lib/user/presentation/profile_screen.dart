@@ -27,7 +27,7 @@ class ProfileScreen extends ConsumerWidget {
           children: [
             UserStatsCard(),
             RemovedRoutes(),
-            //_GymAdmin(ref),
+            _GymAdmin(ref),
             _ContactDeveloper(),
             _CopyrightText(),
             SizedBox(height: FreeBetaSizes.m),

@@ -248,7 +248,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
     await showDialog(
       context: context,
-      builder: (_) => _AreYouSureDialog(),
+      builder: (_) => _AreYouSureDialog(onSave: _onSave),
     );
   }
 
@@ -305,24 +305,45 @@ class _DetailScreenDivider extends StatelessWidget {
 class _AreYouSureDialog extends StatelessWidget {
   const _AreYouSureDialog({
     Key? key,
+    required this.onSave,
   }) : super(key: key);
+
+  final VoidCallback onSave;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Are you sure?"),
-      content:
-          Text("You have unsaved changes, are you sure you want to leave?"),
+      content: Text("You have unsaved changes, are you sure you want to exit?"),
       actions: [
         TextButton(
-          child: Text('Cancel'),
+          child: Text(
+            'Cancel',
+            textAlign: TextAlign.end,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
+        SizedBox(width: FreeBetaSizes.s),
         TextButton(
-          child: Text('Leave'),
+          child: Text(
+            'Exit',
+            textAlign: TextAlign.end,
+          ),
           onPressed: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pop();
+          },
+        ),
+        SizedBox(width: FreeBetaSizes.s),
+        TextButton(
+          child: Text(
+            'Save & Exit',
+            textAlign: TextAlign.end,
+          ),
+          onPressed: () {
+            onSave();
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
