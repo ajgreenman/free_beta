@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/infrastructure/image_api.dart';
+import 'package:free_beta/app/infrastructure/media_api.dart';
 import 'package:free_beta/app/presentation/widgets/form/button_input.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/presentation/widgets/form/text_input.dart';
@@ -30,8 +30,10 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   late TextEditingController _creationDateController;
   late TextEditingController _removalDateController;
   late TextEditingController _imageController;
+  late TextEditingController _betaVideoController;
 
   var _loadingImages = false;
+  var _loadingBetaVideo = false;
   late RouteFormModel _formModel;
 
   @override
@@ -67,6 +69,9 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     _imageController = TextEditingController(
       text: _imageHintText,
     );
+    _betaVideoController = TextEditingController(
+      text: _betaVideoHintText,
+    );
   }
 
   void _setupCreate() {
@@ -76,6 +81,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     _creationDateController = TextEditingController();
     _removalDateController = TextEditingController();
     _imageController = TextEditingController();
+    _betaVideoController = TextEditingController();
   }
 
   @override
@@ -99,7 +105,13 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 hintText: _imageHintText,
                 onTap: () => _onImagePressed(context),
                 controller: _imageController,
-                isImageField: true,
+              ),
+              FreeBetaButtonInput(
+                label: 'Beta Video',
+                hintText: _betaVideoHintText,
+                onTap: () => _onBetaVideoPressed(context),
+                controller: _betaVideoController,
+                isRequired: false,
               ),
               FreeBetaDropdownList<WallLocation?>(
                 label: 'Location',
@@ -168,8 +180,9 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   }
 
   Widget _buildCreateRouteButton(BuildContext context) => ElevatedButton(
-        onPressed:
-            !_loadingImages ? () async => _onCreateRoutePressed(context) : null,
+        onPressed: !_loadingImages && !_loadingBetaVideo
+            ? () async => _onCreateRoutePressed(context)
+            : null,
         child: Padding(
           padding: FreeBetaPadding.xlHorizontal,
           child: Text(
@@ -224,8 +237,9 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   }
 
   Widget _buildEditRouteButton(BuildContext context) => ElevatedButton(
-        onPressed:
-            !_loadingImages ? () async => _onEditRoutePressed(context) : null,
+        onPressed: !_loadingImages && !_loadingBetaVideo
+            ? () async => _onEditRoutePressed(context)
+            : null,
         child: Padding(
           padding: FreeBetaPadding.xlHorizontal,
           child: Text(
@@ -329,9 +343,9 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
     FocusScope.of(context).requestFocus(FocusNode());
 
-    var imageApi = ref.read(imageApiProvider);
+    var mediaApi = ref.read(mediaApiProvider);
     var imageSource = await chooseOption(context);
-    var imageFile = await imageApi.fetchImage(imageSource);
+    var imageFile = await mediaApi.fetchImage(imageSource);
 
     setState(() {
       _loadingImages = false;
@@ -346,6 +360,31 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       _formModel.images!.add(imageFile);
       _imageController.value = TextEditingValue(
         text: 'Add images (${_formModel.images!.length})',
+      );
+    });
+  }
+
+  Future<void> _onBetaVideoPressed(BuildContext context) async {
+    setState(() {
+      _loadingBetaVideo = true;
+    });
+
+    FocusScope.of(context).requestFocus(FocusNode());
+
+    var mediaApi = ref.read(mediaApiProvider);
+    var imageSource = await chooseOption(context);
+    var videoFile = await mediaApi.fetchVideo(imageSource);
+
+    setState(() {
+      _loadingBetaVideo = false;
+    });
+
+    if (videoFile == null) return;
+
+    setState(() {
+      _formModel.betaVideo = videoFile;
+      _betaVideoController.value = TextEditingValue(
+        text: 'Edit beta video',
       );
     });
   }
@@ -397,6 +436,16 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     return 'Add images (0)';
   }
 
+  String get _betaVideoHintText {
+    if (_loadingBetaVideo) {
+      return 'Loading...';
+    }
+    if (_formModel.betaVideo != null) {
+      return 'Edit beta video';
+    }
+    return 'Add beta video';
+  }
+
   Future<ImageSource> chooseOption(BuildContext context) async {
     return await showDialog(
       context: context,
@@ -413,7 +462,7 @@ class _ImageSourceDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Upload image'),
+      title: Text('Upload media'),
       actions: [
         ElevatedButton(
           child: Text('Camera'),

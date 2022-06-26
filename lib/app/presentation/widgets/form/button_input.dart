@@ -9,7 +9,6 @@ class FreeBetaButtonInput extends StatelessWidget {
     required this.onTap,
     required this.controller,
     this.isRequired = true,
-    this.isImageField = false,
   }) : super(key: key);
 
   final String label;
@@ -17,7 +16,6 @@ class FreeBetaButtonInput extends StatelessWidget {
   final Function() onTap;
   final TextEditingController controller;
   final bool isRequired;
-  final bool isImageField;
 
   @override
   Widget build(BuildContext context) {

@@ -45,6 +45,8 @@ class RouteRemoteDataProvider {
       },
     );
 
+    log('${routes.where((element) => element.betaVideo != null).length}');
+
     return routes;
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -12,6 +14,7 @@ class RouteFormModel {
   DateTime? creationDate;
   DateTime? removalDate;
   List<String>? images;
+  String? betaVideo;
 
   RouteFormModel({
     this.name,
@@ -23,6 +26,7 @@ class RouteFormModel {
     this.creationDate,
     this.removalDate,
     this.images,
+    this.betaVideo,
   });
 
   factory RouteFormModel.fromRouteModel(RouteModel routeModel) {
@@ -36,6 +40,7 @@ class RouteFormModel {
       routeColor: routeModel.routeColor,
       difficulty: routeModel.difficulty,
       images: routeModel.images,
+      betaVideo: routeModel.betaVideo,
     );
   }
 
@@ -50,6 +55,7 @@ class RouteFormModel {
       'creationDate': Timestamp.fromDate(creationDate!),
       'isActive': true,
       'images': images,
+      'betaVideo': betaVideo,
     };
 
     if (removalDate != null) {
@@ -78,5 +84,7 @@ class RouteFormModel {
       '\n' +
       (removalDate.toString()) +
       '\n' +
-      ((images?.length ?? 0).toString());
+      ((images?.length ?? 0).toString()) +
+      '\n' +
+      (betaVideo.toString());
 }

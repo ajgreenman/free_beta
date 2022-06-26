@@ -14,6 +14,7 @@ class RouteModel {
   final DateTime creationDate;
   final DateTime? removalDate;
   final List<String> images;
+  final String? betaVideo;
   final bool isDeleted;
   UserRouteModel? userRouteModel;
 
@@ -28,6 +29,7 @@ class RouteModel {
     required this.creationDate,
     this.removalDate,
     this.images = const [],
+    this.betaVideo,
     this.isDeleted = false,
     this.userRouteModel,
   });
@@ -55,6 +57,7 @@ class RouteModel {
             })
             .where((image) => image.isNotEmpty)
             .toList(),
+        betaVideo: json['betaVideo'],
         isDeleted: _getBool(json['isDeleted']),
       );
 

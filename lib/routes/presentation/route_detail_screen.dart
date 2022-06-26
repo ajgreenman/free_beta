@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -10,6 +12,7 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
+import 'package:free_beta/routes/presentation/route_video_screen.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 
@@ -68,6 +71,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _DetailScreenDivider(),
                 RouteImages(images: widget.routeModel.images),
+                _BetaVideoButton(betaVideo: widget.routeModel.betaVideo),
                 _DetailScreenDivider(),
                 Form(
                   child: Column(
@@ -99,23 +103,32 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Widget _buildEditButton(BuildContext context) {
-    var user = ref.watch(authenticationProvider).whenOrNull(
-          data: (user) => user,
-        );
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        EditRouteScreen.route(widget.routeModel),
+      ),
+      icon: Icon(
+        Icons.edit,
+        color: FreeBetaColors.white,
+      ),
+    );
+    // var user = ref.watch(authenticationProvider).whenOrNull(
+    //       data: (user) => user,
+    //     );
 
-    if (user != null && !user.isAnonymous) {
-      return IconButton(
-        onPressed: () => Navigator.of(context).push(
-          EditRouteScreen.route(widget.routeModel),
-        ),
-        icon: Icon(
-          Icons.edit,
-          color: FreeBetaColors.white,
-        ),
-      );
-    }
+    // if (user != null && !user.isAnonymous) {
+    //   return IconButton(
+    //     onPressed: () => Navigator.of(context).push(
+    //       EditRouteScreen.route(widget.routeModel),
+    //     ),
+    //     icon: Icon(
+    //       Icons.edit,
+    //       color: FreeBetaColors.white,
+    //     ),
+    //   );
+    // }
 
-    return SizedBox.shrink();
+    // return SizedBox.shrink();
   }
 
   Widget _buildCheckboxRow(String label, Checkbox checkbox) {
@@ -297,6 +310,40 @@ class _DetailScreenDivider extends StatelessWidget {
       child: Divider(
         height: 2,
         thickness: 2,
+      ),
+    );
+  }
+}
+
+class _BetaVideoButton extends StatelessWidget {
+  const _BetaVideoButton({
+    Key? key,
+    required this.betaVideo,
+  }) : super(key: key);
+
+  final String? betaVideo;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: betaVideo != null
+          ? () => Navigator.of(context).push(RouteVideoScreen.route(betaVideo!))
+          : null,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            betaVideo != null ? 'View beta video' : 'Beta video not available',
+          ),
+          if (betaVideo != null)
+            Padding(
+              padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
+              child: Icon(
+                Icons.tap_and_play,
+                size: FreeBetaSizes.l,
+              ),
+            ),
+        ],
       ),
     );
   }
