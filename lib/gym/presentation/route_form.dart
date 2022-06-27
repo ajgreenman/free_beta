@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -373,7 +371,6 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
     var mediaApi = ref.read(mediaApiProvider);
     var imageSource = await chooseOption(context);
-
     if (imageSource == null) return;
 
     setState(() {
