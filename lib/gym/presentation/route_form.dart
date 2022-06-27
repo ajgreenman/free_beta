@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -337,14 +339,16 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   }
 
   Future<void> _onImagePressed(BuildContext context) async {
-    setState(() {
-      _loadingImages = true;
-    });
-
     FocusScope.of(context).requestFocus(FocusNode());
 
     var mediaApi = ref.read(mediaApiProvider);
     var imageSource = await chooseOption(context);
+    if (imageSource == null) return;
+
+    setState(() {
+      _loadingImages = true;
+    });
+
     var imageFile = await mediaApi.fetchImage(imageSource);
 
     setState(() {
@@ -365,14 +369,20 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   }
 
   Future<void> _onBetaVideoPressed(BuildContext context) async {
-    setState(() {
-      _loadingBetaVideo = true;
-    });
-
     FocusScope.of(context).requestFocus(FocusNode());
 
     var mediaApi = ref.read(mediaApiProvider);
     var imageSource = await chooseOption(context);
+
+    if (imageSource == null) return;
+
+    setState(() {
+      _loadingBetaVideo = true;
+      _betaVideoController.value = TextEditingValue(
+        text: 'Loading..',
+      );
+    });
+
     var videoFile = await mediaApi.fetchVideo(imageSource);
 
     setState(() {
@@ -446,7 +456,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     return 'Add beta video';
   }
 
-  Future<ImageSource> chooseOption(BuildContext context) async {
+  Future<ImageSource?> chooseOption(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (_) => _ImageSourceDialog(),

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -103,32 +101,23 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Widget _buildEditButton(BuildContext context) {
-    return IconButton(
-      onPressed: () => Navigator.of(context).push(
-        EditRouteScreen.route(widget.routeModel),
-      ),
-      icon: Icon(
-        Icons.edit,
-        color: FreeBetaColors.white,
-      ),
-    );
-    // var user = ref.watch(authenticationProvider).whenOrNull(
-    //       data: (user) => user,
-    //     );
+    var user = ref.watch(authenticationProvider).whenOrNull(
+          data: (user) => user,
+        );
 
-    // if (user != null && !user.isAnonymous) {
-    //   return IconButton(
-    //     onPressed: () => Navigator.of(context).push(
-    //       EditRouteScreen.route(widget.routeModel),
-    //     ),
-    //     icon: Icon(
-    //       Icons.edit,
-    //       color: FreeBetaColors.white,
-    //     ),
-    //   );
-    // }
+    if (user != null && !user.isAnonymous) {
+      return IconButton(
+        onPressed: () => Navigator.of(context).push(
+          EditRouteScreen.route(widget.routeModel),
+        ),
+        icon: Icon(
+          Icons.edit,
+          color: FreeBetaColors.white,
+        ),
+      );
+    }
 
-    // return SizedBox.shrink();
+    return SizedBox.shrink();
   }
 
   Widget _buildCheckboxRow(String label, Checkbox checkbox) {
@@ -325,26 +314,34 @@ class _BetaVideoButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: betaVideo != null
-          ? () => Navigator.of(context).push(RouteVideoScreen.route(betaVideo!))
-          : null,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            betaVideo != null ? 'View beta video' : 'Beta video not available',
-          ),
-          if (betaVideo != null)
-            Padding(
-              padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
-              child: Icon(
-                Icons.tap_and_play,
-                size: FreeBetaSizes.l,
+    return Column(
+      children: [
+        SizedBox(height: FreeBetaSizes.ml),
+        ElevatedButton(
+          onPressed: betaVideo != null
+              ? () =>
+                  Navigator.of(context).push(RouteVideoScreen.route(betaVideo!))
+              : null,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                betaVideo != null
+                    ? 'View beta video'
+                    : 'Beta video not available',
               ),
-            ),
-        ],
-      ),
+              if (betaVideo != null)
+                Padding(
+                  padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
+                  child: Icon(
+                    Icons.tap_and_play,
+                    size: FreeBetaSizes.l,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

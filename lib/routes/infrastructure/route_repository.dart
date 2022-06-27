@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
@@ -36,9 +34,6 @@ class RouteRepository {
 
   Future<List<RouteModel>> getRoutes() async {
     var routes = await routeRemoteDataProvider.getRoutes();
-    routes.forEach((element) {
-      log(element.betaVideo.toString());
-    });
 
     if (user != null) {
       var userRoutes = await routeRemoteDataProvider.getUserRoutes(user!.uid);
