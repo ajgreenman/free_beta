@@ -49,7 +49,7 @@ class RouteFormModel {
       'difficulty': difficulty,
       'routeColor': routeColor!.name,
       'wallLocation': wallLocation!.name,
-      'wallLocationIndex': wallLocationIndex,
+      'wallLocationIndex': wallLocationIndex ?? 0,
       'creationDate': Timestamp.fromDate(creationDate!),
       'isActive': true,
       'images': images,
