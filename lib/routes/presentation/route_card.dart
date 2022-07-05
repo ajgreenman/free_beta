@@ -25,10 +25,15 @@ class RouteCard extends StatelessWidget {
         padding: FreeBetaPadding.mAll,
         child: Row(
           children: [
-            _buildFavoriteIcon(),
+            _FavoriteIcon(
+              isFavorited: route.userRouteModel?.isFavorited ?? false,
+            ),
             RouteSummary(route),
             Spacer(),
-            _buildProgressIcon(),
+            RouteProgressIcon(
+              isAttempted: (route.userRouteModel?.attempts ?? 0) > 0,
+              isCompleted: route.userRouteModel?.isCompleted ?? false,
+            ),
             Icon(
               Icons.keyboard_arrow_right,
               size: FreeBetaSizes.xxl,
@@ -40,29 +45,26 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Widget _buildFavoriteIcon() {
+  Color _getBackgroundColor() => route.routeColor.displayColor.withOpacity(0.3);
+}
+
+class _FavoriteIcon extends StatelessWidget {
+  const _FavoriteIcon({
+    Key? key,
+    required this.isFavorited,
+  }) : super(key: key);
+
+  final bool isFavorited;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(right: FreeBetaSizes.ml),
-      child: route.userRouteModel?.isFavorited ?? false
-          ? Icon(
-              Icons.star,
-              size: FreeBetaSizes.xl,
-              color: FreeBetaColors.blueDark,
-            )
-          : Icon(
-              Icons.star_outline,
-              size: FreeBetaSizes.xl,
-              color: FreeBetaColors.blueDark,
-            ),
+      child: Icon(
+        isFavorited ? Icons.star : Icons.star_outline,
+        size: FreeBetaSizes.xl,
+        color: FreeBetaColors.blueDark,
+      ),
     );
   }
-
-  Widget _buildProgressIcon() {
-    return RouteProgressIcon(
-      isAttempted: (route.userRouteModel?.attempts ?? 0) > 0,
-      isCompleted: route.userRouteModel?.isCompleted ?? false,
-    );
-  }
-
-  Color _getBackgroundColor() => route.routeColor.displayColor.withOpacity(0.3);
 }
