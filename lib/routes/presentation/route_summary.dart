@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/climb_type.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
@@ -34,7 +35,7 @@ class RouteSummary extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _buildColor(),
-                _buildName(),
+                _buildName(context),
               ],
             ),
             ..._buildDate('Created', route.creationDate),
@@ -57,11 +58,16 @@ class RouteSummary extends StatelessWidget {
     );
   }
 
-  Widget _buildName() {
+  Widget _buildName(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
     return Flexible(
-      child: Text(
-        route.truncatedDisplayName(isDetailed ? 17 : 30),
-        style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
+      child: SizedBox(
+        width: width / 2,
+        child: AutoSizeText(
+          route.truncatedDisplayName(isDetailed ? 17 : 30),
+          style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
+          maxLines: 1,
+        ),
       ),
     );
   }
