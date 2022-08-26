@@ -20,16 +20,7 @@ extension ClimbTypeExtensions on ClimbType {
   }
 
   String get pluralDisplayName {
-    switch (this) {
-      case ClimbType.boulder:
-        return 'Boulders';
-      case ClimbType.topRope:
-        return 'Top Ropes';
-      case ClimbType.lead:
-        return 'Leads';
-      case ClimbType.autoBelay:
-        return 'Auto-belays';
-    }
+    return displayName + 's';
   }
 
   String get abbreviatedName {
