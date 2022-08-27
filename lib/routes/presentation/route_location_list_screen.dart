@@ -36,6 +36,7 @@ class RouteLocationListScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(
         leading: FreeBetaBackButton(),
+        title: Text(wallLocation.displayName),
       ),
       body: NestedScrollView(
         controller: ScrollController(),
