@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/enums/climb_type.dart';
+import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -61,7 +61,7 @@ class RouteSummary extends StatelessWidget {
       child: SizedBox(
         width: width / 2,
         child: AutoSizeText(
-          route.truncatedDisplayName(isDetailed ? 17 : 30),
+          route.name,
           style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
           maxLines: 1,
         ),
@@ -126,7 +126,9 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
           ),
         ),
         Text(
-          route.difficulty,
+          route.boulderRating?.displayName ??
+              route.yosemiteRating?.displayName ??
+              '',
           style: textStyle,
         ),
       ],

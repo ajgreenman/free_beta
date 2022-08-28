@@ -15,9 +15,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class RouteForm extends ConsumerStatefulWidget {
-  const RouteForm({Key? key, this.editRouteModel}) : super(key: key);
+  const RouteForm({
+    Key? key,
+    this.editRouteModel,
+    required this.setDirtyForm,
+  }) : super(key: key);
 
   final RouteModel? editRouteModel;
+  final VoidCallback setDirtyForm;
 
   @override
   _RouteFormState createState() => _RouteFormState();
@@ -26,7 +31,6 @@ class RouteForm extends ConsumerStatefulWidget {
 class _RouteFormState extends ConsumerState<RouteForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   late TextEditingController _nameController;
-  late TextEditingController _difficultyController;
   late TextEditingController _creationDateController;
   late TextEditingController _removalDateController;
   late TextEditingController _imageController;
@@ -55,9 +59,6 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     _nameController = TextEditingController(
       text: routeModel.name,
     );
-    _difficultyController = TextEditingController(
-      text: routeModel.difficulty,
-    );
     _creationDateController = TextEditingController(
       text: DateFormat('MM/dd').format(routeModel.creationDate),
     );
@@ -77,7 +78,6 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   void _setupCreate() {
     _formModel = RouteFormModel();
     _nameController = TextEditingController();
-    _difficultyController = TextEditingController();
     _creationDateController = TextEditingController();
     _removalDateController = TextEditingController();
     _imageController = TextEditingController();
@@ -96,7 +96,12 @@ class _RouteFormState extends ConsumerState<RouteForm> {
             children: [
               FreeBetaTextInput(
                 label: 'Name',
-                onChanged: (name) => _formModel.name = name,
+                onChanged: (name) {
+                  if (name != null && name != _formModel.name) {
+                    widget.setDirtyForm();
+                  }
+                  return _formModel.name = name;
+                },
                 controller: _nameController,
                 skipValidation: true,
               ),
@@ -118,6 +123,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 items: _getLocations(),
                 onChanged: (wallLocation) {
                   if (_formModel.wallLocation != wallLocation) {
+                    widget.setDirtyForm();
                     setState(() {
                       _formModel.wallLocation = wallLocation;
                     });
@@ -131,30 +137,75 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                   label: 'Select section',
                   wallLocation: _formModel.wallLocation!,
                   value: _formModel.wallLocationIndex,
-                  onChanged: (i) =>
-                      setState((() => _formModel.wallLocationIndex = i)),
+                  onChanged: (i) {
+                    widget.setDirtyForm();
+                    setState((() => _formModel.wallLocationIndex = i));
+                  },
                 ),
                 SizedBox(height: FreeBetaSizes.l),
               ],
               FreeBetaDropdownList<RouteColor?>(
                 label: 'Color',
                 items: _getColors(),
-                onChanged: (routeColor) => _formModel.routeColor = routeColor,
+                onChanged: (routeColor) {
+                  if (routeColor != _formModel.routeColor) {
+                    widget.setDirtyForm();
+                    setState(() {
+                      _formModel.routeColor = routeColor;
+                    });
+                  }
+                },
                 initialValue: widget.editRouteModel?.routeColor,
               ),
               SizedBox(height: FreeBetaSizes.l),
               FreeBetaDropdownList<ClimbType?>(
                 label: 'Type',
                 items: _getTypes(),
-                onChanged: (climbType) => _formModel.climbType = climbType,
+                onChanged: (climbType) {
+                  if (_formModel.climbType != climbType) {
+                    widget.setDirtyForm();
+                    setState(() {
+                      _formModel.climbType = climbType;
+                    });
+                  }
+                },
                 initialValue: widget.editRouteModel?.climbType,
               ),
               SizedBox(height: FreeBetaSizes.l),
-              FreeBetaTextInput(
-                label: 'Difficulty',
-                onChanged: (difficulty) => _formModel.difficulty = difficulty,
-                controller: _difficultyController,
-              ),
+              if (_formModel.climbType != null &&
+                  _formModel.climbType == ClimbType.boulder) ...[
+                FreeBetaDropdownList<BoulderRating?>(
+                  label: 'Rating',
+                  items: _getBoulderRatings(),
+                  onChanged: (boulderRating) {
+                    if (_formModel.boulderRating != boulderRating) {
+                      widget.setDirtyForm();
+                      setState(() {
+                        _formModel.boulderRating = boulderRating;
+                      });
+                    }
+                  },
+                  initialValue: widget.editRouteModel?.boulderRating,
+                ),
+                SizedBox(height: FreeBetaSizes.l),
+              ],
+              if (_formModel.climbType != null &&
+                  _formModel.climbType != ClimbType.boulder) ...[
+                FreeBetaDropdownList<YosemiteRating?>(
+                  label: 'Rating',
+                  items: _getYosemiteRatings(),
+                  onChanged: (yosemiteRating) {
+                    if (_formModel.yosemiteRating != yosemiteRating) {
+                      widget.setDirtyForm();
+                      setState(() {
+                        _formModel.yosemiteRating = yosemiteRating;
+                      });
+                    }
+                  },
+                  initialValue: widget.editRouteModel?.yosemiteRating,
+                ),
+                SizedBox(height: FreeBetaSizes.l),
+              ],
               FreeBetaButtonInput(
                 label: 'Creation Date',
                 hintText: 'Enter creation date',
@@ -309,6 +360,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     );
     if (pickedDate == null) return;
 
+    widget.setDirtyForm();
     setState(() {
       _formModel.creationDate = pickedDate;
       _creationDateController.value = TextEditingValue(
@@ -328,6 +380,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     );
     if (pickedDate == null) return;
 
+    widget.setDirtyForm();
     setState(() {
       _formModel.removalDate = pickedDate;
       _removalDateController.value = TextEditingValue(
@@ -355,6 +408,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
     if (imageFile == null) return;
 
+    widget.setDirtyForm();
     setState(() {
       if (_formModel.images == null) {
         _formModel.images = [];
@@ -388,6 +442,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
     if (videoFile == null) return;
 
+    widget.setDirtyForm();
     setState(() {
       _formModel.betaVideo = videoFile;
       _betaVideoController.value = TextEditingValue(
@@ -432,6 +487,26 @@ class _RouteFormState extends ConsumerState<RouteForm> {
         ),
       )
       .toList();
+
+  List<DropdownMenuItem<BoulderRating?>> _getBoulderRatings() =>
+      BoulderRating.values
+          .map(
+            (boulderRating) => DropdownMenuItem<BoulderRating?>(
+              value: boulderRating,
+              child: Text(boulderRating.displayName),
+            ),
+          )
+          .toList();
+
+  List<DropdownMenuItem<YosemiteRating?>> _getYosemiteRatings() =>
+      YosemiteRating.values
+          .map(
+            (yosemiteRating) => DropdownMenuItem<YosemiteRating?>(
+              value: yosemiteRating,
+              child: Text(yosemiteRating.displayName),
+            ),
+          )
+          .toList();
 
   String get _imageHintText {
     if (_loadingImages) {

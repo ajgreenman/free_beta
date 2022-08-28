@@ -4,7 +4,8 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 
 class RouteFormModel {
   String? name;
-  String? difficulty;
+  BoulderRating? boulderRating;
+  YosemiteRating? yosemiteRating;
   ClimbType? climbType;
   RouteColor? routeColor;
   WallLocation? wallLocation;
@@ -16,7 +17,8 @@ class RouteFormModel {
 
   RouteFormModel({
     this.name,
-    this.difficulty,
+    this.boulderRating,
+    this.yosemiteRating,
     this.climbType,
     this.routeColor,
     this.wallLocation,
@@ -36,7 +38,8 @@ class RouteFormModel {
       creationDate: routeModel.creationDate,
       removalDate: routeModel.removalDate,
       routeColor: routeModel.routeColor,
-      difficulty: routeModel.difficulty,
+      boulderRating: routeModel.boulderRating,
+      yosemiteRating: routeModel.yosemiteRating,
       images: routeModel.images,
       betaVideo: routeModel.betaVideo,
     );
@@ -46,7 +49,7 @@ class RouteFormModel {
     var json = {
       'name': name,
       'climbType': climbType!.name,
-      'difficulty': difficulty,
+      'difficulty': boulderRating?.displayName ?? yosemiteRating?.displayName,
       'routeColor': routeColor!.name,
       'wallLocation': wallLocation!.name,
       'wallLocationIndex': wallLocationIndex ?? 0,
@@ -72,7 +75,7 @@ class RouteFormModel {
       '\n' +
       (climbType?.displayName ?? '') +
       '\n' +
-      (difficulty.toString()) +
+      ((boulderRating?.name ?? yosemiteRating?.name).toString()) +
       '\n' +
       (wallLocation.toString()) +
       '\n' +

@@ -164,9 +164,11 @@ class RouteApi {
       var filterText = textFilter.toLowerCase();
       filteredRoutes = unfilteredRoutes.where(
         (route) {
+          var rating =
+              route.boulderRating?.name ?? route.yosemiteRating?.name ?? '';
           return route.name.toLowerCase().contains(filterText) ||
               route.routeColor.displayName.toLowerCase().contains(filterText) ||
-              route.difficulty.toLowerCase().contains(filterText) ||
+              rating.toLowerCase().contains(filterText) ||
               route.climbType.displayName.toLowerCase().contains(filterText);
         },
       );

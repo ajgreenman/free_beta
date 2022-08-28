@@ -1,3 +1,5 @@
+import 'package:free_beta/app/enums/enums.dart';
+
 enum ClimbType {
   boulder,
   topRope,
@@ -33,6 +35,19 @@ extension ClimbTypeExtensions on ClimbType {
         return 'L';
       case ClimbType.autoBelay:
         return 'AB';
+    }
+  }
+
+  Type get ratingClass {
+    switch (this) {
+      case ClimbType.boulder:
+        return BoulderRating;
+      case ClimbType.topRope:
+        return YosemiteRating;
+      case ClimbType.autoBelay:
+        return YosemiteRating;
+      case ClimbType.lead:
+        return YosemiteRating;
     }
   }
 }

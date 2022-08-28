@@ -130,7 +130,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '001',
       name: 'Beginner Route',
-      difficulty: 'v0-v2',
+      boulderRating: BoulderRating.v1v3,
       climbType: ClimbType.boulder,
       routeColor: RouteColor.green,
       wallLocation: WallLocation.boulder,
@@ -148,7 +148,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '002',
       name: 'Campus!',
-      difficulty: '5.11+',
+      yosemiteRating: YosemiteRating.elevenPlus,
       climbType: ClimbType.topRope,
       routeColor: RouteColor.purple,
       wallLocation: WallLocation.mezzanine,
@@ -165,7 +165,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '003',
       name: 'Send it',
-      difficulty: '5.9',
+      yosemiteRating: YosemiteRating.nine,
       climbType: ClimbType.lead,
       routeColor: RouteColor.blue,
       wallLocation: WallLocation.tall,
@@ -182,7 +182,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '004',
       name: 'Crimp my ride',
-      difficulty: 'v4-v6',
+      boulderRating: BoulderRating.v4v6,
       climbType: ClimbType.boulder,
       routeColor: RouteColor.yellow,
       wallLocation: WallLocation.boulder,
@@ -199,7 +199,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '005',
       name: 'The Corporate Ladder',
-      difficulty: '5.6',
+      yosemiteRating: YosemiteRating.six,
       climbType: ClimbType.topRope,
       routeColor: RouteColor.black,
       wallLocation: WallLocation.tall,
