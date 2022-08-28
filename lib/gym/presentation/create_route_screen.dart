@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/theme.dart';
