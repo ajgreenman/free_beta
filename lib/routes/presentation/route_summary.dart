@@ -1,6 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/enums/climb_type.dart';
+import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -43,12 +43,9 @@ class RouteSummary extends StatelessWidget {
         ),
         Row(
           children: [
-            Row(
-              children: [
-                _buildType(),
-                _buildDivider(),
-                _buildDifficulty(),
-              ],
+            _RouteTypeAndDifficultyRow(
+              route: route,
+              textStyle: textStyle,
             ),
             if (route.removalDate != null)
               ..._buildDate('Removed', route.removalDate),
@@ -64,35 +61,11 @@ class RouteSummary extends StatelessWidget {
       child: SizedBox(
         width: width / 2,
         child: AutoSizeText(
-          route.truncatedDisplayName(isDetailed ? 17 : 30),
+          route.name,
           style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
           maxLines: 1,
         ),
       ),
-    );
-  }
-
-  Widget _buildDivider() {
-    return Padding(
-      padding: FreeBetaPadding.sHorizontal,
-      child: Text(
-        '|',
-        style: textStyle.copyWith(fontWeight: FontWeight.bold),
-      ),
-    );
-  }
-
-  Widget _buildType() {
-    return Text(
-      route.climbType.displayName,
-      style: textStyle,
-    );
-  }
-
-  Widget _buildDifficulty() {
-    return Text(
-      route.difficulty,
-      style: textStyle,
     );
   }
 
@@ -124,5 +97,41 @@ class RouteSummary extends StatelessWidget {
         style: textStyle,
       ),
     ];
+  }
+}
+
+class _RouteTypeAndDifficultyRow extends StatelessWidget {
+  const _RouteTypeAndDifficultyRow({
+    Key? key,
+    required this.route,
+    required this.textStyle,
+  }) : super(key: key);
+
+  final RouteModel route;
+  final TextStyle textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          route.climbType.displayName,
+          style: textStyle,
+        ),
+        Padding(
+          padding: FreeBetaPadding.sHorizontal,
+          child: Text(
+            '|',
+            style: textStyle.copyWith(fontWeight: FontWeight.bold),
+          ),
+        ),
+        Text(
+          route.boulderRating?.displayName ??
+              route.yosemiteRating?.displayName ??
+              '',
+          style: textStyle,
+        ),
+      ],
+    );
   }
 }

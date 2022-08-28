@@ -15,27 +15,27 @@ extension BoulderRatingExtensions on BoulderRating {
   String get displayName {
     switch (this) {
       case BoulderRating.v0:
-        return 'v0';
+        return 'V0';
       case BoulderRating.v1v3:
-        return 'v1-v3';
+        return 'V1-V3';
       case BoulderRating.v2v4:
-        return 'v2-v4';
+        return 'V2-V4';
       case BoulderRating.v3v5:
-        return 'v3-v5';
+        return 'V3-V5';
       case BoulderRating.v4v6:
-        return 'v4-v6';
+        return 'V4-V6';
       case BoulderRating.v5v7:
-        return 'v5-v7';
+        return 'V5-V7';
       case BoulderRating.v6v8:
-        return 'v6-v8';
+        return 'V6-V8';
       case BoulderRating.v8:
-        return 'v8+';
+        return 'V8+';
       case BoulderRating.v9:
-        return 'v9+';
+        return 'V9+';
       case BoulderRating.consensus:
         return 'Con.';
       default:
-        return 'v0';
+        return 'V0';
     }
   }
 }

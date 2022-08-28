@@ -56,7 +56,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       text: routeModel.name,
     );
     _difficultyController = TextEditingController(
-      text: routeModel.difficulty,
+      text: routeModel.boulderRating?.name ?? routeModel.yosemiteRating?.name,
     );
     _creationDateController = TextEditingController(
       text: DateFormat('MM/dd').format(routeModel.creationDate),
@@ -146,15 +146,48 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               FreeBetaDropdownList<ClimbType?>(
                 label: 'Type',
                 items: _getTypes(),
-                onChanged: (climbType) => _formModel.climbType = climbType,
+                onChanged: (climbType) {
+                  if (_formModel.climbType != climbType) {
+                    setState(() {
+                      _formModel.climbType = climbType;
+                    });
+                  }
+                },
                 initialValue: widget.editRouteModel?.climbType,
               ),
               SizedBox(height: FreeBetaSizes.l),
-              FreeBetaTextInput(
-                label: 'Difficulty',
-                onChanged: (difficulty) => _formModel.difficulty = difficulty,
-                controller: _difficultyController,
-              ),
+              if (_formModel.climbType != null &&
+                  _formModel.climbType == ClimbType.boulder) ...[
+                FreeBetaDropdownList<BoulderRating?>(
+                  label: 'Rating',
+                  items: _getBoulderRatings(),
+                  onChanged: (boulderRating) {
+                    if (_formModel.boulderRating != boulderRating) {
+                      setState(() {
+                        _formModel.boulderRating = boulderRating;
+                      });
+                    }
+                  },
+                  initialValue: widget.editRouteModel?.boulderRating,
+                ),
+                SizedBox(height: FreeBetaSizes.l),
+              ],
+              if (_formModel.climbType != null &&
+                  _formModel.climbType != ClimbType.boulder) ...[
+                FreeBetaDropdownList<YosemiteRating?>(
+                  label: 'Rating',
+                  items: _getYosemiteRatings(),
+                  onChanged: (yosemiteRating) {
+                    if (_formModel.yosemiteRating != yosemiteRating) {
+                      setState(() {
+                        _formModel.yosemiteRating = yosemiteRating;
+                      });
+                    }
+                  },
+                  initialValue: widget.editRouteModel?.yosemiteRating,
+                ),
+                SizedBox(height: FreeBetaSizes.l),
+              ],
               FreeBetaButtonInput(
                 label: 'Creation Date',
                 hintText: 'Enter creation date',
@@ -432,6 +465,26 @@ class _RouteFormState extends ConsumerState<RouteForm> {
         ),
       )
       .toList();
+
+  List<DropdownMenuItem<BoulderRating?>> _getBoulderRatings() =>
+      BoulderRating.values
+          .map(
+            (boulderRating) => DropdownMenuItem<BoulderRating?>(
+              value: boulderRating,
+              child: Text(boulderRating.displayName),
+            ),
+          )
+          .toList();
+
+  List<DropdownMenuItem<YosemiteRating?>> _getYosemiteRatings() =>
+      YosemiteRating.values
+          .map(
+            (yosemiteRating) => DropdownMenuItem<YosemiteRating?>(
+              value: yosemiteRating,
+              child: Text(yosemiteRating.displayName),
+            ),
+          )
+          .toList();
 
   String get _imageHintText {
     if (_loadingImages) {
