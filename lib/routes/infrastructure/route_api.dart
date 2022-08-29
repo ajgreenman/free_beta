@@ -91,7 +91,7 @@ final fetchLocationFilteredRoutes =
   );
 });
 
-final fetchYosemiteRatingUserGraph =
+final fetchRatingUserGraph =
     FutureProvider.family<List<Series<UserRatingModel, String>>, ClimbType>(
         (ref, climbType) async {
   final unfilteredRoutes = await ref.watch(fetchRoutesProvider.future);

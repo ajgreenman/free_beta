@@ -1,7 +1,6 @@
 import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/enums/climb_type.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
@@ -16,7 +15,7 @@ class UserRouteGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchYosemiteRatingUserGraph(climbType)).when(
+    return ref.watch(fetchRatingUserGraph(climbType)).when(
           data: (series) => _RatingGraph(
             series: series,
           ),
@@ -38,7 +37,7 @@ class _RatingGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 350,
       child: BarChart(
         series,
         barGroupingType: BarGroupingType.stacked,
