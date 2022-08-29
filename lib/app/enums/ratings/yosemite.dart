@@ -1,5 +1,4 @@
 enum YosemiteRating {
-  five,
   six,
   seven,
   eight,
@@ -22,7 +21,6 @@ enum YosemiteRating {
 }
 
 enum CondensedYosemiteRating {
-  five,
   six,
   seven,
   eight,
@@ -36,8 +34,6 @@ enum CondensedYosemiteRating {
 extension YosemiteRatingExtensions on YosemiteRating {
   String get displayName {
     switch (this) {
-      case YosemiteRating.five:
-        return '5.5';
       case YosemiteRating.six:
         return '5.6';
       case YosemiteRating.seven:
@@ -81,8 +77,6 @@ extension YosemiteRatingExtensions on YosemiteRating {
 
   CondensedYosemiteRating get condensedRating {
     switch (this) {
-      case YosemiteRating.five:
-        return CondensedYosemiteRating.five;
       case YosemiteRating.six:
         return CondensedYosemiteRating.six;
       case YosemiteRating.seven:
@@ -117,8 +111,6 @@ extension YosemiteRatingExtensions on YosemiteRating {
 extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
   String get displayName {
     switch (this) {
-      case CondensedYosemiteRating.five:
-        return '5.5';
       case CondensedYosemiteRating.six:
         return '5.6';
       case CondensedYosemiteRating.seven:
@@ -141,8 +133,6 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
 
 YosemiteRating yosemiteRatingFromString(String yosemiteRating) {
   switch (yosemiteRating.toLowerCase()) {
-    case '5.5':
-      return YosemiteRating.five;
     case '5.6':
       return YosemiteRating.six;
     case '5.7':
@@ -182,6 +172,6 @@ YosemiteRating yosemiteRatingFromString(String yosemiteRating) {
     case '5.13+':
       return YosemiteRating.thirteenPlus;
     default:
-      return YosemiteRating.five;
+      return YosemiteRating.six;
   }
 }
