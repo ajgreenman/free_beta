@@ -37,7 +37,7 @@ class _RatingGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 350,
+      height: 300,
       child: BarChart(
         series,
         barGroupingType: BarGroupingType.stacked,
