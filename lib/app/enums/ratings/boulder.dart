@@ -38,6 +38,31 @@ extension BoulderRatingExtensions on BoulderRating {
         return 'V0';
     }
   }
+
+  bool get isIncludedInGraph {
+    switch (this) {
+      case BoulderRating.v0:
+        return true;
+      case BoulderRating.v1v3:
+        return true;
+      case BoulderRating.v2v4:
+        return true;
+      case BoulderRating.v3v5:
+        return true;
+      case BoulderRating.v4v6:
+        return true;
+      case BoulderRating.v5v7:
+        return true;
+      case BoulderRating.v6v8:
+        return true;
+      case BoulderRating.v8:
+        return false;
+      case BoulderRating.v9:
+        return true;
+      case BoulderRating.consensus:
+        return false;
+    }
+  }
 }
 
 BoulderRating boulderRatingFromString(String boulderRating) {
