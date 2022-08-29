@@ -9,24 +9,6 @@ final mediaApiProvider = Provider(
   (ref) => MediaApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider)),
 );
 
-final fetchImageProvider = FutureProvider.family<String?, ImageSource>((
-  ref,
-  imageSource,
-) async {
-  final mediaApi = ref.watch(mediaApiProvider);
-
-  return await mediaApi.fetchImage(imageSource);
-});
-
-final fetchVideoProvider = FutureProvider.family<String?, ImageSource>((
-  ref,
-  imageSource,
-) async {
-  final mediaApi = ref.watch(mediaApiProvider);
-
-  return await mediaApi.fetchVideo(imageSource);
-});
-
 class MediaApi {
   MediaApi(this._firebaseStorage, this._crashlyticsApi);
 

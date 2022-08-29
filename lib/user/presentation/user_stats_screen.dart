@@ -44,7 +44,7 @@ class UserStatsScreen extends StatelessWidget {
               child: UserStatsSection(routeStatsModel: routeStatsModel),
             ),
             InfoCard(
-              child: UserGraphSection(),
+              child: UserGraphSection(climbType: climbType),
             ),
           ],
         ),

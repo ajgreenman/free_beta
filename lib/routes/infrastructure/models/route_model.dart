@@ -95,6 +95,13 @@ class RouteModel {
   }
 }
 
+extension RouteModelExtensions on RouteModel {
+  bool get isCompleted => userRouteModel != null && userRouteModel!.isCompleted;
+  bool get isInProgress => !isUnattempted && !isCompleted;
+  bool get isUnattempted =>
+      userRouteModel == null || !userRouteModel!.isAttempted;
+}
+
 extension RouteModelListExtensions on List<RouteModel> {
   List<RouteModel> sortRoutes() {
     this.sort((a, b) => _compareRoutes(a, b));

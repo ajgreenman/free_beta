@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/enums/route_color.dart';
+import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:free_beta/user/presentation/widgets/user_route_graph.dart';
 
 class UserGraphSection extends StatelessWidget {
-  const UserGraphSection({Key? key}) : super(key: key);
+  const UserGraphSection({Key? key, required this.climbType}) : super(key: key);
+
+  final ClimbType climbType;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        UserRouteGraph(),
+        UserRouteGraph(climbType: climbType),
         SizedBox(height: FreeBetaSizes.m),
         _LegendRow(
-          color: RouteColor.purple,
+          color: RouteColor.red,
           label: 'Unattempted',
         ),
         SizedBox(height: FreeBetaSizes.m),

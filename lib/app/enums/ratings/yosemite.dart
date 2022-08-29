@@ -21,6 +21,18 @@ enum YosemiteRating {
   thirteenPlus,
 }
 
+enum CondensedYosemiteRating {
+  five,
+  six,
+  seven,
+  eight,
+  nine,
+  ten,
+  eleven,
+  twelve,
+  thirteen,
+}
+
 extension YosemiteRatingExtensions on YosemiteRating {
   String get displayName {
     switch (this) {
@@ -64,6 +76,65 @@ extension YosemiteRatingExtensions on YosemiteRating {
         return '5.13';
       case YosemiteRating.thirteenPlus:
         return '5.13+';
+    }
+  }
+
+  CondensedYosemiteRating get condensedRating {
+    switch (this) {
+      case YosemiteRating.five:
+        return CondensedYosemiteRating.five;
+      case YosemiteRating.six:
+        return CondensedYosemiteRating.six;
+      case YosemiteRating.seven:
+        return CondensedYosemiteRating.seven;
+      case YosemiteRating.eight:
+      case YosemiteRating.eightPlus:
+        return CondensedYosemiteRating.eight;
+      case YosemiteRating.nineMinus:
+      case YosemiteRating.nine:
+      case YosemiteRating.ninePlus:
+        return CondensedYosemiteRating.nine;
+      case YosemiteRating.tenMinus:
+      case YosemiteRating.ten:
+      case YosemiteRating.tenPlus:
+        return CondensedYosemiteRating.ten;
+      case YosemiteRating.elevenMinus:
+      case YosemiteRating.eleven:
+      case YosemiteRating.elevenPlus:
+        return CondensedYosemiteRating.eleven;
+      case YosemiteRating.twelveMinus:
+      case YosemiteRating.twelve:
+      case YosemiteRating.twelvePlus:
+        return CondensedYosemiteRating.twelve;
+      case YosemiteRating.thirteenMinus:
+      case YosemiteRating.thirteen:
+      case YosemiteRating.thirteenPlus:
+        return CondensedYosemiteRating.thirteen;
+    }
+  }
+}
+
+extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
+  String get displayName {
+    switch (this) {
+      case CondensedYosemiteRating.five:
+        return '5.5';
+      case CondensedYosemiteRating.six:
+        return '5.6';
+      case CondensedYosemiteRating.seven:
+        return '5.7';
+      case CondensedYosemiteRating.eight:
+        return '5.8';
+      case CondensedYosemiteRating.nine:
+        return '5.9';
+      case CondensedYosemiteRating.ten:
+        return '5.10';
+      case CondensedYosemiteRating.eleven:
+        return '5.11';
+      case CondensedYosemiteRating.twelve:
+        return '5.12';
+      case CondensedYosemiteRating.thirteen:
+        return '5.13';
     }
   }
 }
