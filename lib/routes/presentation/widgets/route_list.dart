@@ -20,9 +20,19 @@ class RouteList extends StatelessWidget {
       return Center(
         child: Padding(
           padding: EdgeInsets.only(top: FreeBetaSizes.l),
-          child: Text(
-            'Sorry, no available routes',
-            style: FreeBetaTextStyle.h3,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Sorry, no available routes',
+                style: FreeBetaTextStyle.h3,
+              ),
+              SizedBox(height: FreeBetaSizes.m),
+              Text(
+                'Try clearing your filters if you have any',
+                style: FreeBetaTextStyle.body4,
+              ),
+            ],
           ),
         ),
       );
