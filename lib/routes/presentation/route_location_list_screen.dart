@@ -55,8 +55,6 @@ class RouteLocationListScreen extends ConsumerWidget {
                 onRefresh: null,
               ),
               error: (error, stackTrace) => ErrorCard(
-                error: error,
-                stackTrace: stackTrace,
                 child: ElevatedButton(
                   onPressed: () => _refreshRoutes(ref),
                   child: Text('Try again'),

@@ -8,7 +8,7 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/widgets/route_filter_bar.dart';
 import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
-class RouteListScreen extends ConsumerStatefulWidget {
+class RouteListScreen extends ConsumerWidget {
   static Route<dynamic> route({
     required FutureProvider<RouteFilterModel> routeProvider,
     required FutureProvider<List<RouteModel>> refreshProvider,
@@ -35,67 +35,101 @@ class RouteListScreen extends ConsumerStatefulWidget {
   final AppBar? appBar;
 
   @override
-  _RouteListScreenState createState() => _RouteListScreenState();
-}
-
-class _RouteListScreenState extends ConsumerState<RouteListScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       key: Key('route-list-screen'),
-      appBar: widget.appBar,
+      appBar: appBar,
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: NestedScrollView(
           controller: ScrollController(),
           headerSliverBuilder: (_, __) => [
             SliverPersistentHeader(
-              delegate: RouteFilterBar(routeProvider: widget.routeProvider),
+              delegate: RouteFilterBar(routeProvider: routeProvider),
               pinned: true,
             ),
           ],
-          body: _buildBody(),
+          body: _RouteListBody(
+            routeProvider: routeProvider,
+            refreshProvider: refreshProvider,
+          ),
         ),
       ),
     );
   }
+}
 
-  Widget _buildBody() {
-    return ref.watch(widget.routeProvider).when(
+class _RouteListBody extends ConsumerWidget {
+  const _RouteListBody({
+    Key? key,
+    required this.routeProvider,
+    required this.refreshProvider,
+  }) : super(key: key);
+
+  final FutureProvider<RouteFilterModel> routeProvider;
+  final FutureProvider<List<RouteModel>> refreshProvider;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ref.watch(routeProvider).when(
           data: (routeFilterModel) => RouteList(
             routes: routeFilterModel.filteredRoutes.sortRoutes(),
-            onRefresh: _refreshRoutes,
+            onRefresh: () => _refreshRoutes(ref),
           ),
-          error: (error, stackTrace) => _onError(error, stackTrace),
-          loading: () => _onLoading(),
+          error: (error, stackTrace) => _ErrorList(
+            onRefresh: () => _refreshRoutes(ref),
+            error: error,
+            stackTrace: stackTrace,
+          ),
+          loading: () => _LoadingList(),
         );
   }
 
-  Widget _onError(Object? error, StackTrace? stackTrace) {
+  Future<void> _refreshRoutes(WidgetRef ref) async {
+    ref.refresh(refreshProvider);
+  }
+}
+
+class _ErrorList extends ConsumerWidget {
+  const _ErrorList({
+    Key? key,
+    required this.onRefresh,
+    required this.error,
+    required this.stackTrace,
+  }) : super(key: key);
+
+  final VoidCallback onRefresh;
+  final Object error;
+  final StackTrace? stackTrace;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     ref.read(crashlyticsApiProvider).logError(
           error,
           stackTrace,
           'RouteListScreen',
           'routeProvider',
         );
+
     return ErrorCard(
-      error: error,
-      stackTrace: stackTrace,
       child: ElevatedButton(
-        onPressed: _refreshRoutes,
+        onPressed: onRefresh,
         child: Text('Try again'),
       ),
     );
   }
+}
 
-  Widget _onLoading() {
+class _LoadingList extends StatelessWidget {
+  const _LoadingList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: FreeBetaPadding.xxlVertical,
       child: Center(child: CircularProgressIndicator()),
     );
-  }
-
-  Future<void> _refreshRoutes() async {
-    ref.refresh(widget.refreshProvider);
   }
 }

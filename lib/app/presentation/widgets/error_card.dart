@@ -3,14 +3,9 @@ import 'package:free_beta/app/theme.dart';
 
 class ErrorCard extends StatelessWidget {
   const ErrorCard({
-    required this.error,
-    required this.stackTrace,
     this.child,
     Key? key,
   }) : super(key: key);
-
-  final Object? error;
-  final StackTrace? stackTrace;
   final Widget? child;
 
   @override

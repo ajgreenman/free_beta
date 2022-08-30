@@ -51,10 +51,8 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     'CreateAccountScreen',
                     'authenticationProvider',
                   );
-              return ErrorCard(
-                error: error,
-                stackTrace: stackTrace,
-              );
+
+              return ErrorCard();
             },
           ),
     );

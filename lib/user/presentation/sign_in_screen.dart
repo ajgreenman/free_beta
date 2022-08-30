@@ -49,10 +49,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     'SignInScreen',
                     'authenticationProvider',
                   );
-              return ErrorCard(
-                error: error,
-                stackTrace: stackTrace,
-              );
+
+              return ErrorCard();
             },
           ),
     );
