@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -8,7 +7,7 @@ import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
 
-class GymMapsScreen extends ConsumerWidget {
+class GymMapsScreen extends StatelessWidget {
   static Route route() => MaterialPageRoute(
         builder: (_) => GymMapsScreen(),
       );
@@ -16,7 +15,7 @@ class GymMapsScreen extends ConsumerWidget {
   const GymMapsScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       key: Key('gym_maps'),
       body: SingleChildScrollView(
@@ -24,39 +23,49 @@ class GymMapsScreen extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: WallLocation.values
-              .mapIndexed(
-                (_, location) => GestureDetector(
-                  onTap: () => _onMapSectionTapped(
-                    ref,
-                    context,
-                    0,
-                    location,
-                  ),
-                  child: InfoCard(
-                    child: Column(
-                      children: [
-                        Text(
-                          location.displayName,
-                          style: FreeBetaTextStyle.h2,
-                        ),
-                        SizedBox(height: FreeBetaSizes.m),
-                        Center(
-                          child: WallSectionMap(
-                            wallLocation: location,
-                            onPressed: (index) => _onMapSectionTapped(
-                              ref,
-                              context,
-                              index,
-                              location,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              .map((location) => _WallLocationCard(wallLocation: location))
               .toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class _WallLocationCard extends ConsumerWidget {
+  const _WallLocationCard({Key? key, required this.wallLocation})
+      : super(key: key);
+
+  final WallLocation wallLocation;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return GestureDetector(
+      onTap: () => _onMapSectionTapped(
+        ref,
+        context,
+        0,
+        wallLocation,
+      ),
+      child: InfoCard(
+        child: Column(
+          children: [
+            Text(
+              wallLocation.displayName,
+              style: FreeBetaTextStyle.h2,
+            ),
+            SizedBox(height: FreeBetaSizes.m),
+            Center(
+              child: WallSectionMap(
+                wallLocation: wallLocation,
+                onPressed: (index) => _onMapSectionTapped(
+                  ref,
+                  context,
+                  index,
+                  wallLocation,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );

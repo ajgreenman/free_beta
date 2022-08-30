@@ -2,6 +2,8 @@ import 'package:charts_flutter/flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 
@@ -19,9 +21,11 @@ class UserRouteGraph extends ConsumerWidget {
           data: (series) => _RatingGraph(
             series: series,
           ),
-          error: (_, __) =>
-              Text('Error building graph, please try again later.'),
           loading: () => CircularProgressIndicator(),
+          error: (error, stackTrace) => _ErrorCard(
+            error: error,
+            stackTrace: stackTrace,
+          ),
         );
   }
 }
@@ -42,6 +46,33 @@ class _RatingGraph extends StatelessWidget {
         series,
         barGroupingType: BarGroupingType.stacked,
         animate: false,
+      ),
+    );
+  }
+}
+
+class _ErrorCard extends ConsumerWidget {
+  const _ErrorCard({
+    Key? key,
+    required this.error,
+    required this.stackTrace,
+  }) : super(key: key);
+
+  final Object error;
+  final StackTrace? stackTrace;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(crashlyticsApiProvider).logError(
+          error,
+          stackTrace,
+          'UserRouteGraph',
+          'fetchRatingUserGraph',
+        );
+
+    return InfoCard(
+      child: Text(
+        'Error building graph, please try again later.',
       ),
     );
   }

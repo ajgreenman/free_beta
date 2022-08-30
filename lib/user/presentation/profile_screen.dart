@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/presentation/contact_developer_screen.dart';
 import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
-import 'package:free_beta/user/presentation/widgets/removed_routes.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats_card.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -26,7 +29,7 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserStatsCard(),
-            RemovedRoutes(),
+            _RemovedRoutesCard(),
             _GymAdmin(ref),
             _ContactDeveloper(),
             _CopyrightText(),
@@ -80,6 +83,41 @@ class _CopyrightText extends StatelessWidget {
         '© $copyrightYear Climb Elev8',
         style: FreeBetaTextStyle.body3.copyWith(
           color: FreeBetaColors.grayLight,
+        ),
+      ),
+    );
+  }
+}
+
+class _RemovedRoutesCard extends StatelessWidget {
+  const _RemovedRoutesCard({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          RouteListScreen.route(
+            appBar: AppBar(
+              title: Text('Removed Routes'),
+              leading: FreeBetaBackButton(),
+            ),
+            routeProvider: fetchFilteredRemovedRoutes,
+            refreshProvider: fetchRemovedRoutesProvider,
+          ),
+        ),
+        child: Row(
+          children: [
+            Text(
+              'View removed routes',
+              style: FreeBetaTextStyle.h3,
+            ),
+            Spacer(),
+            Icon(
+              Icons.keyboard_arrow_right,
+              size: FreeBetaSizes.xxl,
+              color: FreeBetaColors.blueDark,
+            ),
+          ],
         ),
       ),
     );

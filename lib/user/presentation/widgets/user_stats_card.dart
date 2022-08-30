@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
@@ -12,20 +13,37 @@ import 'package:free_beta/user/presentation/widgets/user_stats_section.dart';
 class UserStatsCard extends ConsumerWidget {
   const UserStatsCard({Key? key}) : super(key: key);
 
-  static const currentStatsTitle = 'Current Stats';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(fetchUserStatsProvider).when(
-            data: (userStats) => _onSuccess(userStats, ref),
+            data: (userStats) => _SuccessCard(
+              userStatsModel: userStats,
+            ),
             loading: () => _UserStatsSkeleton(),
-            error: (error, stackTrace) =>
-                _onError(ref, error, stackTrace, 'fetchUserStatsProvider'),
+            error: (error, stackTrace) => _ErrorCard(
+              error: error,
+              stackTrace: stackTrace,
+              methodName: 'fetchUserStatsProvider',
+            ),
           );
+}
 
-  Widget _onSuccess(UserStatsModel? userStatsModel, WidgetRef ref) {
+class _SuccessCard extends ConsumerWidget {
+  const _SuccessCard({
+    Key? key,
+    required this.userStatsModel,
+  }) : super(key: key);
+
+  final UserStatsModel? userStatsModel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     if (userStatsModel == null) {
-      return _onError(ref, 'Invalid user', null, '_onSuccess');
+      return _ErrorCard(
+        error: 'Invalid user',
+        stackTrace: null,
+        methodName: '_onSuccess',
+      );
     }
 
     return InfoCard(
@@ -35,7 +53,7 @@ class UserStatsCard extends ConsumerWidget {
           Row(
             children: [
               Text(
-                currentStatsTitle,
+                'Current Stats',
                 style: FreeBetaTextStyle.h2,
               ),
               SizedBox(width: FreeBetaSizes.l),
@@ -43,57 +61,55 @@ class UserStatsCard extends ConsumerWidget {
             ],
           ),
           SizedBox(height: FreeBetaSizes.m),
-          UserStatsSection(routeStatsModel: userStatsModel.overall),
+          UserStatsSection(routeStatsModel: userStatsModel!.overall),
           SizedBox(height: FreeBetaSizes.m),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _UserStatsSection(
             climbType: ClimbType.boulder,
-            routeStatsModel: userStatsModel.boulders,
+            routeStatsModel: userStatsModel!.boulders,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _UserStatsSection(
             climbType: ClimbType.topRope,
-            routeStatsModel: userStatsModel.topRopes,
+            routeStatsModel: userStatsModel!.topRopes,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _UserStatsSection(
             climbType: ClimbType.autoBelay,
-            routeStatsModel: userStatsModel.autoBelays,
+            routeStatsModel: userStatsModel!.autoBelays,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _UserStatsSection(
             climbType: ClimbType.lead,
-            routeStatsModel: userStatsModel.leads,
+            routeStatsModel: userStatsModel!.leads,
           ),
         ],
       ),
     );
   }
+}
 
-  Widget _onError(
-    WidgetRef ref,
-    Object error,
-    StackTrace? stackTrace,
-    String methodName,
-  ) {
+class _ErrorCard extends ConsumerWidget {
+  const _ErrorCard({
+    Key? key,
+    required this.error,
+    required this.stackTrace,
+    required this.methodName,
+  }) : super(key: key);
+
+  final Object error;
+  final StackTrace? stackTrace;
+  final String methodName;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     ref.read(crashlyticsApiProvider).logError(
           error,
           stackTrace,
           'UserStats',
           methodName,
         );
+
     return InfoCard(
       child: Text(
         'Because you have an account, you must sign in to see your user stats.',
@@ -157,7 +173,7 @@ class _UserStatsSkeleton extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            UserStatsCard.currentStatsTitle,
+            'Current Stats',
             style: FreeBetaTextStyle.h2,
           ),
           SizedBox(height: FreeBetaSizes.m),
@@ -166,31 +182,19 @@ class _UserStatsSkeleton extends StatelessWidget {
           _buildRow('Completed'),
           _buildRow('Favorited'),
           SizedBox(height: FreeBetaSizes.m),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _buildCard(
             ClimbType.boulder.pluralDisplayName,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _buildCard(
             ClimbType.topRope.pluralDisplayName,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _buildCard(
             ClimbType.autoBelay.pluralDisplayName,
           ),
-          Divider(
-            height: 1,
-            thickness: 1,
-          ),
+          FreeBetaDivider(),
           _buildCard(
             ClimbType.lead.pluralDisplayName,
           ),

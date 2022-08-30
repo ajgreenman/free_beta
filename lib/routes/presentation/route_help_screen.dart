@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -39,7 +40,7 @@ class RouteHelpScreen extends StatelessWidget {
                 ),
               ),
             ),
-            Divider(height: 1, thickness: 1),
+            FreeBetaDivider(),
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
@@ -54,75 +55,15 @@ class RouteHelpScreen extends StatelessWidget {
                   child: RouteCard(route: routes[index]),
                 );
               },
-              separatorBuilder: (_, __) => Divider(height: 1, thickness: 1),
+              separatorBuilder: (_, __) => FreeBetaDivider(),
               itemCount: routes.length,
             ),
-            Divider(height: 1, thickness: 1),
+            FreeBetaDivider(),
             SizedBox(height: FreeBetaSizes.l),
-            _buildSymbols(),
+            _SymbolColumn(),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSymbols() {
-    return Column(
-      children: [
-        _buildRow(
-          _buildFavoriteIcon(true),
-          'Favorited',
-        ),
-        _buildRow(
-          _buildFavoriteIcon(false),
-          'Not favorited',
-        ),
-        _buildRow(
-          _buildProgressIcon(false, false),
-          'Unattempted',
-        ),
-        _buildRow(
-          _buildProgressIcon(true, false),
-          'Attempted but not completed',
-        ),
-        _buildRow(
-          _buildProgressIcon(true, true),
-          'Attempted and completed',
-        ),
-      ],
-    );
-  }
-
-  Widget _buildRow(Widget icon, String label) {
-    return Row(
-      children: [
-        icon,
-        Text(label),
-      ],
-    );
-  }
-
-  Widget _buildFavoriteIcon(bool isFavorited) {
-    return Padding(
-      padding: FreeBetaPadding.lHorizontal,
-      child: isFavorited
-          ? Icon(
-              Icons.star,
-              size: FreeBetaSizes.xl,
-              color: FreeBetaColors.blueDark,
-            )
-          : Icon(
-              Icons.star_outline,
-              size: FreeBetaSizes.xl,
-              color: FreeBetaColors.blueDark,
-            ),
-    );
-  }
-
-  Widget _buildProgressIcon(bool isAttempted, bool isCompleted) {
-    return RouteProgressIcon(
-      isAttempted: isAttempted,
-      isCompleted: isCompleted,
     );
   }
 
@@ -215,4 +156,105 @@ class RouteHelpScreen extends StatelessWidget {
       ),
     ),
   ];
+}
+
+class _SymbolColumn extends StatelessWidget {
+  const _SymbolColumn({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        _IconRow(
+          icon: _FavoriteIcon(isFavorited: true),
+          label: 'Favorited',
+        ),
+        _IconRow(
+          icon: _FavoriteIcon(isFavorited: false),
+          label: 'Not favorited',
+        ),
+        _IconRow(
+          icon: _ProgressIcon(isAttempted: false, isCompleted: false),
+          label: 'Unattempted',
+        ),
+        _IconRow(
+          icon: _ProgressIcon(isAttempted: true, isCompleted: false),
+          label: 'Attempted but not completed',
+        ),
+        _IconRow(
+          icon: _ProgressIcon(isAttempted: true, isCompleted: true),
+          label: 'Attempted and completed',
+        ),
+      ],
+    );
+  }
+}
+
+class _IconRow extends StatelessWidget {
+  const _IconRow({
+    Key? key,
+    required this.icon,
+    required this.label,
+  }) : super(key: key);
+
+  final Widget icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        icon,
+        Text(label),
+      ],
+    );
+  }
+}
+
+class _ProgressIcon extends StatelessWidget {
+  const _ProgressIcon({
+    Key? key,
+    required this.isAttempted,
+    required this.isCompleted,
+  }) : super(key: key);
+
+  final bool isAttempted;
+  final bool isCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    return RouteProgressIcon(
+      isAttempted: isAttempted,
+      isCompleted: isCompleted,
+    );
+  }
+}
+
+class _FavoriteIcon extends StatelessWidget {
+  const _FavoriteIcon({
+    Key? key,
+    required this.isFavorited,
+  }) : super(key: key);
+
+  final bool isFavorited;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FreeBetaPadding.lHorizontal,
+      child: isFavorited
+          ? Icon(
+              Icons.star,
+              size: FreeBetaSizes.xl,
+              color: FreeBetaColors.blueDark,
+            )
+          : Icon(
+              Icons.star_outline,
+              size: FreeBetaSizes.xl,
+              color: FreeBetaColors.blueDark,
+            ),
+    );
+  }
 }

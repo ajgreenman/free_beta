@@ -36,7 +36,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
       appBar: AppBar(
         title: Text('Climb Elev8'),
         actions: [
-          _getAction(context),
+          _FreeBetaActions(currentIndex: _currentIndex),
         ],
       ),
       body: _screens[_currentIndex],
@@ -47,22 +47,32 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
     );
   }
 
-  Widget _getAction(BuildContext context) {
-    if (_currentIndex == 0) {
-      return _HelpButton();
-    }
-    if (_currentIndex == 2) {
-      return _AuthenticationButton();
-    }
-    return SizedBox.shrink();
-  }
-
   void _navigateTo(int index) {
     if (index == _currentIndex) return;
 
     setState(() {
       _currentIndex = index;
     });
+  }
+}
+
+class _FreeBetaActions extends StatelessWidget {
+  const _FreeBetaActions({
+    Key? key,
+    required this.currentIndex,
+  }) : super(key: key);
+
+  final int currentIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    if (currentIndex == 0) {
+      return _HelpButton();
+    }
+    if (currentIndex == 2) {
+      return _AuthenticationButton();
+    }
+    return SizedBox.shrink();
   }
 }
 

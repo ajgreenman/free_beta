@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
@@ -144,7 +145,7 @@ class _FilterTextField extends ConsumerWidget {
             style: FreeBetaTextStyle.h4,
           ),
         ),
-        Divider(height: 1, thickness: 1),
+        FreeBetaDivider(),
       ],
     );
   }
