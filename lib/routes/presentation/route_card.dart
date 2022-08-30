@@ -30,6 +30,12 @@ class RouteCard extends StatelessWidget {
             ),
             RouteSummary(route),
             Spacer(),
+            if (route.betaVideo != null)
+              Icon(
+                Icons.tap_and_play,
+                size: 20,
+                color: FreeBetaColors.blueDark,
+              ),
             RouteProgressIcon(
               isAttempted: (route.userRouteModel?.attempts ?? 0) > 0,
               isCompleted: route.userRouteModel?.isCompleted ?? false,
