@@ -44,17 +44,15 @@ class RouteHelpScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) {
-                return InkWell(
-                  onTap: () => Navigator.of(context).push(
-                    RouteDetailScreen.route(
-                      routes[index],
-                      isHelp: true,
-                    ),
+              itemBuilder: (_, index) => RouteCard(
+                route: routes[index],
+                onTap: (cardContext) => Navigator.of(cardContext).push(
+                  RouteDetailScreen.route(
+                    routes[index],
+                    isHelp: true,
                   ),
-                  child: RouteCard(route: routes[index]),
-                );
-              },
+                ),
+              ),
               separatorBuilder: (_, __) => FreeBetaDivider(),
               itemCount: routes.length,
             ),

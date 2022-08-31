@@ -56,7 +56,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
       appBar: AppBar(
         title: Text(widget.routeModel.name),
         leading: FreeBetaBackButton(onPressed: _onBack),
-        actions: [_buildEditButton(context)],
+        actions: [_EditButton(routeModel: widget.routeModel)],
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -65,7 +65,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             padding: FreeBetaPadding.lAll,
             child: Column(
               children: [
-                if (widget.isHelp) _buildHelp(),
+                if (widget.isHelp) _HelpWarning(),
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _DetailScreenDivider(),
                 RouteImages(images: widget.routeModel.images),
@@ -75,11 +75,29 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildAttemptsRow(),
-                      _buildCheckboxRow('Completed', _buildCompletedCheckbox()),
-                      _buildCheckboxRow('Favorited', _buildFavoritedCheckbox()),
+                      _AttemptsRow(
+                        attempts: _formModel.attempts,
+                        onChanged: _onAttemptsChanged,
+                      ),
+                      _CheckboxRow(
+                        label: 'Completed',
+                        checkbox: _Checkbox(
+                          value: _formModel.isCompleted,
+                          onChanged: _onCompletedChanged,
+                        ),
+                      ),
+                      _CheckboxRow(
+                        label: 'Favorited',
+                        checkbox: _Checkbox(
+                          value: _formModel.isFavorited,
+                          onChanged: _onFavoritedChanged,
+                        ),
+                      ),
                       SizedBox(height: FreeBetaSizes.ml),
-                      ..._buildNotes(),
+                      _Notes(
+                        initialValue: _formModel.notes,
+                        onChanged: _onNotesChanged,
+                      ),
                       ElevatedButton(
                         onPressed: widget.isHelp ? null : _onSave,
                         child: Text(
@@ -100,146 +118,46 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     );
   }
 
-  Widget _buildEditButton(BuildContext context) {
-    var user = ref.watch(authenticationProvider).whenOrNull(
-          data: (user) => user,
-        );
-
-    if (user != null && !user.isAnonymous) {
-      return IconButton(
-        onPressed: () => Navigator.of(context).push(
-          EditRouteScreen.route(widget.routeModel),
-        ),
-        icon: Icon(
-          Icons.edit,
-          color: FreeBetaColors.white,
-        ),
-      );
+  _onNotesChanged(value) {
+    if (value != _formModel.notes) {
+      dirtyForm = true;
+      setState(() {
+        _formModel.notes = value;
+      });
     }
-
-    return SizedBox.shrink();
   }
 
-  Widget _buildCheckboxRow(String label, Checkbox checkbox) {
-    return Padding(
-      padding: FreeBetaPadding.sVertical,
-      child: Row(
-        children: [
-          Text(
-            label,
-            style: FreeBetaTextStyle.body2,
-          ),
-          Spacer(),
-          SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
-          SizedBox(width: FreeBetaSizes.m),
-        ],
-      ),
-    );
+  void _onFavoritedChanged(value) {
+    if (value == null || value == _formModel.isFavorited) return;
+    dirtyForm = true;
+
+    setState(() {
+      _formModel.isFavorited = value;
+      if (value && _formModel.attempts == 0) {
+        _formModel.attempts++;
+      }
+    });
   }
 
-  Widget _buildAttemptsRow() {
-    return Padding(
-      padding: FreeBetaPadding.sVertical,
-      child: Row(
-        children: [
-          Text(
-            'Attempts',
-            style: FreeBetaTextStyle.body2,
-          ),
-          Spacer(),
-          FreeBetaNumberInput(
-            value: _formModel.attempts,
-            onChanged: (value) {
-              if (value == _formModel.attempts) return;
-              dirtyForm = true;
+  void _onCompletedChanged(value) {
+    if (value == null || value == _formModel.isCompleted) return;
+    dirtyForm = true;
 
-              setState(() {
-                _formModel.attempts = value;
-              });
-            },
-          ),
-        ],
-      ),
-    );
+    setState(() {
+      _formModel.isCompleted = value;
+      if (value && _formModel.attempts == 0) {
+        _formModel.attempts++;
+      }
+    });
   }
 
-  Checkbox _buildCompletedCheckbox() => Checkbox(
-        activeColor: FreeBetaColors.blueDark,
-        value: _formModel.isCompleted,
-        onChanged: (value) {
-          if (value == null || value == _formModel.isCompleted) return;
-          dirtyForm = true;
+  void _onAttemptsChanged(value) {
+    if (value == _formModel.attempts) return;
+    dirtyForm = true;
 
-          setState(() {
-            _formModel.isCompleted = value;
-            if (value && _formModel.attempts == 0) {
-              _formModel.attempts++;
-            }
-          });
-        },
-      );
-
-  Checkbox _buildFavoritedCheckbox() => Checkbox(
-        activeColor: FreeBetaColors.blueDark,
-        value: _formModel.isFavorited,
-        onChanged: (value) {
-          if (value == null || value == _formModel.isFavorited) return;
-          dirtyForm = true;
-
-          setState(() {
-            _formModel.isFavorited = value;
-            if (value && _formModel.attempts == 0) {
-              _formModel.attempts++;
-            }
-          });
-        },
-      );
-
-  List<Widget> _buildNotes() {
-    return [
-      Text(
-        'Notes',
-        style: FreeBetaTextStyle.body2,
-      ),
-      SizedBox(height: FreeBetaSizes.ml),
-      FreeBetaTextField(
-        initialValue: _formModel.notes,
-        hintText: 'Enter notes here:\n\nex. flag your left foot',
-        onChanged: (value) {
-          if (value != _formModel.notes) {
-            dirtyForm = true;
-            setState(() {
-              _formModel.notes = value;
-            });
-          }
-        },
-      ),
-    ];
-  }
-
-  Widget _buildHelp() {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Icon(
-              Icons.warning_amber,
-              color: FreeBetaColors.warning,
-            ),
-            SizedBox(width: FreeBetaSizes.l),
-            Flexible(
-              child: Text(
-                'This is a sample route, your changes cannot be saved.',
-                style: FreeBetaTextStyle.h4.copyWith(
-                  color: FreeBetaColors.grayLight,
-                ),
-              ),
-            ),
-          ],
-        ),
-        _DetailScreenDivider(),
-      ],
-    );
+    setState(() {
+      _formModel.attempts = value;
+    });
   }
 
   void _onBack() async {
@@ -284,6 +202,178 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             Icon(Icons.check),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _Notes extends StatelessWidget {
+  const _Notes({
+    Key? key,
+    required this.initialValue,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final String? initialValue;
+  final Function(String) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          'Notes',
+          style: FreeBetaTextStyle.body2,
+        ),
+        SizedBox(height: FreeBetaSizes.ml),
+        FreeBetaTextField(
+          initialValue: initialValue,
+          hintText: 'Enter notes here:\n\nex. flag your left foot',
+          onChanged: onChanged,
+        ),
+      ],
+    );
+  }
+}
+
+class _Checkbox extends StatelessWidget {
+  const _Checkbox({
+    Key? key,
+    required this.value,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final bool value;
+  final void Function(bool?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      activeColor: FreeBetaColors.blueDark,
+      value: value,
+      onChanged: onChanged,
+    );
+  }
+}
+
+class _CheckboxRow extends StatelessWidget {
+  const _CheckboxRow({
+    Key? key,
+    required this.label,
+    required this.checkbox,
+  }) : super(key: key);
+
+  final String label;
+  final _Checkbox checkbox;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FreeBetaPadding.sVertical,
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: FreeBetaTextStyle.body2,
+          ),
+          Spacer(),
+          SizedBox.square(
+            dimension: FreeBetaSizes.xxl,
+            child: checkbox,
+          ),
+          SizedBox(width: FreeBetaSizes.m),
+        ],
+      ),
+    );
+  }
+}
+
+class _AttemptsRow extends StatelessWidget {
+  const _AttemptsRow({
+    Key? key,
+    required this.attempts,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final int attempts;
+  final void Function(int) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FreeBetaPadding.sVertical,
+      child: Row(
+        children: [
+          Text(
+            'Attempts',
+            style: FreeBetaTextStyle.body2,
+          ),
+          Spacer(),
+          FreeBetaNumberInput(
+            value: attempts,
+            onChanged: onChanged,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _HelpWarning extends StatelessWidget {
+  const _HelpWarning({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.warning_amber,
+              color: FreeBetaColors.warning,
+            ),
+            SizedBox(width: FreeBetaSizes.l),
+            Flexible(
+              child: Text(
+                'This is a sample route, your changes cannot be saved.',
+                style: FreeBetaTextStyle.h4,
+              ),
+            ),
+          ],
+        ),
+        _DetailScreenDivider(),
+      ],
+    );
+  }
+}
+
+class _EditButton extends ConsumerWidget {
+  const _EditButton({
+    Key? key,
+    required this.routeModel,
+  }) : super(key: key);
+
+  final RouteModel routeModel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var user = ref.watch(authenticationProvider).whenOrNull(
+          data: (user) => user,
+        );
+
+    if (user == null || user.isAnonymous) {
+      return SizedBox.shrink();
+    }
+
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        EditRouteScreen.route(routeModel),
+      ),
+      icon: Icon(
+        Icons.edit,
+        color: FreeBetaColors.white,
       ),
     );
   }

@@ -2,24 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 import 'package:free_beta/routes/presentation/route_progress_icon.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 
 class RouteCard extends StatelessWidget {
   final RouteModel route;
+  final Function(BuildContext) onTap;
 
   const RouteCard({
     Key? key,
     required this.route,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(
-        RouteDetailScreen.route(route),
-      ),
+      onTap: () => onTap(context),
       child: Container(
         color: _getBackgroundColor(),
         padding: FreeBetaPadding.mAll,

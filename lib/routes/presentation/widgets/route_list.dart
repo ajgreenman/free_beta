@@ -3,6 +3,7 @@ import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
+import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 
 class RouteList extends StatelessWidget {
   const RouteList({
@@ -41,7 +42,12 @@ class RouteList extends StatelessWidget {
     if (onRefresh == null) {
       return ListView.separated(
         shrinkWrap: true,
-        itemBuilder: (_, index) => RouteCard(route: routes[index]),
+        itemBuilder: (_, index) => RouteCard(
+          route: routes[index],
+          onTap: (cardContext) => Navigator.of(cardContext).push(
+            RouteDetailScreen.route(routes[index]),
+          ),
+        ),
         separatorBuilder: (_, __) => FreeBetaDivider(),
         itemCount: routes.length,
       );
@@ -50,7 +56,12 @@ class RouteList extends StatelessWidget {
     return RefreshIndicator(
       child: ListView.separated(
         shrinkWrap: true,
-        itemBuilder: (_, index) => RouteCard(route: routes[index]),
+        itemBuilder: (_, index) => RouteCard(
+          route: routes[index],
+          onTap: (cardContext) => Navigator.of(cardContext).push(
+            RouteDetailScreen.route(routes[index]),
+          ),
+        ),
         separatorBuilder: (_, __) => FreeBetaDivider(),
         itemCount: routes.length,
       ),
