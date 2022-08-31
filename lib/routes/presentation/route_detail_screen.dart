@@ -157,6 +157,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
     setState(() {
       _formModel.attempts = value;
+      if (_formModel.attempts == 0) {
+        _formModel.isCompleted = false;
+        _formModel.isFavorited = false;
+      }
     });
   }
 
