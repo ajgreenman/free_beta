@@ -4,7 +4,7 @@ import 'package:free_beta/app/enums/enums.dart';
 void main() {
   test('location display name returns properly', () {
     var boulder = WallLocation.boulder.displayName;
-    expect(boulder, 'Boulder Area');
+    expect(boulder, 'Boulder Wall');
 
     var mezzanine = WallLocation.mezzanine.displayName;
     expect(mezzanine, 'Mezzanine');
