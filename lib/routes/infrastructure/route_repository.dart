@@ -1,8 +1,8 @@
 import 'package:collection/collection.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
+import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
@@ -11,7 +11,7 @@ import 'package:riverpod/riverpod.dart';
 final routeRepository = Provider((ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
-    user: ref.watch(authenticationProvider).whenOrNull<User?>(
+    user: ref.watch(authenticationProvider).whenOrNull<UserModel?>(
           data: (user) => user,
         ),
   );
@@ -19,7 +19,7 @@ final routeRepository = Provider((ref) {
 
 class RouteRepository {
   final RouteRemoteDataProvider routeRemoteDataProvider;
-  final User? user;
+  final UserModel? user;
 
   RouteRepository({
     required this.routeRemoteDataProvider,

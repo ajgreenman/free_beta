@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_model.dart';
 
 final userApiProvider = Provider((ref) => UserApi(
       FirebaseAuth.instance,
@@ -23,7 +24,18 @@ class UserApi {
   final FirebaseFirestore _firestoreGyms;
   final CrashlyticsApi _crashlyticsApi;
 
-  Stream<User?> get authenticationStream => _firebaseAuth.authStateChanges();
+  Stream<UserModel?> get authenticationStream =>
+      _firebaseAuth.authStateChanges().map(_convertUser);
+
+  UserModel? _convertUser(user) {
+    if (user == null) return null;
+
+    return UserModel(
+      email: user.email ?? '',
+      uid: user.uid,
+      isAnonymous: user.isAnonymous,
+    );
+  }
 
   Future<bool> signIn(String email, String password) async {
     return await _firebaseAuth
