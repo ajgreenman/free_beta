@@ -173,30 +173,12 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
       children: [
         Flexible(
           child: InkWell(
-            onTap: () {
-              if (attemptedFilter == true) {
-                setState(() => attemptedFilter = null);
-              } else {
-                setState(() => attemptedFilter = true);
-              }
-              ref.read(routeAttemptedFilterProvider.notifier).state =
-                  attemptedFilter;
-            },
-            child: _buildCheckboxRow(
-              'Attempted',
-              Checkbox(
-                activeColor: FreeBetaColors.blueDark,
+            onTap: _onAttemptedTap,
+            child: _CheckboxRow(
+              label: 'Attempted',
+              checkbox: _Checkbox(
                 value: attemptedFilter == true,
-                onChanged: (value) {
-                  if (value == null) return;
-                  if (attemptedFilter == true) {
-                    setState(() => attemptedFilter = null);
-                  } else {
-                    setState(() => attemptedFilter = true);
-                  }
-                  ref.read(routeAttemptedFilterProvider.notifier).state =
-                      attemptedFilter;
-                },
+                onChanged: _onAttemptedChanged,
               ),
             ),
           ),
@@ -204,30 +186,12 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
         SizedBox(width: FreeBetaSizes.xl),
         Flexible(
           child: InkWell(
-            onTap: () {
-              if (attemptedFilter == false) {
-                setState(() => attemptedFilter = null);
-              } else {
-                setState(() => attemptedFilter = false);
-              }
-              ref.read(routeAttemptedFilterProvider.notifier).state =
-                  attemptedFilter;
-            },
-            child: _buildCheckboxRow(
-              'Unattempted',
-              Checkbox(
-                activeColor: FreeBetaColors.blueDark,
+            onTap: _onUnattemptedTap,
+            child: _CheckboxRow(
+              label: 'Unattempted',
+              checkbox: _Checkbox(
                 value: attemptedFilter == false,
-                onChanged: (value) {
-                  if (value == null) return;
-                  if (attemptedFilter == false) {
-                    setState(() => attemptedFilter = null);
-                  } else {
-                    setState(() => attemptedFilter = false);
-                  }
-                  ref.read(routeAttemptedFilterProvider.notifier).state =
-                      attemptedFilter;
-                },
+                onChanged: _onUnattemptedChanged,
               ),
             ),
           ),
@@ -236,7 +200,57 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
     );
   }
 
-  Widget _buildCheckboxRow(String label, Checkbox checkbox) {
+  void _onAttemptedTap() {
+    if (attemptedFilter == true) {
+      setState(() => attemptedFilter = null);
+    } else {
+      setState(() => attemptedFilter = true);
+    }
+    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
+  }
+
+  void _onUnattemptedTap() {
+    if (attemptedFilter == false) {
+      setState(() => attemptedFilter = null);
+    } else {
+      setState(() => attemptedFilter = false);
+    }
+    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
+  }
+
+  void _onAttemptedChanged(value) {
+    if (value == null) return;
+    if (attemptedFilter == true) {
+      setState(() => attemptedFilter = null);
+    } else {
+      setState(() => attemptedFilter = true);
+    }
+    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
+  }
+
+  void _onUnattemptedChanged(value) {
+    if (value == null) return;
+    if (attemptedFilter == false) {
+      setState(() => attemptedFilter = null);
+    } else {
+      setState(() => attemptedFilter = false);
+    }
+    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
+  }
+}
+
+class _CheckboxRow extends StatelessWidget {
+  const _CheckboxRow({
+    Key? key,
+    required this.label,
+    required this.checkbox,
+  }) : super(key: key);
+
+  final String label;
+  final _Checkbox checkbox;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Text(
@@ -246,6 +260,26 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
         Spacer(),
         SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
       ],
+    );
+  }
+}
+
+class _Checkbox extends StatelessWidget {
+  const _Checkbox({
+    Key? key,
+    required this.value,
+    required this.onChanged,
+  }) : super(key: key);
+
+  final bool value;
+  final void Function(bool?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Checkbox(
+      activeColor: FreeBetaColors.blueDark,
+      value: value,
+      onChanged: onChanged,
     );
   }
 }

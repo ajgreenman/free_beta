@@ -16,7 +16,7 @@ class GymAdmin extends StatelessWidget {
               style: FreeBetaTextStyle.h2,
             ),
             SizedBox(height: FreeBetaSizes.l),
-            _buildActions(context),
+            _CreateRouteButton(),
             SizedBox(height: FreeBetaSizes.l),
             Text(
               'To edit a route, first go to the route in the Routes tab. Then, tap the pencil icon in the top right corner of the screen.',
@@ -26,29 +26,36 @@ class GymAdmin extends StatelessWidget {
       );
 }
 
-Widget _buildActions(BuildContext context) {
-  return ElevatedButton(
-    onPressed: () => Navigator.of(context).push(CreateRouteScreen.route()),
-    child: Padding(
-      padding: FreeBetaPadding.xlHorizontal,
-      child: Text(
-        'Create Route',
-        style: FreeBetaTextStyle.h4.copyWith(
-          color: FreeBetaColors.white,
+class _CreateRouteButton extends StatelessWidget {
+  const _CreateRouteButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () => Navigator.of(context).push(CreateRouteScreen.route()),
+      child: Padding(
+        padding: FreeBetaPadding.xlHorizontal,
+        child: Text(
+          'Create Route',
+          style: FreeBetaTextStyle.h4.copyWith(
+            color: FreeBetaColors.white,
+          ),
         ),
       ),
-    ),
-    style: ButtonStyle(
-      side: MaterialStateProperty.all(
-        BorderSide(
-          width: 2,
+      style: ButtonStyle(
+        side: MaterialStateProperty.all(
+          BorderSide(
+            width: 2,
+          ),
+        ),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            vertical: FreeBetaSizes.ml,
+          ),
         ),
       ),
-      padding: MaterialStateProperty.all(
-        const EdgeInsets.symmetric(
-          vertical: FreeBetaSizes.ml,
-        ),
-      ),
-    ),
-  );
+    );
+  }
 }

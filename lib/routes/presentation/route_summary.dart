@@ -17,12 +17,6 @@ class RouteSummary extends StatelessWidget {
   final bool isDetailed;
   final RouteModel route;
 
-  TextStyle get textStyle =>
-      isDetailed ? FreeBetaTextStyle.body2 : FreeBetaTextStyle.body3;
-
-  TextStyle get headingTextStyle =>
-      isDetailed ? FreeBetaTextStyle.h3 : FreeBetaTextStyle.h4;
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -34,50 +28,110 @@ class RouteSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _buildColor(),
-                _buildName(context),
+                _ColorSquare(
+                  name: route.name,
+                  color: route.routeColor,
+                  isDetailed: isDetailed,
+                ),
+                _NameText(
+                  name: route.name,
+                  isDetailed: isDetailed,
+                ),
               ],
             ),
-            ..._buildDate('Created', route.creationDate),
+            if (isDetailed) ...[
+              Spacer(),
+              _DateText(label: 'Created', date: route.creationDate),
+            ]
           ],
         ),
         Row(
           children: [
             _RouteTypeAndDifficultyRow(
               route: route,
-              textStyle: textStyle,
+              isDetailed: isDetailed,
             ),
-            if (route.removalDate != null)
-              ..._buildDate('Removed', route.removalDate),
+            if (isDetailed && route.removalDate != null) ...[
+              Spacer(),
+              _DateText(label: 'Removed', date: route.removalDate),
+            ],
           ],
         ),
       ],
     );
   }
+}
 
-  Widget _buildName(BuildContext context) {
+class _DateText extends StatelessWidget {
+  const _DateText({
+    Key? key,
+    required this.label,
+    required this.date,
+  }) : super(key: key);
+
+  final String label;
+  final DateTime? date;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      label + ': ' + DateFormat('MM/dd').formatWithNull(date),
+      style: FreeBetaTextStyle.body2,
+    );
+  }
+}
+
+class _NameText extends StatelessWidget {
+  const _NameText({
+    Key? key,
+    required this.name,
+    required this.isDetailed,
+  }) : super(key: key);
+
+  final String name;
+  final bool isDetailed;
+
+  TextStyle get headingTextStyle =>
+      isDetailed ? FreeBetaTextStyle.h3 : FreeBetaTextStyle.h4;
+
+  @override
+  Widget build(BuildContext context) {
     var width = MediaQuery.of(context).size.width;
     return Flexible(
       child: SizedBox(
         width: width / 2,
         child: AutoSizeText(
-          route.name,
+          name,
           style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
           maxLines: 1,
         ),
       ),
     );
   }
+}
 
-  Widget _buildColor() {
+class _ColorSquare extends StatelessWidget {
+  const _ColorSquare({
+    Key? key,
+    required this.name,
+    required this.color,
+    required this.isDetailed,
+  }) : super(key: key);
+
+  final String name;
+  final RouteColor color;
+  final bool isDetailed;
+
+  @override
+  Widget build(BuildContext context) {
     if (!isDetailed) return SizedBox.shrink();
 
     var colorSquare = RouteColorSquare(
-      routeColor: route.routeColor,
+      routeColor: color,
       size: FreeBetaSizes.xl,
     );
 
-    if (route.name.isEmpty) {
+    if (name.isEmpty) {
       return colorSquare;
     }
 
@@ -86,29 +140,20 @@ class RouteSummary extends StatelessWidget {
       child: colorSquare,
     );
   }
-
-  List<Widget> _buildDate(String label, DateTime? date) {
-    if (!isDetailed) return [];
-
-    return [
-      Spacer(),
-      Text(
-        label + ': ' + DateFormat('MM/dd').formatWithNull(date),
-        style: textStyle,
-      ),
-    ];
-  }
 }
 
 class _RouteTypeAndDifficultyRow extends StatelessWidget {
   const _RouteTypeAndDifficultyRow({
     Key? key,
     required this.route,
-    required this.textStyle,
+    required this.isDetailed,
   }) : super(key: key);
 
   final RouteModel route;
-  final TextStyle textStyle;
+  final bool isDetailed;
+
+  TextStyle get textStyle =>
+      isDetailed ? FreeBetaTextStyle.body2 : FreeBetaTextStyle.body3;
 
   @override
   Widget build(BuildContext context) {

@@ -14,15 +14,39 @@ class UserStatsSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _buildRow('Total', routeStatsModel.total),
-        _buildRow('Attempted', routeStatsModel.attempted),
-        _buildRow('Completed', routeStatsModel.completed),
-        _buildRow('Favorited', routeStatsModel.favorited),
+        _StatsRow(
+          label: 'Total',
+          value: routeStatsModel.total,
+        ),
+        _StatsRow(
+          label: 'Attempted',
+          value: routeStatsModel.attempted,
+        ),
+        _StatsRow(
+          label: 'Completed',
+          value: routeStatsModel.completed,
+        ),
+        _StatsRow(
+          label: 'Favorited',
+          value: routeStatsModel.favorited,
+        ),
       ],
     );
   }
+}
 
-  Widget _buildRow(String label, int count) {
+class _StatsRow extends StatelessWidget {
+  const _StatsRow({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
+
+  final String label;
+  final int value;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       children: [
         Text(
@@ -31,7 +55,7 @@ class UserStatsSection extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          count.toString(),
+          value.toString(),
           style: FreeBetaTextStyle.body2.copyWith(
             fontWeight: FontWeight.bold,
           ),

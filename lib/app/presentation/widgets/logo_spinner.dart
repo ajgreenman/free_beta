@@ -48,12 +48,12 @@ class _LogoSpinnerState extends State<LogoSpinner>
 
   @override
   Widget build(BuildContext context) {
-    return StaggeredLogo(controller: _animationController);
+    return AnimatedStaggeredLogo(controller: _animationController);
   }
 }
 
-class StaggeredLogo extends StatelessWidget {
-  StaggeredLogo({
+class AnimatedStaggeredLogo extends StatelessWidget {
+  AnimatedStaggeredLogo({
     Key? key,
     required this.controller,
   })  : elevateOpacity = Tween<double>(begin: 1.0, end: 0.0).animate(
@@ -118,18 +118,51 @@ class StaggeredLogo extends StatelessWidget {
   final Animation<double> freeBetaHeight;
   final Animation<double> nameOffset;
 
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (_, __) => _StaggeredLogo(
+        elevateOpacity: elevateOpacity,
+        elevateSpeed: elevateSpeed,
+        freeBetaFirstOpacity: freeBetaFirstOpacity,
+        freeBetaSecondOpacity: freeBetaSecondOpacity,
+        freeBetaWidth: freeBetaWidth,
+        freeBetaHeight: freeBetaHeight,
+        freeBetaSpeed: freeBetaSpeed,
+        nameOffset: nameOffset,
+      ),
+    );
+  }
+}
+
+class _StaggeredLogo extends StatelessWidget {
+  const _StaggeredLogo({
+    Key? key,
+    required this.elevateOpacity,
+    required this.elevateSpeed,
+    required this.freeBetaFirstOpacity,
+    required this.freeBetaSecondOpacity,
+    required this.freeBetaWidth,
+    required this.freeBetaHeight,
+    required this.freeBetaSpeed,
+    required this.nameOffset,
+  }) : super(key: key);
+
+  final Animation<double> elevateOpacity;
+  final Animation<double> elevateSpeed;
+  final Animation<double> freeBetaFirstOpacity;
+  final Animation<double> freeBetaSecondOpacity;
+  final Animation<double> freeBetaWidth;
+  final Animation<double> freeBetaHeight;
+  final Animation<double> freeBetaSpeed;
+  final Animation<double> nameOffset;
+
   double get _hexagonLength => FreeBetaSizes.xxxl * 2;
   double get _squareLength => (_hexagonLength * sqrt(3) / 2) * 2;
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: controller,
-      builder: _buildAnimation,
-    );
-  }
-
-  Widget _buildAnimation(BuildContext context, Widget? child) {
     return Stack(
       alignment: Alignment.center,
       clipBehavior: Clip.none,

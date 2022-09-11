@@ -19,16 +19,12 @@ class ErrorCard extends StatelessWidget {
             'Sorry, an unknown error occured.',
             style: FreeBetaTextStyle.body3,
           ),
-          if (child != null) ..._buildChild(child!),
+          if (child != null) ...[
+            SizedBox(height: FreeBetaSizes.m),
+            child!,
+          ],
         ],
       ),
     );
-  }
-
-  List<Widget> _buildChild(Widget errorChild) {
-    return [
-      SizedBox(height: FreeBetaSizes.m),
-      errorChild,
-    ];
   }
 }

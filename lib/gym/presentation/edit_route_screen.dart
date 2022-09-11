@@ -34,7 +34,9 @@ class _EditRouteScreenState extends ConsumerState<EditRouteScreen> {
       appBar: AppBar(
         title: Text('Edit Route'),
         leading: FreeBetaBackButton(onPressed: _onBack),
-        actions: [_buildDeleteButton(context, ref)],
+        actions: [
+          _DeleteButton(routeModel: widget.routeModel),
+        ],
       ),
       body: RouteForm(
         editRouteModel: widget.routeModel,
@@ -54,8 +56,18 @@ class _EditRouteScreenState extends ConsumerState<EditRouteScreen> {
       builder: (_) => _SaveAreYouSureDialog(),
     );
   }
+}
 
-  Widget _buildDeleteButton(BuildContext context, WidgetRef ref) {
+class _DeleteButton extends ConsumerWidget {
+  const _DeleteButton({
+    Key? key,
+    required this.routeModel,
+  }) : super(key: key);
+
+  final RouteModel routeModel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
     return IconButton(
       onPressed: () => _onDeletePressed(context, ref),
       icon: Icon(
@@ -73,7 +85,7 @@ class _EditRouteScreenState extends ConsumerState<EditRouteScreen> {
     if (!willDelete) return;
 
     await ref.read(routeApiProvider).deleteRoute(
-          widget.routeModel,
+          routeModel,
         );
     ref.refresh(fetchRoutesProvider);
 

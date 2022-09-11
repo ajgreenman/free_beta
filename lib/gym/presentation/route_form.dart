@@ -221,49 +221,22 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                   isRequired: false,
                 ),
               widget.editRouteModel == null
-                  ? _buildCreateRouteButton(context)
-                  : _buildEditRouteButton(context),
+                  ? _CreateRouteButton(
+                      onPressed: !_loadingImages && !_loadingBetaVideo
+                          ? () async => _onCreateRoutePressed(context)
+                          : null,
+                    )
+                  : _EditRouteButton(
+                      onPressed: !_loadingImages && !_loadingBetaVideo
+                          ? () async => _onEditRoutePressed(context)
+                          : null,
+                    ),
             ],
           ),
         ),
       ),
     );
   }
-
-  Widget _buildCreateRouteButton(BuildContext context) => ElevatedButton(
-        onPressed: !_loadingImages && !_loadingBetaVideo
-            ? () async => _onCreateRoutePressed(context)
-            : null,
-        child: Padding(
-          padding: FreeBetaPadding.xlHorizontal,
-          child: Text(
-            'Create Route',
-            style: FreeBetaTextStyle.h4.copyWith(
-              color: FreeBetaColors.white,
-            ),
-          ),
-        ),
-        style: ButtonStyle(
-          alignment: Alignment.centerLeft,
-          side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return BorderSide(
-                color: FreeBetaColors.grayLight,
-                width: 2,
-              );
-            }
-            return BorderSide(
-              width: 2,
-            );
-          }),
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(
-              horizontal: FreeBetaSizes.m,
-              vertical: FreeBetaSizes.ml,
-            ),
-          ),
-        ),
-      );
 
   Future<void> _onCreateRoutePressed(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) {
@@ -286,41 +259,6 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     );
     Navigator.of(context).pop();
   }
-
-  Widget _buildEditRouteButton(BuildContext context) => ElevatedButton(
-        onPressed: !_loadingImages && !_loadingBetaVideo
-            ? () async => _onEditRoutePressed(context)
-            : null,
-        child: Padding(
-          padding: FreeBetaPadding.xlHorizontal,
-          child: Text(
-            'Update Route',
-            style: FreeBetaTextStyle.h4.copyWith(
-              color: FreeBetaColors.white,
-            ),
-          ),
-        ),
-        style: ButtonStyle(
-          alignment: Alignment.centerLeft,
-          side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-            if (states.contains(MaterialState.disabled)) {
-              return BorderSide(
-                color: FreeBetaColors.grayLight,
-                width: 2,
-              );
-            }
-            return BorderSide(
-              width: 2,
-            );
-          }),
-          padding: MaterialStateProperty.all(
-            const EdgeInsets.symmetric(
-              horizontal: FreeBetaSizes.m,
-              vertical: FreeBetaSizes.ml,
-            ),
-          ),
-        ),
-      );
 
   Future<void> _onEditRoutePressed(BuildContext context) async {
     if (!(_formKey.currentState?.validate() ?? false)) {
@@ -532,6 +470,96 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     return await showDialog(
       context: context,
       builder: (_) => _ImageSourceDialog(),
+    );
+  }
+}
+
+class _CreateRouteButton extends StatelessWidget {
+  const _CreateRouteButton({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Padding(
+        padding: FreeBetaPadding.xlHorizontal,
+        child: Text(
+          'Create Route',
+          style: FreeBetaTextStyle.h4.copyWith(
+            color: FreeBetaColors.white,
+          ),
+        ),
+      ),
+      style: ButtonStyle(
+        alignment: Alignment.centerLeft,
+        side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return BorderSide(
+              color: FreeBetaColors.grayLight,
+              width: 2,
+            );
+          }
+          return BorderSide(
+            width: 2,
+          );
+        }),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            horizontal: FreeBetaSizes.m,
+            vertical: FreeBetaSizes.ml,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditRouteButton extends StatelessWidget {
+  const _EditRouteButton({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
+
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      child: Padding(
+        padding: FreeBetaPadding.xlHorizontal,
+        child: Text(
+          'Update Route',
+          style: FreeBetaTextStyle.h4.copyWith(
+            color: FreeBetaColors.white,
+          ),
+        ),
+      ),
+      style: ButtonStyle(
+        alignment: Alignment.centerLeft,
+        side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+          if (states.contains(MaterialState.disabled)) {
+            return BorderSide(
+              color: FreeBetaColors.grayLight,
+              width: 2,
+            );
+          }
+          return BorderSide(
+            width: 2,
+          );
+        }),
+        padding: MaterialStateProperty.all(
+          const EdgeInsets.symmetric(
+            horizontal: FreeBetaSizes.m,
+            vertical: FreeBetaSizes.ml,
+          ),
+        ),
+      ),
     );
   }
 }

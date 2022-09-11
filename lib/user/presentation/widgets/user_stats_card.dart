@@ -177,52 +177,35 @@ class _UserStatsSkeleton extends StatelessWidget {
             style: FreeBetaTextStyle.h2,
           ),
           SizedBox(height: FreeBetaSizes.m),
-          _buildRow('Total'),
-          _buildRow('Attempted'),
-          _buildRow('Completed'),
-          _buildRow('Favorited'),
+          _SkeletonRow(label: 'Total'),
+          _SkeletonRow(label: 'Attempted'),
+          _SkeletonRow(label: 'Completed'),
+          _SkeletonRow(label: 'Favorited'),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
-          _buildCard(
-            ClimbType.boulder.pluralDisplayName,
-          ),
+          _SkeletonCard(label: ClimbType.boulder.pluralDisplayName),
           FreeBetaDivider(),
-          _buildCard(
-            ClimbType.topRope.pluralDisplayName,
-          ),
+          _SkeletonCard(label: ClimbType.topRope.pluralDisplayName),
           FreeBetaDivider(),
-          _buildCard(
-            ClimbType.autoBelay.pluralDisplayName,
-          ),
+          _SkeletonCard(label: ClimbType.autoBelay.pluralDisplayName),
           FreeBetaDivider(),
-          _buildCard(
-            ClimbType.lead.pluralDisplayName,
-          ),
+          _SkeletonCard(label: ClimbType.lead.pluralDisplayName),
         ],
       ),
     );
   }
+}
 
-  Widget _buildRow(String label) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: FreeBetaTextStyle.h4,
-        ),
-        Spacer(),
-        Text(
-          '?',
-          style: FreeBetaTextStyle.body2.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        SizedBox(width: FreeBetaSizes.m),
-      ],
-    );
-  }
+class _SkeletonCard extends StatelessWidget {
+  const _SkeletonCard({
+    Key? key,
+    required this.label,
+  }) : super(key: key);
 
-  Widget _buildCard(String label) {
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: FreeBetaPadding.lVertical,
       child: Row(
@@ -245,6 +228,35 @@ class _UserStatsSkeleton extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SkeletonRow extends StatelessWidget {
+  const _SkeletonRow({
+    Key? key,
+    required this.label,
+  }) : super(key: key);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: FreeBetaTextStyle.h4,
+        ),
+        Spacer(),
+        Text(
+          '?',
+          style: FreeBetaTextStyle.body2.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(width: FreeBetaSizes.m),
+      ],
     );
   }
 }

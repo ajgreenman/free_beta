@@ -7,16 +7,16 @@ import 'package:free_beta/gym/presentation/widgets/gym_section.dart';
 class WallSectionMap extends StatelessWidget {
   const WallSectionMap({
     required this.wallLocation,
+    required this.onPressed,
     this.highlightedSection,
     this.sectionPadding = FreeBetaSizes.s,
-    this.onPressed,
     Key? key,
   }) : super(key: key);
 
   final WallLocation wallLocation;
+  final Function(int) onPressed;
   final int? highlightedSection;
   final double sectionPadding;
-  final Function(int)? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class WallSectionMap extends StatelessWidget {
               return Positioned(
                 left: i * sectionPadding + availableWidth * section.widthOffset,
                 child: GestureDetector(
-                  onTap: onPressed == null ? null : () => onPressed!(i),
+                  onTap: () => onPressed(i),
                   child: highlightedSection != null && highlightedSection == i
                       ? GymSection(
                           wallSection: section,

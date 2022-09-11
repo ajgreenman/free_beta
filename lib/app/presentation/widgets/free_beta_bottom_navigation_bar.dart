@@ -20,33 +20,36 @@ class FreeBetaBottomNavigationBar extends StatelessWidget {
       onTap: navigateTo,
       unselectedItemColor: FreeBetaColors.grayLight,
       items: [
-        _buildNavbarItem(
+        BottomNavigationBarItem(
           label: 'Routes',
-          icon: Icons.format_list_bulleted,
+          icon: _NavbarIcon(Icons.format_list_bulleted),
         ),
-        _buildNavbarItem(
+        BottomNavigationBarItem(
           label: 'Maps',
-          icon: Icons.map_outlined,
+          icon: _NavbarIcon(Icons.map_outlined),
         ),
-        _buildNavbarItem(
+        BottomNavigationBarItem(
           label: 'Profile',
-          icon: Icons.account_box,
+          icon: _NavbarIcon(Icons.account_box),
         ),
       ],
     );
   }
+}
 
-  BottomNavigationBarItem _buildNavbarItem({
-    required String label,
-    required IconData icon,
-  }) {
-    return BottomNavigationBarItem(
-      label: label,
-      icon: Icon(
-        icon,
-        key: Key('BottomNavigationBarItem-$label'),
-        size: FreeBetaSizes.xl,
-      ),
+class _NavbarIcon extends StatelessWidget {
+  const _NavbarIcon(
+    this.icon, {
+    Key? key,
+  }) : super(key: key);
+
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Icon(
+      icon,
+      size: FreeBetaSizes.xl,
     );
   }
 }
