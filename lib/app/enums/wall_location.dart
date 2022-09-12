@@ -63,6 +63,17 @@ extension WallLocationExtensions on WallLocation {
         return _tallSections[index];
     }
   }
+
+  int get wallHeight {
+    switch (this) {
+      case WallLocation.boulder:
+        return 15;
+      case WallLocation.mezzanine:
+        return 28;
+      case WallLocation.tall:
+        return 42;
+    }
+  }
 }
 
 var _boulderSections = [

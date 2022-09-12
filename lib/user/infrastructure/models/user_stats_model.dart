@@ -41,12 +41,14 @@ class RouteStatsModel {
     required this.attempted,
     required this.completed,
     required this.favorited,
+    required this.height,
   });
 
   final int total;
   final int attempted;
   final int completed;
   final int favorited;
+  final int height;
 
   factory RouteStatsModel.fromRouteList(Iterable<RouteModel> routes) {
     var attempted = routes
@@ -59,11 +61,19 @@ class RouteStatsModel {
         .where((route) => route.userRouteModel?.isFavorited ?? false)
         .length;
 
+    var height = 0;
+    routes.forEach((route) {
+      if (route.userRouteModel?.isCompleted ?? false) {
+        height += route.wallLocation.wallHeight;
+      }
+    });
+
     return RouteStatsModel._(
       total: routes.length,
       attempted: attempted,
       completed: completed,
       favorited: favorited,
+      height: height,
     );
   }
 }

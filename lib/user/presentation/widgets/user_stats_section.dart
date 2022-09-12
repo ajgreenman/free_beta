@@ -16,19 +16,23 @@ class UserStatsSection extends StatelessWidget {
       children: [
         _StatsRow(
           label: 'Total',
-          value: routeStatsModel.total,
+          value: routeStatsModel.total.toString(),
         ),
         _StatsRow(
           label: 'Attempted',
-          value: routeStatsModel.attempted,
+          value: routeStatsModel.attempted.toString(),
         ),
         _StatsRow(
           label: 'Completed',
-          value: routeStatsModel.completed,
+          value: routeStatsModel.completed.toString(),
         ),
         _StatsRow(
           label: 'Favorited',
-          value: routeStatsModel.favorited,
+          value: routeStatsModel.favorited.toString(),
+        ),
+        _StatsRow(
+          label: 'Height climbed',
+          value: '${routeStatsModel.height} ft.',
         ),
       ],
     );
@@ -43,7 +47,7 @@ class _StatsRow extends StatelessWidget {
   }) : super(key: key);
 
   final String label;
-  final int value;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +59,7 @@ class _StatsRow extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          value.toString(),
+          value,
           style: FreeBetaTextStyle.body2.copyWith(
             fontWeight: FontWeight.bold,
           ),

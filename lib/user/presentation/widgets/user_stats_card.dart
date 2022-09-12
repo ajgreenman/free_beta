@@ -89,35 +89,6 @@ class _SuccessCard extends ConsumerWidget {
   }
 }
 
-class _ErrorCard extends ConsumerWidget {
-  const _ErrorCard({
-    Key? key,
-    required this.error,
-    required this.stackTrace,
-    required this.methodName,
-  }) : super(key: key);
-
-  final Object error;
-  final StackTrace? stackTrace;
-  final String methodName;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    ref.read(crashlyticsApiProvider).logError(
-          error,
-          stackTrace,
-          'UserStats',
-          methodName,
-        );
-
-    return InfoCard(
-      child: Text(
-        'Because you have an account, you must sign in to see your user stats.',
-      ),
-    );
-  }
-}
-
 class _UserStatsSection extends StatelessWidget {
   const _UserStatsSection({
     Key? key,
@@ -283,6 +254,35 @@ class _HelpButton extends StatelessWidget {
         Icons.help_outlined,
         color: FreeBetaColors.grayDark,
         size: FreeBetaSizes.xl,
+      ),
+    );
+  }
+}
+
+class _ErrorCard extends ConsumerWidget {
+  const _ErrorCard({
+    Key? key,
+    required this.error,
+    required this.stackTrace,
+    required this.methodName,
+  }) : super(key: key);
+
+  final Object error;
+  final StackTrace? stackTrace;
+  final String methodName;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(crashlyticsApiProvider).logError(
+          error,
+          stackTrace,
+          'UserStats',
+          methodName,
+        );
+
+    return InfoCard(
+      child: Text(
+        'Because you have an account, you must sign in to see your user stats.',
       ),
     );
   }
