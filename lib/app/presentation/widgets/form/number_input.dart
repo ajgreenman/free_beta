@@ -23,6 +23,7 @@ class FreeBetaNumberInput extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
+          key: Key('FreeBetaNumberInput-subtract'),
           onPressed: () {
             if (value > minValue) {
               onChanged(value - 1);
@@ -39,6 +40,7 @@ class FreeBetaNumberInput extends StatelessWidget {
           style: FreeBetaTextStyle.body2.copyWith(fontWeight: FontWeight.bold),
         ),
         IconButton(
+          key: Key('FreeBetaNumberInput-add'),
           onPressed: () {
             if (value < maxValue) {
               onChanged(value + 1);

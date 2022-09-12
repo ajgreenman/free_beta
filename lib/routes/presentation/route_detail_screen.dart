@@ -82,6 +82,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                       _CheckboxRow(
                         label: 'Completed',
                         checkbox: _Checkbox(
+                          key: Key('Checkbox-completed'),
                           value: _formModel.isCompleted,
                           onChanged: _onCompletedChanged,
                         ),
@@ -89,6 +90,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                       _CheckboxRow(
                         label: 'Favorited',
                         checkbox: _Checkbox(
+                          key: Key('Checkbox-favorited'),
                           value: _formModel.isFavorited,
                           onChanged: _onFavoritedChanged,
                         ),
@@ -99,6 +101,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                         onChanged: _onNotesChanged,
                       ),
                       ElevatedButton(
+                        key: Key('ElevatedButton-save'),
                         onPressed: widget.isHelp ? null : _onSave,
                         child: Text(
                           'Save',
