@@ -95,6 +95,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FreeBetaTextInput(
+                key: Key('RouteForm-name'),
                 label: 'Name',
                 onChanged: (name) {
                   if (name != null && name != _formModel.name) {
@@ -106,12 +107,14 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 skipValidation: true,
               ),
               FreeBetaButtonInput(
+                key: Key('RouteForm-images'),
                 label: 'Images',
                 hintText: _imageHintText,
                 onTap: () => _onImagePressed(context),
                 controller: _imageController,
               ),
               FreeBetaButtonInput(
+                key: Key('RouteForm-video'),
                 label: 'Beta Video',
                 hintText: _betaVideoHintText,
                 onTap: () => _onBetaVideoPressed(context),
@@ -119,6 +122,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 isRequired: false,
               ),
               FreeBetaDropdownList<WallLocation?>(
+                formKey: Key('RouteForm-location'),
                 label: 'Location',
                 items: _getLocations(),
                 onChanged: (wallLocation) {
@@ -134,6 +138,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               SizedBox(height: FreeBetaSizes.l),
               if (_formModel.wallLocation != null) ...[
                 FreeBetaWallSectionInput(
+                  key: Key('RouteForm-section'),
                   label: 'Select section',
                   wallLocation: _formModel.wallLocation!,
                   value: _formModel.wallLocationIndex,
@@ -145,6 +150,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 SizedBox(height: FreeBetaSizes.l),
               ],
               FreeBetaDropdownList<RouteColor?>(
+                formKey: Key('RouteForm-color'),
                 label: 'Color',
                 items: _getColors(),
                 onChanged: (routeColor) {
@@ -159,6 +165,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               ),
               SizedBox(height: FreeBetaSizes.l),
               FreeBetaDropdownList<ClimbType?>(
+                formKey: Key('RouteForm-type'),
                 label: 'Type',
                 items: _getTypes(),
                 onChanged: (climbType) {
@@ -175,6 +182,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               if (_formModel.climbType != null &&
                   _formModel.climbType == ClimbType.boulder) ...[
                 FreeBetaDropdownList<BoulderRating?>(
+                  formKey: Key('RouteForm-boulderRating'),
                   label: 'Rating',
                   items: _getBoulderRatings(),
                   onChanged: (boulderRating) {
@@ -192,6 +200,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               if (_formModel.climbType != null &&
                   _formModel.climbType != ClimbType.boulder) ...[
                 FreeBetaDropdownList<YosemiteRating?>(
+                  formKey: Key('RouteForm-yosemiteRating'),
                   label: 'Rating',
                   items: _getYosemiteRatings(),
                   onChanged: (yosemiteRating) {
@@ -207,6 +216,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 SizedBox(height: FreeBetaSizes.l),
               ],
               FreeBetaButtonInput(
+                key: Key('RouteForm-creationDate'),
                 label: 'Creation Date',
                 hintText: 'Enter creation date',
                 onTap: _onCreationDatePressed,
@@ -214,6 +224,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
               ),
               if (widget.editRouteModel != null)
                 FreeBetaButtonInput(
+                  key: Key('RouteForm-removalDate'),
                   label: 'Removal Date',
                   hintText: 'Enter removal date',
                   onTap: _onRemovalDatePressed,
@@ -222,11 +233,13 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 ),
               widget.editRouteModel == null
                   ? _CreateRouteButton(
+                      key: Key('RouteForm-createRoute'),
                       onPressed: !_loadingImages && !_loadingBetaVideo
                           ? () async => _onCreateRoutePressed(context)
                           : null,
                     )
                   : _EditRouteButton(
+                      key: Key('RouteForm-editRoute'),
                       onPressed: !_loadingImages && !_loadingBetaVideo
                           ? () async => _onEditRoutePressed(context)
                           : null,
@@ -392,6 +405,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   List<DropdownMenuItem<WallLocation?>> _getLocations() => WallLocation.values
       .map(
         (wallLocation) => DropdownMenuItem<WallLocation?>(
+          key: Key('RouteForm-location-${wallLocation.name}'),
           value: wallLocation,
           child: Text(wallLocation.displayName),
         ),
@@ -401,6 +415,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   List<DropdownMenuItem<RouteColor?>> _getColors() => RouteColor.values
       .map(
         (routeColor) => DropdownMenuItem<RouteColor?>(
+          key: Key('RouteForm-color-${routeColor.name}'),
           value: routeColor,
           child: Row(
             children: [
@@ -420,6 +435,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
   List<DropdownMenuItem<ClimbType?>> _getTypes() => ClimbType.values
       .map(
         (climbType) => DropdownMenuItem<ClimbType?>(
+          key: Key('RouteForm-type-${climbType.name}'),
           value: climbType,
           child: Text(climbType.displayName),
         ),
@@ -430,6 +446,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       BoulderRating.values
           .map(
             (boulderRating) => DropdownMenuItem<BoulderRating?>(
+              key: Key('RouteForm-rating-${boulderRating.name}'),
               value: boulderRating,
               child: Text(boulderRating.displayName),
             ),
@@ -440,6 +457,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
       YosemiteRating.values
           .map(
             (yosemiteRating) => DropdownMenuItem<YosemiteRating?>(
+              key: Key('RouteForm-rating-${yosemiteRating.name}'),
               value: yosemiteRating,
               child: Text(yosemiteRating.displayName),
             ),

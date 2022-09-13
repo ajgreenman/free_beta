@@ -35,7 +35,10 @@ class _EditRouteScreenState extends ConsumerState<EditRouteScreen> {
         title: Text('Edit Route'),
         leading: FreeBetaBackButton(onPressed: _onBack),
         actions: [
-          _DeleteButton(routeModel: widget.routeModel),
+          _DeleteButton(
+            key: Key('EditRouteScreen-delete'),
+            routeModel: widget.routeModel,
+          ),
         ],
       ),
       body: RouteForm(

@@ -13,6 +13,7 @@ import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/routes/presentation/route_video_screen.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
+import 'package:video_player/video_player.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel, {isHelp = false}) {
@@ -416,8 +417,9 @@ class _BetaVideoButton extends StatelessWidget {
         SizedBox(height: FreeBetaSizes.ml),
         ElevatedButton(
           onPressed: betaVideo != null
-              ? () =>
-                  Navigator.of(context).push(RouteVideoScreen.route(betaVideo!))
+              ? () => Navigator.of(context).push(RouteVideoScreen.route(
+                    VideoPlayerController.network(betaVideo!),
+                  ))
               : null,
           child: Row(
             mainAxisSize: MainAxisSize.min,

@@ -20,17 +20,6 @@ extension WallLocationExtensions on WallLocation {
     }
   }
 
-  String get abbreviation {
-    switch (this) {
-      case WallLocation.boulder:
-        return 'B';
-      case WallLocation.mezzanine:
-        return 'M';
-      case WallLocation.tall:
-        return 'T';
-    }
-  }
-
   List<WallSection> get sections {
     switch (this) {
       case WallLocation.boulder:

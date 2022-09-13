@@ -5,16 +5,19 @@ import 'package:free_beta/app/theme.dart';
 import 'package:video_player/video_player.dart';
 
 class RouteVideoScreen extends StatefulWidget {
-  static Route route(String videoFile) => MaterialPageRoute(
-        builder: (_) => RouteVideoScreen(videoFile: videoFile),
+  static Route route(VideoPlayerController videoPlayerController) =>
+      MaterialPageRoute(
+        builder: (_) => RouteVideoScreen(
+          videoPlayerController: videoPlayerController,
+        ),
       );
 
   const RouteVideoScreen({
     Key? key,
-    required this.videoFile,
+    required this.videoPlayerController,
   }) : super(key: key);
 
-  final String videoFile;
+  final VideoPlayerController videoPlayerController;
 
   @override
   State<RouteVideoScreen> createState() => _RouteVideoScreenState();
@@ -38,7 +41,7 @@ class _RouteVideoScreenState extends State<RouteVideoScreen> {
       ],
     );
 
-    _videoPlayerController = VideoPlayerController.network(widget.videoFile);
+    _videoPlayerController = widget.videoPlayerController;
     _videoPlayerController.setLooping(true);
     _videoPlayerController.setVolume(0.0);
     _videoPlayerController.addListener(_togglePlaying);

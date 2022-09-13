@@ -4,6 +4,7 @@ import 'package:free_beta/app/theme.dart';
 class FreeBetaDropdownList<T> extends StatelessWidget {
   const FreeBetaDropdownList({
     Key? key,
+    this.formKey,
     required this.label,
     required this.onChanged,
     required this.items,
@@ -12,6 +13,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
     this.borderWidth = 2.0,
   }) : super(key: key);
 
+  final Key? formKey;
   final String label;
   final void Function(T?) onChanged;
   final List<DropdownMenuItem<T?>> items;
@@ -30,6 +32,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
         ),
         SizedBox(height: FreeBetaSizes.m),
         DropdownButtonFormField<T?>(
+          key: formKey,
           decoration: InputDecoration(
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
