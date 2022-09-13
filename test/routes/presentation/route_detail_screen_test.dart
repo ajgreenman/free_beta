@@ -6,11 +6,12 @@ import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/text_field.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:mocktail/mocktail.dart';
 
 void main() {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/presentation/user_stats_screen.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats_section.dart';

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 
 class WallSectionFilterBar extends SliverPersistentHeaderDelegate {
   WallSectionFilterBar({

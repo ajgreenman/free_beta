@@ -4,12 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
-import 'package:riverpod/riverpod.dart';
 
 import 'models/route_model.dart';
-
-final routeRemoteDataProvider = Provider(
-    (ref) => RouteRemoteDataProvider(ref.read(crashlyticsApiProvider)));
 
 class RouteRemoteDataProvider {
   RouteRemoteDataProvider(this._crashlyticsApi);

@@ -5,17 +5,6 @@ import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart'
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
-import 'package:riverpod/riverpod.dart';
-
-final routeRepository = Provider((ref) {
-  return RouteRepository(
-    routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
-    user: ref.watch(authenticationProvider).whenOrNull<UserModel?>(
-          data: (user) => user,
-        ),
-  );
-});
 
 class RouteRepository {
   final RouteRemoteDataProvider routeRemoteDataProvider;

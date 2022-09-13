@@ -4,7 +4,7 @@ import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/route_form.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 
 class EditRouteScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel) {

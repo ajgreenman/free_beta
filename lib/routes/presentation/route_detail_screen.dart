@@ -7,12 +7,12 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/edit_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
 import 'package:free_beta/routes/presentation/route_video_screen.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(RouteModel routeModel, {isHelp = false}) {

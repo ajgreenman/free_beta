@@ -4,7 +4,7 @@ import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
 
 class GymMapsScreen extends StatelessWidget {

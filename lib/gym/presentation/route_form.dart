@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/infrastructure/media_api.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/form/button_input.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/presentation/widgets/form/text_input.dart';
@@ -9,7 +9,7 @@ import 'package:free_beta/app/presentation/widgets/form/wall_section_input.dart'
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';

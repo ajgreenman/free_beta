@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/infrastructure/email_api.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/presentation/widgets/text_field.dart';

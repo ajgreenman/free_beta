@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 
 class CreateAccountScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route() {

@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/gym_maps_screen.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:free_beta/user/presentation/profile_screen.dart';
 import 'package:free_beta/user/presentation/sign_in_screen.dart';
 

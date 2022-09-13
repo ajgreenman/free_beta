@@ -2,20 +2,9 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
-
-final userApiProvider = Provider((ref) => UserApi(
-      FirebaseAuth.instance,
-      FirebaseFirestore.instance,
-      ref.read(crashlyticsApiProvider),
-    ));
-
-final authenticationProvider = StreamProvider((ref) {
-  return ref.read(userApiProvider).authenticationStream;
-});
 
 class UserApi {
   UserApi(this._firebaseAuth, this._firestoreGyms, this._crashlyticsApi);

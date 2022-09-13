@@ -6,7 +6,7 @@ import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_filter_bar.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
 class RouteLocationListScreen extends ConsumerWidget {
