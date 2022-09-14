@@ -1,3 +1,5 @@
+part 'user_route_model.p.dart';
+
 class UserRouteModel {
   final String id;
   final String userId;
@@ -16,18 +18,6 @@ class UserRouteModel {
     this.notes,
   }) : id = '$userId-$routeId';
 
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'userId': userId,
-      'routeId': routeId,
-      'isCompleted': _setBool(isCompleted),
-      'isFavorited': _setBool(isFavorited),
-      'attempts': attempts,
-      'notes': notes,
-    };
-  }
-
   factory UserRouteModel.fromJson(Map<String, dynamic> json) {
     return UserRouteModel(
       userId: json['userId'],
@@ -41,12 +31,5 @@ class UserRouteModel {
 
   static bool _getBool(dynamic dbValue) => dbValue == 1 ? true : false;
 
-  static int _setBool(bool value) => value ? 1 : 0;
-
   bool get isAttempted => attempts > 0;
-
-  @override
-  String toString() {
-    return 'UserRouteModel: {id:$id, userId:$userId, routeId:$routeId, isCompleted:$isCompleted, isFavorited:$isFavorited, attempts:$attempts, notes:$notes,';
-  }
 }

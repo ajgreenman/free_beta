@@ -64,6 +64,52 @@ void main() {
     expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.byKey(Key('UserRouteGraph-error')), findsOneWidget);
   });
+
+  testWidgets('smoke test with real graph (yosemite)', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          fetchRoutesProvider.overrideWithValue(
+            AsyncData([routeModel, routeModel]),
+          ),
+          crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
+        ],
+        child: MaterialApp(
+          home: UserRouteGraph(
+            climbType: ClimbType.topRope,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BarChart), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byKey(Key('UserRouteGraph-error')), findsNothing);
+  });
+
+  testWidgets('smoke test with real graph (boulder)', (tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          fetchRoutesProvider.overrideWithValue(
+            AsyncData([boulderRouteModel]),
+          ),
+          crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
+        ],
+        child: MaterialApp(
+          home: UserRouteGraph(
+            climbType: ClimbType.topRope,
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.byType(BarChart), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byKey(Key('UserRouteGraph-error')), findsNothing);
+  });
 }
 
 class MockCrashlyticsApi extends Mock implements CrashlyticsApi {}
@@ -90,3 +136,15 @@ var routeModel = RouteModel.fromFirebase('id', {
   'climbType': 'topRope',
   'wallLocation': 'tall',
 });
+
+var boulderRouteModel = RouteModel(
+  id: 'abcd1234',
+  climbType: ClimbType.boulder,
+  routeColor: RouteColor.black,
+  wallLocation: WallLocation.boulder,
+  wallLocationIndex: 1,
+  creationDate: DateTime.now(),
+  removalDate: DateTime.now(),
+  boulderRating: BoulderRating.v0,
+  userRouteModel: userRouteModel,
+);
