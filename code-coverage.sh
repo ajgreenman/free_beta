@@ -7,7 +7,7 @@ echo "Run tests and get coverage"
 flutter test --coverage --no-pub
 
 # echo "Remove coverage from untestable areas"
-# flutter pub run remove_from_coverage -f coverage/lcov.info -r 'theme/|utilities/|extensions/build_context.dart|icons/'
+flutter pub run remove_from_coverage -f coverage/lcov.info -r '((.g|.i18n|.gen|.p).dart$)'
 
 if hash lcov-summary 2>/dev/null;
 then

@@ -45,7 +45,7 @@ void main() {
     testWidgets('smoke test', (tester) async {
       await tester.pumpWidget(
         buildFrame(
-          AsyncData([routeModel]),
+          AsyncData([boulderRouteModel]),
           AsyncData(filteredRoutes),
         ),
       );
@@ -102,20 +102,43 @@ var userRouteModel = UserRouteModel(
   isFavorited: true,
 );
 
-var routeModel = RouteModel(
+var boulderRouteModel = RouteModel(
   id: 'abcd1234',
   climbType: ClimbType.boulder,
   routeColor: RouteColor.black,
   wallLocation: WallLocation.boulder,
   wallLocationIndex: 1,
   creationDate: DateTime.now(),
+  removalDate: DateTime.now(),
   boulderRating: BoulderRating.v0,
   userRouteModel: userRouteModel,
 );
 
+var yosemiteRouteModel = RouteModel(
+  id: 'abcd1234',
+  climbType: ClimbType.topRope,
+  routeColor: RouteColor.black,
+  wallLocation: WallLocation.tall,
+  wallLocationIndex: 1,
+  creationDate: DateTime.now(),
+  removalDate: DateTime.now(),
+  yosemiteRating: YosemiteRating.eightPlus,
+  userRouteModel: userRouteModel,
+);
+
 var filteredRoutes = RouteFilterModel(
-  routes: [routeModel],
-  filteredRoutes: [routeModel],
+  routes: [
+    boulderRouteModel,
+    yosemiteRouteModel,
+    yosemiteRouteModel,
+    boulderRouteModel,
+  ],
+  filteredRoutes: [
+    boulderRouteModel,
+    yosemiteRouteModel,
+    yosemiteRouteModel,
+    boulderRouteModel,
+  ],
 );
 
 var emptyFilteredRoutes = RouteFilterModel(
