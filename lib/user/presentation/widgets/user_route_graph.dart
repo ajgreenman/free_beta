@@ -23,6 +23,7 @@ class UserRouteGraph extends ConsumerWidget {
           ),
           loading: () => CircularProgressIndicator(),
           error: (error, stackTrace) => _ErrorCard(
+            key: Key('UserRouteGraph-error'),
             error: error,
             stackTrace: stackTrace,
           ),

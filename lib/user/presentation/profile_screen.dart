@@ -63,6 +63,7 @@ class _ContactDeveloper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      key: Key('ProfileScreen-contact'),
       onPressed: () => Navigator.of(context).push(
         ContactDeveloperScreen.route(),
       ),
@@ -94,6 +95,7 @@ class _RemovedRoutesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InfoCard(
+      key: Key('ProfileScreen-removedRoutes'),
       child: InkWell(
         onTap: () => Navigator.of(context).push(
           RouteListScreen.route(

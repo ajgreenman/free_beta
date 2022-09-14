@@ -17,10 +17,14 @@ class UserStatsCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) =>
       ref.watch(fetchUserStatsProvider).when(
             data: (userStats) => _SuccessCard(
+              key: Key('UserStatsCard-success'),
               userStatsModel: userStats,
             ),
-            loading: () => _UserStatsSkeleton(),
+            loading: () => _UserStatsSkeleton(
+              key: Key('UserStatsCard-skeleton'),
+            ),
             error: (error, stackTrace) => _ErrorCard(
+              key: Key('UserStatsCard-error'),
               error: error,
               stackTrace: stackTrace,
               methodName: 'fetchUserStatsProvider',
@@ -34,18 +38,10 @@ class _SuccessCard extends ConsumerWidget {
     required this.userStatsModel,
   }) : super(key: key);
 
-  final UserStatsModel? userStatsModel;
+  final UserStatsModel userStatsModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (userStatsModel == null) {
-      return _ErrorCard(
-        error: 'Invalid user',
-        stackTrace: null,
-        methodName: '_onSuccess',
-      );
-    }
-
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -61,27 +57,31 @@ class _SuccessCard extends ConsumerWidget {
             ],
           ),
           SizedBox(height: FreeBetaSizes.m),
-          UserStatsSection(routeStatsModel: userStatsModel!.overall),
+          UserStatsSection(routeStatsModel: userStatsModel.overall),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
           _UserStatsSection(
+            key: Key('UserStatsCard-section-boulders'),
             climbType: ClimbType.boulder,
-            routeStatsModel: userStatsModel!.boulders,
+            routeStatsModel: userStatsModel.boulders,
           ),
           FreeBetaDivider(),
           _UserStatsSection(
+            key: Key('UserStatsCard-section-topRopes'),
             climbType: ClimbType.topRope,
-            routeStatsModel: userStatsModel!.topRopes,
+            routeStatsModel: userStatsModel.topRopes,
           ),
           FreeBetaDivider(),
           _UserStatsSection(
+            key: Key('UserStatsCard-section-autoBelays'),
             climbType: ClimbType.autoBelay,
-            routeStatsModel: userStatsModel!.autoBelays,
+            routeStatsModel: userStatsModel.autoBelays,
           ),
           FreeBetaDivider(),
           _UserStatsSection(
+            key: Key('UserStatsCard-section-leads'),
             climbType: ClimbType.lead,
-            routeStatsModel: userStatsModel!.leads,
+            routeStatsModel: userStatsModel.leads,
           ),
         ],
       ),

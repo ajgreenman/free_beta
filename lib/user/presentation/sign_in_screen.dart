@@ -39,9 +39,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               if (user == null || user.isAnonymous) {
                 return _buildSignInForm(context);
               }
-              return _buildLoading();
+              return _Loading();
             },
-            loading: () => _buildLoading(),
+            loading: () => _Loading(),
             error: (error, stackTrace) {
               ref.read(crashlyticsApiProvider).logError(
                     error,
@@ -55,10 +55,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           ),
     );
   }
-
-  Widget _buildLoading() => Center(
-        child: CircularProgressIndicator(),
-      );
 
   Widget _buildSignInForm(BuildContext context) {
     return GestureDetector(
@@ -82,6 +78,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('SignInScreen-email'),
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (email) {
@@ -131,6 +128,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('SignInScreen-password'),
                           controller: _passwordController,
                           obscureText: true,
                           validator: (password) {
@@ -172,6 +170,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
                     ElevatedButton(
+                      key: Key('SignInScreen-signIn'),
                       onPressed: () => _onSignIn(context),
                       child: Center(
                         child: Text(
@@ -271,6 +270,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     Navigator.of(context).pop();
     ref.refresh(authenticationProvider);
   }
+}
+
+class _Loading extends StatelessWidget {
+  const _Loading({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) => Center(
+        child: CircularProgressIndicator(),
+      );
 }
 
 class _InvalidSignInDialog extends StatelessWidget {

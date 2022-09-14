@@ -80,6 +80,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('CreateAccountScreen-email'),
                           controller: _emailController,
                           keyboardType: TextInputType.emailAddress,
                           validator: (email) {
@@ -129,6 +130,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('CreateAccountScreen-password'),
                           controller: _passwordController,
                           obscureText: true,
                           validator: (password) {
@@ -178,6 +180,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('CreateAccountScreen-confirm'),
                           controller: _confirmPasswordController,
                           obscureText: true,
                           validator: (password) {
@@ -226,6 +229,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         TextFormField(
+                          key: Key('CreateAccountScreen-gymPassword'),
                           controller: _gymPasswordController,
                           validator: (password) {
                             if (password == null || password.isEmpty) {
@@ -265,6 +269,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                     ),
                     SizedBox(height: FreeBetaSizes.xl),
                     ElevatedButton(
+                      key: Key('CreateAccountScreen-create'),
                       onPressed: _onCreateAccount,
                       child: Center(
                         child: Text(

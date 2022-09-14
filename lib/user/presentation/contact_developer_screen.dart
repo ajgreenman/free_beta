@@ -129,6 +129,7 @@ class _SendButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      key: Key('ContactDeveloperScreen-send'),
       onPressed: () => onPressed(context),
       child: Padding(
         padding: FreeBetaPadding.xlHorizontal,
@@ -174,6 +175,7 @@ class _CommentsField extends StatelessWidget {
         ),
         SizedBox(height: FreeBetaSizes.m),
         FreeBetaTextField(
+          key: Key('ContactDeveloperScreen-comments'),
           controller: controller,
           validator: (comments) {
             if (comments == null || comments.isEmpty) {
@@ -241,6 +243,7 @@ class _NameField extends StatelessWidget {
         ),
         SizedBox(height: FreeBetaSizes.m),
         TextFormField(
+          key: Key('ContactDeveloperScreen-name'),
           controller: controller,
           validator: (name) {
             if (name == null || name.isEmpty) {
