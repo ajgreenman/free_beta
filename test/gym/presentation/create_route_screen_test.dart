@@ -60,7 +60,8 @@ void main() {
     expect(find.text('Are you sure?'), findsNothing);
   });
 
-  testWidgets('tapping back with dirty form opens dialog', (tester) async {
+  testWidgets('tapping back with dirty form opens dialog - exit',
+      (tester) async {
     await tester.pumpWidget(buildFrame());
 
     var nameInput = find.byKey(Key('RouteForm-name'));
@@ -76,6 +77,28 @@ void main() {
     expect(find.text('Are you sure?'), findsOneWidget);
 
     await tester.tap(find.text('Exit'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsNothing);
+  });
+
+  testWidgets('tapping back with dirty form opens dialog - cancel',
+      (tester) async {
+    await tester.pumpWidget(buildFrame());
+
+    var nameInput = find.byKey(Key('RouteForm-name'));
+    expect(nameInput, findsOneWidget);
+
+    await tester.enterText(nameInput, 'Test');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(FreeBetaBackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Are you sure?'), findsOneWidget);
+
+    await tester.tap(find.text('Cancel'));
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsNothing);

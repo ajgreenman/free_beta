@@ -5,8 +5,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
+import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/presentation/widgets/user_route_graph.dart';
 import 'package:mocktail/mocktail.dart';
 
@@ -23,6 +25,7 @@ void main() {
     return ProviderScope(
       overrides: [
         fetchRatingUserGraph(ClimbType.boulder).overrideWithValue(value),
+        fetchRoutesProvider.overrideWithValue(AsyncData([routeModel])),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -63,3 +66,21 @@ void main() {
 }
 
 class MockCrashlyticsApi extends Mock implements CrashlyticsApi {}
+
+var userRouteModel = UserRouteModel(
+  routeId: 'abcd1234',
+  userId: 'user1234',
+  isCompleted: true,
+  isFavorited: true,
+);
+
+var routeModel = RouteModel(
+  id: 'abcd1234',
+  climbType: ClimbType.boulder,
+  routeColor: RouteColor.black,
+  wallLocation: WallLocation.boulder,
+  wallLocationIndex: 1,
+  creationDate: DateTime.now(),
+  boulderRating: BoulderRating.v0,
+  userRouteModel: userRouteModel,
+);

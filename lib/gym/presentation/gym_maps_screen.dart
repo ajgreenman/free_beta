@@ -23,7 +23,10 @@ class GymMapsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: WallLocation.values
-              .map((location) => _WallLocationCard(wallLocation: location))
+              .map((location) => _WallLocationCard(
+                    key: Key('GymMapsScreen-locationCard-${location.name}'),
+                    wallLocation: location,
+                  ))
               .toList(),
         ),
       ),
@@ -56,6 +59,7 @@ class _WallLocationCard extends ConsumerWidget {
             SizedBox(height: FreeBetaSizes.m),
             Center(
               child: WallSectionMap(
+                key: Key('GymMapsScreen-section-${wallLocation.name}'),
                 wallLocation: wallLocation,
                 onPressed: (index) => _onMapSectionTapped(
                   ref,

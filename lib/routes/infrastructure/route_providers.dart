@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
-import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
+import 'package:free_beta/routes/infrastructure/route_graph_api.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
 import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
@@ -16,6 +16,9 @@ final routeApiProvider = Provider(
   (ref) => RouteApi(
     routeRepository: ref.watch(routeRepositoryProvider),
   ),
+);
+final routeGraphApiProvider = Provider(
+  (ref) => RouteGraphApi(),
 );
 
 final routeRepositoryProvider = Provider((ref) {
@@ -107,114 +110,10 @@ final fetchRatingUserGraph =
     FutureProvider.family<List<Series<UserRatingModel, String>>, ClimbType>(
         (ref, climbType) async {
   final unfilteredRoutes = await ref.watch(fetchRoutesProvider.future);
-  var routes = unfilteredRoutes
-      .sortRoutes()
-      .where((route) => route.climbType == climbType)
-      .toList();
+  final routeGraphApi = ref.watch(routeGraphApiProvider);
 
-  if (climbType == ClimbType.boulder) return _getBoulderRatingGraph(routes);
-
-  return [
-    _createSeries(
-      id: 'Unattempted',
-      data: _getUserYosemiteRatings(routes, (route) => route.isUnattempted),
-      color: RouteColor.red,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.yosemiteRating!.displayName,
-    ),
-    _createSeries(
-      id: 'InProgress',
-      data: _getUserYosemiteRatings(routes, (route) => route.isInProgress),
-      color: RouteColor.yellow,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.yosemiteRating!.displayName,
-    ),
-    _createSeries(
-      id: 'Completed',
-      data: _getUserYosemiteRatings(routes, (route) => route.isCompleted),
-      color: RouteColor.green,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.yosemiteRating!.displayName,
-    ),
-  ];
-});
-
-List<Series<UserRatingModel, String>> _getBoulderRatingGraph(
-    List<RouteModel> routes) {
-  return [
-    _createSeries(
-      id: 'Unattempted',
-      data: _getUserBoulderRatings(routes, (route) => route.isUnattempted),
-      color: RouteColor.red,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.boulderRating!.displayName,
-    ),
-    _createSeries(
-      id: 'InProgress',
-      data: _getUserBoulderRatings(routes, (route) => route.isInProgress),
-      color: RouteColor.yellow,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.boulderRating!.displayName,
-    ),
-    _createSeries(
-      id: 'Completed',
-      data: _getUserBoulderRatings(routes, (route) => route.isCompleted),
-      color: RouteColor.green,
-      domainFn: (userRatingModel, _) =>
-          userRatingModel.boulderRating!.displayName,
-    ),
-  ];
-}
-
-Series<UserRatingModel, String> _createSeries({
-  required String id,
-  required List<UserRatingModel> data,
-  required RouteColor color,
-  required String Function(UserRatingModel, int?) domainFn,
-}) {
-  return Series<UserRatingModel, String>(
-    id: id,
-    data: data,
-    domainFn: domainFn,
-    measureFn: (userRatingModel, _) => userRatingModel.count,
-    colorFn: (_, __) => ColorUtil.fromDartColor(
-      color.displayColor.withOpacity(0.7),
-    ),
+  return routeGraphApi.getUserRatings(
+    climbType: climbType,
+    unfilteredRoutes: unfilteredRoutes,
   );
-}
-
-List<UserRatingModel> _getUserBoulderRatings(
-  List<RouteModel> routes,
-  bool Function(RouteModel) routeCondition,
-) {
-  return BoulderRating.values
-      .where((value) => value.isIncludedInGraph)
-      .map(
-        (boulderRating) => UserRatingModel.withBoulder(
-          boulderRating: boulderRating,
-          count: routes
-              .where((route) => route.boulderRating == boulderRating)
-              .where(routeCondition)
-              .length,
-        ),
-      )
-      .toList();
-}
-
-List<UserRatingModel> _getUserYosemiteRatings(
-  List<RouteModel> routes,
-  bool Function(RouteModel) routeCondition,
-) {
-  return CondensedYosemiteRating.values
-      .map(
-        (yosemiteRating) => UserRatingModel.withYosemite(
-          yosemiteRating: yosemiteRating,
-          count: routes
-              .where((route) =>
-                  route.yosemiteRating!.condensedRating == yosemiteRating)
-              .where(routeCondition)
-              .length,
-        ),
-      )
-      .toList();
-}
+});

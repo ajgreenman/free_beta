@@ -16,6 +16,7 @@ void main() {
       overrides: [
         fetchRatingUserGraph(ClimbType.boulder)
             .overrideWithValue(AsyncData([])),
+        fetchRoutesProvider.overrideWithValue(AsyncData([routeModel])),
       ],
       child: MaterialApp(
         home: UserStatsScreen(

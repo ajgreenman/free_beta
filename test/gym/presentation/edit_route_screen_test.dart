@@ -17,26 +17,26 @@ void main() {
 
   setUp(() {
     mockRouteApi = MockRouteApi();
-    registerFallbackValue(routeModel);
+    registerFallbackValue(boulderRouteModel);
     registerFallbackValue(routeFormModel);
 
     when(() => mockRouteApi.updateRoute(any(), any()))
         .thenAnswer((_) => Future.value());
   });
 
-  Widget buildFrame() {
+  Widget buildFrame(RouteModel route) {
     return ProviderScope(
       overrides: [
         routeApiProvider.overrideWithValue(mockRouteApi),
       ],
       child: MaterialApp(
-        home: EditRouteScreen(routeModel: routeModel),
+        home: EditRouteScreen(routeModel: route),
       ),
     );
   }
 
   testWidgets('smoke test', (tester) async {
-    await tester.pumpWidget(buildFrame());
+    await tester.pumpWidget(buildFrame(boulderRouteModel));
 
     expect(find.byType(RouteForm), findsOneWidget);
     expect(find.byKey(Key('RouteForm-createRoute')), findsNothing);
@@ -44,7 +44,7 @@ void main() {
   });
 
   testWidgets('tapping back with clean form pops', (tester) async {
-    await tester.pumpWidget(buildFrame());
+    await tester.pumpWidget(buildFrame(boulderRouteModel));
 
     await tester.tap(find.byType(FreeBetaBackButton));
     await tester.pumpAndSettle();
@@ -53,8 +53,9 @@ void main() {
     expect(find.text('Are you sure?'), findsNothing);
   });
 
-  testWidgets('tapping back with dirty form opens dialog', (tester) async {
-    await tester.pumpWidget(buildFrame());
+  testWidgets('tapping back with dirty form opens dialog - exit',
+      (tester) async {
+    await tester.pumpWidget(buildFrame(yosemiteRouteModel));
 
     var nameInput = find.byKey(Key('RouteForm-name'));
     expect(nameInput, findsOneWidget);
@@ -74,17 +75,35 @@ void main() {
     expect(find.byType(AlertDialog), findsNothing);
   });
 
-  testWidgets('tapping delete opens dialog', (tester) async {
+  testWidgets('tapping back with dirty form opens dialog - cancel',
+      (tester) async {
+    await tester.pumpWidget(buildFrame(yosemiteRouteModel));
+
+    var nameInput = find.byKey(Key('RouteForm-name'));
+    expect(nameInput, findsOneWidget);
+
+    await tester.enterText(nameInput, 'Test');
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(FreeBetaBackButton));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Are you sure?'), findsOneWidget);
+
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsNothing);
+  });
+
+  testWidgets('tapping delete opens dialog - delete', (tester) async {
     when(() => mockRouteApi.deleteRoute(any()))
         .thenAnswer((_) => Future.value());
 
-    await tester.pumpWidget(buildFrame());
+    await tester.pumpWidget(buildFrame(boulderRouteModel));
 
-    var deleteButton = find.byKey(Key('EditRouteScreen-delete'));
-    expect(deleteButton, findsOneWidget);
-
-    await tester.tap(deleteButton);
-    await tester.pumpAndSettle();
+    await _tapDeleteButton(tester);
 
     expect(find.byType(AlertDialog), findsOneWidget);
     expect(find.text('Are you sure?'), findsOneWidget);
@@ -98,8 +117,28 @@ void main() {
     expect(find.text('Route deleted!'), findsOneWidget);
   });
 
+  testWidgets('tapping delete opens dialog - cancel', (tester) async {
+    when(() => mockRouteApi.deleteRoute(any()))
+        .thenAnswer((_) => Future.value());
+
+    await tester.pumpWidget(buildFrame(boulderRouteModel));
+
+    await _tapDeleteButton(tester);
+
+    expect(find.byType(AlertDialog), findsOneWidget);
+    expect(find.text('Are you sure?'), findsOneWidget);
+    expect(find.text('Route deleted!'), findsNothing);
+
+    await tester.tap(find.text('Cancel'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AlertDialog), findsNothing);
+    expect(find.text('Are you sure?'), findsNothing);
+    expect(find.text('Route deleted!'), findsNothing);
+  });
+
   testWidgets('edit route calls update route and shows dialog', (tester) async {
-    await tester.pumpWidget(buildFrame());
+    await tester.pumpWidget(buildFrame(boulderRouteModel));
 
     var creationDateButton = find.byKey(Key('RouteForm-creationDate'));
     expect(creationDateButton, findsOneWidget);
@@ -136,6 +175,14 @@ void main() {
   });
 }
 
+Future<void> _tapDeleteButton(WidgetTester tester) async {
+  var deleteButton = find.byKey(Key('EditRouteScreen-delete'));
+  expect(deleteButton, findsOneWidget);
+
+  await tester.tap(deleteButton);
+  await tester.pumpAndSettle();
+}
+
 class MockRouteApi extends Mock implements RouteApi {}
 
 var userRouteModel = UserRouteModel(
@@ -145,7 +192,7 @@ var userRouteModel = UserRouteModel(
   isFavorited: true,
 );
 
-var routeModel = RouteModel(
+var boulderRouteModel = RouteModel(
   id: 'abcd1234',
   climbType: ClimbType.boulder,
   routeColor: RouteColor.black,
@@ -157,4 +204,16 @@ var routeModel = RouteModel(
   userRouteModel: userRouteModel,
 );
 
-var routeFormModel = RouteFormModel.fromRouteModel(routeModel);
+var yosemiteRouteModel = RouteModel(
+  id: 'abcd1234',
+  climbType: ClimbType.topRope,
+  routeColor: RouteColor.black,
+  wallLocation: WallLocation.tall,
+  wallLocationIndex: 1,
+  creationDate: DateTime.now(),
+  removalDate: DateTime.now(),
+  yosemiteRating: YosemiteRating.eightPlus,
+  userRouteModel: userRouteModel,
+);
+
+var routeFormModel = RouteFormModel.fromRouteModel(boulderRouteModel);
