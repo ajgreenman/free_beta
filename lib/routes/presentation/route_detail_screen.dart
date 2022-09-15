@@ -451,7 +451,7 @@ class _AreYouSureDialog extends StatelessWidget {
     required this.onSave,
   }) : super(key: key);
 
-  final VoidCallback onSave;
+  final Future<void> Function() onSave;
 
   @override
   Widget build(BuildContext context) {
@@ -485,8 +485,8 @@ class _AreYouSureDialog extends StatelessWidget {
             'Save & Exit',
             textAlign: TextAlign.end,
           ),
-          onPressed: () {
-            onSave();
+          onPressed: () async {
+            await onSave();
             Navigator.of(context).pop();
             Navigator.of(context).pop();
           },
