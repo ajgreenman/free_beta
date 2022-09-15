@@ -1,4 +1,5 @@
 import 'package:charts_flutter/flutter.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
@@ -30,8 +31,10 @@ final routeRepositoryProvider = Provider((ref) {
   );
 });
 
-final routeRemoteDataProvider = Provider(
-    (ref) => RouteRemoteDataProvider(ref.read(crashlyticsApiProvider)));
+final routeRemoteDataProvider = Provider((ref) => RouteRemoteDataProvider(
+      FirebaseFirestore.instance,
+      ref.read(crashlyticsApiProvider),
+    ));
 
 final fetchUserStatsProvider = FutureProvider<UserStatsModel>((ref) async {
   final routeApi = ref.watch(routeApiProvider);

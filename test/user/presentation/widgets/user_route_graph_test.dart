@@ -6,6 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
+import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
@@ -98,8 +99,9 @@ void main() {
           crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
         ],
         child: MaterialApp(
+          theme: FreeBetaTheme.blueTheme,
           home: UserRouteGraph(
-            climbType: ClimbType.topRope,
+            climbType: ClimbType.boulder,
           ),
         ),
       ),

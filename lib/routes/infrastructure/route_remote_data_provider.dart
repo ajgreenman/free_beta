@@ -8,14 +8,15 @@ import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'models/route_model.dart';
 
 class RouteRemoteDataProvider {
-  RouteRemoteDataProvider(this._crashlyticsApi);
+  RouteRemoteDataProvider(this.firebaseFirestore, this._crashlyticsApi);
 
+  final FirebaseFirestore firebaseFirestore;
   final CrashlyticsApi _crashlyticsApi;
 
   CollectionReference<Map<String, dynamic>> get _firestoreRoutes =>
-      FirebaseFirestore.instance.collection('routes');
+      firebaseFirestore.collection('routes');
   CollectionReference<Map<String, dynamic>> get _firestoreUsers =>
-      FirebaseFirestore.instance.collection('users');
+      firebaseFirestore.collection('users');
   static const String _userRouteCollectionName = 'user_routes';
 
   Future<List<RouteModel>> getRoutes() async {
