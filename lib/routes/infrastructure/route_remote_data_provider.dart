@@ -26,12 +26,9 @@ class RouteRemoteDataProvider {
         .get()
         .then(
           (routeCollection) => routeCollection.docs.forEach(
-            (json) {
-              log(json.data().toString());
-              routes.add(
-                RouteModel.fromFirebase(json.id, json.data()),
-              );
-            },
+            (json) => routes.add(
+              RouteModel.fromFirebase(json.id, json.data()),
+            ),
           ),
         )
         .catchError(
