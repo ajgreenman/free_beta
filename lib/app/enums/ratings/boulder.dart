@@ -33,7 +33,7 @@ extension BoulderRatingExtensions on BoulderRating {
       case BoulderRating.v9:
         return 'V9+';
       case BoulderRating.consensus:
-        return 'Con.';
+        return 'Consensus';
       default:
         return 'V0';
     }
@@ -86,6 +86,7 @@ BoulderRating boulderRatingFromString(String boulderRating) {
     case 'v9+':
       return BoulderRating.v9;
     case 'consensus':
+    case 'con.':
       return BoulderRating.consensus;
     default:
       return BoulderRating.v0;
