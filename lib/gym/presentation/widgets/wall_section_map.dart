@@ -63,6 +63,7 @@ class WallSectionMap extends StatelessWidget {
     if (highlightedSection != null) {
       return FreeBetaColors.white;
     }
+    return FreeBetaColors.black;
 
     var opacity = highlightedSection != null ? 0.1 : 0.7;
 

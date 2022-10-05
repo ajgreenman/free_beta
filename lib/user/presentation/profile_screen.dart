@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/refresh_schedule_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
@@ -29,6 +30,7 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserStatsCard(),
+            _RefreshScheduleCard(),
             _RemovedRoutesCard(),
             _GymAdmin(ref),
             _ContactDeveloper(),
@@ -84,6 +86,33 @@ class _CopyrightText extends StatelessWidget {
         '© $copyrightYear Climb Elev8',
         style: FreeBetaTextStyle.body3.copyWith(
           color: FreeBetaColors.grayLight,
+        ),
+      ),
+    );
+  }
+}
+
+class _RefreshScheduleCard extends StatelessWidget {
+  const _RefreshScheduleCard({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      key: Key('ProfileScreen-refreshSchedule'),
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(RefreshScheduleScreen.route()),
+        child: Row(
+          children: [
+            Text(
+              'View refresh schedule',
+              style: FreeBetaTextStyle.h3,
+            ),
+            Spacer(),
+            Icon(
+              Icons.keyboard_arrow_right,
+              size: FreeBetaSizes.xxl,
+              color: FreeBetaColors.blueDark,
+            ),
+          ],
         ),
       ),
     );
