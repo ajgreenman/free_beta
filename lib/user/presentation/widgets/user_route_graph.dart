@@ -42,10 +42,17 @@ class _RatingGraph extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 300,
+      height: 325,
       child: BarChart(
         series,
         barGroupingType: BarGroupingType.stacked,
+        domainAxis: OrdinalAxisSpec(
+          renderSpec: SmallTickRendererSpec(
+            labelStyle: TextStyleSpec(
+              fontSize: 8,
+            ),
+          ),
+        ),
         animate: false,
       ),
     );

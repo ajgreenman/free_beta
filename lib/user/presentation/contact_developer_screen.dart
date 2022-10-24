@@ -47,6 +47,7 @@ class _ContactDeveloperFormState extends ConsumerState<_ContactDeveloperForm> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _commentsController = TextEditingController();
 
   var _category = FeedbackCategory.suggestion;
@@ -62,6 +63,9 @@ class _ContactDeveloperFormState extends ConsumerState<_ContactDeveloperForm> {
           children: [
             _NameField(
               controller: _nameController,
+            ),
+            _EmailField(
+              controller: _emailController,
             ),
             _CategoryField(
               value: _category,
@@ -98,6 +102,7 @@ class _ContactDeveloperFormState extends ConsumerState<_ContactDeveloperForm> {
     var result = await emailApi.sendEmail(
       FeedbackFormModel(
         name: _nameController.text,
+        email: _emailController.text,
         category: _category,
         comments: _commentsController.text,
       ),
@@ -251,6 +256,61 @@ class _NameField extends StatelessWidget {
             }
             return null;
           },
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                width: 2.0,
+              ),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: FreeBetaColors.red,
+                width: 2.0,
+              ),
+            ),
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: FreeBetaSizes.m,
+            ),
+            hintStyle: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.grayLight,
+            ),
+            hintText: 'Name',
+          ),
+          style: FreeBetaTextStyle.h4,
+        ),
+        SizedBox(height: FreeBetaSizes.l),
+      ],
+    );
+  }
+}
+
+class _EmailField extends StatelessWidget {
+  const _EmailField({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Email (optional)',
+          style: FreeBetaTextStyle.h3,
+        ),
+        SizedBox(height: FreeBetaSizes.m),
+        TextFormField(
+          key: Key('ContactDeveloperScreen-email'),
+          controller: controller,
+          keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             border: OutlineInputBorder(
               borderSide: BorderSide(

@@ -6,7 +6,7 @@ extension FeedbackFormModelExtensions on FeedbackFormModel {
       'to': 'a.j.greenman@gmail.com',
       'message': {
         'subject': 'Climb Elev8 Feedback - ${category.name}',
-        'text': 'From: $name\nComments: $comments',
+        'text': 'From: $name\nEmail: ${email ?? 'n/a'}\nComments: $comments',
       },
     };
   }
