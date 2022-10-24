@@ -10,7 +10,7 @@ class FeedbackFormModel {
 
   FeedbackFormModel({
     required this.name,
-    required this.email,
+    this.email,
     required this.category,
     required this.comments,
   });
