@@ -444,6 +444,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
 
   List<DropdownMenuItem<BoulderRating?>> _getBoulderRatings() =>
       BoulderRating.values
+          .where((boulderRating) => boulderRating.isIncludedInDropdown)
           .map(
             (boulderRating) => DropdownMenuItem<BoulderRating?>(
               key: Key('RouteForm-rating-${boulderRating.name}'),

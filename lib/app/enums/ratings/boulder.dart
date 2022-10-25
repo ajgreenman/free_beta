@@ -61,6 +61,15 @@ extension BoulderRatingExtensions on BoulderRating {
     }
   }
 
+  bool get isIncludedInDropdown {
+    switch (this) {
+      case BoulderRating.consensus:
+        return true;
+      default:
+        return isIncludedInGraph;
+    }
+  }
+
   bool get isIncludedInGraph {
     switch (this) {
       case BoulderRating.v0:
