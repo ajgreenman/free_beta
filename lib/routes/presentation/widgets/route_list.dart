@@ -18,25 +18,7 @@ class RouteList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (routes.isEmpty) {
-      return Center(
-        child: Padding(
-          padding: EdgeInsets.only(top: FreeBetaSizes.l),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'Sorry, no available routes',
-                style: FreeBetaTextStyle.h3,
-              ),
-              SizedBox(height: FreeBetaSizes.m),
-              Text(
-                'Try clearing your filters if you have any',
-                style: FreeBetaTextStyle.body4,
-              ),
-            ],
-          ),
-        ),
-      );
+      return _EmptyWidget();
     }
 
     if (onRefresh == null) {
@@ -66,6 +48,35 @@ class RouteList extends StatelessWidget {
         itemCount: routes.length,
       ),
       onRefresh: onRefresh!,
+    );
+  }
+}
+
+class _EmptyWidget extends StatelessWidget {
+  const _EmptyWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.only(top: FreeBetaSizes.l),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Sorry, no available routes',
+              style: FreeBetaTextStyle.h3,
+            ),
+            SizedBox(height: FreeBetaSizes.m),
+            Text(
+              'Try clearing your filters if you have any',
+              style: FreeBetaTextStyle.body4,
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
