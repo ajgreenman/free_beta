@@ -64,6 +64,12 @@ void main() {
 }
 
 Future<void> _tapSend(WidgetTester tester) async {
+  var scrollView = find.byType(SingleChildScrollView);
+  expect(scrollView, findsOneWidget);
+
+  await tester.drag(scrollView, const Offset(0.0, -500.0));
+  await tester.pump();
+
   var sendButton = find.byKey(Key('ContactDeveloperScreen-send'));
   expect(sendButton, findsOneWidget);
 
@@ -76,6 +82,11 @@ Future<void> _fillOutForm(WidgetTester tester) async {
   expect(nameField, findsOneWidget);
 
   await tester.enterText(nameField, 'test');
+  await tester.pumpAndSettle();
+  var emailField = find.byKey(Key('ContactDeveloperScreen-email'));
+  expect(emailField, findsOneWidget);
+
+  await tester.enterText(emailField, 'test@test.test');
   await tester.pumpAndSettle();
 
   var commentsField = find.byKey(Key('ContactDeveloperScreen-comments'));

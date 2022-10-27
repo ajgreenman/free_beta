@@ -156,6 +156,7 @@ class _UserStatsSkeleton extends StatelessWidget {
           _SkeletonRow(label: 'Attempted'),
           _SkeletonRow(label: 'Completed'),
           _SkeletonRow(label: 'Favorited'),
+          _SkeletonRow(label: 'Height climbed'),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
           _SkeletonCard(label: ClimbType.boulder.pluralDisplayName),

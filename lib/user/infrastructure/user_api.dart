@@ -14,9 +14,9 @@ class UserApi {
   final CrashlyticsApi _crashlyticsApi;
 
   Stream<UserModel?> get authenticationStream =>
-      _firebaseAuth.authStateChanges().map(_convertUser);
+      _firebaseAuth.authStateChanges().map(_mapUser);
 
-  UserModel? _convertUser(user) {
+  UserModel? _mapUser(user) {
     if (user == null) return null;
 
     return UserModel(

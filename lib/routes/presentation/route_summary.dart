@@ -163,20 +163,40 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
           route.climbType.displayName,
           style: textStyle,
         ),
-        Padding(
-          padding: FreeBetaPadding.sHorizontal,
-          child: Text(
-            '|',
-            style: textStyle.copyWith(fontWeight: FontWeight.bold),
-          ),
-        ),
+        _Separator(textStyle: textStyle),
         Text(
           route.boulderRating?.displayName ??
               route.yosemiteRating?.displayName ??
               '',
           style: textStyle,
         ),
+        if (DateTime.now().difference(route.creationDate).inDays <= 3) ...[
+          _Separator(textStyle: textStyle),
+          Icon(
+            Icons.fiber_new,
+          ),
+        ],
       ],
+    );
+  }
+}
+
+class _Separator extends StatelessWidget {
+  const _Separator({
+    Key? key,
+    required this.textStyle,
+  }) : super(key: key);
+
+  final TextStyle textStyle;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: FreeBetaPadding.sHorizontal,
+      child: Text(
+        '|',
+        style: textStyle.copyWith(fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
