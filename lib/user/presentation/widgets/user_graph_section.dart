@@ -29,6 +29,8 @@ class UserGraphSection extends StatelessWidget {
           color: RouteColor.green,
           label: 'Completed',
         ),
+        SizedBox(height: FreeBetaSizes.m),
+        _Disclaimer()
       ],
     );
   }
@@ -52,6 +54,16 @@ class _LegendRow extends StatelessWidget {
         SizedBox(width: FreeBetaSizes.m),
         Text(label),
       ],
+    );
+  }
+}
+
+class _Disclaimer extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      'Not all routes will show up on graph.',
+      style: FreeBetaTextStyle.body5.copyWith(fontStyle: FontStyle.italic),
     );
   }
 }
