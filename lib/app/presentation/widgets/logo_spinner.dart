@@ -203,7 +203,8 @@ class _StaggeredLogo extends StatelessWidget {
             transform: Matrix4.identity()
               ..translate(0.0, (nameOffset.value * 1000) - 1000),
             child: Text(
-              'CLIMB ELEV8',
+              'CLIMB\nELEV8',
+              maxLines: 2,
               style: TextStyle(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
