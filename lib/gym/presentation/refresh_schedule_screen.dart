@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
@@ -47,8 +48,18 @@ class _RefreshSchedule extends StatelessWidget {
 
   final RefreshModel refreshModel;
 
+  String get _refreshDateText {
+    if (refreshModel.date.isToday()) {
+      return 'Refresh TODAY ${DateFormat('MM/dd').format(refreshModel.date)}!';
+    }
+    return 'Next refresh: ${DateFormat('MM/dd').format(refreshModel.date)}';
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (refreshModel.date.difference(DateTime.now()).inDays < 0) {
+      return _NothingScheduled();
+    }
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,7 +67,7 @@ class _RefreshSchedule extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Next refresh: ${DateFormat('MM/dd').format(refreshModel.date)}',
+                _refreshDateText,
                 style: FreeBetaTextStyle.h2,
               ),
               SizedBox(width: FreeBetaSizes.l),
@@ -77,12 +88,11 @@ class _RefreshSchedule extends StatelessWidget {
                       style: FreeBetaTextStyle.h4,
                     ),
                     SizedBox(height: FreeBetaSizes.m),
-                    WallSectionMap(
+                    WallSectionMap.static(
                       key: Key(
                           'GymMapsScreen-section-${section.wallLocation.name}'),
                       wallLocation: section.wallLocation,
                       highlightedSection: section.wallSection,
-                      onPressed: (_) {},
                     ),
                     SizedBox(height: FreeBetaSizes.m),
                   ],
@@ -127,4 +137,13 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) => Center(
         child: CircularProgressIndicator(),
       );
+}
+
+class _NothingScheduled extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Text('No refresh currently scheduled'),
+    );
+  }
 }

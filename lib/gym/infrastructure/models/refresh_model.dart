@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -13,19 +11,25 @@ class RefreshModel {
   });
 
   factory RefreshModel.fromFirebase(String id, Map<String, dynamic> json) {
-    log(json.toString());
+    var sections = ((json['sections'] as List<dynamic>?) ?? [])
+        .map((section) => _WallSectionModel.fromFirebase(section))
+        .toList();
+    sections.sort(
+      (a, b) => a.wallLocation.index.compareTo(b.wallLocation.index),
+    );
     return RefreshModel(
       id: id,
       date: (json['date'] as Timestamp).toDate(),
-      sections: ((json['sections'] as List<dynamic>?) ?? [])
-          .map((section) => _WallSectionModel.fromFirebase(section))
-          .toList(),
+      sections: sections,
     );
   }
 
   final String id;
   final DateTime date;
   List<_WallSectionModel> sections;
+
+  @override
+  String toString() => 'RefreshModel(id: $id, date: $date)';
 }
 
 class _WallSectionModel {

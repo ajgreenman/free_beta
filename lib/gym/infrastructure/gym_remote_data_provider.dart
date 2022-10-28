@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
@@ -30,7 +32,8 @@ class GymRemoteDataProvider {
           ),
         );
 
-    refreshSchedule.sort(((a, b) => a.date.compareTo(b.date)));
+    refreshSchedule.sort(((a, b) => b.date.compareTo(a.date)));
+    log(refreshSchedule.toString());
     return refreshSchedule;
   }
 }
