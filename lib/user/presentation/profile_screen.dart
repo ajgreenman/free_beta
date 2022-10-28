@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
+import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/refresh_schedule_screen.dart';
@@ -30,8 +31,7 @@ class ProfileScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             UserStatsCard(),
-            _RefreshScheduleCard(),
-            _RemovedRoutesCard(),
+            _UserActionsCard(),
             _GymAdmin(ref),
             _ContactDeveloper(),
             _CopyrightText(),
@@ -92,28 +92,50 @@ class _CopyrightText extends StatelessWidget {
   }
 }
 
+class _UserActionsCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'User Actions',
+            style: FreeBetaTextStyle.h2,
+          ),
+          SizedBox(height: FreeBetaSizes.m),
+          FreeBetaDivider(),
+          SizedBox(height: FreeBetaSizes.l),
+          _RefreshScheduleCard(),
+          SizedBox(height: FreeBetaSizes.l),
+          FreeBetaDivider(),
+          SizedBox(height: FreeBetaSizes.l),
+          _RemovedRoutesCard(),
+        ],
+      ),
+    );
+  }
+}
+
 class _RefreshScheduleCard extends StatelessWidget {
   const _RefreshScheduleCard({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return InfoCard(
-      key: Key('ProfileScreen-refreshSchedule'),
-      child: InkWell(
-        onTap: () => Navigator.of(context).push(RefreshScheduleScreen.route()),
-        child: Row(
-          children: [
-            Text(
-              'View refresh schedule',
-              style: FreeBetaTextStyle.h3,
-            ),
-            Spacer(),
-            Icon(
-              Icons.keyboard_arrow_right,
-              size: FreeBetaSizes.xxl,
-              color: FreeBetaColors.blueDark,
-            ),
-          ],
-        ),
+    return InkWell(
+      onTap: () => Navigator.of(context).push(RefreshScheduleScreen.route()),
+      child: Row(
+        children: [
+          Text(
+            'View refresh schedule',
+            style: FreeBetaTextStyle.h3,
+          ),
+          Spacer(),
+          Icon(
+            Icons.keyboard_arrow_right,
+            size: FreeBetaSizes.xxl,
+            color: FreeBetaColors.blueDark,
+          ),
+        ],
       ),
     );
   }
@@ -123,33 +145,30 @@ class _RemovedRoutesCard extends StatelessWidget {
   const _RemovedRoutesCard({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return InfoCard(
-      key: Key('ProfileScreen-removedRoutes'),
-      child: InkWell(
-        onTap: () => Navigator.of(context).push(
-          RouteListScreen.route(
-            appBar: AppBar(
-              title: Text('Removed Routes'),
-              leading: FreeBetaBackButton(),
-            ),
-            routeProvider: fetchFilteredRemovedRoutes,
-            refreshProvider: fetchRemovedRoutesProvider,
+    return InkWell(
+      onTap: () => Navigator.of(context).push(
+        RouteListScreen.route(
+          appBar: AppBar(
+            title: Text('Removed Routes'),
+            leading: FreeBetaBackButton(),
           ),
+          routeProvider: fetchFilteredRemovedRoutes,
+          refreshProvider: fetchRemovedRoutesProvider,
         ),
-        child: Row(
-          children: [
-            Text(
-              'View removed routes',
-              style: FreeBetaTextStyle.h3,
-            ),
-            Spacer(),
-            Icon(
-              Icons.keyboard_arrow_right,
-              size: FreeBetaSizes.xxl,
-              color: FreeBetaColors.blueDark,
-            ),
-          ],
-        ),
+      ),
+      child: Row(
+        children: [
+          Text(
+            'View removed routes',
+            style: FreeBetaTextStyle.h3,
+          ),
+          Spacer(),
+          Icon(
+            Icons.keyboard_arrow_right,
+            size: FreeBetaSizes.xxl,
+            color: FreeBetaColors.blueDark,
+          ),
+        ],
       ),
     );
   }
