@@ -17,10 +17,10 @@ class GymRemoteDataProvider {
       firebaseFirestore.collection('refresh_schedule');
 
   Future<RefreshModel> getNextRefresh() async {
-    return (await _getRefreshSchedule()).first;
+    return (await getRefreshSchedule()).first;
   }
 
-  Future<List<RefreshModel>> _getRefreshSchedule() async {
+  Future<List<RefreshModel>> getRefreshSchedule() async {
     List<RefreshModel> refreshSchedule = [];
     await _firestoreRefreshSchedule.get().then(
           (schedule) => schedule.docs.forEach(

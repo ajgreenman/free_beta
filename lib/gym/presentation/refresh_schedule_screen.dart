@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/gym/presentation/edit_refresh_schedule_screen.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:intl/intl.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
@@ -26,15 +28,43 @@ class RefreshScheduleScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text('Refresh Schedule'),
         leading: FreeBetaBackButton(),
+        actions: [_EditButton()],
       ),
       body: ref.watch(refreshScheduleProvider).when(
-            data: (data) => _RefreshSchedule(refreshModel: data),
+            data: (data) => _RefreshSchedule(refreshModel: data.first),
             error: (error, stackTrace) => _Error(
               error: error,
               stackTrace: stackTrace,
             ),
             loading: () => _Loading(),
           ),
+    );
+  }
+}
+
+class _EditButton extends ConsumerWidget {
+  const _EditButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var user = ref.watch(authenticationProvider).whenOrNull(
+          data: (user) => user,
+        );
+
+    if (user == null || user.isAnonymous) {
+      return SizedBox.shrink();
+    }
+
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        EditRefreshScheduleScreen.route(),
+      ),
+      icon: Icon(
+        Icons.edit,
+        color: FreeBetaColors.white,
+      ),
     );
   }
 }
@@ -48,7 +78,7 @@ class _RefreshSchedule extends ConsumerWidget {
   final RefreshModel refreshModel;
 
   String get _refreshDateText {
-    if (refreshModel.date.isToday()) {
+    if (refreshModel.date.isToday) {
       return 'Refresh TODAY ${DateFormat('MM/dd').format(refreshModel.date)}!';
     }
     return 'Next refresh: ${DateFormat('MM/dd').format(refreshModel.date)}';
@@ -180,7 +210,7 @@ class _EmptySchedule extends ConsumerWidget {
           SizedBox(height: FreeBetaSizes.m),
           ElevatedButton(
             onPressed: () async => ref.refresh(refreshScheduleProvider),
-            child: Text('Refresh'),
+            child: Text('Reload'),
           ),
         ],
       ),

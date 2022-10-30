@@ -13,5 +13,5 @@ final gymRemoteDataProvider = Provider(
 final refreshScheduleProvider = FutureProvider((ref) async {
   final gymRemoteProvider = ref.watch(gymRemoteDataProvider);
 
-  return gymRemoteProvider.getNextRefresh();
+  return gymRemoteProvider.getRefreshSchedule();
 });
