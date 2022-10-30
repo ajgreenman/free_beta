@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
@@ -92,9 +95,10 @@ class _CopyrightText extends StatelessWidget {
   }
 }
 
-class _UserActionsCard extends StatelessWidget {
+class _UserActionsCard extends ConsumerWidget {
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var showRefreshSchedule = ref.watch(configApiProvider).showRefreshSchedule;
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,10 +109,12 @@ class _UserActionsCard extends StatelessWidget {
           ),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
-          SizedBox(height: FreeBetaSizes.l),
-          _RefreshScheduleCard(),
-          SizedBox(height: FreeBetaSizes.l),
-          FreeBetaDivider(),
+          if (showRefreshSchedule) ...[
+            SizedBox(height: FreeBetaSizes.l),
+            _RefreshScheduleCard(),
+            SizedBox(height: FreeBetaSizes.l),
+            FreeBetaDivider(),
+          ],
           SizedBox(height: FreeBetaSizes.l),
           _RemovedRoutesCard(),
         ],
