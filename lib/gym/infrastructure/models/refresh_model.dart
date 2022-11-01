@@ -1,18 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
-import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/gym/infrastructure/models/wall_section_model.dart';
 
 class RefreshModel {
   RefreshModel({
     required this.id,
     required this.date,
     required this.sections,
+    this.isDeleted = false,
   });
+
+  final String id;
+  final DateTime date;
+  List<WallSectionModel> sections;
+  final bool isDeleted;
 
   factory RefreshModel.fromFirebase(String id, Map<String, dynamic> json) {
     var sections = ((json['sections'] as List<dynamic>?) ?? [])
-        .map((section) => _WallSectionModel.fromFirebase(section))
+        .map((section) => WallSectionModel.fromFirebase(section))
         .toList();
     sections.sort(
       (a, b) => a.wallLocation.index.compareTo(b.wallLocation.index),
@@ -21,31 +26,45 @@ class RefreshModel {
       id: id,
       date: (json['date'] as Timestamp).toDate(),
       sections: sections,
+      isDeleted: _getBool(json['isDeleted']),
     );
   }
 
-  final String id;
-  final DateTime date;
-  List<_WallSectionModel> sections;
+  static bool _getBool(bool? value) => value != null && value;
 
   @override
   String toString() => 'RefreshModel(id: $id, date: $date)';
 }
 
-class _WallSectionModel {
-  _WallSectionModel({
-    required this.wallLocation,
-    required this.wallSection,
+class RefreshFormModel {
+  RefreshFormModel({
+    this.date,
+    this.sections = const [],
   });
 
-  factory _WallSectionModel.fromFirebase(Map<String, dynamic> json) =>
-      _WallSectionModel(
-        wallLocation: WallLocation.values.firstWhere(
-          (wallLocation) => describeEnum(wallLocation) == json['wallLocation'],
-        ),
-        wallSection: json['wallSection'],
-      );
+  factory RefreshFormModel.fromRouteModel(RefreshModel refreshModel) {
+    return RefreshFormModel(
+      date: refreshModel.date,
+      sections: refreshModel.sections,
+    );
+  }
 
-  final WallLocation wallLocation;
-  final int wallSection;
+  DateTime? date;
+  List<WallSectionModel> sections;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is RefreshFormModel &&
+        other.date == date &&
+        other.sections == sections;
+  }
+
+  @override
+  int get hashCode => date.hashCode ^ sections.hashCode;
+
+  @override
+  String toString() =>
+      'RefreshFormModel(date: $date, sections: ${sections.length})';
 }

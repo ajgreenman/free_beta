@@ -29,7 +29,7 @@ class FreeBetaWallSectionInput extends StatelessWidget {
         SizedBox(height: FreeBetaSizes.m),
         WallSectionMap(
           wallLocation: wallLocation,
-          highlightedSection: value,
+          highlightedSections: value != null ? [value!] : [],
           onPressed: onChanged,
         ),
       ],

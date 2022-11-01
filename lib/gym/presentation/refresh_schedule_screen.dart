@@ -31,7 +31,9 @@ class RefreshScheduleScreen extends ConsumerWidget {
         actions: [_EditButton()],
       ),
       body: ref.watch(refreshScheduleProvider).when(
-            data: (data) => _RefreshSchedule(refreshModel: data.first),
+            data: (data) => _RefreshSchedule(
+              refreshModel: data.first,
+            ),
             error: (error, stackTrace) => _Error(
               error: error,
               stackTrace: stackTrace,
@@ -75,18 +77,19 @@ class _RefreshSchedule extends ConsumerWidget {
     required this.refreshModel,
   }) : super(key: key);
 
-  final RefreshModel refreshModel;
+  final RefreshModel? refreshModel;
 
   String get _refreshDateText {
-    if (refreshModel.date.isToday) {
-      return 'Refresh TODAY ${DateFormat('MM/dd').format(refreshModel.date)}!';
+    if (refreshModel!.date.isToday) {
+      return 'Refresh TODAY ${DateFormat('MM/dd').format(refreshModel!.date)}!';
     }
-    return 'Next refresh: ${DateFormat('MM/dd').format(refreshModel.date)}';
+    return 'Next refresh: ${DateFormat('MM/dd').format(refreshModel!.date)}';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (refreshModel.date.difference(DateTime.now()).inDays < 0) {
+    if (refreshModel == null ||
+        refreshModel!.date.difference(DateTime.now()).inDays < 0) {
       return _EmptySchedule(
         refreshModel: refreshModel,
         onRefresh: () => _onRefresh(ref),
@@ -114,21 +117,26 @@ class _RefreshSchedule extends ConsumerWidget {
                 ],
               ),
               SizedBox(height: FreeBetaSizes.m),
-              ...refreshModel.sections
+              ...WallLocation.values
+                  .where((location) => refreshModel!.sections
+                      .any((section) => section.wallLocation == location))
                   .map(
-                    (section) => Column(
+                    (location) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          section.wallLocation.displayName,
+                          location.displayName,
                           style: FreeBetaTextStyle.h4,
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         WallSectionMap.static(
-                          key: Key(
-                              'GymMapsScreen-section-${section.wallLocation.name}'),
-                          wallLocation: section.wallLocation,
-                          highlightedSection: section.wallSection,
+                          key: Key('GymMapsScreen-section-${location.name}'),
+                          wallLocation: location,
+                          highlightedSections: refreshModel!.sections
+                              .where(
+                                  (section) => section.wallLocation == location)
+                              .map((section) => section.wallSection)
+                              .toList(),
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                       ],
@@ -188,8 +196,12 @@ class _EmptySchedule extends ConsumerWidget {
     required this.onRefresh,
   }) : super(key: key);
 
-  final RefreshModel refreshModel;
+  final RefreshModel? refreshModel;
   final Future<void> Function()? onRefresh;
+
+  String get _refreshText => refreshModel == null
+      ? 'Last refresh: n/a'
+      : 'Last refresh: ${DateFormat('MM/dd').format(refreshModel!.date)}';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -199,7 +211,7 @@ class _EmptySchedule extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            'Last refresh: ${DateFormat('MM/dd').format(refreshModel.date)}',
+            _refreshText,
             style: FreeBetaTextStyle.h3,
           ),
           SizedBox(height: FreeBetaSizes.m),

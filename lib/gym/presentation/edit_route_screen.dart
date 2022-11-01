@@ -85,7 +85,7 @@ class _DeleteButton extends ConsumerWidget {
       context: context,
       builder: (_) => _DeleteAreYouSureDialog(),
     );
-    if (!willDelete) return;
+    if (!(willDelete ?? false)) return;
 
     await ref.read(routeApiProvider).deleteRoute(
           routeModel,

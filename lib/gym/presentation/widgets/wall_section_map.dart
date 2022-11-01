@@ -9,23 +9,26 @@ class WallSectionMap extends StatelessWidget {
     Key? key,
     required this.wallLocation,
     required void Function(int) onPressed,
-    this.highlightedSection,
+    this.highlightedSections = const [],
     this.sectionPadding = FreeBetaSizes.s,
+    this.isForm = false,
   })  : onPressed = onPressed,
         super(key: key);
 
   const WallSectionMap.static({
     Key? key,
     required this.wallLocation,
-    this.highlightedSection,
+    this.highlightedSections = const [],
     this.sectionPadding = FreeBetaSizes.s,
   })  : onPressed = null,
+        isForm = false,
         super(key: key);
 
   final WallLocation wallLocation;
   final void Function(int)? onPressed;
-  final int? highlightedSection;
+  final List<int> highlightedSections;
   final double sectionPadding;
+  final bool isForm;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +46,7 @@ class WallSectionMap extends StatelessWidget {
                 left: i * sectionPadding + availableWidth * section.widthOffset,
                 child: GestureDetector(
                   onTap: onPressed == null ? () {} : () => onPressed!(i),
-                  child: highlightedSection != null && highlightedSection == i
+                  child: highlightedSections.contains(i)
                       ? GymSection(
                           wallSection: section,
                           size: Size(
@@ -69,11 +72,12 @@ class WallSectionMap extends StatelessWidget {
   }
 
   Color _getColor(int index) {
-    if (highlightedSection != null) {
+    if (highlightedSections.isNotEmpty ||
+        (highlightedSections.isEmpty && isForm)) {
       return FreeBetaColors.white;
     }
 
-    var opacity = highlightedSection != null ? 0.1 : 0.7;
+    var opacity = highlightedSections.isNotEmpty ? 0.1 : 0.7;
 
     switch (index % 3) {
       case 0:
