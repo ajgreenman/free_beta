@@ -5,6 +5,5 @@ class ConfigApi {
 
   final FirebaseRemoteConfig _remoteConfig;
 
-  bool get showRefreshSchedule =>
-      _remoteConfig.getBool('show_refresh_schedule');
+  bool get showResetSchedule => _remoteConfig.getBool('show_reset_schedule');
 }

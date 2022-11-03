@@ -1,34 +1,34 @@
 import 'package:free_beta/gym/infrastructure/gym_repository.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 
 class GymApi {
   final GymRepository gymRepository;
 
   GymApi({required this.gymRepository});
 
-  Future<List<RefreshModel>> getRefreshSchedule() {
-    return gymRepository.getRefreshSchedule();
+  Future<List<ResetModel>> getResetSchedule() {
+    return gymRepository.getResetSchedule();
   }
 
-  Future<void> addRefresh(RefreshFormModel refreshFormModel) {
-    return gymRepository.addRefresh(refreshFormModel);
+  Future<void> addReset(ResetFormModel resetFormModel) {
+    return gymRepository.addReset(resetFormModel);
   }
 
-  Future<void> updateRefresh(
-    RefreshModel refreshModel,
-    RefreshFormModel refreshFormModel,
+  Future<void> updateReset(
+    ResetModel resetModel,
+    ResetFormModel resetFormModel,
   ) {
-    return gymRepository.updateRefresh(
-      refreshModel,
-      refreshFormModel,
+    return gymRepository.updateReset(
+      resetModel,
+      resetFormModel,
     );
   }
 
-  Future<void> deleteRefresh(
-    RefreshModel refreshModel,
+  Future<void> deleteReset(
+    ResetModel resetModel,
   ) async {
-    await gymRepository.deleteRefresh(
-      refreshModel,
+    await gymRepository.deleteReset(
+      resetModel,
     );
   }
 }

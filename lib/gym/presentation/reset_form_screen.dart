@@ -6,42 +6,41 @@ import 'package:free_beta/app/presentation/widgets/form/button_input.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 import 'package:free_beta/gym/infrastructure/models/wall_section_model.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
 import 'package:intl/intl.dart';
 
-class RefreshFormScreen extends ConsumerStatefulWidget {
+class ResetFormScreen extends ConsumerStatefulWidget {
   static Route<dynamic> add() {
     return MaterialPageRoute(
-      builder: (context) => RefreshFormScreen(editRefreshModel: null),
+      builder: (context) => ResetFormScreen(editResetModel: null),
     );
   }
 
-  static Route<dynamic> edit(RefreshModel editRefreshModel) {
+  static Route<dynamic> edit(ResetModel editResetModel) {
     return MaterialPageRoute(
-      builder: (context) =>
-          RefreshFormScreen(editRefreshModel: editRefreshModel),
+      builder: (context) => ResetFormScreen(editResetModel: editResetModel),
     );
   }
 
-  RefreshFormScreen({required this.editRefreshModel});
+  ResetFormScreen({required this.editResetModel});
 
-  final RefreshModel? editRefreshModel;
+  final ResetModel? editResetModel;
 
   @override
-  ConsumerState<RefreshFormScreen> createState() => _AddRefreshScreenState();
+  ConsumerState<ResetFormScreen> createState() => _AddResetScreenState();
 }
 
-class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
-  late RefreshFormModel _refreshFormModel;
-  late TextEditingController _refreshDateController;
+class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
+  late ResetFormModel _resetFormModel;
+  late TextEditingController _resetDateController;
 
   @override
   void initState() {
     super.initState();
 
-    if (widget.editRefreshModel != null) {
+    if (widget.editResetModel != null) {
       _setupEdit();
     } else {
       _setupAdd();
@@ -49,23 +48,23 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
   }
 
   void _setupAdd() {
-    _refreshFormModel = RefreshFormModel();
-    _refreshDateController = TextEditingController();
+    _resetFormModel = ResetFormModel();
+    _resetDateController = TextEditingController();
   }
 
   void _setupEdit() {
-    _refreshFormModel = RefreshFormModel.fromRouteModel(
-      widget.editRefreshModel!,
+    _resetFormModel = ResetFormModel.fromRouteModel(
+      widget.editResetModel!,
     );
 
-    _refreshDateController = TextEditingController(
-      text: DateFormat('MM/dd').format(widget.editRefreshModel!.date),
+    _resetDateController = TextEditingController(
+      text: DateFormat('MM/dd').format(widget.editResetModel!.date),
     );
   }
 
   List<int> _sections(WallLocation location) {
     var sections = <int>[];
-    _refreshFormModel.sections.forEach((section) {
+    _resetFormModel.sections.forEach((section) {
       if (section.wallLocation == location) {
         sections.add(section.wallSection);
       }
@@ -73,29 +72,28 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
     return sections;
   }
 
-  bool get isAdd => widget.editRefreshModel == null;
+  bool get isAdd => widget.editResetModel == null;
   bool get isFormEmpty =>
-      _refreshFormModel.date == null && _refreshFormModel.sections.isEmpty;
+      _resetFormModel.date == null && _resetFormModel.sections.isEmpty;
   bool get isFormIncomplete =>
-      _refreshFormModel.date == null || _refreshFormModel.sections.isEmpty;
+      _resetFormModel.date == null || _resetFormModel.sections.isEmpty;
   bool get isFormUnedited =>
       !isAdd &&
-      RefreshFormModel.fromRouteModel(widget.editRefreshModel!) ==
-          _refreshFormModel;
+      ResetFormModel.fromRouteModel(widget.editResetModel!) == _resetFormModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: Key('refresh-form'),
+      key: Key('reset-form'),
       appBar: AppBar(
         title: Text(
-          isAdd ? 'Add Refresh' : 'Edit Refresh',
+          isAdd ? 'Add Reset' : 'Edit Reset',
         ),
         leading: FreeBetaBackButton(onPressed: _onBack),
         actions: [
           _DeleteButton(
-            key: Key('RefreshFormScreen-delete'),
-            refreshModel: widget.editRefreshModel,
+            key: Key('ResetFormScreen-delete'),
+            resetModel: widget.editResetModel,
           ),
         ],
       ),
@@ -105,11 +103,11 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               FreeBetaButtonInput(
-                key: Key('AddRefreshScreen-refreshDate'),
-                label: 'Refresh Date',
-                hintText: 'Enter refresh date',
-                onTap: _onRefreshDatePressed,
-                controller: _refreshDateController,
+                key: Key('AddResetScreen-resetDate'),
+                label: 'Reset Date',
+                hintText: 'Enter reset date',
+                onTap: _onResetDatePressed,
+                controller: _resetDateController,
               ),
               ...WallLocation.values
                   .map(
@@ -122,7 +120,7 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
                         ),
                         SizedBox(height: FreeBetaSizes.m),
                         WallSectionMap(
-                          key: Key('AddRefreshScreen-section-${location.name}'),
+                          key: Key('AddResetScreen-section-${location.name}'),
                           wallLocation: location,
                           isForm: true,
                           highlightedSections: _sections(location),
@@ -185,20 +183,20 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
     );
   }
 
-  Future<void> _onRefreshDatePressed() async {
+  Future<void> _onResetDatePressed() async {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedDate = await showDatePicker(
       context: context,
-      initialDate: _refreshFormModel.date ?? DateTime.now(),
+      initialDate: _resetFormModel.date ?? DateTime.now(),
       firstDate: DateTime(2021),
       lastDate: DateTime.now().add(Duration(days: 365)),
     );
     if (pickedDate == null) return;
 
     setState(() {
-      _refreshFormModel.date = pickedDate;
-      _refreshDateController.value = TextEditingValue(
+      _resetFormModel.date = pickedDate;
+      _resetDateController.value = TextEditingValue(
         text: DateFormat('MM/dd').format(pickedDate),
       );
     });
@@ -209,22 +207,19 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
       wallLocation: location,
       wallSection: i,
     );
-    if (_refreshFormModel.sections.contains(wallSection)) {
+    if (_resetFormModel.sections.contains(wallSection)) {
       setState(() {
-        _refreshFormModel.sections.remove(wallSection);
+        _resetFormModel.sections.remove(wallSection);
       });
     } else {
       setState(() {
-        _refreshFormModel.sections = [
-          ..._refreshFormModel.sections,
-          wallSection
-        ];
+        _resetFormModel.sections = [..._resetFormModel.sections, wallSection];
       });
     }
   }
 
   void _onPressed() async {
-    if (widget.editRefreshModel == null) {
+    if (widget.editResetModel == null) {
       _onAddPressed();
     } else {
       _onEditPressed();
@@ -232,16 +227,16 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
   }
 
   void _onAddPressed() async {
-    await ref.read(gymApiProvider).addRefresh(_refreshFormModel);
+    await ref.read(gymApiProvider).addReset(_resetFormModel);
 
-    ref.refresh(refreshScheduleProvider);
+    ref.refresh(resetScheduleProvider);
 
     await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         content: Row(
           children: [
-            Text('Refresh added!'),
+            Text('Reset added!'),
             Spacer(),
             Icon(Icons.check),
           ],
@@ -252,19 +247,19 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
   }
 
   void _onEditPressed() async {
-    await ref.read(gymApiProvider).updateRefresh(
-          widget.editRefreshModel!,
-          _refreshFormModel,
+    await ref.read(gymApiProvider).updateReset(
+          widget.editResetModel!,
+          _resetFormModel,
         );
 
-    ref.refresh(refreshScheduleProvider);
+    ref.refresh(resetScheduleProvider);
 
     await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         content: Row(
           children: [
-            Text('Refresh updated!'),
+            Text('Reset updated!'),
             Spacer(),
             Icon(Icons.check),
           ],
@@ -278,14 +273,14 @@ class _AddRefreshScreenState extends ConsumerState<RefreshFormScreen> {
 class _DeleteButton extends ConsumerWidget {
   const _DeleteButton({
     super.key,
-    required this.refreshModel,
+    required this.resetModel,
   });
 
-  final RefreshModel? refreshModel;
+  final ResetModel? resetModel;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (refreshModel == null) return SizedBox.shrink();
+    if (resetModel == null) return SizedBox.shrink();
 
     return IconButton(
       onPressed: () => _onDeletePressed(context, ref),
@@ -303,17 +298,17 @@ class _DeleteButton extends ConsumerWidget {
     );
     if (!(willDelete ?? false)) return;
 
-    await ref.read(gymApiProvider).deleteRefresh(
-          refreshModel!,
+    await ref.read(gymApiProvider).deleteReset(
+          resetModel!,
         );
-    ref.refresh(refreshScheduleProvider);
+    ref.refresh(resetScheduleProvider);
 
     await showDialog(
       context: context,
       builder: (_) => AlertDialog(
         content: Row(
           children: [
-            Text('Refresh deleted!'),
+            Text('Reset deleted!'),
             Spacer(),
             Icon(Icons.delete),
           ],
@@ -369,7 +364,7 @@ class _DeleteAreYouSureDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text("Are you sure?"),
-      content: Text("Are you sure you want to delete this refresh?"),
+      content: Text("Are you sure you want to delete this reset?"),
       actions: [
         TextButton(
           child: Text('Cancel'),

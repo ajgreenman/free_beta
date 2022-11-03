@@ -25,7 +25,7 @@ class GymAdmin extends StatelessWidget {
             ),
             SizedBox(height: FreeBetaSizes.l),
             Text(
-              'To edit the refresh schedule, tap the pencil icon in the top right corner of the refresh schedule screen.',
+              'To edit the reset schedule, tap the pencil icon in the top right corner of the reset schedule screen.',
             ),
             SizedBox(height: FreeBetaSizes.m),
             _DeleteAccountButton(),

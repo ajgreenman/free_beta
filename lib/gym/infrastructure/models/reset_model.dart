@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:free_beta/gym/infrastructure/models/wall_section_model.dart';
 
-class RefreshModel {
-  RefreshModel({
+class ResetModel {
+  ResetModel({
     required this.id,
     required this.date,
     required this.sections,
@@ -15,14 +15,14 @@ class RefreshModel {
   List<WallSectionModel> sections;
   final bool isDeleted;
 
-  factory RefreshModel.fromFirebase(String id, Map<String, dynamic> json) {
+  factory ResetModel.fromFirebase(String id, Map<String, dynamic> json) {
     var sections = ((json['sections'] as List<dynamic>?) ?? [])
         .map((section) => WallSectionModel.fromFirebase(section))
         .toList();
     sections.sort(
       (a, b) => a.wallLocation.index.compareTo(b.wallLocation.index),
     );
-    return RefreshModel(
+    return ResetModel(
       id: id,
       date: (json['date'] as Timestamp).toDate(),
       sections: sections,
@@ -33,19 +33,19 @@ class RefreshModel {
   static bool _getBool(bool? value) => value != null && value;
 
   @override
-  String toString() => 'RefreshModel(id: $id, date: $date)';
+  String toString() => 'ResetModel(id: $id, date: $date)';
 }
 
-class RefreshFormModel {
-  RefreshFormModel({
+class ResetFormModel {
+  ResetFormModel({
     this.date,
     this.sections = const [],
   });
 
-  factory RefreshFormModel.fromRouteModel(RefreshModel refreshModel) {
-    return RefreshFormModel(
-      date: refreshModel.date,
-      sections: refreshModel.sections,
+  factory ResetFormModel.fromRouteModel(ResetModel resetModel) {
+    return ResetFormModel(
+      date: resetModel.date,
+      sections: resetModel.sections,
     );
   }
 
@@ -56,7 +56,7 @@ class RefreshFormModel {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is RefreshFormModel &&
+    return other is ResetFormModel &&
         other.date == date &&
         other.sections == sections;
   }
@@ -66,5 +66,5 @@ class RefreshFormModel {
 
   @override
   String toString() =>
-      'RefreshFormModel(date: $date, sections: ${sections.length})';
+      'ResetFormModel(date: $date, sections: ${sections.length})';
 }

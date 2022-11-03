@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/gym/presentation/edit_refresh_schedule_screen.dart';
+import 'package:free_beta/gym/presentation/edit_reset_schedule_screen.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:intl/intl.dart';
 
@@ -13,26 +13,26 @@ import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
 
-class RefreshScheduleScreen extends ConsumerWidget {
+class ResetScheduleScreen extends ConsumerWidget {
   static Route<dynamic> route() => MaterialPageRoute<dynamic>(
-        builder: (_) => RefreshScheduleScreen(),
+        builder: (_) => ResetScheduleScreen(),
       );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      key: Key('refresh'),
+      key: Key('reset'),
       appBar: AppBar(
-        title: Text('Refresh Schedule'),
+        title: Text('Reset Schedule'),
         leading: FreeBetaBackButton(),
         actions: [_EditButton()],
       ),
-      body: ref.watch(refreshScheduleProvider).when(
-            data: (data) => _RefreshSchedule(
-              refreshModel: data.first,
+      body: ref.watch(resetScheduleProvider).when(
+            data: (data) => _ResetSchedule(
+              resetModel: data.first,
             ),
             error: (error, stackTrace) => _Error(
               error: error,
@@ -61,7 +61,7 @@ class _EditButton extends ConsumerWidget {
 
     return IconButton(
       onPressed: () => Navigator.of(context).push(
-        EditRefreshScheduleScreen.route(),
+        EditResetScheduleScreen.route(),
       ),
       icon: Icon(
         Icons.edit,
@@ -71,32 +71,32 @@ class _EditButton extends ConsumerWidget {
   }
 }
 
-class _RefreshSchedule extends ConsumerWidget {
-  const _RefreshSchedule({
+class _ResetSchedule extends ConsumerWidget {
+  const _ResetSchedule({
     Key? key,
-    required this.refreshModel,
+    required this.resetModel,
   }) : super(key: key);
 
-  final RefreshModel? refreshModel;
+  final ResetModel? resetModel;
 
-  String get _refreshDateText {
-    if (refreshModel!.date.isToday) {
-      return 'Refresh TODAY ${DateFormat('MM/dd').format(refreshModel!.date)}!';
+  String get _resetDateText {
+    if (resetModel!.date.isToday) {
+      return 'Reset TODAY ${DateFormat('MM/dd').format(resetModel!.date)}!';
     }
-    return 'Next refresh: ${DateFormat('MM/dd').format(refreshModel!.date)}';
+    return 'Next reset: ${DateFormat('MM/dd').format(resetModel!.date)}';
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (refreshModel == null ||
-        refreshModel!.date.difference(DateTime.now()).inDays < 0) {
+    if (resetModel == null ||
+        resetModel!.date.difference(DateTime.now()).inDays < 0) {
       return _EmptySchedule(
-        refreshModel: refreshModel,
-        onRefresh: () => _onRefresh(ref),
+        resetModel: resetModel,
+        onReset: () => _onReset(ref),
       );
     }
     return RefreshIndicator(
-      onRefresh: () => _onRefresh(ref),
+      onRefresh: () => _onReset(ref),
       child: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
         child: InfoCard(
@@ -106,7 +106,7 @@ class _RefreshSchedule extends ConsumerWidget {
               Row(
                 children: [
                   Text(
-                    _refreshDateText,
+                    _resetDateText,
                     style: FreeBetaTextStyle.h2,
                   ),
                   SizedBox(width: FreeBetaSizes.l),
@@ -118,7 +118,7 @@ class _RefreshSchedule extends ConsumerWidget {
               ),
               SizedBox(height: FreeBetaSizes.m),
               ...WallLocation.values
-                  .where((location) => refreshModel!.sections
+                  .where((location) => resetModel!.sections
                       .any((section) => section.wallLocation == location))
                   .map(
                     (location) => Column(
@@ -132,7 +132,7 @@ class _RefreshSchedule extends ConsumerWidget {
                         WallSectionMap.static(
                           key: Key('GymMapsScreen-section-${location.name}'),
                           wallLocation: location,
-                          highlightedSections: refreshModel!.sections
+                          highlightedSections: resetModel!.sections
                               .where(
                                   (section) => section.wallLocation == location)
                               .map((section) => section.wallSection)
@@ -150,8 +150,8 @@ class _RefreshSchedule extends ConsumerWidget {
     );
   }
 
-  Future<void> _onRefresh(WidgetRef ref) async {
-    return ref.refresh(refreshScheduleProvider);
+  Future<void> _onReset(WidgetRef ref) async {
+    return ref.refresh(resetScheduleProvider);
   }
 }
 
@@ -170,8 +170,8 @@ class _Error extends ConsumerWidget {
     ref.watch(crashlyticsApiProvider).logError(
           error,
           stackTrace,
-          'RefreshScheduleScreen',
-          'refreshScheduleProvider',
+          'ResetScheduleScreen',
+          'resetScheduleProvider',
         );
 
     return ErrorCard();
@@ -192,16 +192,16 @@ class _Loading extends StatelessWidget {
 class _EmptySchedule extends ConsumerWidget {
   const _EmptySchedule({
     Key? key,
-    required this.refreshModel,
-    required this.onRefresh,
+    required this.resetModel,
+    required this.onReset,
   }) : super(key: key);
 
-  final RefreshModel? refreshModel;
-  final Future<void> Function()? onRefresh;
+  final ResetModel? resetModel;
+  final Future<void> Function()? onReset;
 
-  String get _refreshText => refreshModel == null
-      ? 'Last refresh: n/a'
-      : 'Last refresh: ${DateFormat('MM/dd').format(refreshModel!.date)}';
+  String get _resetText => resetModel == null
+      ? 'Last reset: n/a'
+      : 'Last reset: ${DateFormat('MM/dd').format(resetModel!.date)}';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -211,7 +211,7 @@ class _EmptySchedule extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            _refreshText,
+            _resetText,
             style: FreeBetaTextStyle.h3,
           ),
           SizedBox(height: FreeBetaSizes.m),
@@ -221,7 +221,7 @@ class _EmptySchedule extends ConsumerWidget {
           ),
           SizedBox(height: FreeBetaSizes.m),
           ElevatedButton(
-            onPressed: () async => ref.refresh(refreshScheduleProvider),
+            onPressed: () async => ref.refresh(resetScheduleProvider),
             child: Text('Reload'),
           ),
         ],

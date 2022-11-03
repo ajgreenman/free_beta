@@ -1,33 +1,33 @@
 import 'package:free_beta/gym/infrastructure/gym_remote_data_provider.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 
 class GymRepository {
   final GymRemoteDataProvider gymRemoteDataProvider;
 
   GymRepository({required this.gymRemoteDataProvider});
 
-  Future<List<RefreshModel>> getRefreshSchedule() async {
-    var refreshSchedule = await gymRemoteDataProvider.getRefreshSchedule();
-    return refreshSchedule.where((refresh) => !refresh.isDeleted).toList();
+  Future<List<ResetModel>> getResetSchedule() async {
+    var resetSchedule = await gymRemoteDataProvider.getResetSchedule();
+    return resetSchedule.where((reset) => !reset.isDeleted).toList();
   }
 
-  Future<void> addRefresh(RefreshFormModel refreshFormModel) async {
-    await gymRemoteDataProvider.addRefresh(refreshFormModel);
+  Future<void> addReset(ResetFormModel resetFormModel) async {
+    await gymRemoteDataProvider.addReset(resetFormModel);
   }
 
-  Future<void> updateRefresh(
-    RefreshModel refreshModel,
-    RefreshFormModel refreshFormModel,
+  Future<void> updateReset(
+    ResetModel resetModel,
+    ResetFormModel resetFormModel,
   ) async {
-    await gymRemoteDataProvider.updateRefresh(
-      refreshModel,
-      refreshFormModel,
+    await gymRemoteDataProvider.updateReset(
+      resetModel,
+      resetFormModel,
     );
   }
 
-  Future<void> deleteRefresh(
-    RefreshModel refreshModel,
+  Future<void> deleteReset(
+    ResetModel resetModel,
   ) async {
-    await gymRemoteDataProvider.deleteRefresh(refreshModel);
+    await gymRemoteDataProvider.deleteReset(resetModel);
   }
 }

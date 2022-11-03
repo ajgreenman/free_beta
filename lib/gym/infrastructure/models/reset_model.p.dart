@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 
-extension RefreshFormModelExtensions on RefreshFormModel {
+extension ResetFormModelExtensions on ResetFormModel {
   Map<String, dynamic> toJson() {
     return {
       'date': Timestamp.fromDate(date!),

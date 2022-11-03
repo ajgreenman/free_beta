@@ -7,26 +7,26 @@ import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model_extensions.dart';
-import 'package:free_beta/gym/presentation/refresh_form_screen.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
+import 'package:free_beta/gym/presentation/reset_form_screen.dart';
 import 'package:intl/intl.dart';
 
-class EditRefreshScheduleScreen extends ConsumerWidget {
+class EditResetScheduleScreen extends ConsumerWidget {
   static Route<dynamic> route() {
-    return MaterialPageRoute(builder: (context) => EditRefreshScheduleScreen());
+    return MaterialPageRoute(builder: (context) => EditResetScheduleScreen());
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      key: Key('edit-refresh'),
+      key: Key('edit-reset'),
       appBar: AppBar(
-        title: Text('Edit Refresh Schedule'),
+        title: Text('Edit Reset Schedule'),
         leading: FreeBetaBackButton(),
       ),
-      body: ref.watch(refreshScheduleProvider).when(
-            data: (data) => _EditRefreshScheduleForm(refreshSchedule: data),
+      body: ref.watch(resetScheduleProvider).when(
+            data: (data) => _EditResetScheduleForm(resetSchedule: data),
             error: (error, stackTrace) => _Error(
               error: error,
               stackTrace: stackTrace,
@@ -37,13 +37,13 @@ class EditRefreshScheduleScreen extends ConsumerWidget {
   }
 }
 
-class _EditRefreshScheduleForm extends StatelessWidget {
-  const _EditRefreshScheduleForm({
+class _EditResetScheduleForm extends StatelessWidget {
+  const _EditResetScheduleForm({
     Key? key,
-    required this.refreshSchedule,
+    required this.resetSchedule,
   }) : super(key: key);
 
-  final List<RefreshModel> refreshSchedule;
+  final List<ResetModel> resetSchedule;
 
   @override
   Widget build(BuildContext context) {
@@ -58,15 +58,15 @@ class _EditRefreshScheduleForm extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () => Navigator.of(context).push(
-                      RefreshFormScreen.add(),
+                      ResetFormScreen.add(),
                     ),
-                    child: Text('Add new refresh'),
+                    child: Text('Add new reset'),
                   ),
-                  if (refreshSchedule.latestRefresh != null) ...[
+                  if (resetSchedule.latestReset != null) ...[
                     SizedBox(height: FreeBetaSizes.m),
                     FreeBetaDivider(),
-                    _LatestRefreshRow(
-                      latestRefresh: refreshSchedule.latestRefresh!,
+                    _LatestResetRow(
+                      latestReset: resetSchedule.latestReset!,
                     ),
                     FreeBetaDivider(),
                   ],
@@ -79,18 +79,18 @@ class _EditRefreshScheduleForm extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Upcoming refreshes',
+                  'Upcoming resets',
                   style: FreeBetaTextStyle.h3,
                 ),
                 SizedBox(height: FreeBetaSizes.m),
-                if (refreshSchedule.futureRefreshes.isEmpty) ...[
+                if (resetSchedule.futureResets.isEmpty) ...[
                   FreeBetaDivider(),
                   _NoUpcoming(),
                 ],
-                if (refreshSchedule.futureRefreshes.isNotEmpty) ...[
+                if (resetSchedule.futureResets.isNotEmpty) ...[
                   FreeBetaDivider(),
-                  ...refreshSchedule.futureRefreshes.map(
-                    (refresh) => _RefreshRow(refreshModel: refresh),
+                  ...resetSchedule.futureResets.map(
+                    (reset) => _ResetRow(resetModel: reset),
                   ),
                 ],
               ],
@@ -102,26 +102,26 @@ class _EditRefreshScheduleForm extends StatelessWidget {
   }
 }
 
-class _LatestRefreshRow extends StatelessWidget {
-  const _LatestRefreshRow({
+class _LatestResetRow extends StatelessWidget {
+  const _LatestResetRow({
     Key? key,
-    required this.latestRefresh,
+    required this.latestReset,
   }) : super(key: key);
 
-  final RefreshModel latestRefresh;
+  final ResetModel latestReset;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context).push(
-        RefreshFormScreen.edit(latestRefresh),
+        ResetFormScreen.edit(latestReset),
       ),
       child: SizedBox(
         height: 48.0,
         child: Row(
           children: [
             Text(
-              'Last refresh: ${DateFormat('MM/dd').format(latestRefresh.date)}',
+              'Last reset: ${DateFormat('MM/dd').format(latestReset.date)}',
               style: FreeBetaTextStyle.h4,
             ),
             Spacer(),
@@ -148,20 +148,20 @@ class _NoUpcoming extends StatelessWidget {
       height: 48.0,
       child: Row(
         children: [
-          Text('No upcoming refreshes scheduled'),
+          Text('No upcoming resets scheduled'),
         ],
       ),
     );
   }
 }
 
-class _RefreshRow extends StatelessWidget {
-  const _RefreshRow({
+class _ResetRow extends StatelessWidget {
+  const _ResetRow({
     Key? key,
-    required this.refreshModel,
+    required this.resetModel,
   }) : super(key: key);
 
-  final RefreshModel refreshModel;
+  final ResetModel resetModel;
 
   @override
   Widget build(BuildContext context) {
@@ -169,14 +169,14 @@ class _RefreshRow extends StatelessWidget {
       children: [
         InkWell(
           onTap: () => Navigator.of(context).push(
-            RefreshFormScreen.edit(refreshModel),
+            ResetFormScreen.edit(resetModel),
           ),
           child: SizedBox(
             height: 48.0,
             child: Row(
               children: [
                 Text(
-                  DateFormat('MM/dd').format(refreshModel.date),
+                  DateFormat('MM/dd').format(resetModel.date),
                   style: FreeBetaTextStyle.body3,
                 ),
                 Padding(
@@ -188,7 +188,7 @@ class _RefreshRow extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '${refreshModel.sections.length} sections',
+                  '${resetModel.sections.length} sections',
                   style: FreeBetaTextStyle.body3,
                 ),
                 Spacer(),
@@ -222,8 +222,8 @@ class _Error extends ConsumerWidget {
     ref.watch(crashlyticsApiProvider).logError(
           error,
           stackTrace,
-          'EditRefreshScheduleScreen',
-          'refreshScheduleProvider',
+          'EditResetScheduleScreen',
+          'resetScheduleProvider',
         );
 
     return ErrorCard();

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.dart';
-import 'package:free_beta/gym/infrastructure/models/refresh_model.p.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.p.dart';
 
 class GymRemoteDataProvider {
   GymRemoteDataProvider({
@@ -14,32 +14,32 @@ class GymRemoteDataProvider {
   final FirebaseFirestore firebaseFirestore;
   final CrashlyticsApi crashlyticsApi;
 
-  CollectionReference<Map<String, dynamic>> get _firestoreRefreshSchedule =>
-      firebaseFirestore.collection('refresh_schedule');
+  CollectionReference<Map<String, dynamic>> get _firestoreResetSchedule =>
+      firebaseFirestore.collection('reset_schedule');
 
-  Future<RefreshModel> getNextRefresh() async {
-    return (await getRefreshSchedule()).first;
+  Future<ResetModel> getNextReset() async {
+    return (await getResetSchedule()).first;
   }
 
-  Future<List<RefreshModel>> getRefreshSchedule() async {
-    List<RefreshModel> refreshSchedule = [];
-    await _firestoreRefreshSchedule.get().then(
+  Future<List<ResetModel>> getResetSchedule() async {
+    List<ResetModel> resetSchedule = [];
+    await _firestoreResetSchedule.get().then(
           (schedule) => schedule.docs.forEach(
             (json) {
-              refreshSchedule.add(
-                RefreshModel.fromFirebase(json.id, json.data()),
+              resetSchedule.add(
+                ResetModel.fromFirebase(json.id, json.data()),
               );
             },
           ),
         );
 
-    refreshSchedule.sort((a, b) => b.date.compareTo(a.date));
-    return refreshSchedule;
+    resetSchedule.sort((a, b) => b.date.compareTo(a.date));
+    return resetSchedule;
   }
 
-  Future<void> addRefresh(RefreshFormModel refreshFormModel) async {
-    await _firestoreRefreshSchedule
-        .add(refreshFormModel.toJson())
+  Future<void> addReset(ResetFormModel resetFormModel) async {
+    await _firestoreResetSchedule
+        .add(resetFormModel.toJson())
         .then((value) => log(value.toString()))
         .catchError(
       (error, stackTrace) {
@@ -47,43 +47,43 @@ class GymRemoteDataProvider {
           error,
           stackTrace,
           'GymRemoteDataProvider',
-          'addRefresh',
+          'addReset',
         );
       },
     );
   }
 
-  Future<void> updateRefresh(
-    RefreshModel refreshModel,
-    RefreshFormModel refreshFormModel,
+  Future<void> updateReset(
+    ResetModel resetModel,
+    ResetFormModel resetFormModel,
   ) async {
-    await _firestoreRefreshSchedule
-        .doc(refreshModel.id)
-        .update(refreshFormModel.toJson())
+    await _firestoreResetSchedule
+        .doc(resetModel.id)
+        .update(resetFormModel.toJson())
         .catchError(
       (error, stackTrace) {
         crashlyticsApi.logError(
           error,
           stackTrace,
           'GymRemoteDataProvider',
-          'updateRefresh',
+          'updateReset',
         );
       },
     );
   }
 
-  Future<void> deleteRefresh(
-    RefreshModel refreshModel,
+  Future<void> deleteReset(
+    ResetModel resetModel,
   ) async {
-    await _firestoreRefreshSchedule
-        .doc(refreshModel.id)
+    await _firestoreResetSchedule
+        .doc(resetModel.id)
         .update({'isDeleted': true}).catchError(
       (error, stackTrace) {
         crashlyticsApi.logError(
           error,
           stackTrace,
           'GymRemoteDataProvider',
-          'deleteRefresh',
+          'deleteReset',
         );
       },
     );

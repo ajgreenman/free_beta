@@ -5,7 +5,7 @@ import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/gym/presentation/refresh_schedule_screen.dart';
+import 'package:free_beta/gym/presentation/reset_schedule_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
@@ -96,7 +96,7 @@ class _CopyrightText extends StatelessWidget {
 class _UserActionsCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var showRefreshSchedule = ref.watch(configApiProvider).showRefreshSchedule;
+    var showResetSchedule = ref.watch(configApiProvider).showResetSchedule;
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,9 +107,9 @@ class _UserActionsCard extends ConsumerWidget {
           ),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
-          if (showRefreshSchedule) ...[
+          if (showResetSchedule) ...[
             SizedBox(height: FreeBetaSizes.l),
-            _RefreshScheduleCard(),
+            _ResetScheduleCard(),
             SizedBox(height: FreeBetaSizes.l),
             FreeBetaDivider(),
           ],
@@ -121,16 +121,16 @@ class _UserActionsCard extends ConsumerWidget {
   }
 }
 
-class _RefreshScheduleCard extends StatelessWidget {
-  const _RefreshScheduleCard({Key? key}) : super(key: key);
+class _ResetScheduleCard extends StatelessWidget {
+  const _ResetScheduleCard({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.of(context).push(RefreshScheduleScreen.route()),
+      onTap: () => Navigator.of(context).push(ResetScheduleScreen.route()),
       child: Row(
         children: [
           Text(
-            'View refresh schedule',
+            'View reset schedule',
             style: FreeBetaTextStyle.h3,
           ),
           Spacer(),
