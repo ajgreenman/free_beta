@@ -33,7 +33,7 @@ class UserStatsCard extends ConsumerWidget {
           );
 }
 
-class _SuccessCard extends ConsumerWidget {
+class _SuccessCard extends StatelessWidget {
   const _SuccessCard({
     Key? key,
     required this.userStatsModel,
@@ -42,7 +42,7 @@ class _SuccessCard extends ConsumerWidget {
   final UserStatsModel userStatsModel;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
