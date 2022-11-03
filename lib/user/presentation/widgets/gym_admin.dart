@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/presentation/create_route_screen.dart';
+import 'package:free_beta/user/infrastructure/user_providers.dart';
 
 class GymAdmin extends StatelessWidget {
   const GymAdmin({Key? key}) : super(key: key);
@@ -25,6 +27,8 @@ class GymAdmin extends StatelessWidget {
             Text(
               'To edit the refresh schedule, tap the pencil icon in the top right corner of the refresh schedule screen.',
             ),
+            SizedBox(height: FreeBetaSizes.m),
+            _DeleteAccountButton(),
           ],
         ),
       );
@@ -60,6 +64,86 @@ class _CreateRouteButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _DeleteAccountButton extends ConsumerWidget {
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      key: Key('GymAdmin-delete'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(FreeBetaColors.red),
+        side: MaterialStateProperty.all(
+          BorderSide(
+            width: 2.0,
+            color: FreeBetaColors.red,
+          ),
+        ),
+      ),
+      onPressed: () => _onPressed(context, ref),
+      child: Text(
+        'Delete account',
+        style: FreeBetaTextStyle.body5.copyWith(
+          color: FreeBetaColors.white,
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onPressed(BuildContext context, WidgetRef ref) async {
+    var willDelete = await showDialog(
+      context: context,
+      builder: (_) => _DeleteAreYouSureDialog(),
+    );
+    if (!(willDelete ?? false)) return;
+
+    await ref.read(userApiProvider).deleteAccount();
+
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Column(
+          children: [
+            Row(
+              children: [
+                Text('Account deleted! Reload the app.'),
+                Spacer(),
+                Icon(Icons.delete),
+              ],
+            ),
+            Text('You may need to reopen the app to restore functionality.')
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DeleteAreYouSureDialog extends StatelessWidget {
+  const _DeleteAreYouSureDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Are you sure you want to delete your account?"),
+      actions: [
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: Text('Delete'),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+      ],
     );
   }
 }
