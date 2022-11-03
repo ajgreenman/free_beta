@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
@@ -59,10 +57,8 @@ class UserApi {
 
     return await _firebaseAuth.currentUser!
         .linkWithCredential(credential)
-        .then((userCredential) {
-      log('Anonymous account upgrade for $email');
-      return true;
-    }).onError(
+        .then((userCredential) => true)
+        .onError(
       (error, stackTrace) {
         _crashlyticsApi.logError(
           error,
@@ -98,5 +94,14 @@ class UserApi {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+  }
+
+  Future<void> deleteAccount() async {
+    try {
+      await _firebaseAuth.currentUser?.delete();
+    } on Exception catch (error, stackTrace) {
+      await signOut();
+      _crashlyticsApi.logError(error, stackTrace, 'UserApi', 'deleteAccount');
+    }
   }
 }
