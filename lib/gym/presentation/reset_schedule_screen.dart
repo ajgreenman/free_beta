@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/gym/presentation/edit_reset_schedule_screen.dart';
-import 'package:free_beta/user/infrastructure/user_providers.dart';
+import 'package:free_beta/app/extensions/string_extensions.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
+import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
 import 'package:intl/intl.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
-import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
@@ -25,14 +26,9 @@ class ResetScheduleScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       key: Key('reset'),
-      appBar: AppBar(
-        title: Text('Reset Schedule'),
-        leading: FreeBetaBackButton(),
-        actions: [_EditButton()],
-      ),
       body: ref.watch(resetScheduleProvider).when(
             data: (data) => _ResetSchedule(
-              resetModel: data.first,
+              resetSchedule: data,
             ),
             error: (error, stackTrace) => _Error(
               error: error,
@@ -44,114 +40,172 @@ class ResetScheduleScreen extends ConsumerWidget {
   }
 }
 
-class _EditButton extends ConsumerWidget {
-  const _EditButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.watch(authenticationProvider).whenOrNull(
-          data: (user) => user,
-        );
-
-    if (user == null || user.isAnonymous) {
-      return SizedBox.shrink();
-    }
-
-    return IconButton(
-      onPressed: () => Navigator.of(context).push(
-        EditResetScheduleScreen.route(),
-      ),
-      icon: Icon(
-        Icons.edit,
-        color: FreeBetaColors.white,
-      ),
-    );
-  }
-}
-
 class _ResetSchedule extends ConsumerWidget {
   const _ResetSchedule({
     Key? key,
-    required this.resetModel,
+    required this.resetSchedule,
   }) : super(key: key);
 
-  final ResetModel? resetModel;
-
-  String get _resetDateText {
-    if (resetModel!.date.isToday) {
-      return 'Reset TODAY ${DateFormat('MM/dd').format(resetModel!.date)}!';
-    }
-    return 'Next reset: ${DateFormat('MM/dd').format(resetModel!.date)}';
-  }
+  final List<ResetModel> resetSchedule;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    if (resetModel == null ||
-        resetModel!.date.difference(DateTime.now()).inDays < 0) {
+    if (resetSchedule.isEmpty) {
       return _EmptySchedule(
-        resetModel: resetModel,
-        onReset: () => _onReset(ref),
+        resetModel: null,
+        onReset: () => _onRefresh(ref),
       );
     }
+
     return RefreshIndicator(
-      onRefresh: () => _onReset(ref),
+      onRefresh: () => _onRefresh(ref),
       child: SingleChildScrollView(
         physics: AlwaysScrollableScrollPhysics(),
-        child: InfoCard(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Text(
-                    _resetDateText,
-                    style: FreeBetaTextStyle.h2,
-                  ),
-                  SizedBox(width: FreeBetaSizes.l),
-                  HelpTooltip(
-                    message:
-                        'The routes on the following wall sections will be removed and replaced by brand new routes at the scheduled date.',
-                  ),
-                ],
-              ),
-              SizedBox(height: FreeBetaSizes.m),
-              ...WallLocation.values
-                  .where((location) => resetModel!.sections
-                      .any((section) => section.wallLocation == location))
-                  .map(
-                    (location) => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          location.displayName,
-                          style: FreeBetaTextStyle.h4,
-                        ),
-                        SizedBox(height: FreeBetaSizes.m),
-                        WallSectionMap.static(
-                          key: Key('GymMapsScreen-section-${location.name}'),
-                          wallLocation: location,
-                          highlightedSections: resetModel!.sections
-                              .where(
-                                  (section) => section.wallLocation == location)
-                              .map((section) => section.wallSection)
-                              .toList(),
-                        ),
-                        SizedBox(height: FreeBetaSizes.m),
-                      ],
-                    ),
-                  )
-                  .toList(),
-            ],
-          ),
+        child: Column(
+          children: [
+            _Resets(
+              resets: resetSchedule.currentResets,
+              onRefresh: _onRefresh,
+              label: 'upcoming',
+            ),
+            _Resets(
+              resets: resetSchedule.previousResets,
+              onRefresh: _onRefresh,
+              label: 'previous',
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Future<void> _onReset(WidgetRef ref) async {
+  Future<void> _onRefresh(WidgetRef ref) async {
     return ref.refresh(resetScheduleProvider);
+  }
+}
+
+class _Resets extends ConsumerWidget {
+  const _Resets({
+    Key? key,
+    required this.resets,
+    required this.onRefresh,
+    required this.label,
+  }) : super(key: key);
+
+  final List<ResetModel> resets;
+  final Future<void> Function(WidgetRef) onRefresh;
+  final String label;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return InfoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${label.withFirstLetterCapitalized} resets',
+            style: FreeBetaTextStyle.h2,
+          ),
+          SizedBox(height: FreeBetaSizes.s),
+          if (resets.isNotEmpty) ...[
+            _Reset(
+              resetModel: resets[0],
+            ),
+          ],
+          if (resets.isEmpty)
+            Row(
+              children: [
+                Text(
+                  'No $label resets',
+                  style: FreeBetaTextStyle.h4,
+                ),
+              ],
+            ),
+          if (resets.length > 1)
+            _Reset(
+              resetModel: resets[1],
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _Reset extends ConsumerWidget {
+  const _Reset({
+    Key? key,
+    required this.resetModel,
+  }) : super(key: key);
+
+  final ResetModel resetModel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Text(
+              resetModel.date.stringify,
+              style: FreeBetaTextStyle.h3,
+            ),
+            SizedBox(width: FreeBetaSizes.l),
+            HelpTooltip(
+              message:
+                  'The routes on the following wall sections will be removed and replaced by brand new routes at the scheduled date.',
+            ),
+          ],
+        ),
+        ...WallLocation.values
+            .where((location) => resetModel.sections
+                .any((section) => section.wallLocation == location))
+            .map(
+              (location) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    location.displayName,
+                    style: FreeBetaTextStyle.h4,
+                  ),
+                  SizedBox(height: FreeBetaSizes.m),
+                  WallSectionMap(
+                    key: Key('GymMapsScreen-section-${location.name}'),
+                    wallLocation: location,
+                    highlightedSections: resetModel.sections
+                        .where((section) => section.wallLocation == location)
+                        .map((section) => section.wallSection)
+                        .toList(),
+                    onPressed: (index) => _onMapSectionTapped(
+                      ref,
+                      context,
+                      index,
+                      location,
+                    ),
+                  ),
+                  SizedBox(height: FreeBetaSizes.m),
+                ],
+              ),
+            )
+            .toList(),
+      ],
+    );
+  }
+
+  _onMapSectionTapped(
+    WidgetRef ref,
+    BuildContext context,
+    int index,
+    WallLocation location,
+  ) {
+    ref.read(routeWallLocationFilterProvider.notifier).state = location;
+    ref.read(routeWallLocationIndexFilterProvider.notifier).state = index;
+    return Navigator.of(context).push(
+      RouteLocationListScreen.route(
+        wallLocation: location,
+        wallLocationIndex: index,
+      ),
+    );
   }
 }
 
@@ -222,7 +276,7 @@ class _EmptySchedule extends ConsumerWidget {
           SizedBox(height: FreeBetaSizes.m),
           ElevatedButton(
             onPressed: () async => ref.refresh(resetScheduleProvider),
-            child: Text('Reload'),
+            child: Text('Refresh'),
           ),
         ],
       ),

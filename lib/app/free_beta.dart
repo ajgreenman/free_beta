@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/presentation/edit_reset_schedule_screen.dart';
 import 'package:free_beta/gym/presentation/gym_maps_screen.dart';
+import 'package:free_beta/gym/presentation/reset_schedule_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_help_screen.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
@@ -26,6 +28,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
       refreshProvider: fetchRoutesProvider,
     ),
     GymMapsScreen(),
+    ResetScheduleScreen(),
     ProfileScreen(),
   ];
 
@@ -70,6 +73,9 @@ class _FreeBetaActions extends StatelessWidget {
       return _HelpButton();
     }
     if (currentIndex == 2) {
+      return _EditButton();
+    }
+    if (currentIndex == 3) {
       return _AuthenticationButton();
     }
     return SizedBox.shrink();
@@ -87,6 +93,33 @@ class _HelpButton extends StatelessWidget {
       ),
       icon: Icon(
         Icons.help_outlined,
+        color: FreeBetaColors.white,
+      ),
+    );
+  }
+}
+
+class _EditButton extends ConsumerWidget {
+  const _EditButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var user = ref.watch(authenticationProvider).whenOrNull(
+          data: (user) => user,
+        );
+
+    if (user == null || user.isAnonymous) {
+      return SizedBox.shrink();
+    }
+
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        EditResetScheduleScreen.route(),
+      ),
+      icon: Icon(
+        Icons.edit,
         color: FreeBetaColors.white,
       ),
     );

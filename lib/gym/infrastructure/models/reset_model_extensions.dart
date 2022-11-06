@@ -8,10 +8,27 @@ extension resetModelListExtensions on List<ResetModel> {
         .where((resetModel) =>
             resetModel.date.isToday || resetModel.date.isAfterToday)
         .toList();
-    if (currentResets.isEmpty) return null;
+    if (currentResets.isEmpty) return latestReset;
 
     currentResets.sort((a, b) => a.date.compareTo(b.date));
     return currentResets.first;
+  }
+
+  List<ResetModel> get currentResets {
+    var currentResets = this
+        .where((resetModel) =>
+            resetModel.date.isToday || resetModel.date.isAfterToday)
+        .toList();
+
+    currentResets.sort((a, b) => a.date.compareTo(b.date));
+    return currentResets;
+  }
+
+  List<ResetModel> get previousResets {
+    var previousResets =
+        where((resetModel) => resetModel.date.isBeforeToday).toList();
+
+    return previousResets;
   }
 
   ResetModel? get latestReset => this.firstWhereOrNull(

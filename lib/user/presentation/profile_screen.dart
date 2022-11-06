@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/gym/presentation/reset_schedule_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
@@ -96,7 +94,6 @@ class _CopyrightText extends StatelessWidget {
 class _UserActionsCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var showResetSchedule = ref.watch(configApiProvider).showResetSchedule;
     return InfoCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -107,38 +104,8 @@ class _UserActionsCard extends ConsumerWidget {
           ),
           SizedBox(height: FreeBetaSizes.m),
           FreeBetaDivider(),
-          if (showResetSchedule) ...[
-            SizedBox(height: FreeBetaSizes.l),
-            _ResetScheduleCard(),
-            SizedBox(height: FreeBetaSizes.l),
-            FreeBetaDivider(),
-          ],
           SizedBox(height: FreeBetaSizes.l),
           _RemovedRoutesCard(),
-        ],
-      ),
-    );
-  }
-}
-
-class _ResetScheduleCard extends StatelessWidget {
-  const _ResetScheduleCard({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => Navigator.of(context).push(ResetScheduleScreen.route()),
-      child: Row(
-        children: [
-          Text(
-            'View reset schedule',
-            style: FreeBetaTextStyle.h3,
-          ),
-          Spacer(),
-          Icon(
-            Icons.keyboard_arrow_right,
-            size: FreeBetaSizes.xxl,
-            color: FreeBetaColors.blueDark,
-          ),
         ],
       ),
     );

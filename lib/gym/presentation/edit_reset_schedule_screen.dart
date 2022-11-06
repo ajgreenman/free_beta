@@ -26,7 +26,9 @@ class EditResetScheduleScreen extends ConsumerWidget {
         leading: FreeBetaBackButton(),
       ),
       body: ref.watch(resetScheduleProvider).when(
-            data: (data) => _EditResetScheduleForm(resetSchedule: data),
+            data: (resetSchedule) => _EditResetScheduleForm(
+              resetSchedule: resetSchedule,
+            ),
             error: (error, stackTrace) => _Error(
               error: error,
               stackTrace: stackTrace,
@@ -83,16 +85,37 @@ class _EditResetScheduleForm extends StatelessWidget {
                   style: FreeBetaTextStyle.h3,
                 ),
                 SizedBox(height: FreeBetaSizes.m),
-                if (resetSchedule.futureResets.isEmpty) ...[
-                  FreeBetaDivider(),
-                  _NoUpcoming(),
-                ],
-                if (resetSchedule.futureResets.isNotEmpty) ...[
-                  FreeBetaDivider(),
-                  ...resetSchedule.futureResets.map(
-                    (reset) => _ResetRow(resetModel: reset),
+                FreeBetaDivider(),
+                if (resetSchedule.futureResets.isEmpty)
+                  _NoUpcoming(
+                    label: 'upcoming',
                   ),
+                if (resetSchedule.futureResets.isNotEmpty) ...[
+                  ...resetSchedule.futureResets.take(2).map(
+                        (reset) => _ResetRow(resetModel: reset),
+                      ),
                 ],
+              ],
+            ),
+          ),
+          InfoCard(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Previous resets',
+                  style: FreeBetaTextStyle.h3,
+                ),
+                SizedBox(height: FreeBetaSizes.m),
+                FreeBetaDivider(),
+                if (resetSchedule.previousResets.isEmpty)
+                  _NoUpcoming(
+                    label: 'previous',
+                  ),
+                if (resetSchedule.previousResets.isNotEmpty)
+                  ...resetSchedule.previousResets.take(4).map(
+                        (reset) => _ResetRow(resetModel: reset),
+                      ),
               ],
             ),
           ),
@@ -140,7 +163,10 @@ class _LatestResetRow extends StatelessWidget {
 class _NoUpcoming extends StatelessWidget {
   const _NoUpcoming({
     Key? key,
+    required this.label,
   }) : super(key: key);
+
+  final String label;
 
   @override
   Widget build(BuildContext context) {
@@ -148,7 +174,7 @@ class _NoUpcoming extends StatelessWidget {
       height: 48.0,
       child: Row(
         children: [
-          Text('No upcoming resets scheduled'),
+          Text('No $label resets scheduled'),
         ],
       ),
     );

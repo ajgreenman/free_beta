@@ -12,6 +12,8 @@ extension DateTimeExtensions on DateTime {
         .difference(DateTime(year, month, day))
         .inDays;
   }
+
+  String get stringify => DateFormat('MM/dd').format(this);
 }
 
 extension DateFormatExtensions on DateFormat {
