@@ -170,7 +170,7 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
               '',
           style: textStyle,
         ),
-        if (DateTime.now().difference(route.creationDate).inDays <= 3) ...[
+        if (DateTime.now().difference(route.creationDate).inDays <= 4) ...[
           _Separator(textStyle: textStyle),
           Icon(
             Icons.fiber_new,

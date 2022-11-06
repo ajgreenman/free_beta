@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/extensions/string_extensions.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
@@ -12,9 +13,9 @@ import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart'
 import 'package:free_beta/gym/presentation/reset_form_screen.dart';
 import 'package:intl/intl.dart';
 
-class EditResetScheduleScreen extends ConsumerWidget {
+class ResetAdminScreen extends ConsumerWidget {
   static Route<dynamic> route() {
-    return MaterialPageRoute(builder: (context) => EditResetScheduleScreen());
+    return MaterialPageRoute(builder: (context) => ResetAdminScreen());
   }
 
   @override
@@ -26,7 +27,7 @@ class EditResetScheduleScreen extends ConsumerWidget {
         leading: FreeBetaBackButton(),
       ),
       body: ref.watch(resetScheduleProvider).when(
-            data: (resetSchedule) => _EditResetScheduleForm(
+            data: (resetSchedule) => _ResetAdmin(
               resetSchedule: resetSchedule,
             ),
             error: (error, stackTrace) => _Error(
@@ -39,8 +40,8 @@ class EditResetScheduleScreen extends ConsumerWidget {
   }
 }
 
-class _EditResetScheduleForm extends StatelessWidget {
-  const _EditResetScheduleForm({
+class _ResetAdmin extends StatelessWidget {
+  const _ResetAdmin({
     Key? key,
     required this.resetSchedule,
   }) : super(key: key);
@@ -52,73 +53,93 @@ class _EditResetScheduleForm extends StatelessWidget {
     return SingleChildScrollView(
       child: Column(
         children: [
-          InfoCard(
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).push(
-                      ResetFormScreen.add(),
-                    ),
-                    child: Text('Add new reset'),
-                  ),
-                  if (resetSchedule.latestReset != null) ...[
-                    SizedBox(height: FreeBetaSizes.m),
-                    FreeBetaDivider(),
-                    _LatestResetRow(
-                      latestReset: resetSchedule.latestReset!,
-                    ),
-                    FreeBetaDivider(),
-                  ],
-                ],
+          _AddReset(
+            latestReset: resetSchedule.latestReset,
+          ),
+          _Resets(
+            resets: resetSchedule.futureResets,
+            label: 'upcoming',
+            length: 2,
+          ),
+          _Resets(
+            resets: resetSchedule.previousResets,
+            label: 'previous',
+            length: 4,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _AddReset extends StatelessWidget {
+  const _AddReset({
+    required this.latestReset,
+  });
+
+  final ResetModel? latestReset;
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ElevatedButton(
+              onPressed: () => Navigator.of(context).push(
+                ResetFormScreen.add(),
               ),
+              child: Text('Add new reset'),
             ),
+            if (latestReset != null) ...[
+              SizedBox(height: FreeBetaSizes.m),
+              FreeBetaDivider(),
+              _LatestResetRow(
+                latestReset: latestReset!,
+              ),
+              FreeBetaDivider(),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Resets extends StatelessWidget {
+  const _Resets({
+    required this.resets,
+    required this.label,
+    required this.length,
+  });
+
+  final List<ResetModel> resets;
+  final String label;
+  final int length;
+
+  @override
+  Widget build(BuildContext context) {
+    return InfoCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${label.withFirstLetterCapitalized} resets',
+            style: FreeBetaTextStyle.h3,
           ),
-          InfoCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Upcoming resets',
-                  style: FreeBetaTextStyle.h3,
+          SizedBox(height: FreeBetaSizes.m),
+          FreeBetaDivider(),
+          if (resets.isEmpty)
+            _NoUpcoming(
+              label: label,
+            ),
+          if (resets.isNotEmpty) ...[
+            ...resets.take(length).map(
+                  (reset) => _ResetRow(resetModel: reset),
                 ),
-                SizedBox(height: FreeBetaSizes.m),
-                FreeBetaDivider(),
-                if (resetSchedule.futureResets.isEmpty)
-                  _NoUpcoming(
-                    label: 'upcoming',
-                  ),
-                if (resetSchedule.futureResets.isNotEmpty) ...[
-                  ...resetSchedule.futureResets.take(2).map(
-                        (reset) => _ResetRow(resetModel: reset),
-                      ),
-                ],
-              ],
-            ),
-          ),
-          InfoCard(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Previous resets',
-                  style: FreeBetaTextStyle.h3,
-                ),
-                SizedBox(height: FreeBetaSizes.m),
-                FreeBetaDivider(),
-                if (resetSchedule.previousResets.isEmpty)
-                  _NoUpcoming(
-                    label: 'previous',
-                  ),
-                if (resetSchedule.previousResets.isNotEmpty)
-                  ...resetSchedule.previousResets.take(4).map(
-                        (reset) => _ResetRow(resetModel: reset),
-                      ),
-              ],
-            ),
-          ),
+          ],
         ],
       ),
     );

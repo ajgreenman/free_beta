@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/gym/presentation/edit_reset_schedule_screen.dart';
+import 'package:free_beta/gym/presentation/reset_admin_screen.dart';
 import 'package:free_beta/gym/presentation/gym_maps_screen.dart';
 import 'package:free_beta/gym/presentation/reset_schedule_screen.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
@@ -116,7 +116,7 @@ class _EditButton extends ConsumerWidget {
 
     return IconButton(
       onPressed: () => Navigator.of(context).push(
-        EditResetScheduleScreen.route(),
+        ResetAdminScreen.route(),
       ),
       icon: Icon(
         Icons.edit,

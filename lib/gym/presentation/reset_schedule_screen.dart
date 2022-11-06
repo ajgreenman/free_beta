@@ -102,9 +102,20 @@ class _Resets extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            '${label.withFirstLetterCapitalized} resets',
-            style: FreeBetaTextStyle.h2,
+          Row(
+            children: [
+              Text(
+                '${label.withFirstLetterCapitalized} resets',
+                style: FreeBetaTextStyle.h2,
+              ),
+              if (label == 'upcoming') ...[
+                SizedBox(width: FreeBetaSizes.l),
+                HelpTooltip(
+                  message:
+                      'The routes on the following wall sections will be removed and replaced by brand new routes at the scheduled date.',
+                ),
+              ],
+            ],
           ),
           SizedBox(height: FreeBetaSizes.s),
           if (resets.isNotEmpty) ...[
@@ -144,18 +155,9 @@ class _Reset extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Text(
-              resetModel.date.stringify,
-              style: FreeBetaTextStyle.h3,
-            ),
-            SizedBox(width: FreeBetaSizes.l),
-            HelpTooltip(
-              message:
-                  'The routes on the following wall sections will be removed and replaced by brand new routes at the scheduled date.',
-            ),
-          ],
+        Text(
+          resetModel.date.stringify,
+          style: FreeBetaTextStyle.h3,
         ),
         ...WallLocation.values
             .where((location) => resetModel.sections
