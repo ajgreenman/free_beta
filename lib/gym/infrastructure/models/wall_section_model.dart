@@ -30,4 +30,8 @@ class WallSectionModel {
 
   @override
   int get hashCode => wallLocation.hashCode ^ wallSection.hashCode;
+
+  @override
+  String toString() =>
+      'WallSectionModel(wallLocation: $wallLocation, wallSection: $wallSection)';
 }

@@ -193,6 +193,8 @@ class _RouteIcon extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (route.removalDate != null) return SizedBox.shrink();
+
     var resetSchedule = ref.watch(resetScheduleProvider).whenOrNull(
           data: (resetSchedule) => resetSchedule,
         );
