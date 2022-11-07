@@ -64,12 +64,12 @@ class _ResetSchedule extends ConsumerWidget {
         child: Column(
           children: [
             _Resets(
-              resets: resetSchedule.currentResets,
+              resets: resetSchedule.nextResets,
               onRefresh: _onRefresh,
               label: 'upcoming',
             ),
             _Resets(
-              resets: resetSchedule.previousResets,
+              resets: resetSchedule.pastResets,
               onRefresh: _onRefresh,
               label: 'previous',
             ),

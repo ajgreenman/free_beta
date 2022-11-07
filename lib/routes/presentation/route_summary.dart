@@ -1,8 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/infrastructure/gym_providers.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:intl/intl.dart';
@@ -170,14 +173,60 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
               '',
           style: textStyle,
         ),
-        if (DateTime.now().difference(route.creationDate).inDays <= 4) ...[
+        _RouteIcon(
+          route: route,
+          textStyle: textStyle,
+        ),
+      ],
+    );
+  }
+}
+
+class _RouteIcon extends ConsumerWidget {
+  const _RouteIcon({
+    required this.route,
+    required this.textStyle,
+  });
+
+  final RouteModel route;
+  final TextStyle textStyle;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var resetSchedule = ref.watch(resetScheduleProvider).whenOrNull(
+          data: (resetSchedule) => resetSchedule,
+        );
+    if (resetSchedule == null) return SizedBox.shrink();
+
+    var latestReset = resetSchedule.latestReset;
+    if (latestReset == null) return SizedBox.shrink();
+
+    if (latestReset.hasRoute(route)) {
+      return Row(
+        children: [
           _Separator(textStyle: textStyle),
           Icon(
             Icons.fiber_new,
           ),
         ],
-      ],
-    );
+      );
+    }
+
+    var nextReset = resetSchedule.nextReset;
+    if (nextReset == null) return SizedBox.shrink();
+
+    if (nextReset.hasRoute(route)) {
+      return Row(
+        children: [
+          _Separator(textStyle: textStyle),
+          Icon(
+            Icons.warning_outlined,
+          ),
+        ],
+      );
+    }
+
+    return SizedBox.shrink();
   }
 }
 

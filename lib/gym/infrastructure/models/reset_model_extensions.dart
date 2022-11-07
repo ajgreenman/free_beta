@@ -1,45 +1,52 @@
 import 'package:collection/collection.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
+import 'package:free_beta/gym/infrastructure/models/wall_section_model_extensions.dart';
+import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 
-extension resetModelListExtensions on List<ResetModel> {
-  ResetModel? get currentReset {
-    var currentResets = this
-        .where((resetModel) =>
-            resetModel.date.isToday || resetModel.date.isAfterToday)
-        .toList();
-    if (currentResets.isEmpty) return latestReset;
-
-    currentResets.sort((a, b) => a.date.compareTo(b.date));
-    return currentResets.first;
-  }
-
-  List<ResetModel> get currentResets {
-    var currentResets = this
-        .where((resetModel) =>
-            resetModel.date.isToday || resetModel.date.isAfterToday)
-        .toList();
-
-    currentResets.sort((a, b) => a.date.compareTo(b.date));
-    return currentResets;
-  }
-
-  List<ResetModel> get previousResets {
+extension ResetModelListExtensions on List<ResetModel> {
+  List<ResetModel> get pastResets {
     var previousResets =
         where((resetModel) => resetModel.date.isBeforeToday).toList();
 
+    previousResets.sort((a, b) => b.date.compareTo(a.date));
     return previousResets;
   }
 
-  ResetModel? get latestReset => this.firstWhereOrNull(
-        (resetModel) =>
-            resetModel.date.isToday || resetModel.date.isBeforeToday,
-      );
-
-  List<ResetModel> get futureResets {
+  List<ResetModel> get _futureResets {
     var futureResets =
         this.where((resetModel) => resetModel.date.isAfterToday).toList();
+
     futureResets.sort((a, b) => a.date.compareTo(b.date));
     return futureResets;
+  }
+
+  List<ResetModel> get nextResets {
+    if (todaysReset == null) return _futureResets;
+
+    return [todaysReset!, ..._futureResets];
+  }
+
+  ResetModel? get todaysReset =>
+      this.firstWhereOrNull((resetModel) => resetModel.date.isToday);
+
+  ResetModel? get latestReset {
+    if (pastResets.isEmpty) return null;
+
+    return pastResets.first;
+  }
+
+  ResetModel? get nextReset {
+    if (nextResets.isEmpty) return null;
+
+    return nextResets.first;
+  }
+}
+
+extension NullableResetModelExtensions on ResetModel? {
+  bool hasRoute(RouteModel routeModel) {
+    if (this == null) return false;
+
+    return this!.sections.hasRoute(routeModel);
   }
 }

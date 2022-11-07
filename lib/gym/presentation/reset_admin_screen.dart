@@ -57,12 +57,12 @@ class _ResetAdmin extends StatelessWidget {
             latestReset: resetSchedule.latestReset,
           ),
           _Resets(
-            resets: resetSchedule.futureResets,
+            resets: resetSchedule._futureResets,
             label: 'upcoming',
             length: 2,
           ),
           _Resets(
-            resets: resetSchedule.previousResets,
+            resets: resetSchedule.pastResets,
             label: 'previous',
             length: 4,
           ),
