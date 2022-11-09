@@ -107,6 +107,7 @@ class RouteGraphApi {
     bool Function(RouteModel) routeCondition,
   ) {
     return CondensedYosemiteRating.values
+        .where((rating) => rating != CondensedYosemiteRating.speed)
         .map(
           (yosemiteRating) => UserRatingModel.withYosemite(
             yosemiteRating: yosemiteRating,

@@ -18,6 +18,7 @@ enum YosemiteRating {
   thirteenMinus,
   thirteen,
   thirteenPlus,
+  speed
 }
 
 enum CondensedYosemiteRating {
@@ -29,6 +30,7 @@ enum CondensedYosemiteRating {
   eleven,
   twelve,
   thirteen,
+  speed,
 }
 
 extension YosemiteRatingExtensions on YosemiteRating {
@@ -72,6 +74,8 @@ extension YosemiteRatingExtensions on YosemiteRating {
         return '5.13';
       case YosemiteRating.thirteenPlus:
         return '5.13+';
+      case YosemiteRating.speed:
+        return 'Speed';
     }
   }
 
@@ -104,6 +108,8 @@ extension YosemiteRatingExtensions on YosemiteRating {
       case YosemiteRating.thirteen:
       case YosemiteRating.thirteenPlus:
         return CondensedYosemiteRating.thirteen;
+      case YosemiteRating.speed:
+        return CondensedYosemiteRating.speed;
     }
   }
 }
@@ -127,6 +133,8 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
         return '5.12';
       case CondensedYosemiteRating.thirteen:
         return '5.13';
+      case CondensedYosemiteRating.speed:
+        return 'Speed';
     }
   }
 }
@@ -171,6 +179,8 @@ YosemiteRating yosemiteRatingFromString(String yosemiteRating) {
       return YosemiteRating.thirteen;
     case '5.13+':
       return YosemiteRating.thirteenPlus;
+    case 'speed':
+      return YosemiteRating.speed;
     default:
       return YosemiteRating.six;
   }
