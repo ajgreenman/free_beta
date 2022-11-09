@@ -6,17 +6,29 @@ import 'package:free_beta/gym/presentation/widgets/gym_section.dart';
 
 class WallSectionMap extends StatelessWidget {
   const WallSectionMap({
-    required this.wallLocation,
-    required this.onPressed,
-    this.highlightedSection,
-    this.sectionPadding = FreeBetaSizes.s,
     Key? key,
-  }) : super(key: key);
+    required this.wallLocation,
+    required void Function(int) onPressed,
+    this.highlightedSections = const [],
+    this.sectionPadding = FreeBetaSizes.s,
+    this.isForm = false,
+  })  : onPressed = onPressed,
+        super(key: key);
+
+  const WallSectionMap.static({
+    Key? key,
+    required this.wallLocation,
+    this.highlightedSections = const [],
+    this.sectionPadding = FreeBetaSizes.s,
+  })  : onPressed = null,
+        isForm = false,
+        super(key: key);
 
   final WallLocation wallLocation;
-  final Function(int) onPressed;
-  final int? highlightedSection;
+  final void Function(int)? onPressed;
+  final List<int> highlightedSections;
   final double sectionPadding;
+  final bool isForm;
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +45,8 @@ class WallSectionMap extends StatelessWidget {
               return Positioned(
                 left: i * sectionPadding + availableWidth * section.widthOffset,
                 child: GestureDetector(
-                  onTap: () => onPressed(i),
-                  child: highlightedSection != null && highlightedSection == i
+                  onTap: onPressed == null ? () {} : () => onPressed!(i),
+                  child: highlightedSections.contains(i)
                       ? GymSection(
                           wallSection: section,
                           size: Size(
@@ -60,11 +72,12 @@ class WallSectionMap extends StatelessWidget {
   }
 
   Color _getColor(int index) {
-    if (highlightedSection != null) {
+    if (highlightedSections.isNotEmpty ||
+        (highlightedSections.isEmpty && isForm)) {
       return FreeBetaColors.white;
     }
 
-    var opacity = highlightedSection != null ? 0.1 : 0.7;
+    var opacity = highlightedSections.isNotEmpty ? 0.1 : 0.7;
 
     switch (index % 3) {
       case 0:

@@ -20,7 +20,7 @@ class RouteCard extends StatelessWidget {
     return InkWell(
       onTap: () => onTap(context),
       child: Container(
-        color: _getBackgroundColor(),
+        color: _backgroundColor,
         padding: FreeBetaPadding.mAll,
         child: Row(
           children: [
@@ -50,7 +50,7 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Color _getBackgroundColor() => route.routeColor.displayColor.withOpacity(0.3);
+  Color get _backgroundColor => route.routeColor.displayColor.withOpacity(0.3);
 }
 
 class _FavoriteIcon extends StatelessWidget {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 
@@ -92,6 +93,11 @@ class RouteModel {
     return ClimbType.values.firstWhere(
       (climbType) => climbType.name == value,
     );
+  }
+
+  @override
+  String toString() {
+    return 'RouteModel(id: $id, name: $name, boulderRating: $boulderRating, yosemiteRating: $yosemiteRating, climbType: $climbType, routeColor: $routeColor, wallLocation: $wallLocation, wallLocationIndex: $wallLocationIndex, creationDate: $creationDate, removalDate: $removalDate, images: $images, betaVideo: $betaVideo, isDeleted: $isDeleted, userRouteModel: $userRouteModel)';
   }
 }
 

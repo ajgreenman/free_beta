@@ -80,7 +80,7 @@ class _WallSectionMapFilterState extends ConsumerState<_WallSectionMapFilter> {
   Widget build(BuildContext context) {
     return WallSectionMap(
       wallLocation: widget.wallLocation,
-      highlightedSection: _wallLocationIndex,
+      highlightedSections: [_wallLocationIndex],
       onPressed: (index) {
         setState(() {
           _wallLocationIndex = index;

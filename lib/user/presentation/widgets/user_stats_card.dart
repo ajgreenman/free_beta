@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
+import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
@@ -53,7 +54,10 @@ class _SuccessCard extends StatelessWidget {
                 style: FreeBetaTextStyle.h2,
               ),
               SizedBox(width: FreeBetaSizes.l),
-              _HelpButton(),
+              HelpTooltip(
+                message:
+                    'Statistics do not include routes that have been removed from the gym.',
+              ),
             ],
           ),
           SizedBox(height: FreeBetaSizes.m),
@@ -229,33 +233,6 @@ class _SkeletonRow extends StatelessWidget {
         ),
         SizedBox(width: FreeBetaSizes.m),
       ],
-    );
-  }
-}
-
-class _HelpButton extends StatelessWidget {
-  const _HelpButton({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Tooltip(
-      message:
-          'Statistics do not include routes that have been removed from the gym.',
-      triggerMode: TooltipTriggerMode.tap,
-      margin: FreeBetaPadding.xxlHorizontal,
-      padding: FreeBetaPadding.mAll,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(FreeBetaSizes.m),
-        color: FreeBetaColors.black,
-      ),
-      textStyle: FreeBetaTextStyle.body4.copyWith(
-        color: FreeBetaColors.white,
-      ),
-      child: Icon(
-        Icons.help_outlined,
-        color: FreeBetaColors.grayDark,
-        size: FreeBetaSizes.xl,
-      ),
     );
   }
 }

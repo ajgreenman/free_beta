@@ -18,7 +18,7 @@ class RouteList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (routes.isEmpty) {
-      return _EmptyWidget();
+      return _EmptyList();
     }
 
     if (onRefresh == null) {
@@ -52,8 +52,8 @@ class RouteList extends StatelessWidget {
   }
 }
 
-class _EmptyWidget extends StatelessWidget {
-  const _EmptyWidget({
+class _EmptyList extends StatelessWidget {
+  const _EmptyList({
     Key? key,
   }) : super(key: key);
 

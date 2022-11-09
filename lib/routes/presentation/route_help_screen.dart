@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/infrastructure/gym_providers.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
+import 'package:free_beta/gym/infrastructure/models/wall_section_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/presentation/route_card.dart';
 import 'package:free_beta/routes/presentation/route_detail_screen.dart';
@@ -44,12 +48,19 @@ class RouteHelpScreen extends StatelessWidget {
             ListView.separated(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),
-              itemBuilder: (_, index) => RouteCard(
-                route: routes[index],
-                onTap: (cardContext) => Navigator.of(cardContext).push(
-                  RouteDetailScreen.route(
-                    routes[index],
-                    isHelp: true,
+              itemBuilder: (_, index) => ProviderScope(
+                overrides: [
+                  resetScheduleProvider.overrideWithValue(
+                    AsyncData(resetSchedule),
+                  ),
+                ],
+                child: RouteCard(
+                  route: routes[index],
+                  onTap: (cardContext) => Navigator.of(cardContext).push(
+                    RouteDetailScreen.route(
+                      routes[index],
+                      isHelp: true,
+                    ),
                   ),
                 ),
               ),
@@ -65,15 +76,38 @@ class RouteHelpScreen extends StatelessWidget {
     );
   }
 
+  static final resetSchedule = [
+    ResetModel(
+      id: '1',
+      date: DateTime.now().subtract(Duration(days: 1)),
+      sections: [
+        WallSectionModel(
+          wallLocation: WallLocation.mezzanine,
+          wallSection: 0,
+        ),
+      ],
+    ),
+    ResetModel(
+      id: '2',
+      date: DateTime.now().add(Duration(days: 1)),
+      sections: [
+        WallSectionModel(
+          wallLocation: WallLocation.boulder,
+          wallSection: 0,
+        ),
+      ],
+    ),
+  ];
+
   static final routes = [
     RouteModel(
       id: '001',
       name: 'Beginner Route',
-      boulderRating: BoulderRating.v1v3,
+      boulderRating: BoulderRating.v1v2,
       climbType: ClimbType.boulder,
       routeColor: RouteColor.green,
       wallLocation: WallLocation.boulder,
-      wallLocationIndex: 0,
+      wallLocationIndex: 1,
       creationDate: DateTime.now(),
       userRouteModel: UserRouteModel(
         userId: 'user1',
@@ -121,7 +155,7 @@ class RouteHelpScreen extends StatelessWidget {
     RouteModel(
       id: '004',
       name: 'Crimp my ride',
-      boulderRating: BoulderRating.v4v6,
+      boulderRating: BoulderRating.v4v5,
       climbType: ClimbType.boulder,
       routeColor: RouteColor.yellow,
       wallLocation: WallLocation.boulder,
@@ -174,16 +208,34 @@ class _SymbolColumn extends StatelessWidget {
           label: 'Not favorited',
         ),
         _IconRow(
-          icon: _ProgressIcon(isAttempted: false, isCompleted: false),
+          icon: RouteProgressIcon(isAttempted: false, isCompleted: false),
           label: 'Unattempted',
         ),
         _IconRow(
-          icon: _ProgressIcon(isAttempted: true, isCompleted: false),
+          icon: RouteProgressIcon(isAttempted: true, isCompleted: false),
           label: 'Attempted but not completed',
         ),
         _IconRow(
-          icon: _ProgressIcon(isAttempted: true, isCompleted: true),
+          icon: RouteProgressIcon(isAttempted: true, isCompleted: true),
           label: 'Attempted and completed',
+        ),
+        _IconRow(
+          icon: Padding(
+            padding: FreeBetaPadding.lHorizontal,
+            child: Icon(
+              Icons.fiber_new,
+            ),
+          ),
+          label: 'New route',
+        ),
+        _IconRow(
+          icon: Padding(
+            padding: FreeBetaPadding.lHorizontal,
+            child: Icon(
+              Icons.warning_outlined,
+            ),
+          ),
+          label: 'Route to be removed soon',
         ),
       ],
     );
@@ -207,25 +259,6 @@ class _IconRow extends StatelessWidget {
         icon,
         Text(label),
       ],
-    );
-  }
-}
-
-class _ProgressIcon extends StatelessWidget {
-  const _ProgressIcon({
-    Key? key,
-    required this.isAttempted,
-    required this.isCompleted,
-  }) : super(key: key);
-
-  final bool isAttempted;
-  final bool isCompleted;
-
-  @override
-  Widget build(BuildContext context) {
-    return RouteProgressIcon(
-      isAttempted: isAttempted,
-      isCompleted: isCompleted,
     );
   }
 }

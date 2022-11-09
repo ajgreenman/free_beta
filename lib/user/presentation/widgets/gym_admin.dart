@@ -23,6 +23,10 @@ class GymAdmin extends StatelessWidget {
             Text(
               'To edit a route, first go to the route in the Routes tab. Then, tap the pencil icon in the top right corner of the screen.',
             ),
+            SizedBox(height: FreeBetaSizes.l),
+            Text(
+              'To edit the reset schedule, tap the pencil icon in the top right corner of the reset schedule screen.',
+            ),
             SizedBox(height: FreeBetaSizes.m),
             _DeleteAccountButton(),
           ],
@@ -42,7 +46,7 @@ class _CreateRouteButton extends StatelessWidget {
       child: Padding(
         padding: FreeBetaPadding.xlHorizontal,
         child: Text(
-          'Create Route',
+          'Create route',
           style: FreeBetaTextStyle.h4.copyWith(
             color: FreeBetaColors.white,
           ),
