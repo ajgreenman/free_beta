@@ -44,9 +44,15 @@ extension ResetModelListExtensions on List<ResetModel> {
 }
 
 extension NullableResetModelExtensions on ResetModel? {
-  bool hasRoute(RouteModel routeModel) {
+  bool containsRouteInSection(RouteModel routeModel) {
     if (this == null) return false;
 
     return this!.sections.hasRoute(routeModel);
+  }
+
+  bool hadRouteInReset(RouteModel routeModel) {
+    if (this == null) return false;
+
+    return this!.date.difference(routeModel.creationDate) == Duration.zero;
   }
 }

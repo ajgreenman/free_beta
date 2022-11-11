@@ -203,7 +203,8 @@ class _RouteIcon extends ConsumerWidget {
     var latestReset = resetSchedule.latestReset;
     if (latestReset == null) return SizedBox.shrink();
 
-    if (latestReset.hasRoute(route)) {
+    if (latestReset.containsRouteInSection(route) &&
+        latestReset.hadRouteInReset(route)) {
       return Row(
         children: [
           _Separator(textStyle: textStyle),
@@ -217,7 +218,7 @@ class _RouteIcon extends ConsumerWidget {
     var nextReset = resetSchedule.nextReset;
     if (nextReset == null) return SizedBox.shrink();
 
-    if (nextReset.hasRoute(route)) {
+    if (nextReset.containsRouteInSection(route)) {
       return Row(
         children: [
           _Separator(textStyle: textStyle),
