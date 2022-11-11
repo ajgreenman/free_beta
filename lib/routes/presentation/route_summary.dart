@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
+import 'package:free_beta/app/presentation/widgets/free_beta_separator.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
@@ -166,7 +167,7 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
           route.climbType.displayName,
           style: textStyle,
         ),
-        _Separator(textStyle: textStyle),
+        FreeBetaSeparator(textStyle: textStyle),
         Text(
           route.boulderRating?.displayName ??
               route.yosemiteRating?.displayName ??
@@ -207,7 +208,7 @@ class _RouteIcon extends ConsumerWidget {
         latestReset.hadRouteInReset(route)) {
       return Row(
         children: [
-          _Separator(textStyle: textStyle),
+          FreeBetaSeparator(textStyle: textStyle),
           Icon(
             Icons.fiber_new,
           ),
@@ -218,37 +219,17 @@ class _RouteIcon extends ConsumerWidget {
     var nextReset = resetSchedule.nextReset;
     if (nextReset == null) return SizedBox.shrink();
 
-    if (nextReset.containsRouteInSection(route)) {
-      return Row(
-        children: [
-          _Separator(textStyle: textStyle),
-          Icon(
-            Icons.warning_outlined,
-          ),
-        ],
-      );
+    if (!nextReset.containsRouteInSection(route)) {
+      return SizedBox.shrink();
     }
 
-    return SizedBox.shrink();
-  }
-}
-
-class _Separator extends StatelessWidget {
-  const _Separator({
-    Key? key,
-    required this.textStyle,
-  }) : super(key: key);
-
-  final TextStyle textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: FreeBetaPadding.sHorizontal,
-      child: Text(
-        '|',
-        style: textStyle.copyWith(fontWeight: FontWeight.bold),
-      ),
+    return Row(
+      children: [
+        FreeBetaSeparator(textStyle: textStyle),
+        Icon(
+          Icons.warning_outlined,
+        ),
+      ],
     );
   }
 }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/form/number_input.dart';
+import 'package:free_beta/app/presentation/widgets/free_beta_separator.dart';
 import 'package:free_beta/app/presentation/widgets/text_field.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/gym/infrastructure/gym_providers.dart';
+import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
 import 'package:free_beta/gym/presentation/edit_route_screen.dart';
 import 'package:free_beta/routes/infrastructure/models/user_route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
@@ -69,6 +72,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 if (widget.isHelp) _HelpWarning(),
                 RouteSummary(widget.routeModel, isDetailed: true),
                 _DetailScreenDivider(),
+                _RemovalWarningMessage(routeModel: widget.routeModel),
                 RouteImages(images: widget.routeModel.images),
                 _BetaVideoButton(betaVideo: widget.routeModel.betaVideo),
                 _DetailScreenDivider(),
@@ -384,6 +388,45 @@ class _EditButton extends ConsumerWidget {
         Icons.edit,
         color: FreeBetaColors.white,
       ),
+    );
+  }
+}
+
+class _RemovalWarningMessage extends ConsumerWidget {
+  _RemovalWarningMessage({
+    required this.routeModel,
+  });
+
+  final RouteModel routeModel;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var resetSchedule = ref.watch(resetScheduleProvider).whenOrNull(
+          data: (resetSchedule) => resetSchedule,
+        );
+    if (resetSchedule == null) return SizedBox.shrink();
+
+    var nextReset = resetSchedule.nextReset;
+    if (nextReset == null) return SizedBox.shrink();
+
+    if (!nextReset.containsRouteInSection(routeModel)) {
+      return SizedBox.shrink();
+    }
+
+    return Column(
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.warning_outlined,
+            ),
+            FreeBetaSeparator(),
+            Text('This route has been scheduled for removal.'),
+          ],
+        ),
+        _DetailScreenDivider(),
+      ],
     );
   }
 }
