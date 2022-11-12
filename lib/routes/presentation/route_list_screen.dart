@@ -73,6 +73,7 @@ class _RouteListBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return ref.watch(routeProvider).when(
           data: (routeFilterModel) => RouteList(
+            scrollKey: 'route-list',
             routes: routeFilterModel.filteredRoutes.sortRoutes(),
             onRefresh: () => _refreshRoutes(ref),
           ),

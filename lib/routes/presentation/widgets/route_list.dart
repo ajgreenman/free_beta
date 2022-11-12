@@ -8,10 +8,12 @@ import 'package:free_beta/routes/presentation/route_detail_screen.dart';
 class RouteList extends StatelessWidget {
   const RouteList({
     Key? key,
+    required this.scrollKey,
     required this.routes,
     required this.onRefresh,
   }) : super(key: key);
 
+  final String scrollKey;
   final List<RouteModel> routes;
   final Future<void> Function()? onRefresh;
 
@@ -37,6 +39,7 @@ class RouteList extends StatelessWidget {
 
     return RefreshIndicator(
       child: ListView.separated(
+        key: PageStorageKey(scrollKey),
         shrinkWrap: true,
         itemBuilder: (_, index) => RouteCard(
           route: routes[index],
