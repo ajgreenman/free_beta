@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/class/presentation/class_screen.dart';
 import 'package:free_beta/gym/presentation/reset_admin_screen.dart';
 import 'package:free_beta/gym/presentation/gym_maps_screen.dart';
 import 'package:free_beta/gym/presentation/reset_schedule_screen.dart';
@@ -29,6 +30,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
     ),
     GymMapsScreen(),
     ResetScheduleScreen(),
+    ClassScreen(),
     ProfileScreen(),
   ];
 
@@ -75,7 +77,7 @@ class _FreeBetaActions extends StatelessWidget {
     if (currentIndex == 2) {
       return _EditButton();
     }
-    if (currentIndex == 3) {
+    if (currentIndex == 4) {
       return _AuthenticationButton();
     }
     return SizedBox.shrink();

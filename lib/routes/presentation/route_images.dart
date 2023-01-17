@@ -1,6 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/routes/presentation/route_image_screen.dart';
 import 'package:free_beta/routes/presentation/widgets/route_image.dart';
 
@@ -47,9 +47,9 @@ class _RouteImagesState extends State<RouteImages> {
             },
           ),
         ),
-        _ImageDots(
-          currentImage: _currentImage,
-          numberOfImages: widget.images.length,
+        FreeBetaDots(
+          current: _currentImage,
+          length: widget.images.length,
         ),
       ],
     );
@@ -102,43 +102,6 @@ class _CachedImage extends StatelessWidget {
           initialIndex: currentImage,
           onSwipeLeft: onSwipeLeft,
           onSwipeRight: onSwipeRight,
-        ),
-      ),
-    );
-  }
-}
-
-class _ImageDots extends StatelessWidget {
-  const _ImageDots({
-    Key? key,
-    required this.currentImage,
-    required this.numberOfImages,
-  }) : super(key: key);
-
-  final int currentImage;
-  final int numberOfImages;
-
-  @override
-  Widget build(BuildContext context) {
-    if (numberOfImages <= 1) return SizedBox.shrink();
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        numberOfImages,
-        (index) => Container(
-          width: FreeBetaSizes.m,
-          height: FreeBetaSizes.m,
-          margin: EdgeInsets.symmetric(
-            vertical: FreeBetaSizes.m,
-            horizontal: FreeBetaSizes.s,
-          ),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: index == currentImage
-                ? FreeBetaColors.black
-                : FreeBetaColors.gray,
-          ),
         ),
       ),
     );

@@ -33,6 +33,10 @@ class FreeBetaBottomNavigationBar extends StatelessWidget {
           icon: _NavbarIcon(Icons.calendar_month_outlined),
         ),
         BottomNavigationBarItem(
+          label: 'Classes',
+          icon: _NavbarIcon(Icons.self_improvement),
+        ),
+        BottomNavigationBarItem(
           label: 'Profile',
           icon: _NavbarIcon(Icons.account_box),
         ),

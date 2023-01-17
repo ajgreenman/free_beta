@@ -37,12 +37,13 @@ class FreeBetaTheme {
 
 class FreeBetaColors {
   static const black = Color(0xFF000000);
+  static const chalkboard = Color(0xFF293340);
 
   static const blueLight = Color(0xFF296AFF);
   static const blue = Color(0xFF143A91);
   static const blueDark = Color(0xFF001239);
 
-  static const brown = Color(0xFF966d2f);
+  static const brown = Color(0xFFB37B2C);
 
   static const grayBackground = Color(0xFFF0F0F0);
   static const grayLight = Color(0xFFC7C8CA);
@@ -166,6 +167,8 @@ class FreeBetaPadding {
       EdgeInsets.symmetric(horizontal: FreeBetaSizes.xl);
   static const xxlHorizontal =
       EdgeInsets.symmetric(horizontal: FreeBetaSizes.xxl);
+  static const xxxlHorizontal =
+      EdgeInsets.symmetric(horizontal: FreeBetaSizes.xxxl);
 
   static const xsVerticle = EdgeInsets.symmetric(vertical: FreeBetaSizes.xs);
   static const sVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.s);
@@ -174,35 +177,17 @@ class FreeBetaPadding {
   static const lVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.l);
   static const xlVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.xl);
   static const xxlVertical = EdgeInsets.symmetric(vertical: FreeBetaSizes.xxl);
+  static const xxxlVertical =
+      EdgeInsets.symmetric(vertical: FreeBetaSizes.xxxl);
 
-  static const xsAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.xs,
-    vertical: FreeBetaSizes.xs,
-  );
-  static const sAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.s,
-    vertical: FreeBetaSizes.s,
-  );
-  static const mAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.m,
-    vertical: FreeBetaSizes.m,
-  );
-  static const mlAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.ml,
-    vertical: FreeBetaSizes.ml,
-  );
-  static const lAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.l,
-    vertical: FreeBetaSizes.l,
-  );
-  static const xlAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.xl,
-    vertical: FreeBetaSizes.xl,
-  );
-  static const xxlAll = EdgeInsets.symmetric(
-    horizontal: FreeBetaSizes.xxl,
-    vertical: FreeBetaSizes.xxl,
-  );
+  static const xsAll = EdgeInsets.all(FreeBetaSizes.xs);
+  static const sAll = EdgeInsets.all(FreeBetaSizes.s);
+  static const mAll = EdgeInsets.all(FreeBetaSizes.m);
+  static const mlAll = EdgeInsets.all(FreeBetaSizes.ml);
+  static const lAll = EdgeInsets.all(FreeBetaSizes.l);
+  static const xlAll = EdgeInsets.all(FreeBetaSizes.xl);
+  static const xxlAll = EdgeInsets.all(FreeBetaSizes.xxl);
+  static const xxxlAll = EdgeInsets.all(FreeBetaSizes.xxxl);
 }
 
 class FreeBetaTextStyle {

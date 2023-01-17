@@ -13,6 +13,24 @@ extension DateTimeExtensions on DateTime {
         .inDays;
   }
 
+  DateTime copyWith({
+    int? year,
+    int? month,
+    int? day,
+    int? hour,
+    int? minute,
+    int? second,
+  }) {
+    return DateTime(
+      year ?? this.year,
+      month ?? this.month,
+      day ?? this.day,
+      hour ?? this.hour,
+      minute ?? this.minute,
+      second ?? this.second,
+    );
+  }
+
   String get stringify => DateFormat('MM/dd').format(this);
 }
 
