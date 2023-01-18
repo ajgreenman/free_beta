@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
@@ -79,7 +80,7 @@ class RouteHelpScreen extends StatelessWidget {
   static final resetSchedule = [
     ResetModel(
       id: '1',
-      date: DateTime.now().subtract(Duration(days: 1)),
+      date: DateTime.now().subtract(Duration(days: 1)).copyWith(second: 0),
       sections: [
         WallSectionModel(
           wallLocation: WallLocation.mezzanine,
@@ -126,7 +127,8 @@ class RouteHelpScreen extends StatelessWidget {
       routeColor: RouteColor.purple,
       wallLocation: WallLocation.mezzanine,
       wallLocationIndex: 0,
-      creationDate: DateTime.now(),
+      creationDate:
+          DateTime.now().subtract(Duration(days: 1)).copyWith(second: 0),
       userRouteModel: UserRouteModel(
         userId: 'user1',
         routeId: '002',
