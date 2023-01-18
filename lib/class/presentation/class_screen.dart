@@ -88,15 +88,15 @@ class _ScheduleState extends State<_Schedule> {
         ),
         SizedBox(height: FreeBetaSizes.ml),
         Padding(
-          padding: FreeBetaPadding.xxxlHorizontal,
+          padding: FreeBetaPadding.xxlHorizontal,
           child: Text(
-            'To sign up for classes, download the RGPro Connect app.',
+            'To sign up for classes, download the RGPro Connect app or visit the website.',
             style: FreeBetaTextStyle.body3.copyWith(
               color: FreeBetaColors.grayLight,
             ),
             textAlign: TextAlign.center,
           ),
-        )
+        ),
       ],
     );
   }
