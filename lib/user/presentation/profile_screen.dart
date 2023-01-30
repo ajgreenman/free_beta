@@ -117,6 +117,7 @@ class _RemovedRoutesCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      key: Key('ProfileScreen-removedRoutes'),
       onTap: () => Navigator.of(context).push(
         RouteListScreen.route(
           appBar: AppBar(

@@ -53,6 +53,9 @@ void main() {
     var removeRouteCard = find.byKey(Key('ProfileScreen-removedRoutes'));
     expect(removeRouteCard, findsOneWidget);
 
+    await tester.ensureVisible(removeRouteCard);
+    await tester.pumpAndSettle();
+
     await tester.tap(removeRouteCard);
     await tester.pumpAndSettle();
 
