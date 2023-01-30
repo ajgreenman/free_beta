@@ -104,6 +104,6 @@ var hardYosemiteRouteModel = RouteModel(
   wallLocationIndex: 1,
   creationDate: DateTime.now(),
   removalDate: DateTime.now(),
-  yosemiteRating: YosemiteRating.thirteenPlus,
+  yosemiteRating: YosemiteRating.speed,
   userRouteModel: uncompletedRouteModel,
 );

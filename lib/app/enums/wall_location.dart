@@ -42,17 +42,6 @@ extension WallLocationExtensions on WallLocation {
     }
   }
 
-  WallSection wallSection(int index) {
-    switch (this) {
-      case WallLocation.boulder:
-        return _boulderSections[index];
-      case WallLocation.mezzanine:
-        return _mezzanineSections[index];
-      case WallLocation.tall:
-        return _tallSections[index];
-    }
-  }
-
   int get wallHeight {
     switch (this) {
       case WallLocation.boulder:

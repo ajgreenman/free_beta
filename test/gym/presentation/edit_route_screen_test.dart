@@ -210,7 +210,7 @@ var routeModel = RouteModel.fromFirebase('id', {
 
 var boulderRouteModel = RouteModel.fromFirebase('id', {
   'routeColor': 'yellow',
-  'difficulty': 'consensus',
+  'difficulty': 'con.',
   'images': [
     'https://firebasestorage.googleapis.com/v0/b/free-beta-d83c0.appspot.com/o/uploads%2FFile:%20\'%2Fprivate%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2F836DBD5F-8F61-4647-B080-F581325900CE%2Ftmp%2Fimage_picker_A5F519E1-AF13-483D-81C8-BA60BD2AF216-8669-00000167C2597C9C.jpg\'?alt=media&token=3ac1b090-a6ab-40b4-8a99-15b795b6ed3b',
     'https://firebasestorage.googleapis.com/v0/b/free-beta-d83c0.appspot.com/o/uploads%2FFile:%20\'%2Fprivate%2Fvar%2Fmobile%2FContainers%2FData%2FApplication%2F836DBD5F-8F61-4647-B080-F581325900CE%2Ftmp%2Fimage_picker_C6A5BA27-7674-4ED8-8208-B010A700ABD5-8669-00000167CDD678D0.jpg\'?alt=media&token=4d6c06bd-3e35-4adf-9316-f1c11a6fc955'

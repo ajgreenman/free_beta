@@ -24,7 +24,7 @@ class FreeBetaDots extends StatelessWidget {
     if (current % 3 == 0) {
       return FreeBetaColors.greenBrand;
     }
-    if (current % length == 1) {
+    if (current % 3 == 1) {
       return FreeBetaColors.purpleBrand;
     }
     return FreeBetaColors.yellowBrand;
