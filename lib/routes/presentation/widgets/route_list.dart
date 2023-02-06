@@ -29,7 +29,7 @@ class RouteList extends StatelessWidget {
         itemBuilder: (_, index) => RouteCard(
           route: routes[index],
           onTap: (cardContext) => Navigator.of(cardContext).push(
-            RouteDetailScreen.route(routes[index]),
+            RouteDetailScreen.route(routes, index),
           ),
         ),
         separatorBuilder: (_, __) => FreeBetaDivider(),
@@ -44,7 +44,7 @@ class RouteList extends StatelessWidget {
         itemBuilder: (_, index) => RouteCard(
           route: routes[index],
           onTap: (cardContext) => Navigator.of(cardContext).push(
-            RouteDetailScreen.route(routes[index]),
+            RouteDetailScreen.route(routes, index),
           ),
         ),
         separatorBuilder: (_, __) => FreeBetaDivider(),

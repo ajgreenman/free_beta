@@ -33,7 +33,8 @@ void main() {
       ],
       child: MaterialApp(
         home: RouteDetailScreen(
-          routeModel: routeModel,
+          routes: [routeModel],
+          index: 0,
           isHelp: isHelp,
         ),
       ),

@@ -59,7 +59,8 @@ class RouteHelpScreen extends StatelessWidget {
                   route: routes[index],
                   onTap: (cardContext) => Navigator.of(cardContext).push(
                     RouteDetailScreen.route(
-                      routes[index],
+                      routes,
+                      index,
                       isHelp: true,
                     ),
                   ),

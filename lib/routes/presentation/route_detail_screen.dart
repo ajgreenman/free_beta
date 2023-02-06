@@ -19,18 +19,25 @@ import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:video_player/video_player.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
-  static Route<dynamic> route(RouteModel routeModel, {isHelp = false}) {
+  static Route<dynamic> route(List<RouteModel> routes, int index,
+      {isHelp = false}) {
     return MaterialPageRoute<dynamic>(builder: (context) {
-      return RouteDetailScreen(routeModel: routeModel, isHelp: isHelp);
+      return RouteDetailScreen(
+        routes: routes,
+        index: index,
+        isHelp: isHelp,
+      );
     });
   }
 
-  final RouteModel routeModel;
+  final List<RouteModel> routes;
+  final int index;
   final bool isHelp;
 
   const RouteDetailScreen({
     Key? key,
-    required this.routeModel,
+    required this.routes,
+    required this.index,
     this.isHelp = false,
   }) : super(key: key);
 
@@ -40,16 +47,21 @@ class RouteDetailScreen extends ConsumerStatefulWidget {
 
 class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   late UserRouteFormModel _formModel;
+  late RouteModel _routeModel;
+  late int _currentIndex;
+
   bool dirtyForm = false;
 
   @override
   void initState() {
     super.initState();
+    _currentIndex = widget.index;
+    _routeModel = widget.routes[_currentIndex];
     _formModel = UserRouteFormModel(
-      isCompleted: widget.routeModel.userRouteModel?.isCompleted ?? false,
-      isFavorited: widget.routeModel.userRouteModel?.isFavorited ?? false,
-      attempts: widget.routeModel.userRouteModel?.attempts ?? 0,
-      notes: widget.routeModel.userRouteModel?.notes,
+      isCompleted: _routeModel.userRouteModel?.isCompleted ?? false,
+      isFavorited: _routeModel.userRouteModel?.isFavorited ?? false,
+      attempts: _routeModel.userRouteModel?.attempts ?? 0,
+      notes: _routeModel.userRouteModel?.notes,
     );
   }
 
@@ -58,23 +70,24 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(widget.routeModel.name),
+        title: Text(_routeModel.name),
         leading: FreeBetaBackButton(onPressed: _onBack),
-        actions: [_EditButton(routeModel: widget.routeModel)],
+        actions: [_EditButton(routeModel: _routeModel)],
       ),
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        onHorizontalDragEnd: _onSwipe,
         child: SingleChildScrollView(
           child: Padding(
             padding: FreeBetaPadding.lAll,
             child: Column(
               children: [
                 if (widget.isHelp) _HelpWarning(),
-                RouteSummary(widget.routeModel, isDetailed: true),
+                RouteSummary(_routeModel, isDetailed: true),
                 _DetailScreenDivider(),
-                _RemovalWarningMessage(routeModel: widget.routeModel),
-                RouteImages(images: widget.routeModel.images),
-                _BetaVideoButton(betaVideo: widget.routeModel.betaVideo),
+                _RemovalWarningMessage(routeModel: _routeModel),
+                RouteImages(images: _routeModel.images),
+                _BetaVideoButton(betaVideo: _routeModel.betaVideo),
                 _DetailScreenDivider(),
                 Form(
                   child: Column(
@@ -124,6 +137,42 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
         ),
       ),
     );
+  }
+
+  void _onSwipe(DragEndDetails details) {
+    if (dirtyForm || details.primaryVelocity == null) {
+      return;
+    }
+
+    if (details.primaryVelocity! > 0) {
+      _onSwipeBack();
+    }
+
+    if (details.primaryVelocity! < 0) {
+      _onSwipeForward();
+    }
+  }
+
+  void _onSwipeBack() {
+    if (_currentIndex == 0) {
+      return;
+    }
+
+    setState(() {
+      _currentIndex--;
+      _routeModel = widget.routes[_currentIndex];
+    });
+  }
+
+  void _onSwipeForward() {
+    if (_currentIndex >= widget.routes.length - 1) {
+      return;
+    }
+
+    setState(() {
+      _currentIndex++;
+      _routeModel = widget.routes[_currentIndex];
+    });
   }
 
   _onNotesChanged(value) {
@@ -192,7 +241,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     await ref.read(routeApiProvider).saveRoute(
           UserRouteModel(
             userId: user!.uid,
-            routeId: widget.routeModel.id,
+            routeId: _routeModel.id,
             isCompleted: _formModel.isCompleted,
             isFavorited: _formModel.isFavorited,
             attempts: _formModel.attempts,
