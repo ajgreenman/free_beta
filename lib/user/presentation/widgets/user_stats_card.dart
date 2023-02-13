@@ -157,10 +157,7 @@ class _UserStatsSkeleton extends StatelessWidget {
                 style: FreeBetaTextStyle.h2,
               ),
               SizedBox(width: FreeBetaSizes.l),
-              SizedBox.square(
-                dimension: FreeBetaSizes.l,
-                child: CircularProgressIndicator(),
-              ),
+              _LoadingIcon(),
             ],
           ),
           SizedBox(height: FreeBetaSizes.m),
@@ -206,10 +203,7 @@ class _SkeletonCard extends StatelessWidget {
             style: FreeBetaTextStyle.h3,
           ),
           SizedBox(width: FreeBetaSizes.m),
-          Text(
-            '(?)',
-            style: FreeBetaTextStyle.h4,
-          ),
+          _LoadingIcon(),
           Spacer(),
           Icon(
             Icons.keyboard_arrow_right,
@@ -239,12 +233,7 @@ class _SkeletonRow extends StatelessWidget {
           style: FreeBetaTextStyle.h4,
         ),
         Spacer(),
-        Text(
-          '?',
-          style: FreeBetaTextStyle.body2.copyWith(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        _LoadingIcon(),
         SizedBox(width: FreeBetaSizes.m),
       ],
     );
@@ -275,6 +264,19 @@ class _ErrorCard extends ConsumerWidget {
     return InfoCard(
       child: Text(
         'Because you have an account, you must sign in to see your user stats.',
+      ),
+    );
+  }
+}
+
+class _LoadingIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(6.0),
+      child: SizedBox.square(
+        dimension: FreeBetaSizes.l,
+        child: CircularProgressIndicator(),
       ),
     );
   }
