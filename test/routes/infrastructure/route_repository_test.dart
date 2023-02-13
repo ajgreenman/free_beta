@@ -21,7 +21,7 @@ void main() {
 
   group('RouteRepository', () {
     test('getUserStats returns no results when user is null', () async {
-      when(() => mockRouteRemoteDataProvider.getRoutes())
+      when(() => mockRouteRemoteDataProvider.getActiveRoutes())
           .thenAnswer((_) => Future.value([]));
 
       var routeRepository = RouteRepository(
@@ -35,7 +35,7 @@ void main() {
     });
 
     test('getUserStats returns results when user is not null', () async {
-      when(() => mockRouteRemoteDataProvider.getRoutes())
+      when(() => mockRouteRemoteDataProvider.getActiveRoutes())
           .thenAnswer((_) => Future.value([routeModel]));
       when(() => mockRouteRemoteDataProvider.getUserRoutes(any()))
           .thenAnswer((_) => Future.value([userRouteModel]));

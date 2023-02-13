@@ -6,6 +6,12 @@ import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 
+enum RouteType {
+  active,
+  inactive,
+  all,
+}
+
 class RouteRepository {
   final RouteRemoteDataProvider routeRemoteDataProvider;
   final UserModel? user;
@@ -15,33 +21,25 @@ class RouteRepository {
     required this.user,
   });
 
-  Future<UserStatsModel> getUserStats() async {
-    var routes = await getRoutes();
+  Future<UserStatsModel> getUserStats(RouteType routeType) async {
+    var routes = await getRoutes(routeType);
 
     return UserStatsModel.fromRouteList(routes);
   }
 
-  Future<List<RouteModel>> getRoutes() async {
-    var routes = await routeRemoteDataProvider.getRoutes();
-
-    if (user != null) {
-      var userRoutes = await routeRemoteDataProvider.getUserRoutes(user!.uid);
-
-      userRoutes.forEach((userRoute) {
-        var route = routes.firstWhereOrNull(
-          (route) => route.id == userRoute.routeId,
-        );
-        if (route == null) return;
-
-        route.userRouteModel = userRoute;
-      });
+  Future<List<RouteModel>> getRoutes(RouteType routeType) async {
+    List<RouteModel> routes;
+    switch (routeType) {
+      case RouteType.active:
+        routes = await routeRemoteDataProvider.getActiveRoutes();
+        break;
+      case RouteType.inactive:
+        routes = await routeRemoteDataProvider.getRemovedRoutes();
+        break;
+      case RouteType.all:
+        routes = await routeRemoteDataProvider.getAllRoutes();
+        break;
     }
-
-    return routes.where((route) => !route.isDeleted).toList();
-  }
-
-  Future<List<RouteModel>> getRemovedRoutes() async {
-    var routes = await routeRemoteDataProvider.getRemovedRoutes();
 
     if (user != null) {
       var userRoutes = await routeRemoteDataProvider.getUserRoutes(user!.uid);

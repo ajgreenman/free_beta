@@ -36,10 +36,16 @@ final routeRemoteDataProvider = Provider((ref) => RouteRemoteDataProvider(
       ref.read(crashlyticsApiProvider),
     ));
 
+final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
 final fetchUserStatsProvider = FutureProvider<UserStatsModel>((ref) async {
   final routeApi = ref.watch(routeApiProvider);
+  final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
-  return routeApi.getUserStats();
+  if (includeRemovedRoutes) {
+    return await routeApi.getAllUserStats();
+  } else {
+    return await routeApi.getActiveUserStats();
+  }
 });
 
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
@@ -53,7 +59,7 @@ final routeWallLocationIndexFilterProvider = StateProvider<int?>((_) => null);
 final fetchRoutesProvider = FutureProvider((ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
-  return await routeApi.getRoutes();
+  return await routeApi.getActiveRoutes();
 });
 
 final fetchRemovedRoutesProvider = FutureProvider((ref) async {

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
+import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/presentation/widgets/user_graph_section.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats_section.dart';
@@ -44,8 +45,11 @@ class UserStatsScreen extends StatelessWidget {
               child: UserStatsSection(routeStatsModel: routeStatsModel),
             ),
             InfoCard(
-              child: UserGraphSection(climbType: climbType),
+              child: UserGraphSection(
+                climbType: climbType,
+              ),
             ),
+            SizedBox(height: FreeBetaSizes.xxxl),
           ],
         ),
       ),

@@ -13,16 +13,28 @@ class RouteApi {
 
   RouteApi({required this.routeRepository});
 
-  Future<UserStatsModel> getUserStats() async {
-    return routeRepository.getUserStats();
+  Future<UserStatsModel> getAllUserStats() async {
+    return routeRepository.getUserStats(RouteType.all);
   }
 
-  Future<List<RouteModel>> getRoutes() async {
-    return routeRepository.getRoutes();
+  Future<UserStatsModel> getActiveUserStats() async {
+    return routeRepository.getUserStats(RouteType.active);
+  }
+
+  Future<UserStatsModel> getRemovedUserStats() async {
+    return routeRepository.getUserStats(RouteType.inactive);
+  }
+
+  Future<List<RouteModel>> getAllRoutes() async {
+    return routeRepository.getRoutes(RouteType.all);
+  }
+
+  Future<List<RouteModel>> getActiveRoutes() async {
+    return routeRepository.getRoutes(RouteType.active);
   }
 
   Future<List<RouteModel>> getRemovedRoutes() async {
-    return routeRepository.getRemovedRoutes();
+    return routeRepository.getRoutes(RouteType.inactive);
   }
 
   Future<void> saveRoute(UserRouteModel userRouteModel) async {

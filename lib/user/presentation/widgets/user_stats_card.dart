@@ -5,6 +5,7 @@ import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
+import 'package:free_beta/app/presentation/widgets/removed_routes_switch.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
@@ -60,6 +61,8 @@ class _SuccessCard extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: FreeBetaSizes.m),
+          RemovedRoutesSwitch(),
           SizedBox(height: FreeBetaSizes.m),
           UserStatsSection(routeStatsModel: userStatsModel.overall),
           SizedBox(height: FreeBetaSizes.m),
@@ -147,10 +150,21 @@ class _UserStatsSkeleton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Current Stats',
-            style: FreeBetaTextStyle.h2,
+          Row(
+            children: [
+              Text(
+                'Current Stats',
+                style: FreeBetaTextStyle.h2,
+              ),
+              SizedBox(width: FreeBetaSizes.l),
+              SizedBox.square(
+                dimension: FreeBetaSizes.l,
+                child: CircularProgressIndicator(),
+              ),
+            ],
           ),
+          SizedBox(height: FreeBetaSizes.m),
+          RemovedRoutesSwitch(),
           SizedBox(height: FreeBetaSizes.m),
           _SkeletonRow(label: 'Total'),
           _SkeletonRow(label: 'Attempted'),

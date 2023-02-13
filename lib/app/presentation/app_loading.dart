@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:free_beta/app/presentation/widgets/logo_spinner.dart';
 
-class AppLoading extends StatefulWidget {
+class AppLoading extends StatelessWidget {
   const AppLoading({
     Key? key,
     required this.onComplete,
@@ -10,18 +10,13 @@ class AppLoading extends StatefulWidget {
   final VoidCallback onComplete;
 
   @override
-  State<AppLoading> createState() => _AppLoadingState();
-}
-
-class _AppLoadingState extends State<AppLoading> {
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: InkWell(
-        onTap: widget.onComplete,
+        onTap: onComplete,
         child: SafeArea(
           child: Center(
-            child: LogoSpinner(onComplete: widget.onComplete),
+            child: LogoSpinner(onComplete: onComplete),
           ),
         ),
       ),

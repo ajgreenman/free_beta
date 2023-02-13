@@ -19,7 +19,32 @@ class RouteRemoteDataProvider {
       firebaseFirestore.collection('users');
   static const String _userRouteCollectionName = 'user_routes';
 
-  Future<List<RouteModel>> getRoutes() async {
+  Future<List<RouteModel>> getAllRoutes() async {
+    List<RouteModel> routes = [];
+    await _firestoreRoutes
+        .get()
+        .then(
+          (routeCollection) => routeCollection.docs.forEach(
+            (json) => routes.add(
+              RouteModel.fromFirebase(json.id, json.data()),
+            ),
+          ),
+        )
+        .catchError(
+      (error, stackTrace) {
+        _crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'RouteRemoteDataProvider',
+          'getRoutes',
+        );
+      },
+    );
+
+    return routes;
+  }
+
+  Future<List<RouteModel>> getActiveRoutes() async {
     List<RouteModel> routes = [];
     await _firestoreRoutes
         .where('isActive', isEqualTo: true)

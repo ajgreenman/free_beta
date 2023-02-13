@@ -5,7 +5,10 @@ import 'package:free_beta/routes/presentation/route_color_square.dart';
 import 'package:free_beta/user/presentation/widgets/user_route_graph.dart';
 
 class UserGraphSection extends StatelessWidget {
-  const UserGraphSection({Key? key, required this.climbType}) : super(key: key);
+  const UserGraphSection({
+    Key? key,
+    required this.climbType,
+  }) : super(key: key);
 
   final ClimbType climbType;
 

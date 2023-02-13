@@ -44,7 +44,10 @@ class GymSection extends StatelessWidget {
             ),
           ),
           CustomPaint(
-            painter: _SectionPainter(path: _path, isSelected: isSelected),
+            painter: _SectionPainter(
+              path: _path,
+              isSelected: isSelected,
+            ),
           ),
         ],
       ),
