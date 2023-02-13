@@ -29,7 +29,7 @@ void main() {
         user: null,
       );
 
-      var stats = await routeRepository.getUserStats();
+      var stats = await routeRepository.getUserStats(RouteType.active);
       expect(stats.overall.total, 0);
       verifyNever(() => mockRouteRemoteDataProvider.getUserRoutes(any()));
     });
@@ -45,7 +45,7 @@ void main() {
         user: userModel,
       );
 
-      var stats = await routeRepository.getUserStats();
+      var stats = await routeRepository.getUserStats(RouteType.active);
 
       expect(stats.overall.total, 1);
       expect(stats.boulders.total, 1);
@@ -63,7 +63,7 @@ void main() {
         user: userModel,
       );
 
-      var removedRoutes = await routeRepository.getRemovedRoutes();
+      var removedRoutes = await routeRepository.getRoutes(RouteType.inactive);
 
       expect(removedRoutes.length, 1);
       verify(() => mockRouteRemoteDataProvider.getRemovedRoutes()).called(1);
