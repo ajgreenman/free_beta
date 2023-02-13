@@ -334,7 +334,7 @@ class _EmailField extends StatelessWidget {
             hintStyle: FreeBetaTextStyle.h4.copyWith(
               color: FreeBetaColors.grayLight,
             ),
-            hintText: 'Name',
+            hintText: 'Email (optional)',
           ),
           style: FreeBetaTextStyle.h4,
         ),
