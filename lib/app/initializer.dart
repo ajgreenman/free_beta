@@ -12,7 +12,7 @@ class Initializer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref.watch(fetchRoutesProvider);
+    ref.watch(fetchActiveRoutesProvider);
     return child;
   }
 }

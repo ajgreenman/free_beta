@@ -62,7 +62,15 @@ class _SuccessCard extends StatelessWidget {
             ],
           ),
           SizedBox(height: FreeBetaSizes.m),
-          RemovedRoutesSwitch(),
+          Row(
+            children: [
+              RemovedRoutesSwitch(),
+              SizedBox(width: FreeBetaSizes.l),
+              HelpTooltip(
+                message: 'Turning this on may increase loading times.',
+              ),
+            ],
+          ),
           SizedBox(height: FreeBetaSizes.m),
           UserStatsSection(routeStatsModel: userStatsModel.overall),
           SizedBox(height: FreeBetaSizes.m),

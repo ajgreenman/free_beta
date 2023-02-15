@@ -28,13 +28,13 @@ void main() {
   ) {
     return ProviderScope(
       overrides: [
-        fetchRoutesProvider.overrideWithValue(routes),
+        fetchActiveRoutesProvider.overrideWithValue(routes),
         fetchFilteredRoutes.overrideWithValue(filteredRoutes),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
         home: RouteListScreen(
-          refreshProvider: fetchRoutesProvider,
+          refreshProvider: fetchActiveRoutesProvider,
           routeProvider: fetchFilteredRoutes,
         ),
       ),

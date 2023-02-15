@@ -27,7 +27,7 @@ void main() {
     return ProviderScope(
       overrides: [
         fetchRatingUserGraph(ClimbType.boulder).overrideWithValue(value),
-        fetchRoutesProvider.overrideWithValue(AsyncData([routeModel])),
+        fetchActiveRoutesProvider.overrideWithValue(AsyncData([routeModel])),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -70,7 +70,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          fetchRoutesProvider.overrideWithValue(
+          fetchActiveRoutesProvider.overrideWithValue(
             AsyncData([routeModel, routeModel]),
           ),
           crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
@@ -93,7 +93,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          fetchRoutesProvider.overrideWithValue(
+          fetchActiveRoutesProvider.overrideWithValue(
             AsyncData([boulderRouteModel]),
           ),
           crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),

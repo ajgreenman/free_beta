@@ -27,7 +27,7 @@ void main() {
       overrides: [
         authenticationProvider.overrideWithValue(AsyncData(userModel)),
         routeApiProvider.overrideWithValue(mockRouteApi),
-        fetchRoutesProvider.overrideWithValue(AsyncData([])),
+        fetchActiveRoutesProvider.overrideWithValue(AsyncData([])),
         fetchUserStatsProvider
             .overrideWithValue(AsyncData(UserStatsModel.fromRouteList([]))),
       ],

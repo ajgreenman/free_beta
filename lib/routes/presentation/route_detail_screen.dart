@@ -248,7 +248,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             notes: _formModel.notes,
           ),
         );
-    ref.refresh(fetchRoutesProvider);
+    ref.refresh(fetchActiveRoutesProvider);
     ref.refresh(fetchUserStatsProvider);
 
     dirtyForm = false;
