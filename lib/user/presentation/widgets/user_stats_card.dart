@@ -48,29 +48,9 @@ class _SuccessCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Current Stats',
-                style: FreeBetaTextStyle.h2,
-              ),
-              SizedBox(width: FreeBetaSizes.l),
-              HelpTooltip(
-                message:
-                    'Statistics do not include routes that have been removed from the gym.',
-              ),
-            ],
-          ),
+          _TitleRow(),
           SizedBox(height: FreeBetaSizes.m),
-          Row(
-            children: [
-              RemovedRoutesSwitch(),
-              SizedBox(width: FreeBetaSizes.l),
-              HelpTooltip(
-                message: 'Turning this on may increase loading times.',
-              ),
-            ],
-          ),
+          _SwitchRow(),
           SizedBox(height: FreeBetaSizes.m),
           UserStatsSection(routeStatsModel: userStatsModel.overall),
           SizedBox(height: FreeBetaSizes.m),
@@ -100,6 +80,48 @@ class _SuccessCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _SwitchRow extends StatelessWidget {
+  const _SwitchRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        RemovedRoutesSwitch(),
+        SizedBox(width: FreeBetaSizes.l),
+        HelpTooltip(
+          message: 'Turning this on may increase loading times.',
+        ),
+      ],
+    );
+  }
+}
+
+class _TitleRow extends StatelessWidget {
+  const _TitleRow({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          'Current Stats',
+          style: FreeBetaTextStyle.h2,
+        ),
+        SizedBox(width: FreeBetaSizes.l),
+        HelpTooltip(
+          message:
+              'Statistics do not include routes that have been removed from the gym.',
+        ),
+      ],
     );
   }
 }
@@ -158,18 +180,9 @@ class _UserStatsSkeleton extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                'Current Stats',
-                style: FreeBetaTextStyle.h2,
-              ),
-              SizedBox(width: FreeBetaSizes.l),
-              _LoadingIcon(),
-            ],
-          ),
+          _TitleRow(),
           SizedBox(height: FreeBetaSizes.m),
-          RemovedRoutesSwitch(),
+          _SwitchRow(),
           SizedBox(height: FreeBetaSizes.m),
           _SkeletonRow(label: 'Total'),
           _SkeletonRow(label: 'Attempted'),
