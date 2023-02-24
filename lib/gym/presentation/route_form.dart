@@ -282,7 +282,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
           widget.editRouteModel!,
           _formModel,
         );
-    ref.refresh(fetchActiveRoutesProvider);
+    ref.invalidate(fetchActiveRoutesProvider);
 
     await showDialog(
       context: context,

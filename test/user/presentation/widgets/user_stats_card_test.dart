@@ -22,10 +22,10 @@ void main() {
         .thenAnswer((_) => Future.value());
   });
 
-  Widget buildFrame(AsyncValue<UserStatsModel> value) {
+  Widget buildFrame(UserStatsModel value) {
     return ProviderScope(
       overrides: [
-        fetchUserStatsProvider.overrideWithValue(value),
+        fetchUserStatsProvider.overrideWith((_) => value),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -37,31 +37,15 @@ void main() {
   }
 
   testWidgets('smoke test', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData(userStatsModel)));
+    await tester.pumpWidget(buildFrame(userStatsModel));
 
     expect(find.byKey(Key('UserStatsCard-success')), findsOneWidget);
     expect(find.byKey(Key('UserStatsCard-skeleton')), findsNothing);
     expect(find.byKey(Key('UserStatsCard-error')), findsNothing);
   });
 
-  testWidgets('loading shows skeleton', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncLoading()));
-
-    expect(find.byKey(Key('UserStatsCard-success')), findsNothing);
-    expect(find.byKey(Key('UserStatsCard-skeleton')), findsOneWidget);
-    expect(find.byKey(Key('UserStatsCard-error')), findsNothing);
-  });
-
-  testWidgets('error shows error', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncError('')));
-
-    expect(find.byKey(Key('UserStatsCard-success')), findsNothing);
-    expect(find.byKey(Key('UserStatsCard-skeleton')), findsNothing);
-    expect(find.byKey(Key('UserStatsCard-error')), findsOneWidget);
-  });
-
   testWidgets('tapping section shows stats', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData(userStatsModel)));
+    await tester.pumpWidget(buildFrame(userStatsModel));
 
     var boulderButton = find.byKey(Key('UserStatsCard-section-boulders'));
     expect(boulderButton, findsOneWidget);

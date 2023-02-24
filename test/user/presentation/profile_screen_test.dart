@@ -29,8 +29,8 @@ void main() {
   Widget buildFrame(UserModel? user) {
     return ProviderScope(
       overrides: [
-        fetchUserStatsProvider.overrideWithValue(AsyncData(userStatsModel)),
-        authenticationProvider.overrideWithValue(AsyncData(user)),
+        fetchUserStatsProvider.overrideWith((ref) => userStatsModel),
+        authenticationProvider.overrideWith((_) => Stream.value(user)),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -41,6 +41,7 @@ void main() {
 
   testWidgets('smoke test', (tester) async {
     await tester.pumpWidget(buildFrame(null));
+    await tester.pump();
 
     expect(find.byType(UserStatsCard), findsOneWidget);
     expect(find.byType(InfoCard), findsNWidgets(2));
@@ -49,6 +50,7 @@ void main() {
 
   testWidgets('tap remove routes', (tester) async {
     await tester.pumpWidget(buildFrame(userModel));
+    await tester.pump();
 
     var removeRouteCard = find.byKey(Key('ProfileScreen-removedRoutes'));
     expect(removeRouteCard, findsOneWidget);
@@ -66,6 +68,7 @@ void main() {
 
   testWidgets('tap contact developer', (tester) async {
     await tester.pumpWidget(buildFrame(userModel));
+    await tester.pump();
 
     var contactButton = find.byKey(Key('ProfileScreen-contact'));
     expect(contactButton, findsOneWidget);

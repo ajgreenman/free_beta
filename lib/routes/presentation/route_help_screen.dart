@@ -51,9 +51,7 @@ class RouteHelpScreen extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               itemBuilder: (_, index) => ProviderScope(
                 overrides: [
-                  resetScheduleProvider.overrideWithValue(
-                    AsyncData(resetSchedule),
-                  ),
+                  resetScheduleProvider.overrideWith((_) => resetSchedule),
                 ],
                 child: RouteCard(
                   route: routes[index],

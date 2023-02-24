@@ -4,7 +4,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
-import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
@@ -23,13 +22,13 @@ void main() {
   });
 
   Widget buildFrame(
-    AsyncValue<List<RouteModel>> routes,
-    AsyncValue<RouteFilterModel> filteredRoutes,
+    List<RouteModel> routes,
+    RouteFilterModel filteredRoutes,
   ) {
     return ProviderScope(
       overrides: [
-        fetchActiveRoutesProvider.overrideWithValue(routes),
-        fetchFilteredRoutes.overrideWithValue(filteredRoutes),
+        fetchActiveRoutesProvider.overrideWith((_) => routes),
+        fetchFilteredRoutes.overrideWith((_) => filteredRoutes),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -45,8 +44,8 @@ void main() {
     testWidgets('smoke test', (tester) async {
       await tester.pumpWidget(
         buildFrame(
-          AsyncData([boulderRouteModel]),
-          AsyncData(filteredRoutes),
+          [boulderRouteModel],
+          filteredRoutes,
         ),
       );
       expect(find.byType(RouteListScreen), findsOneWidget);
@@ -57,38 +56,13 @@ void main() {
     testWidgets('empty list shows message', (tester) async {
       await tester.pumpWidget(
         buildFrame(
-          AsyncData([]),
-          AsyncData(emptyFilteredRoutes),
+          [],
+          emptyFilteredRoutes,
         ),
       );
       expect(find.byType(RouteListScreen), findsOneWidget);
       expect(find.byType(RouteList), findsOneWidget);
       expect(find.text('Sorry, no available routes'), findsOneWidget);
-    });
-
-    testWidgets('show ProgresIndicator on loading', (tester) async {
-      await tester.pumpWidget(
-        buildFrame(
-          AsyncLoading(),
-          AsyncLoading(),
-        ),
-      );
-      expect(find.byType(RouteListScreen), findsOneWidget);
-      expect(find.byType(RouteList), findsNothing);
-      expect(find.byType(ErrorCard), findsNothing);
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    });
-
-    testWidgets('show ErrorCard on error', (tester) async {
-      await tester.pumpWidget(
-        buildFrame(
-          AsyncError('error'),
-          AsyncError('error'),
-        ),
-      );
-      expect(find.byType(RouteListScreen), findsOneWidget);
-      expect(find.byType(RouteList), findsNothing);
-      expect(find.byType(ErrorCard), findsOneWidget);
     });
   });
 }

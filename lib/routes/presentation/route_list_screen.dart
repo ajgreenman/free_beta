@@ -87,7 +87,7 @@ class _RouteListBody extends ConsumerWidget {
   }
 
   Future<void> _refreshRoutes(WidgetRef ref) async {
-    ref.refresh(refreshProvider);
+    ref.invalidate(refreshProvider);
   }
 }
 

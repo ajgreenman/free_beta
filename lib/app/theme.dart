@@ -29,7 +29,6 @@ class FreeBetaTheme {
     ),
     disabledColor: FreeBetaColors.grayLight,
     textTheme: ThemeData.light().textTheme,
-    toggleableActiveColor: FreeBetaColors.black,
     unselectedWidgetColor: FreeBetaColors.black,
     dividerTheme: DividerThemeData(color: FreeBetaColors.black),
   );

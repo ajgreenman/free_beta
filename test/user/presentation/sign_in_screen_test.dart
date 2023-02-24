@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
-import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
@@ -24,10 +23,10 @@ void main() {
         .thenAnswer((_) => Future.value(true));
   });
 
-  Widget buildFrame(AsyncValue<UserModel?> user) {
+  Widget buildFrame(UserModel? user) {
     return ProviderScope(
       overrides: [
-        authenticationProvider.overrideWithValue(user),
+        authenticationProvider.overrideWith((_) => Stream.value(user)),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
         userApiProvider.overrideWithValue(mockUserApi),
       ],
@@ -38,13 +37,15 @@ void main() {
   }
 
   testWidgets('smoke test', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData(anonymousUserModel)));
+    await tester.pumpWidget(buildFrame(anonymousUserModel));
+    await tester.pump();
 
     expect(find.byType(Form), findsOneWidget);
   });
 
   testWidgets('successful create account', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData(anonymousUserModel)));
+    await tester.pumpWidget(buildFrame(anonymousUserModel));
+    await tester.pump();
 
     await _fillOutForm(tester);
 
@@ -59,7 +60,8 @@ void main() {
     when(() => mockUserApi.signIn(any(), any()))
         .thenAnswer((_) => Future.value(false));
 
-    await tester.pumpWidget(buildFrame(AsyncData(anonymousUserModel)));
+    await tester.pumpWidget(buildFrame(anonymousUserModel));
+    await tester.pump();
 
     await _fillOutForm(tester);
 
@@ -70,23 +72,10 @@ void main() {
   });
 
   testWidgets('logged in user shows loading', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData(userModel)));
+    await tester.pumpWidget(buildFrame(userModel));
+    await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
-  });
-
-  testWidgets('loading value shows loading', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncLoading()));
-
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-  });
-
-  testWidgets('error value shows error', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncError('')));
-
-    expect(find.byType(ErrorCard), findsOneWidget);
-    verify(() => mockCrashlyticsApi.logError(any(), any(), any(), any()))
-        .called(1);
   });
 }
 

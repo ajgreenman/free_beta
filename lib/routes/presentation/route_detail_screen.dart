@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -67,6 +69,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log(_routeModel.toString());
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
@@ -248,8 +251,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
             notes: _formModel.notes,
           ),
         );
-    ref.refresh(fetchActiveRoutesProvider);
-    ref.refresh(fetchUserStatsProvider);
+    ref.invalidate(fetchActiveRoutesProvider);
+    ref.invalidate(fetchUserStatsProvider);
 
     dirtyForm = false;
 
@@ -568,8 +571,10 @@ class _AreYouSureDialog extends StatelessWidget {
             textAlign: TextAlign.end,
           ),
           onPressed: () {
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
+            if (context.mounted) {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            }
           },
         ),
         SizedBox(width: FreeBetaSizes.s),
@@ -580,8 +585,10 @@ class _AreYouSureDialog extends StatelessWidget {
           ),
           onPressed: () async {
             await onSave();
-            Navigator.of(context).pop();
-            Navigator.of(context).pop();
+            if (context.mounted) {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
+            }
           },
         ),
       ],

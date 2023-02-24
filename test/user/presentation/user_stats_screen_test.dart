@@ -14,9 +14,8 @@ void main() {
   Widget buildFrame(ClimbType climbType) {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraph(ClimbType.boulder)
-            .overrideWithValue(AsyncData([])),
-        fetchActiveRoutesProvider.overrideWithValue(AsyncData([routeModel])),
+        fetchRatingUserGraph(ClimbType.boulder).overrideWith((_) => []),
+        fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
       ],
       child: MaterialApp(
         home: UserStatsScreen(

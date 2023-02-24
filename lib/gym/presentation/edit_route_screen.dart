@@ -90,7 +90,7 @@ class _DeleteButton extends ConsumerWidget {
     await ref.read(routeApiProvider).deleteRoute(
           routeModel,
         );
-    ref.refresh(fetchActiveRoutesProvider);
+    ref.invalidate(fetchActiveRoutesProvider);
 
     await showDialog(
       context: context,

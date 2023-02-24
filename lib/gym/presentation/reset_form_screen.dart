@@ -229,7 +229,7 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
   void _onAddPressed() async {
     await ref.read(gymApiProvider).addReset(_resetFormModel);
 
-    ref.refresh(resetScheduleProvider);
+    ref.invalidate(resetScheduleProvider);
 
     await showDialog(
       context: context,
@@ -252,7 +252,7 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
           _resetFormModel,
         );
 
-    ref.refresh(resetScheduleProvider);
+    ref.invalidate(resetScheduleProvider);
 
     await showDialog(
       context: context,
@@ -301,7 +301,7 @@ class _DeleteButton extends ConsumerWidget {
     await ref.read(gymApiProvider).deleteReset(
           resetModel!,
         );
-    ref.refresh(resetScheduleProvider);
+    ref.invalidate(resetScheduleProvider);
 
     await showDialog(
       context: context,

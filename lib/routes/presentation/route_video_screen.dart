@@ -200,10 +200,11 @@ class _GradientSliderTrackShape extends SliderTrackShape
     required SliderThemeData sliderTheme,
     required Animation<double> enableAnimation,
     required Offset thumbCenter,
+    Offset? secondaryOffset,
     bool isEnabled = false,
     bool isDiscrete = false,
     required TextDirection textDirection,
-    double additionalActiveTrackHeight = 2,
+    //double additionalActiveTrackHeight = 2,
   }) {
     final trackRect = getPreferredRect(
       parentBox: parentBox,
@@ -215,9 +216,9 @@ class _GradientSliderTrackShape extends SliderTrackShape
 
     final activeGradientRect = Rect.fromLTRB(
       trackRect.left,
-      trackRect.top - (additionalActiveTrackHeight / 2),
+      trackRect.top, // - (additionalActiveTrackHeight / 2),
       thumbCenter.dx,
-      trackRect.bottom + (additionalActiveTrackHeight / 2),
+      trackRect.bottom, // + (additionalActiveTrackHeight / 2),
     );
 
     final ColorTween activeTrackColorTween = ColorTween(
@@ -244,9 +245,9 @@ class _GradientSliderTrackShape extends SliderTrackShape
     context.canvas.drawRRect(
       RRect.fromLTRBAndCorners(
         trackRect.left,
-        trackRect.top - (additionalActiveTrackHeight / 2),
+        trackRect.top, // - (additionalActiveTrackHeight / 2),
         thumbCenter.dx,
-        trackRect.bottom + (additionalActiveTrackHeight / 2),
+        trackRect.bottom, // + (additionalActiveTrackHeight / 2),
         topLeft: activeTrackRadius,
         bottomLeft: activeTrackRadius,
       ),

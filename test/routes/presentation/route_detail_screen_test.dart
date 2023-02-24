@@ -25,11 +25,11 @@ void main() {
   Widget buildFrame({isHelp = false}) {
     return ProviderScope(
       overrides: [
-        authenticationProvider.overrideWithValue(AsyncData(userModel)),
-        routeApiProvider.overrideWithValue(mockRouteApi),
-        fetchActiveRoutesProvider.overrideWithValue(AsyncData([])),
+        authenticationProvider.overrideWith((_) => Stream.value(userModel)),
+        routeApiProvider.overrideWith((_) => mockRouteApi),
+        fetchActiveRoutesProvider.overrideWith((_) => []),
         fetchUserStatsProvider
-            .overrideWithValue(AsyncData(UserStatsModel.fromRouteList([]))),
+            .overrideWith((_) => UserStatsModel.fromRouteList([])),
       ],
       child: MaterialApp(
         home: RouteDetailScreen(

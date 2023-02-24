@@ -8,7 +8,7 @@ import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_list_screen.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:free_beta/user/presentation/contact_developer_screen.dart';
-import 'package:free_beta/user/presentation/widgets/gym_admin.dart';
+import 'package:free_beta/gym/presentation/widgets/gym_admin.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats_card.dart';
 
 class ProfileScreen extends ConsumerWidget {

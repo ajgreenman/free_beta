@@ -71,6 +71,6 @@ class RouteLocationListScreen extends ConsumerWidget {
   }
 
   Future<void> _refreshRoutes(WidgetRef ref) async {
-    ref.refresh(fetchActiveRoutesProvider);
+    ref.invalidate(fetchActiveRoutesProvider);
   }
 }

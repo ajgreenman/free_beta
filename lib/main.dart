@@ -1,13 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/free_beta.dart';
-import 'package:free_beta/app/infrastructure/app_providers.dart';
-import 'package:free_beta/app/infrastructure/config_api.dart';
 import 'package:free_beta/app/initializer.dart';
 import 'package:free_beta/app/presentation/app_loading.dart';
 import 'package:free_beta/app/theme.dart';
@@ -33,9 +30,6 @@ void main() async {
     await FirebaseAuth.instance.signInAnonymously();
   }
 
-  var _remoteConfig = FirebaseRemoteConfig.instance;
-  await _remoteConfig.fetchAndActivate();
-
   runApp(
     ProviderScope(
       child: Initializer(
@@ -52,9 +46,6 @@ void main() async {
           home: App(),
         ),
       ),
-      overrides: [
-        configApiProvider.overrideWithValue(ConfigApi(_remoteConfig)),
-      ],
     ),
   );
 }

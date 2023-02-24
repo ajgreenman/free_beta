@@ -268,7 +268,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       );
     }
     Navigator.of(context).pop();
-    ref.refresh(authenticationProvider);
+    ref.invalidate(authenticationProvider);
   }
 }
 

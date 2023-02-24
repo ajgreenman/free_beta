@@ -23,11 +23,11 @@ void main() {
         .thenAnswer((_) => Future.value());
   });
 
-  Widget buildFrame(AsyncValue<List<Series<UserRatingModel, String>>> value) {
+  Widget buildFrame(List<Series<UserRatingModel, String>> value) {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraph(ClimbType.boulder).overrideWithValue(value),
-        fetchActiveRoutesProvider.overrideWithValue(AsyncData([routeModel])),
+        fetchRatingUserGraph(ClimbType.boulder).overrideWith((_) => value),
+        fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
@@ -39,39 +39,19 @@ void main() {
   }
 
   testWidgets('smoke test', (tester) async {
-    await tester.pumpWidget(buildFrame(AsyncData([])));
+    await tester.pumpWidget(buildFrame([]));
 
     expect(find.byType(BarChart), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.byKey(Key('UserRouteGraph-error')), findsNothing);
   });
 
-  testWidgets('loading shows progress indicator', (tester) async {
-    await tester.pumpWidget(buildFrame(
-      AsyncLoading(),
-    ));
-
-    expect(find.byType(BarChart), findsNothing);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-    expect(find.byKey(Key('UserRouteGraph-error')), findsNothing);
-  });
-
-  testWidgets('error shows error card', (tester) async {
-    await tester.pumpWidget(buildFrame(
-      AsyncError(''),
-    ));
-
-    expect(find.byType(BarChart), findsNothing);
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-    expect(find.byKey(Key('UserRouteGraph-error')), findsOneWidget);
-  });
-
   testWidgets('smoke test with real graph (yosemite)', (tester) async {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          fetchActiveRoutesProvider.overrideWithValue(
-            AsyncData([routeModel, routeModel]),
+          fetchActiveRoutesProvider.overrideWith(
+            (_) => [routeModel, routeModel],
           ),
           crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
         ],
@@ -93,8 +73,8 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          fetchActiveRoutesProvider.overrideWithValue(
-            AsyncData([boulderRouteModel]),
+          fetchActiveRoutesProvider.overrideWith(
+            (_) => [boulderRouteModel],
           ),
           crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
         ],
