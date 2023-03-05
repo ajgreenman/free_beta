@@ -108,6 +108,7 @@ class _NameText extends StatelessWidget {
           name,
           style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
           maxLines: 1,
+          minFontSize: 10,
         ),
       ),
     );
