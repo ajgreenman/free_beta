@@ -218,7 +218,7 @@ class _StaggeredLogo extends StatelessWidget {
             padding: FreeBetaPadding.xxlVertical,
             child: Text(
               'Tap anywhere to skip...',
-              style: FreeBetaTextStyle.h3,
+              style: FreeBetaTextStyle.body4,
             ),
           ),
         ),
