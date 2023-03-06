@@ -1,7 +1,7 @@
 name: free_beta
 description: Elev8 route tracking app.
 publish_to: 'none' 
-version: 1.4.3+21
+version: 1.4.4+22
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
