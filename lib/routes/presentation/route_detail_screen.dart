@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -69,7 +67,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    log(_routeModel.toString());
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(

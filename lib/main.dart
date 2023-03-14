@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/free_beta.dart';
+import 'package:free_beta/app/infrastructure/messaging_api.dart';
 import 'package:free_beta/app/initializer.dart';
 import 'package:free_beta/app/presentation/app_loading.dart';
 import 'package:free_beta/app/theme.dart';
@@ -29,6 +31,8 @@ void main() async {
   if (user == null) {
     await FirebaseAuth.instance.signInAnonymously();
   }
+
+  FirebaseMessaging.onBackgroundMessage(MessagingApi.handleMessage);
 
   runApp(
     ProviderScope(
