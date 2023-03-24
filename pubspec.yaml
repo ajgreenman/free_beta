@@ -1,7 +1,7 @@
 name: free_beta
 description: Elev8 route tracking app.
 publish_to: 'none' 
-version: 1.5.0+23
+version: 1.5.1+24
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -24,6 +24,7 @@ dependencies:
   charts_flutter: ^0.12.0
   auto_size_text: ^3.0.0
   firebase_messaging: ^14.2.6
+  flutter_app_badger: ^1.5.0
 
 dev_dependencies:
   flutter_test:
