@@ -24,33 +24,44 @@ class RouteList extends StatelessWidget {
     }
 
     if (onRefresh == null) {
-      return ListView.separated(
-        shrinkWrap: true,
-        itemBuilder: (_, index) => RouteCard(
-          route: routes[index],
-          onTap: (cardContext) => Navigator.of(cardContext).push(
-            RouteDetailScreen.route(routes, index),
-          ),
-        ),
-        separatorBuilder: (_, __) => FreeBetaDivider(),
-        itemCount: routes.length,
+      return _RouteListView(
+        scrollKey: scrollKey,
+        routes: routes,
       );
     }
 
     return RefreshIndicator(
-      child: ListView.separated(
-        key: PageStorageKey(scrollKey),
-        shrinkWrap: true,
-        itemBuilder: (_, index) => RouteCard(
-          route: routes[index],
-          onTap: (cardContext) => Navigator.of(cardContext).push(
-            RouteDetailScreen.route(routes, index),
-          ),
-        ),
-        separatorBuilder: (_, __) => FreeBetaDivider(),
-        itemCount: routes.length,
+      child: _RouteListView(
+        scrollKey: scrollKey,
+        routes: routes,
       ),
       onRefresh: onRefresh!,
+    );
+  }
+}
+
+class _RouteListView extends StatelessWidget {
+  const _RouteListView({
+    required this.scrollKey,
+    required this.routes,
+  });
+
+  final String scrollKey;
+  final List<RouteModel> routes;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      key: PageStorageKey(scrollKey),
+      shrinkWrap: true,
+      itemBuilder: (_, index) => RouteCard(
+        route: routes[index],
+        onTap: (cardContext) => Navigator.of(cardContext).push(
+          RouteDetailScreen.route(routes, index),
+        ),
+      ),
+      separatorBuilder: (_, __) => FreeBetaDivider(),
+      itemCount: routes.length,
     );
   }
 }
