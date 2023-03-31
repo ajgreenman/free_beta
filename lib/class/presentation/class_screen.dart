@@ -7,7 +7,7 @@ import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
-import 'package:free_beta/class/infrastructure/class_provider.dart';
+import 'package:free_beta/class/infrastructure/class_providers.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
 import 'package:free_beta/class/presentation/class_chalkboard.dart';
 

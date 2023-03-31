@@ -1,24 +1,30 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/infrastructure/email_api.dart';
 import 'package:free_beta/app/infrastructure/media_api.dart';
 import 'package:free_beta/app/infrastructure/messaging_api.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final mediaApiProvider = Provider(
-  (ref) => MediaApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider)),
-);
+part 'app_providers.g.dart';
 
-final emailApiProvider = Provider(
-  (ref) => EmailApi(ref.read(crashlyticsApiProvider)),
-);
+@riverpod
+MediaApi mediaApi(MediaApiRef ref) {
+  return MediaApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider));
+}
 
-final crashlyticsApiProvider = Provider(
-  (_) => CrashlyticsApi(FirebaseCrashlytics.instance),
-);
+@riverpod
+EmailApi emailApi(EmailApiRef ref) {
+  return EmailApi(ref.read(crashlyticsApiProvider));
+}
 
-final messagingApiProvider = Provider(
-  (_) => MessagingApi(FirebaseMessaging.instance),
-);
+@riverpod
+CrashlyticsApi crashlyticsApi(CrashlyticsApiRef ref) {
+  return CrashlyticsApi(FirebaseCrashlytics.instance);
+}
+
+@riverpod
+MessagingApi messagingApi(MessagingApiRef ref) {
+  return MessagingApi(FirebaseMessaging.instance);
+}
