@@ -34,7 +34,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         title: Text('Sign In'),
         leading: FreeBetaBackButton(),
       ),
-      body: ref.watch(authenticationProvider).when(
+      body: ref.watch(authenticationStreamProvider).when(
             data: (user) {
               if (user == null || user.isAnonymous) {
                 return _buildSignInForm(context);
@@ -47,7 +47,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                     error,
                     stackTrace,
                     'SignInScreen',
-                    'authenticationProvider',
+                    'authenticationStreamProvider',
                   );
 
               return ErrorCard();
@@ -268,7 +268,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
       );
     }
     Navigator.of(context).pop();
-    ref.invalidate(authenticationProvider);
+    ref.invalidate(authenticationStreamProvider);
   }
 }
 

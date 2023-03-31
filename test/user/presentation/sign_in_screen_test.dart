@@ -26,7 +26,7 @@ void main() {
   Widget buildFrame(UserModel? user) {
     return ProviderScope(
       overrides: [
-        authenticationProvider.overrideWith((_) => Stream.value(user)),
+        authenticationStreamProvider.overrideWith((_) => Stream.value(user)),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
         userApiProvider.overrideWithValue(mockUserApi),
       ],

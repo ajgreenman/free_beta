@@ -132,7 +132,7 @@ class _EditButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.watch(authenticationProvider).whenOrNull(
+    var user = ref.watch(authenticationStreamProvider).whenOrNull(
           data: (user) => user,
         );
 
@@ -157,7 +157,7 @@ class _AuthenticationButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var button = ref.watch(authenticationProvider).whenOrNull(
+    var button = ref.watch(authenticationStreamProvider).whenOrNull(
       data: (user) {
         if (user == null || user.isAnonymous) {
           return TextButton(

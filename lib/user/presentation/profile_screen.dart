@@ -49,7 +49,7 @@ class _GymAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var widget = ref.watch(authenticationProvider).whenOrNull(
+    var widget = ref.watch(authenticationStreamProvider).whenOrNull(
       data: (user) {
         if (user != null && !user.isAnonymous) return GymAdmin();
       },

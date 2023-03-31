@@ -36,7 +36,7 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
         title: Text('Create Account'),
         leading: FreeBetaBackButton(),
       ),
-      body: ref.watch(authenticationProvider).when(
+      body: ref.watch(authenticationStreamProvider).when(
             data: (user) {
               if (user == null || user.isAnonymous) {
                 return _buildCreateAccountForm();

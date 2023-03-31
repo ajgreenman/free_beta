@@ -1,15 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
+import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final userApiProvider = Provider((ref) => UserApi(
-      FirebaseAuth.instance,
-      FirebaseFirestore.instance,
-      ref.read(crashlyticsApiProvider),
-    ));
+part 'user_providers.g.dart';
 
-final authenticationProvider = StreamProvider((ref) {
+@riverpod
+UserApi userApi(UserApiRef ref) {
+  return UserApi(
+    FirebaseAuth.instance,
+    FirebaseFirestore.instance,
+    ref.read(crashlyticsApiProvider),
+  );
+}
+
+@riverpod
+Stream<UserModel?> authenticationStream(AuthenticationStreamRef ref) {
   return ref.read(userApiProvider).authenticationStream;
-});
+}

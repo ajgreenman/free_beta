@@ -35,7 +35,7 @@ final routeGraphApiProvider = AutoDisposeProvider<RouteGraphApi>.internal(
 );
 
 typedef RouteGraphApiRef = AutoDisposeProviderRef<RouteGraphApi>;
-String _$routeRepositoryHash() => r'6d3b42b8ac8e4dc1d7b9138b971ccbcd94fecd46';
+String _$routeRepositoryHash() => r'6be01b3de193a5860b4650cfd911c4b7bc96d730';
 
 /// See also [routeRepository].
 @ProviderFor(routeRepository)

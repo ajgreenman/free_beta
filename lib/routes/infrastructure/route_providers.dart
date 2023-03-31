@@ -33,7 +33,7 @@ RouteGraphApi routeGraphApi(RouteGraphApiRef ref) {
 RouteRepository routeRepository(RouteRepositoryRef ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
-    user: ref.watch(authenticationProvider).whenOrNull<UserModel?>(
+    user: ref.watch(authenticationStreamProvider).whenOrNull<UserModel?>(
           data: (user) => user,
         ),
   );

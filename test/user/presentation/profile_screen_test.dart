@@ -30,7 +30,7 @@ void main() {
     return ProviderScope(
       overrides: [
         fetchUserStatsProvider.overrideWith((ref) => userStatsModel),
-        authenticationProvider.overrideWith((_) => Stream.value(user)),
+        authenticationStreamProvider.overrideWith((_) => Stream.value(user)),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(

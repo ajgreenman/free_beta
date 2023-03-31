@@ -234,7 +234,7 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
   }
 
   Future<void> _onSave() async {
-    var user = ref.read(authenticationProvider).whenOrNull(
+    var user = ref.read(authenticationStreamProvider).whenOrNull(
           data: (user) => user,
         );
 
@@ -421,7 +421,7 @@ class _EditButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var user = ref.watch(authenticationProvider).whenOrNull(
+    var user = ref.watch(authenticationStreamProvider).whenOrNull(
           data: (user) => user,
         );
 
