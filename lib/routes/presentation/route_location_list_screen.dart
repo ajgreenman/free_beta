@@ -49,7 +49,7 @@ class RouteLocationListScreen extends ConsumerWidget {
             ),
           ),
         ],
-        body: ref.watch(fetchLocationFilteredRoutes).when(
+        body: ref.watch(fetchLocationFilteredRoutesProvider).when(
               data: (routeFilterModel) => RouteList(
                 scrollKey: 'route-location-list',
                 routes: routeFilterModel.filteredRoutes.sortRoutes(),

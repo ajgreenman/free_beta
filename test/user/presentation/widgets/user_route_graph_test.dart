@@ -26,7 +26,8 @@ void main() {
   Widget buildFrame(List<Series<UserRatingModel, String>> value) {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraph(ClimbType.boulder).overrideWith((_) => value),
+        fetchRatingUserGraphProvider(climbType: ClimbType.boulder)
+            .overrideWith((_) => value),
         fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],

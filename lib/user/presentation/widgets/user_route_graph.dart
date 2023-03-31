@@ -17,7 +17,7 @@ class UserRouteGraph extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchRatingUserGraph(climbType)).when(
+    return ref.watch(fetchRatingUserGraphProvider(climbType: climbType)).when(
           data: (series) => _RatingGraph(
             series: series,
           ),

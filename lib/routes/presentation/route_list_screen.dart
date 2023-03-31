@@ -10,8 +10,8 @@ import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
 class RouteListScreen extends ConsumerWidget {
   static Route<dynamic> route({
-    required FutureProvider<RouteFilterModel> routeProvider,
-    required FutureProvider<List<RouteModel>> refreshProvider,
+    required AutoDisposeFutureProvider<RouteFilterModel> routeProvider,
+    required AutoDisposeFutureProvider<List<RouteModel>> refreshProvider,
     AppBar? appBar,
   }) {
     return MaterialPageRoute<dynamic>(builder: (context) {
@@ -30,8 +30,8 @@ class RouteListScreen extends ConsumerWidget {
     this.appBar,
   }) : super(key: key);
 
-  final FutureProvider<RouteFilterModel> routeProvider;
-  final FutureProvider<List<RouteModel>> refreshProvider;
+  final AutoDisposeFutureProvider<RouteFilterModel> routeProvider;
+  final AutoDisposeFutureProvider<List<RouteModel>> refreshProvider;
   final AppBar? appBar;
 
   @override
@@ -66,8 +66,8 @@ class _RouteListBody extends ConsumerWidget {
     required this.refreshProvider,
   }) : super(key: key);
 
-  final FutureProvider<RouteFilterModel> routeProvider;
-  final FutureProvider<List<RouteModel>> refreshProvider;
+  final AutoDisposeFutureProvider<RouteFilterModel> routeProvider;
+  final AutoDisposeFutureProvider<List<RouteModel>> refreshProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

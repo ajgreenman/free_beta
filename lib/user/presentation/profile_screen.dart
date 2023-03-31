@@ -124,7 +124,7 @@ class _RemovedRoutesCard extends StatelessWidget {
             title: Text('Removed Routes'),
             leading: FreeBetaBackButton(),
           ),
-          routeProvider: fetchFilteredRemovedRoutes,
+          routeProvider: fetchFilteredRemovedRoutesProvider,
           refreshProvider: fetchRemovedRoutesProvider,
         ),
       ),

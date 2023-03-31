@@ -11,7 +11,7 @@ import 'package:free_beta/routes/presentation/route_color_square.dart';
 class RouteFilterBar extends SliverPersistentHeaderDelegate {
   RouteFilterBar({required this.routeProvider});
 
-  final FutureProvider<RouteFilterModel> routeProvider;
+  final AutoDisposeFutureProvider<RouteFilterModel> routeProvider;
 
   static const _filterBarHeight = 64.0;
   static const _attemptedFilterHeight = 32.0;
@@ -100,7 +100,7 @@ class _FilterTextField extends ConsumerWidget {
     required this.routeProvider,
   }) : super(key: key);
 
-  final FutureProvider<RouteFilterModel> routeProvider;
+  final AutoDisposeFutureProvider<RouteFilterModel> routeProvider;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

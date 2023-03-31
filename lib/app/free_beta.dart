@@ -26,7 +26,7 @@ class _FreeBetaState extends ConsumerState<FreeBeta> {
 
   static List<Widget> _screens = [
     RouteListScreen(
-      routeProvider: fetchFilteredRoutes,
+      routeProvider: fetchFilteredRoutesProvider,
       refreshProvider: fetchActiveRoutesProvider,
     ),
     GymMapsScreen(),

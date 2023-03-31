@@ -13,32 +13,44 @@ import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final routeApiProvider = Provider(
-  (ref) => RouteApi(
+part 'route_providers.g.dart';
+
+@riverpod
+RouteApi routeApi(RouteApiRef ref) {
+  return RouteApi(
     routeRepository: ref.watch(routeRepositoryProvider),
-  ),
-);
-final routeGraphApiProvider = Provider(
-  (ref) => RouteGraphApi(),
-);
+  );
+}
 
-final routeRepositoryProvider = Provider((ref) {
+@riverpod
+RouteGraphApi routeGraphApi(RouteGraphApiRef ref) {
+  return RouteGraphApi();
+}
+
+@riverpod
+RouteRepository routeRepository(RouteRepositoryRef ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
     user: ref.watch(authenticationProvider).whenOrNull<UserModel?>(
           data: (user) => user,
         ),
   );
-});
+}
 
-final routeRemoteDataProvider = Provider((ref) => RouteRemoteDataProvider(
-      FirebaseFirestore.instance,
-      ref.read(crashlyticsApiProvider),
-    ));
+@riverpod
+RouteRemoteDataProvider routeRemoteData(
+  RouteRemoteDataRef ref,
+) {
+  return RouteRemoteDataProvider(
+    FirebaseFirestore.instance,
+    ref.read(crashlyticsApiProvider),
+  );
+}
 
-final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
-final fetchUserStatsProvider = FutureProvider<UserStatsModel>((ref) async {
+@riverpod
+Future<UserStatsModel> fetchUserStats(FetchUserStatsRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
@@ -47,35 +59,31 @@ final fetchUserStatsProvider = FutureProvider<UserStatsModel>((ref) async {
   } else {
     return await routeApi.getActiveUserStats();
   }
-});
+}
 
-final routeTextFilterProvider = StateProvider<String?>((_) => null);
-final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
-final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
-final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
-final routeWallLocationFilterProvider =
-    StateProvider<WallLocation?>((_) => null);
-final routeWallLocationIndexFilterProvider = StateProvider<int?>((_) => null);
-
-final fetchAllRoutesProvider = FutureProvider((ref) async {
+@riverpod
+Future<List<RouteModel>> fetchAllRoutes(FetchAllRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getAllRoutes();
-});
+}
 
-final fetchActiveRoutesProvider = FutureProvider((ref) async {
+@riverpod
+Future<List<RouteModel>> fetchActiveRoutes(FetchAllRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getActiveRoutes();
-});
+}
 
-final fetchRemovedRoutesProvider = FutureProvider((ref) async {
+@riverpod
+Future<List<RouteModel>> fetchRemovedRoutes(FetchAllRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getRemovedRoutes();
-});
+}
 
-final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
+@riverpod
+Future<RouteFilterModel> fetchFilteredRoutes(FetchFilteredRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchActiveRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
@@ -89,10 +97,11 @@ final fetchFilteredRoutes = FutureProvider<RouteFilterModel>((ref) async {
     routeColorFilter,
     routeAttemptedFilter,
   );
-});
+}
 
-final fetchFilteredRemovedRoutes =
-    FutureProvider<RouteFilterModel>((ref) async {
+@riverpod
+Future<RouteFilterModel> fetchFilteredRemovedRoutes(
+    FetchFilteredRemovedRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchRemovedRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
@@ -106,10 +115,11 @@ final fetchFilteredRemovedRoutes =
     routeColorFilter,
     routeAttemptedFilter,
   );
-});
+}
 
-final fetchLocationFilteredRoutes =
-    FutureProvider<RouteFilterModel>((ref) async {
+@riverpod
+FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
+    FetchLocationFilteredRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchActiveRoutesProvider.future);
   final wallLocationFilter = ref.watch(routeWallLocationFilterProvider);
@@ -120,11 +130,13 @@ final fetchLocationFilteredRoutes =
     wallLocationFilter,
     wallLocationIndexFilter,
   );
-});
+}
 
-final fetchRatingUserGraph =
-    FutureProvider.family<List<Series<UserRatingModel, String>>, ClimbType>(
-        (ref, climbType) async {
+@riverpod
+Future<List<Series<UserRatingModel, String>>> fetchRatingUserGraph(
+  FetchRatingUserGraphRef ref, {
+  required ClimbType climbType,
+}) async {
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
   List<RouteModel> unfilteredRoutes;
@@ -139,4 +151,13 @@ final fetchRatingUserGraph =
     climbType: climbType,
     unfilteredRoutes: unfilteredRoutes,
   );
-});
+}
+
+final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
+final routeTextFilterProvider = StateProvider<String?>((_) => null);
+final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
+final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
+final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
+final routeWallLocationFilterProvider =
+    StateProvider<WallLocation?>((_) => null);
+final routeWallLocationIndexFilterProvider = StateProvider<int?>((_) => null);
