@@ -9,6 +9,7 @@ import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/class/infrastructure/class_providers.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
+import 'package:free_beta/class/infrastructure/models/class_model.p.dart';
 import 'package:free_beta/class/presentation/class_chalkboard.dart';
 
 class ClassScreen extends ConsumerWidget {
@@ -67,7 +68,9 @@ class _ScheduleState extends State<_Schedule> {
                   SizedBox(height: FreeBetaSizes.l),
                   ClassChalkboard(
                     height: _getChalkboardHeight(_height),
-                    classes: widget.classes.where((c) => c.day == day).toList(),
+                    classes: widget.classes.activeClasses
+                        .where((c) => c.day == day)
+                        .toList(),
                   ),
                 ],
               ),

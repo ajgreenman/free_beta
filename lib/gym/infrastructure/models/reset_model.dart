@@ -42,7 +42,7 @@ class ResetFormModel {
     this.sections = const [],
   });
 
-  factory ResetFormModel.fromRouteModel(ResetModel resetModel) {
+  factory ResetFormModel.fromResetModel(ResetModel resetModel) {
     return ResetFormModel(
       date: resetModel.date,
       sections: resetModel.sections,

@@ -31,6 +31,9 @@ class FreeBetaTheme {
     textTheme: ThemeData.light().textTheme,
     unselectedWidgetColor: FreeBetaColors.black,
     dividerTheme: DividerThemeData(color: FreeBetaColors.black),
+    timePickerTheme: TimePickerThemeData(
+      backgroundColor: FreeBetaColors.white,
+    ),
   );
 }
 

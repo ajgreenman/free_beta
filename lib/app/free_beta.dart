@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/chalkboard.dart';
 import 'package:free_beta/app/presentation/widgets/free_beta_bottom_navigation_bar.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/class/presentation/class_admin_screen.dart';
 import 'package:free_beta/class/presentation/class_screen.dart';
 import 'package:free_beta/gym/presentation/reset_admin_screen.dart';
 import 'package:free_beta/gym/presentation/gym_maps_screen.dart';
@@ -73,13 +74,13 @@ class _FreeBetaActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (currentIndex == 0) {
-      return _HelpButton();
+      return _RouteHelpButton();
     }
     if (currentIndex == 2) {
-      return _EditButton();
+      return _EditScheduleButton();
     }
     if (currentIndex == 3) {
-      return _LegendButton();
+      return _ClassesButton();
     }
     if (currentIndex == 4) {
       return _AuthenticationButton();
@@ -88,8 +89,8 @@ class _FreeBetaActions extends StatelessWidget {
   }
 }
 
-class _HelpButton extends StatelessWidget {
-  const _HelpButton({Key? key}) : super(key: key);
+class _RouteHelpButton extends StatelessWidget {
+  const _RouteHelpButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -105,8 +106,42 @@ class _HelpButton extends StatelessWidget {
   }
 }
 
-class _LegendButton extends StatelessWidget {
-  const _LegendButton({Key? key}) : super(key: key);
+class _ClassesButton extends ConsumerWidget {
+  const _ClassesButton();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    var user = ref.watch(authenticationStreamProvider).whenOrNull(
+          data: (user) => user,
+        );
+
+    if (user == null || user.isAnonymous) {
+      return _ClassesLegendButton();
+    }
+
+    return _EditClassesButton();
+  }
+}
+
+class _EditClassesButton extends StatelessWidget {
+  const _EditClassesButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      onPressed: () => Navigator.of(context).push(
+        ClassAdminScreen.route(),
+      ),
+      icon: Icon(
+        Icons.edit,
+        color: FreeBetaColors.white,
+      ),
+    );
+  }
+}
+
+class _ClassesLegendButton extends StatelessWidget {
+  const _ClassesLegendButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +160,8 @@ class _LegendButton extends StatelessWidget {
   }
 }
 
-class _EditButton extends ConsumerWidget {
-  const _EditButton({
+class _EditScheduleButton extends ConsumerWidget {
+  const _EditScheduleButton({
     Key? key,
   }) : super(key: key);
 

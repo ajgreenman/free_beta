@@ -9,4 +9,22 @@ class ClassApi {
   Future<List<ClassModel>> getClassSchedule() async {
     return classRepository.getClassSchedule();
   }
+
+  Future<void> addClass(ClassFormModel classFormModel) {
+    return classRepository.addClass(classFormModel);
+  }
+
+  Future<void> updateClass(
+    ClassModel classModel,
+    ClassFormModel classFormModel,
+  ) {
+    return classRepository.updateClass(
+      classModel,
+      classFormModel,
+    );
+  }
+
+  Future<void> deleteClass(ClassModel classModel) async {
+    await classRepository.deleteClass(classModel);
+  }
 }

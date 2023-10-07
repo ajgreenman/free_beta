@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/form/button_input.dart';
+import 'package:free_beta/app/presentation/widgets/form/submit_button.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
@@ -29,10 +30,10 @@ class ResetFormScreen extends ConsumerStatefulWidget {
   final ResetModel? editResetModel;
 
   @override
-  ConsumerState<ResetFormScreen> createState() => _AddResetScreenState();
+  ConsumerState<ResetFormScreen> createState() => _ResetFormScreen();
 }
 
-class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
+class _ResetFormScreen extends ConsumerState<ResetFormScreen> {
   late ResetFormModel _resetFormModel;
   late TextEditingController _resetDateController;
 
@@ -53,7 +54,7 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
   }
 
   void _setupEdit() {
-    _resetFormModel = ResetFormModel.fromRouteModel(
+    _resetFormModel = ResetFormModel.fromResetModel(
       widget.editResetModel!,
     );
 
@@ -75,11 +76,11 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
   bool get isAdd => widget.editResetModel == null;
   bool get isFormEmpty =>
       _resetFormModel.date == null && _resetFormModel.sections.isEmpty;
-  bool get isFormIncomplete =>
-      _resetFormModel.date == null || _resetFormModel.sections.isEmpty;
+  bool get isFormComplete =>
+      _resetFormModel.date != null && _resetFormModel.sections.isNotEmpty;
   bool get isFormUnedited =>
       !isAdd &&
-      ResetFormModel.fromRouteModel(widget.editResetModel!) == _resetFormModel;
+      ResetFormModel.fromResetModel(widget.editResetModel!) == _resetFormModel;
 
   @override
   Widget build(BuildContext context) {
@@ -132,37 +133,10 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
                   )
                   .toList(),
               SizedBox(height: FreeBetaSizes.m),
-              ElevatedButton(
-                onPressed: isFormIncomplete ? null : _onPressed,
-                child: Padding(
-                  padding: FreeBetaPadding.xlHorizontal,
-                  child: Text(
-                    isAdd ? 'Add' : 'Update',
-                    style: FreeBetaTextStyle.h4.copyWith(
-                      color: FreeBetaColors.white,
-                    ),
-                  ),
-                ),
-                style: ButtonStyle(
-                  alignment: Alignment.centerLeft,
-                  side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                    if (states.contains(MaterialState.disabled)) {
-                      return BorderSide(
-                        color: FreeBetaColors.grayLight,
-                        width: 2,
-                      );
-                    }
-                    return BorderSide(
-                      width: 2,
-                    );
-                  }),
-                  padding: MaterialStateProperty.all(
-                    const EdgeInsets.symmetric(
-                      horizontal: FreeBetaSizes.m,
-                      vertical: FreeBetaSizes.ml,
-                    ),
-                  ),
-                ),
+              FreeBetaSubmitButton(
+                onSubmit: _onSubmit,
+                isAdd: isAdd,
+                isFormComplete: isFormComplete,
               ),
             ],
           ),
@@ -218,8 +192,8 @@ class _AddResetScreenState extends ConsumerState<ResetFormScreen> {
     }
   }
 
-  void _onPressed() async {
-    if (widget.editResetModel == null) {
+  void _onSubmit() async {
+    if (isAdd) {
       _onAddPressed();
     } else {
       _onEditPressed();

@@ -135,11 +135,10 @@ class _Resets extends StatelessWidget {
             _NoUpcoming(
               label: label,
             ),
-          if (resets.isNotEmpty) ...[
+          if (resets.isNotEmpty)
             ...resets.take(length).map(
                   (reset) => _ResetRow(resetModel: reset),
                 ),
-          ],
         ],
       ),
     );

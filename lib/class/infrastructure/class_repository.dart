@@ -9,4 +9,24 @@ class ClassRepository {
   Future<List<ClassModel>> getClassSchedule() async {
     return classRemoteDataProvider.getClassSchedule();
   }
+
+  Future<void> addClass(ClassFormModel classFormModel) async {
+    await classRemoteDataProvider.addClass(classFormModel);
+  }
+
+  Future<void> updateClass(
+    ClassModel classModel,
+    ClassFormModel classFormModel,
+  ) async {
+    await classRemoteDataProvider.updateClass(
+      classModel,
+      classFormModel,
+    );
+  }
+
+  Future<void> deleteClass(
+    ClassModel classModel,
+  ) async {
+    await classRemoteDataProvider.deleteClass(classModel);
+  }
 }
