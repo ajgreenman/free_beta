@@ -11,12 +11,12 @@ extension ClassFormModelExtensions on ClassFormModel {
         'minute': minute,
       };
 
-  TimeOfDay get timeOfDay {
-    if (hour != null && minute != null) {
-      return TimeOfDay(hour: hour!, minute: minute!);
+  TimeOfDay? get timeOfDay {
+    if (hour == null || minute == null) {
+      return null;
     }
 
-    return TimeOfDay.now();
+    return TimeOfDay(hour: hour!, minute: minute!);
   }
 }
 

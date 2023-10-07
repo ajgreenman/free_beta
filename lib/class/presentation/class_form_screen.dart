@@ -135,30 +135,18 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
             children: [
               FreeBetaTextInput(
                 label: 'Class name',
-                onChanged: (name) {
-                  setState(() {
-                    _classFormModel.name = name;
-                  });
-                },
+                onChanged: _onNameChanged,
                 controller: _nameController,
               ),
               FreeBetaTextInput(
                 label: 'Instructor',
-                onChanged: (instructor) {
-                  setState(() {
-                    _classFormModel.instructor = instructor;
-                  });
-                },
+                onChanged: _onInstructorChanged,
                 controller: _instructorController,
               ),
               FreeBetaDropdownList<Day>(
                 label: 'Day',
                 initialValue: _classFormModel.day ?? Day.friday,
-                onChanged: (day) {
-                  setState(() {
-                    _classFormModel.day = day;
-                  });
-                },
+                onChanged: _onDayChanged,
                 items: Day.values
                     .map(
                       (day) => DropdownMenuItem<Day>(
@@ -172,11 +160,7 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
               FreeBetaDropdownList<ClassType>(
                 label: 'Class type',
                 initialValue: _classFormModel.classType,
-                onChanged: (classType) {
-                  setState(() {
-                    _classFormModel.classType = classType;
-                  });
-                },
+                onChanged: _onClassTypeChanged,
                 items: ClassType.values
                     .map(
                       (classType) => DropdownMenuItem<ClassType>(
@@ -218,12 +202,36 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
     );
   }
 
+  void _onClassTypeChanged(ClassType? classType) {
+    setState(() {
+      _classFormModel.classType = classType;
+    });
+  }
+
+  void _onDayChanged(Day? day) {
+    setState(() {
+      _classFormModel.day = day;
+    });
+  }
+
+  void _onInstructorChanged(String? instructor) {
+    setState(() {
+      _classFormModel.instructor = instructor;
+    });
+  }
+
+  void _onNameChanged(String? name) {
+    setState(() {
+      _classFormModel.name = name;
+    });
+  }
+
   Future<void> _onTimePressed() async {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedTime = await showTimePicker(
       context: context,
-      initialTime: _classFormModel.timeOfDay,
+      initialTime: _classFormModel.timeOfDay ?? TimeOfDay.now(),
       initialEntryMode: TimePickerEntryMode.inputOnly,
     );
     if (pickedTime == null) return;
