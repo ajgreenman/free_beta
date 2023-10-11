@@ -10,7 +10,7 @@ class Chalkboard extends StatelessWidget {
   final double height;
   final Widget child;
 
-  double get _frameSize => 12.0;
+  static double get frameSize => 12.0;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class Chalkboard extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             color: FreeBetaColors.brown,
-            width: _frameSize,
+            width: frameSize,
           ),
           color: FreeBetaColors.chalkboard,
         ),

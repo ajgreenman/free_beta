@@ -1,9 +1,11 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:free_beta/app/enums/day.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.p.dart';
+import 'package:free_beta/class/infrastructure/models/day_model.dart';
 
 class ClassRemoteDataProvider {
   ClassRemoteDataProvider({
@@ -16,6 +18,9 @@ class ClassRemoteDataProvider {
 
   CollectionReference<Map<String, dynamic>> get _firestoreClasses =>
       firebaseFirestore.collection('classes');
+
+  CollectionReference<Map<String, dynamic>> get _firestoreDays =>
+      firebaseFirestore.collection('days');
 
   Future<List<ClassModel>> getClassSchedule() async {
     List<ClassModel> classSchedule = [];
@@ -76,6 +81,48 @@ class ClassRemoteDataProvider {
           stackTrace,
           'ClassRemoteDataProvider',
           'deleteClass',
+        );
+      },
+    );
+  }
+
+  Future<List<DayModel>> getDays() async {
+    List<DayModel> dayImages = [];
+    await _firestoreDays.get().then(
+          (days) => days.docs.forEach(
+            (json) {
+              dayImages.add(
+                DayModel.fromFirebase(json.id, json.data()),
+              );
+            },
+          ),
+        );
+    return dayImages;
+  }
+
+  Future<void> addDayImage(Day day, String image) async {
+    await _firestoreDays.doc(day.name).update({'image': image}).catchError(
+      (error, stackTrace) {
+        crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'ClassRemoteDataProvider',
+          'addDayImage',
+        );
+      },
+    );
+  }
+
+  Future<void> deleteDayImage(Day day) async {
+    await _firestoreDays
+        .doc(day.name)
+        .update({'image': FieldValue.delete()}).catchError(
+      (error, stackTrace) {
+        crashlyticsApi.logError(
+          error,
+          stackTrace,
+          'ClassRemoteDataProvider',
+          'addDayImage',
         );
       },
     );

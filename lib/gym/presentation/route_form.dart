@@ -344,7 +344,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var mediaApi = ref.read(mediaApiProvider);
-    var imageSource = await chooseOption(context);
+    var imageSource = await _chooseOption(context);
     if (imageSource == null) return;
 
     setState(() {
@@ -375,7 +375,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var mediaApi = ref.read(mediaApiProvider);
-    var imageSource = await chooseOption(context);
+    var imageSource = await _chooseOption(context);
     if (imageSource == null) return;
 
     setState(() {
@@ -485,7 +485,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     return 'Add beta video';
   }
 
-  Future<ImageSource?> chooseOption(BuildContext context) async {
+  Future<ImageSource?> _chooseOption(BuildContext context) async {
     return await showDialog(
       context: context,
       builder: (_) => _ImageSourceDialog(),

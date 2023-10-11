@@ -66,4 +66,35 @@ final fetchClassesProvider =
 );
 
 typedef FetchClassesRef = AutoDisposeFutureProviderRef<List<ClassModel>>;
+String _$fetchDaysHash() => r'3da69fc423183a6302cdcef4b5cbfd32cae8ac8c';
+
+/// See also [fetchDays].
+@ProviderFor(fetchDays)
+final fetchDaysProvider = AutoDisposeFutureProvider<List<DayModel>>.internal(
+  fetchDays,
+  name: r'fetchDaysProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$fetchDaysHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FetchDaysRef = AutoDisposeFutureProviderRef<List<DayModel>>;
+String _$getClassScheduleHash() => r'ee7dd1cf556a25095cba88e7573f728568005085';
+
+/// See also [getClassSchedule].
+@ProviderFor(getClassSchedule)
+final getClassScheduleProvider =
+    AutoDisposeFutureProvider<List<ClassScheduleModel>>.internal(
+  getClassSchedule,
+  name: r'getClassScheduleProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$getClassScheduleHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef GetClassScheduleRef
+    = AutoDisposeFutureProviderRef<List<ClassScheduleModel>>;
 // ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions

@@ -8,8 +8,8 @@ import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/class/infrastructure/class_providers.dart';
-import 'package:free_beta/class/infrastructure/models/class_model.dart';
-import 'package:free_beta/class/infrastructure/models/class_model.p.dart';
+import 'package:free_beta/class/infrastructure/models/class_schedule_model.dart';
+import 'package:free_beta/class/infrastructure/models/class_schedule_model.p.dart';
 import 'package:free_beta/class/presentation/class_chalkboard.dart';
 
 class ClassScreen extends ConsumerWidget {
@@ -21,8 +21,8 @@ class ClassScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       key: Key('class'),
-      body: ref.watch(fetchClassesProvider).when(
-            data: (classes) => _Schedule(classes: classes),
+      body: ref.watch(getClassScheduleProvider).when(
+            data: (schedule) => _Schedule(schedule: schedule),
             error: (error, stackTrace) => _Error(
               error: error,
               stackTrace: stackTrace,
@@ -35,10 +35,10 @@ class ClassScreen extends ConsumerWidget {
 
 class _Schedule extends StatefulWidget {
   const _Schedule({
-    required this.classes,
+    required this.schedule,
   });
 
-  final List<ClassModel> classes;
+  final List<ClassScheduleModel> schedule;
 
   @override
   State<_Schedule> createState() => _ScheduleState();
@@ -57,6 +57,8 @@ class _ScheduleState extends State<_Schedule> {
         CarouselSlider(
           carouselController: _carouselController,
           items: Day.values.map((day) {
+            var schedule = widget.schedule.firstWhere(
+                (classScheduleModel) => classScheduleModel.day == day);
             return Padding(
               padding: FreeBetaPadding.mAll,
               child: Column(
@@ -68,9 +70,8 @@ class _ScheduleState extends State<_Schedule> {
                   SizedBox(height: FreeBetaSizes.l),
                   ClassChalkboard(
                     height: _getChalkboardHeight(_height),
-                    classes: widget.classes.activeClasses
-                        .where((c) => c.day == day)
-                        .toList(),
+                    classes: schedule.activeClasses,
+                    imageUrl: schedule.image,
                   ),
                 ],
               ),

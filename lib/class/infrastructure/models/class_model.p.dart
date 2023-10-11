@@ -19,8 +19,3 @@ extension ClassFormModelExtensions on ClassFormModel {
     return TimeOfDay(hour: hour!, minute: minute!);
   }
 }
-
-extension ClassModelListExtensions on List<ClassModel> {
-  List<ClassModel> get activeClasses =>
-      this.where((classModel) => !classModel.isDeleted).toList();
-}

@@ -7,13 +7,17 @@ import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
+import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/class/infrastructure/class_providers.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
-import 'package:free_beta/class/infrastructure/models/class_model.p.dart';
+import 'package:free_beta/class/infrastructure/models/class_schedule_model.dart';
+import 'package:free_beta/class/infrastructure/models/class_schedule_model.p.dart';
 import 'package:free_beta/class/presentation/class_form_screen.dart';
+import 'package:free_beta/class/presentation/class_image.dart';
 import 'package:free_beta/class/presentation/widgets/class_row.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ClassAdminScreen extends ConsumerWidget {
   static Route<dynamic> route() {
@@ -28,9 +32,10 @@ class ClassAdminScreen extends ConsumerWidget {
         title: Text('Edit Classes'),
         leading: FreeBetaBackButton(),
       ),
-      body: ref.watch(fetchClassesProvider).when(
-            data: (classes) => _ClassAdmin(
-              classes: classes,
+      body: ref.watch(getClassScheduleProvider).when(
+            skipLoadingOnReload: true,
+            data: (schedule) => _ClassAdmin(
+              schedule: schedule,
             ),
             error: (error, stackTrace) => _Error(
               error: error,
@@ -45,20 +50,29 @@ class ClassAdminScreen extends ConsumerWidget {
 class _ClassAdmin extends ConsumerStatefulWidget {
   const _ClassAdmin({
     Key? key,
-    required this.classes,
+    required this.schedule,
   }) : super(key: key);
 
-  final List<ClassModel> classes;
+  final List<ClassScheduleModel> schedule;
 
   @override
   ConsumerState<_ClassAdmin> createState() => _ClassesAdminState();
 }
 
 class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
-  var _currentDay = currentDay();
+  late Day _currentDay;
 
-  Iterable<ClassModel> get _currentDayClasses => widget.classes.activeClasses
-      .where((classModel) => classModel.day == _currentDay);
+  var _loadingImage = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _currentDay = currentDay();
+  }
+
+  ClassScheduleModel get _currentSchedule => widget.schedule.firstWhere(
+      (classScheduleModel) => classScheduleModel.day == _currentDay);
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +80,7 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
       child: Padding(
         padding: FreeBetaPadding.mAll,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InfoCard(
               child: Column(
@@ -85,12 +100,6 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                         .toList(),
                   ),
                   SizedBox(height: FreeBetaSizes.m),
-                  ElevatedButton(
-                    onPressed: () => Navigator.of(context).push(
-                      ClassFormScreen.add(_currentDay),
-                    ),
-                    child: Text('Add new class'),
-                  ),
                 ],
               ),
             ),
@@ -104,12 +113,81 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                   ),
                   SizedBox(height: FreeBetaSizes.m),
                   FreeBetaDivider(),
-                  if (_currentDayClasses.isEmpty) _NoClasses(),
-                  if (_currentDayClasses.isNotEmpty)
-                    ..._currentDayClasses
+                  SizedBox(height: FreeBetaSizes.s),
+                  ElevatedButton(
+                    onPressed: () => Navigator.of(context).push(
+                      ClassFormScreen.add(_currentDay),
+                    ),
+                    child: SizedBox(
+                      width: 100.0,
+                      child: Center(child: Text('Add new class')),
+                    ),
+                  ),
+                  SizedBox(height: FreeBetaSizes.s),
+                  FreeBetaDivider(),
+                  if (_currentSchedule.activeClasses.isEmpty) _NoClasses(),
+                  if (_currentSchedule.activeClasses.isNotEmpty)
+                    ..._currentSchedule.activeClasses
                         .map((classModel) =>
                             _EditClassRow(classModel: classModel))
                         .toList(),
+                ],
+              ),
+            ),
+            InfoCard(
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        'Edit image',
+                        style: FreeBetaTextStyle.h3,
+                      ),
+                      SizedBox(width: FreeBetaSizes.l),
+                      HelpTooltip(
+                        message:
+                            'Adding an image will override the individual classes and just display the image. You will need to delete the image to go back to using individual classes.',
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: FreeBetaSizes.m),
+                  FreeBetaDivider(),
+                  SizedBox(height: FreeBetaSizes.s),
+                  if (_loadingImage)
+                    SizedBox(
+                      height: 300,
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    ),
+                  if (!_loadingImage)
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: _onAddImage,
+                          child: SizedBox(
+                            width: 100.0,
+                            child: Center(
+                              child: Text(
+                                _currentSchedule.image != null
+                                    ? 'Update image'
+                                    : 'Add image',
+                              ),
+                            ),
+                          ),
+                        ),
+                        Spacer(),
+                        if (_currentSchedule.image != null)
+                          _DeleteButton(day: _currentDay),
+                      ],
+                    ),
+                  if (!_loadingImage && _currentSchedule.image != null) ...[
+                    SizedBox(height: FreeBetaSizes.s),
+                    ClassImage(
+                      height: 300.0,
+                      imageUrl: _currentSchedule.image!,
+                    ),
+                  ],
                 ],
               ),
             ),
@@ -128,6 +206,35 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
       _currentDay = day;
     });
   }
+
+  Future<void> _onAddImage() async {
+    var mediaApi = ref.read(mediaApiProvider);
+    var imageSource = await _chooseOption(context);
+    if (imageSource == null) return;
+
+    setState(() {
+      _loadingImage = true;
+    });
+
+    var imageFile = await mediaApi.fetchImage(imageSource);
+
+    if (imageFile == null) return;
+
+    await ref.read(classApiProvider).addDayImage(_currentDay, imageFile);
+
+    ref.invalidate(fetchDaysProvider);
+
+    setState(() {
+      _loadingImage = false;
+    });
+  }
+
+  Future<ImageSource?> _chooseOption(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (_) => _ImageSourceDialog(),
+    );
+  }
 }
 
 class _NoClasses extends StatelessWidget {
@@ -139,7 +246,10 @@ class _NoClasses extends StatelessWidget {
       height: 48.0,
       child: Row(
         children: [
-          Text('No classes scheduled'),
+          Text(
+            'No classes scheduled',
+            style: FreeBetaTextStyle.body4.copyWith(color: FreeBetaColors.gray),
+          ),
         ],
       ),
     );
@@ -201,7 +311,7 @@ class _Error extends ConsumerWidget {
           error,
           stackTrace,
           'EditClassesScreen',
-          'fetchClassesProvider',
+          'getClassScheduleProvider',
         );
 
     return ErrorCard();
@@ -217,4 +327,117 @@ class _Loading extends StatelessWidget {
   Widget build(BuildContext context) => Center(
         child: CircularProgressIndicator(),
       );
+}
+
+class _ImageSourceDialog extends StatelessWidget {
+  const _ImageSourceDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text('Upload media'),
+      actions: [
+        ElevatedButton(
+          child: Text('Camera'),
+          onPressed: () {
+            Navigator.of(context).pop(ImageSource.camera);
+          },
+        ),
+        ElevatedButton(
+          child: Text('Photos'),
+          onPressed: () {
+            Navigator.of(context).pop(ImageSource.gallery);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _DeleteButton extends ConsumerWidget {
+  const _DeleteButton({
+    required this.day,
+  });
+
+  final Day day;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return ElevatedButton(
+      key: Key('day-image-delete'),
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(FreeBetaColors.red),
+        side: MaterialStateProperty.all(
+          BorderSide(
+            width: 2.0,
+            color: FreeBetaColors.red,
+          ),
+        ),
+      ),
+      onPressed: () => _onDeletePressed(context, ref),
+      child: SizedBox(
+        width: 100.0,
+        child: Center(
+          child: Text(
+            'Delete image',
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _onDeletePressed(BuildContext context, WidgetRef ref) async {
+    var willDelete = await showDialog(
+      context: context,
+      builder: (_) => _DeleteAreYouSureDialog(),
+    );
+    if (!(willDelete ?? false)) return;
+
+    await ref.read(classApiProvider).deleteDayImage(day);
+
+    ref.invalidate(fetchDaysProvider);
+
+    await showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: Row(
+          children: [
+            Text('Image deleted!'),
+            Spacer(),
+            Icon(Icons.delete),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DeleteAreYouSureDialog extends StatelessWidget {
+  const _DeleteAreYouSureDialog({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: Text("Are you sure?"),
+      content: Text("Are you sure you want to delete this image?"),
+      actions: [
+        TextButton(
+          child: Text('Cancel'),
+          onPressed: () {
+            Navigator.of(context).pop(false);
+          },
+        ),
+        TextButton(
+          child: Text('Delete'),
+          onPressed: () {
+            Navigator.of(context).pop(true);
+          },
+        ),
+      ],
+    );
+  }
 }
