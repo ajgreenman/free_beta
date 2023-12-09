@@ -48,6 +48,7 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
   late ClassFormModel _classFormModel;
 
   late TextEditingController _nameController;
+  late TextEditingController _notesController;
   late TextEditingController _instructorController;
   late TextEditingController _timeController;
 
@@ -66,6 +67,7 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
     _classFormModel = ClassFormModel(day: widget.initialDay);
 
     _nameController = TextEditingController();
+    _notesController = TextEditingController();
     _instructorController = TextEditingController();
     _timeController = TextEditingController();
   }
@@ -77,6 +79,10 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
 
     _nameController = TextEditingController(
       text: _classFormModel.name,
+    );
+
+    _notesController = TextEditingController(
+      text: _classFormModel.notes,
     );
 
     _instructorController = TextEditingController(
@@ -96,6 +102,7 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
   bool get isAdd => widget.editClassModel == null;
   bool get isFormEmpty =>
       _classFormModel.name.isNullOrEmpty &&
+      _classFormModel.notes.isNullOrEmpty &&
       _classFormModel.instructor.isNullOrEmpty &&
       _classFormModel.classType == null &&
       _classFormModel.hour == null &&
@@ -137,6 +144,11 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
                 label: 'Class name',
                 onChanged: _onNameChanged,
                 controller: _nameController,
+              ),
+              FreeBetaTextInput(
+                label: 'Notes',
+                onChanged: _onNotesChanged,
+                controller: _notesController,
               ),
               FreeBetaTextInput(
                 label: 'Instructor',
@@ -223,6 +235,12 @@ class _ClassFormScreen extends ConsumerState<ClassFormScreen> {
   void _onNameChanged(String? name) {
     setState(() {
       _classFormModel.name = name;
+    });
+  }
+
+  void _onNotesChanged(String? notes) {
+    setState(() {
+      _classFormModel.notes = notes;
     });
   }
 

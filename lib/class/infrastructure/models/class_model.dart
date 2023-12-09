@@ -9,6 +9,7 @@ class ClassModel {
   ClassModel({
     required this.id,
     required this.name,
+    this.notes,
     required this.classType,
     required this.instructor,
     required this.day,
@@ -19,6 +20,7 @@ class ClassModel {
 
   final String id;
   final String name;
+  final String? notes;
   final ClassType classType;
   final String instructor;
   final Day day;
@@ -41,6 +43,7 @@ class ClassModel {
     return ClassModel(
       id: id,
       name: json['name'] ?? '',
+      notes: json['notes'],
       classType: ClassType.values.firstWhere(
         (classType) => describeEnum(classType) == json['classType'],
       ),
@@ -70,6 +73,7 @@ class ClassModel {
 class ClassFormModel {
   ClassFormModel({
     this.name,
+    this.notes,
     this.classType,
     this.instructor,
     this.day,
@@ -80,6 +84,7 @@ class ClassFormModel {
   factory ClassFormModel.fromClassModel(ClassModel classModel) {
     return ClassFormModel(
       name: classModel.name,
+      notes: classModel.notes,
       classType: classModel.classType,
       instructor: classModel.instructor,
       day: classModel.day,
@@ -89,6 +94,7 @@ class ClassFormModel {
   }
 
   String? name;
+  String? notes;
   ClassType? classType;
   String? instructor;
   Day? day;
@@ -97,7 +103,7 @@ class ClassFormModel {
 
   @override
   String toString() {
-    return 'ClassFormModel(name: $name, classType: $classType, instructor: $instructor, day: $day, hour: $hour, minute: $minute)';
+    return 'ClassFormModel(name: $name, notes: $notes, classType: $classType, instructor: $instructor, day: $day, hour: $hour, minute: $minute)';
   }
 
   @override
@@ -105,6 +111,7 @@ class ClassFormModel {
     if (identical(this, other)) return true;
 
     return other.name == name &&
+        other.notes == notes &&
         other.classType == classType &&
         other.instructor == instructor &&
         other.day == day &&
@@ -115,6 +122,7 @@ class ClassFormModel {
   @override
   int get hashCode {
     return name.hashCode ^
+        notes.hashCode ^
         classType.hashCode ^
         instructor.hashCode ^
         day.hashCode ^
