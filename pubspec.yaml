@@ -1,7 +1,7 @@
 name: free_beta
 description: Elev8 route tracking app.
-publish_to: 'none' 
-version: 1.6.0+25
+publish_to: "none"
+version: 1.6.1+26
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cached_network_image: ^3.2.0
+  cached_network_image: ^3.3.0
   carousel_slider: ^4.0.0
   cloud_firestore: ^4.4.2
   firebase_auth: ^4.2.8
@@ -30,14 +30,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.11.0
+  flutter_launcher_icons: ^0.13.1
   remove_from_coverage: ^2.0.0
   mocktail: ^0.3.0
   firebase_auth_mocks: ^0.10.3
   build_runner: ^2.3.3
   riverpod_generator: ^2.1.4
-  riverpod_lint: ^1.1.6
-  custom_lint: ^0.3.2
+  riverpod_lint: ^2.3.7
+  custom_lint: ^0.5.7
 
 flutter_icons:
   android: "launcher_icon"
@@ -45,5 +45,4 @@ flutter_icons:
   image_path: "assets/icons/app_icon.png"
 
 flutter:
-
   uses-material-design: true

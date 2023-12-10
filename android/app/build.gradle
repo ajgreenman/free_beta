@@ -41,7 +41,7 @@ android {
 
     defaultConfig {
         applicationId "com.codejsoftware.freeBeta"
-        minSdkVersion 24
+        minSdkVersion 33
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
