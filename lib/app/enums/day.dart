@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
 enum Day {
@@ -14,7 +13,6 @@ enum Day {
 Day currentDay() {
   return Day.values.firstWhere(
     (day) =>
-        describeEnum(day) ==
-        DateFormat('EEEE').format(DateTime.now()).toLowerCase(),
+        day.name == DateFormat('EEEE').format(DateTime.now()).toLowerCase(),
   );
 }

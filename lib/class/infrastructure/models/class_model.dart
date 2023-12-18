@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:free_beta/app/enums/class_type.dart';
@@ -45,11 +44,11 @@ class ClassModel {
       name: json['name'] ?? '',
       notes: json['notes'],
       classType: ClassType.values.firstWhere(
-        (classType) => describeEnum(classType) == json['classType'],
+        (classType) => classType.name == json['classType'],
       ),
       instructor: json['instructor'],
       day: Day.values.firstWhere(
-        (day) => describeEnum(day) == json['day'],
+        (day) => day.name == json['day'],
       ),
       hour: json['hour'],
       minute: json['minute'],

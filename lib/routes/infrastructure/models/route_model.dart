@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
@@ -52,10 +51,10 @@ class RouteModel {
       ),
       climbType: climbType,
       routeColor: RouteColor.values.firstWhere(
-        (routeColor) => describeEnum(routeColor) == json['routeColor'],
+        (routeColor) => routeColor.name == json['routeColor'],
       ),
       wallLocation: WallLocation.values.firstWhere(
-        (wallLocation) => describeEnum(wallLocation) == json['wallLocation'],
+        (wallLocation) => wallLocation.name == json['wallLocation'],
       ),
       wallLocationIndex: json['wallLocationIndex'],
       creationDate: (json['creationDate'] as Timestamp).toDate(),

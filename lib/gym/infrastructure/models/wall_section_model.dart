@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:free_beta/app/enums/wall_location.dart';
 
 class WallSectionModel {
@@ -11,7 +9,7 @@ class WallSectionModel {
   factory WallSectionModel.fromFirebase(Map<String, dynamic> json) =>
       WallSectionModel(
         wallLocation: WallLocation.values.firstWhere(
-          (wallLocation) => describeEnum(wallLocation) == json['wallLocation'],
+          (wallLocation) => wallLocation.name == json['wallLocation'],
         ),
         wallSection: json['wallSection'],
       );

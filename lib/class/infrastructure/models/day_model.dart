@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:free_beta/app/enums/day.dart';
 
 class DayModel {
@@ -10,7 +9,7 @@ class DayModel {
   factory DayModel.fromFirebase(String id, Map<String, dynamic> json) {
     return DayModel(
       day: Day.values.firstWhere(
-        (day) => describeEnum(day) == id,
+        (day) => day.name == id,
       ),
       image: json['image'],
     );
