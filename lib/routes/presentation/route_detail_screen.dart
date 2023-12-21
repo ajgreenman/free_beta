@@ -511,7 +511,7 @@ class _BetaVideoButton extends StatelessWidget {
         ElevatedButton(
           onPressed: betaVideo != null
               ? () => Navigator.of(context).push(RouteVideoScreen.route(
-                    VideoPlayerController.network(betaVideo!),
+                    VideoPlayerController.networkUrl(Uri(path: betaVideo)),
                   ))
               : null,
           child: Row(

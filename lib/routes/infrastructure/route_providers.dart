@@ -1,4 +1,3 @@
-import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -69,14 +68,14 @@ Future<List<RouteModel>> fetchAllRoutes(FetchAllRoutesRef ref) async {
 }
 
 @riverpod
-Future<List<RouteModel>> fetchActiveRoutes(FetchAllRoutesRef ref) async {
+Future<List<RouteModel>> fetchActiveRoutes(FetchActiveRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getActiveRoutes();
 }
 
 @riverpod
-Future<List<RouteModel>> fetchRemovedRoutes(FetchAllRoutesRef ref) async {
+Future<List<RouteModel>> fetchRemovedRoutes(FetchRemovedRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getRemovedRoutes();
@@ -133,7 +132,7 @@ FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
 }
 
 @riverpod
-Future<List<Series<UserRatingModel, String>>> fetchRatingUserGraph(
+Future<List<UserRatingModel>> fetchRatingUserGraph(
   FetchRatingUserGraphRef ref, {
   required ClimbType climbType,
 }) async {

@@ -16,8 +16,6 @@ class UserGraphSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        UserRouteGraph(climbType: climbType),
-        SizedBox(height: FreeBetaSizes.m),
         _LegendRow(
           color: RouteColor.red,
           label: 'Unattempted',
@@ -32,6 +30,8 @@ class UserGraphSection extends StatelessWidget {
           color: RouteColor.green,
           label: 'Completed',
         ),
+        SizedBox(height: FreeBetaSizes.m),
+        UserRouteGraph(climbType: climbType),
         SizedBox(height: FreeBetaSizes.m),
         _Disclaimer()
       ],
@@ -66,7 +66,7 @@ class _Disclaimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       'Not all routes will show up on graph.',
-      style: FreeBetaTextStyle.body5.copyWith(fontStyle: FontStyle.italic),
+      style: FreeBetaTextStyle.body6.copyWith(fontStyle: FontStyle.italic),
     );
   }
 }
