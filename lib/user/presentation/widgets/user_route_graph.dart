@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +24,7 @@ class UserRouteGraph extends ConsumerWidget {
           data: (userRatings) => _RatingGraph(
             climbType: climbType,
             userRatings: userRatings,
+            includeGraphDetails: ref.watch(includeGraphDetailsProvider),
           ),
           loading: () => CircularProgressIndicator(),
           error: (error, stackTrace) => _ErrorCard(
@@ -38,10 +41,12 @@ class _RatingGraph extends StatelessWidget {
     Key? key,
     required this.climbType,
     required this.userRatings,
+    required this.includeGraphDetails,
   }) : super(key: key);
 
   final ClimbType climbType;
   final List<UserRatingModel> userRatings;
+  final bool includeGraphDetails;
 
   static const _interval = 1.0;
 
@@ -53,7 +58,7 @@ class _RatingGraph extends StatelessWidget {
         aspectRatio: 1,
         child: BarChart(
           BarChartData(
-            barGroups: userRatings.map(_mapUserRatings).toList(),
+            barGroups: userRatings.map(_mapBarGroupsByRating).toList(),
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
                 tooltipBgColor: FreeBetaColors.grayBackground,
@@ -61,32 +66,7 @@ class _RatingGraph extends StatelessWidget {
                 tooltipHorizontalAlignment: FLHorizontalAlignment.right,
                 fitInsideVertically: true,
                 fitInsideHorizontally: true,
-                getTooltipItem: (group, groupIndex, rod, rodIndex) {
-                  return BarTooltipItem(
-                    climbType == ClimbType.boulder
-                        ? '${BoulderRating.values.where((value) => value.isIncludedInGraph).elementAt(groupIndex).displayName}\n'
-                        : '${CondensedYosemiteRating.values[groupIndex].displayName}\n',
-                    FreeBetaTextStyle.h4,
-                    textAlign: TextAlign.left,
-                    children: [
-                      TextSpan(
-                        text:
-                            'Unattempted: ${userRatings[groupIndex].unattemptedCount}\n',
-                        style: FreeBetaTextStyle.body5,
-                      ),
-                      TextSpan(
-                        text:
-                            'In progress: ${userRatings[groupIndex].inProgressCount}\n',
-                        style: FreeBetaTextStyle.body5,
-                      ),
-                      TextSpan(
-                        text:
-                            'Completed: ${userRatings[groupIndex].completedCount}',
-                        style: FreeBetaTextStyle.body5,
-                      ),
-                    ],
-                  );
-                },
+                getTooltipItem: _getTooltipItem,
               ),
             ),
             borderData: FlBorderData(
@@ -111,16 +91,7 @@ class _RatingGraph extends StatelessWidget {
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  getTitlesWidget: (i, _) => SideTitleWidget(
-                    axisSide: AxisSide.bottom,
-                    child: Text(
-                      climbType == ClimbType.boulder
-                          ? BoulderRating.values[i.toInt()].displayName
-                          : CondensedYosemiteRating
-                              .values[i.toInt()].displayName,
-                      style: FreeBetaTextStyle.body6,
-                    ),
-                  ),
+                  getTitlesWidget: _getAxisLabels,
                 ),
               ),
             ),
@@ -130,36 +101,69 @@ class _RatingGraph extends StatelessWidget {
     );
   }
 
-  BarChartGroupData _mapUserRatings(UserRatingModel userRating) {
-    return BarChartGroupData(
-      x: climbType == ClimbType.boulder
-          ? userRating.boulderRating!.index
-          : userRating.yosemiteRating!.index,
-      barRods: [
-        BarChartRodData(
-          toY: userRating.totalCount,
-          color: FreeBetaColors.white,
-          borderRadius: BorderRadius.zero,
-          width: 16,
-          rodStackItems: [
-            BarChartRodStackItem(
-              userRating.completed + userRating.inProgress,
-              userRating.totalCount,
-              FreeBetaColors.red.withOpacity(0.7),
-            ),
-            BarChartRodStackItem(
-              userRating.completed,
-              userRating.completed + userRating.inProgress,
-              FreeBetaColors.yellowBrand.withOpacity(0.7),
-            ),
-            BarChartRodStackItem(
-              0,
-              userRating.completed,
-              FreeBetaColors.green.withOpacity(0.7),
-            ),
-          ],
-        ),
-      ],
+  BarChartGroupData _mapBarGroupsByRating(UserRatingModel userRating) {
+    if (climbType == ClimbType.boulder) {
+      return userRating.boulderUserRatingModel!.barChart;
+    }
+
+    if (!includeGraphDetails) {
+      return userRating.yosemiteUserRatingModel!.condensedBarChart;
+    }
+
+    return userRating.yosemiteUserRatingModel!.detailedBarChart;
+  }
+
+  BarTooltipItem? _getTooltipItem(
+    BarChartGroupData group,
+    int groupIndex,
+    BarChartRodData rod,
+    int rodIndex,
+  ) {
+    if (climbType == ClimbType.boulder) {
+      return BarTooltipItem(
+        '${BoulderRating.values.where((value) => value.isIncludedInGraph).elementAt(groupIndex).displayName}\n',
+        FreeBetaTextStyle.h4,
+        textAlign: TextAlign.left,
+        children: userRatings[groupIndex]
+            .boulderUserRatingModel!
+            .userProgressModel
+            .getTooltipData,
+      );
+    }
+
+    if (!includeGraphDetails) {
+      return BarTooltipItem(
+        '${CondensedYosemiteRating.values[groupIndex].displayName}\n',
+        FreeBetaTextStyle.h4,
+        textAlign: TextAlign.left,
+        children: userRatings[groupIndex]
+            .yosemiteUserRatingModel!
+            .userProgressModel
+            .getTooltipData,
+      );
+    }
+
+    var detailedUserRating = userRatings[groupIndex]
+        .yosemiteUserRatingModel!
+        .detailedUserProgressModels[rodIndex];
+
+    return BarTooltipItem(
+      '${detailedUserRating.yosemiteRating.displayName}\n',
+      FreeBetaTextStyle.h4,
+      textAlign: TextAlign.left,
+      children: detailedUserRating.userProgressModel.getTooltipData,
+    );
+  }
+
+  Widget _getAxisLabels(double i, TitleMeta _) {
+    return SideTitleWidget(
+      axisSide: AxisSide.bottom,
+      child: Text(
+        climbType == ClimbType.boulder
+            ? BoulderRating.values[i.toInt()].displayName
+            : CondensedYosemiteRating.values[i.toInt()].displayName,
+        style: FreeBetaTextStyle.body6,
+      ),
     );
   }
 }

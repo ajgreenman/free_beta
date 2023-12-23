@@ -6,6 +6,7 @@ class RouteGraphApi {
   List<UserRatingModel> getUserRatings({
     required ClimbType climbType,
     required List<RouteModel> unfilteredRoutes,
+    required bool includeGraphDetails,
   }) {
     var routes = unfilteredRoutes
         .sortRoutes()
@@ -26,41 +27,42 @@ class RouteGraphApi {
           (route) => route.boulderRating == boulderRating,
         );
         return UserRatingModel.withBoulder(
-          boulderRating: boulderRating,
-          unattempted: ratingRoutes
-              .where((route) => route.isUnattempted)
-              .length
-              .toDouble(),
-          inProgress: ratingRoutes
-              .where((route) => route.isInProgress)
-              .length
-              .toDouble(),
-          completed: ratingRoutes
-              .where((route) => route.isCompleted)
-              .length
-              .toDouble(),
+          boulderUserRatingModel: BoulderUserRatingModel(
+            boulderRating: boulderRating,
+            userProgressModel:
+                UserProgressModel.fromRoutes(routes: ratingRoutes),
+          ),
         );
       },
     ).toList();
   }
 
-  List<UserRatingModel> _getYosemiteRatingGraph(List<RouteModel> routes) {
+  List<UserRatingModel> _getYosemiteRatingGraph(
+    List<RouteModel> routes,
+  ) {
     return CondensedYosemiteRating.values
         .where((rating) => rating != CondensedYosemiteRating.speed)
-        .map((yosemiteRating) {
+        .map((condensedYosemiteRating) {
       var ratingRoutes = routes.where(
-        (route) => route.yosemiteRating!.condensedRating == yosemiteRating,
+        (route) =>
+            route.yosemiteRating!.condensedRating == condensedYosemiteRating,
       );
       return UserRatingModel.withYosemite(
-        yosemiteRating: yosemiteRating,
-        unattempted: ratingRoutes
-            .where((route) => route.isUnattempted)
-            .length
-            .toDouble(),
-        inProgress:
-            ratingRoutes.where((route) => route.isInProgress).length.toDouble(),
-        completed:
-            ratingRoutes.where((route) => route.isCompleted).length.toDouble(),
+        yosemiteUserRatingModel: YosemiteUserRatingModel(
+          condensedYosemiteRating: condensedYosemiteRating,
+          userProgressModel: UserProgressModel.fromRoutes(routes: ratingRoutes),
+          detailedUserProgressModels: condensedYosemiteRating.uncondensedRatings
+              .map(
+                (yosemiteRating) => DetailedYosemiteUserRatingModel(
+                  yosemiteRating: yosemiteRating,
+                  userProgressModel: UserProgressModel.fromRoutes(
+                    routes: ratingRoutes.where(
+                        (route) => route.yosemiteRating! == yosemiteRating),
+                  ),
+                ),
+              )
+              .toList(),
+        ),
       );
     }).toList();
   }

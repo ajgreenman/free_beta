@@ -1,23 +1,81 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
+
 import 'package:free_beta/app/enums/enums.dart';
+import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 
 class UserRatingModel {
   UserRatingModel.withBoulder({
-    required this.boulderRating,
-    required this.unattempted,
-    required this.inProgress,
-    required this.completed,
-  }) : yosemiteRating = null;
+    required this.boulderUserRatingModel,
+  }) : yosemiteUserRatingModel = null;
 
   UserRatingModel.withYosemite({
-    required this.yosemiteRating,
-    required this.unattempted,
-    required this.inProgress,
-    required this.completed,
-  }) : boulderRating = null;
+    required this.yosemiteUserRatingModel,
+  }) : boulderUserRatingModel = null;
 
-  final BoulderRating? boulderRating;
-  final CondensedYosemiteRating? yosemiteRating;
+  final YosemiteUserRatingModel? yosemiteUserRatingModel;
+  final BoulderUserRatingModel? boulderUserRatingModel;
+}
+
+class BoulderUserRatingModel {
+  BoulderUserRatingModel({
+    required this.boulderRating,
+    required this.userProgressModel,
+  });
+
+  final BoulderRating boulderRating;
+  final UserProgressModel userProgressModel;
+
+  BarChartGroupData get barChart => userProgressModel._getBarChart(
+        boulderRating.index,
+      );
+}
+
+class YosemiteUserRatingModel {
+  YosemiteUserRatingModel({
+    required this.condensedYosemiteRating,
+    required this.userProgressModel,
+    required this.detailedUserProgressModels,
+  });
+
+  final CondensedYosemiteRating condensedYosemiteRating;
+  final UserProgressModel userProgressModel;
+  final List<DetailedYosemiteUserRatingModel> detailedUserProgressModels;
+
+  BarChartGroupData get condensedBarChart => userProgressModel._getBarChart(
+        condensedYosemiteRating.index,
+      );
+
+  BarChartGroupData get detailedBarChart => BarChartGroupData(
+      x: condensedYosemiteRating.index,
+      barRods: detailedUserProgressModels
+          .map((detailedUserProgressModel) =>
+              detailedUserProgressModel.userProgressModel._getRodData(8))
+          .toList());
+}
+
+class DetailedYosemiteUserRatingModel {
+  DetailedYosemiteUserRatingModel({
+    required this.yosemiteRating,
+    required this.userProgressModel,
+  });
+
+  final YosemiteRating yosemiteRating;
+  final UserProgressModel userProgressModel;
+}
+
+class UserProgressModel {
+  UserProgressModel.fromRoutes({
+    required Iterable<RouteModel> routes,
+  })  : unattempted =
+            routes.where((route) => route.isUnattempted).length.toDouble(),
+        inProgress =
+            routes.where((route) => route.isInProgress).length.toDouble(),
+        completed =
+            routes.where((route) => route.isCompleted).length.toDouble();
+
   final double unattempted;
   final double inProgress;
   final double completed;
@@ -27,73 +85,47 @@ class UserRatingModel {
   String get inProgressCount => '${inProgress.toInt()}/${totalCount.toInt()}';
   String get completedCount => '${completed.toInt()}/${totalCount.toInt()}';
 
-  @override
-  String toString() {
-    return 'UserRatingModel(boulderRating: $boulderRating, yosemiteRating: $yosemiteRating, unattempted: $unattempted, inProgress: $inProgress, completed: $completed)';
-  }
+  BarChartGroupData _getBarChart(int index) => BarChartGroupData(
+        x: index,
+        barRods: [_getRodData(16)],
+      );
+
+  BarChartRodData _getRodData(double width) => BarChartRodData(
+        toY: totalCount,
+        color: FreeBetaColors.white,
+        borderRadius: BorderRadius.zero,
+        width: width,
+        rodStackItems: [
+          BarChartRodStackItem(
+            completed + inProgress,
+            totalCount,
+            FreeBetaColors.red.withOpacity(0.7),
+          ),
+          BarChartRodStackItem(
+            completed,
+            completed + inProgress,
+            FreeBetaColors.yellowBrand.withOpacity(0.7),
+          ),
+          BarChartRodStackItem(
+            0,
+            completed,
+            FreeBetaColors.green.withOpacity(0.7),
+          ),
+        ],
+      );
+
+  List<TextSpan> get getTooltipData => [
+        TextSpan(
+          text: 'Unattempted: ${unattemptedCount}\n',
+          style: FreeBetaTextStyle.body5,
+        ),
+        TextSpan(
+          text: 'In progress: ${inProgressCount}\n',
+          style: FreeBetaTextStyle.body5,
+        ),
+        TextSpan(
+          text: 'Completed: ${completedCount}',
+          style: FreeBetaTextStyle.body5,
+        ),
+      ];
 }
-
-
-// BarChartData(
-//           barGroups: [
-//             BarChartGroupData(
-//               x: 0,
-//               barRods: [
-//                 BarChartRodData(
-//                   toY: 3,
-//                   color: FreeBetaColors.blue,
-//                 ),
-//                 BarChartRodData(
-//                   toY: 9,
-//                   color: FreeBetaColors.blueLight,
-//                 ),
-//                 BarChartRodData(
-//                   toY: 6,
-//                   color: FreeBetaColors.blueDark,
-//                 ),
-//               ],
-//             ),
-//             BarChartGroupData(
-//               x: 1,
-//               barRods: [
-//                 BarChartRodData(
-//                   toY: 9,
-//                   borderRadius: BorderRadius.zero,
-//                   rodStackItems: [
-//                     BarChartRodStackItem(6, 9, FreeBetaColors.red),
-//                     BarChartRodStackItem(3, 6, FreeBetaColors.yellowBrand),
-//                     BarChartRodStackItem(0, 3, FreeBetaColors.green),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//             BarChartGroupData(
-//               x: 2,
-//             ),
-//           ],
-//           barTouchData: BarTouchData(enabled: false),
-//           gridData: const FlGridData(
-//             drawVerticalLine: false,
-//             horizontalInterval: 3,
-//           ),
-//           titlesData: FlTitlesData(
-//             topTitles: AxisTitles(),
-//             rightTitles: AxisTitles(),
-//             leftTitles: AxisTitles(
-//               sideTitles: SideTitles(
-//                 interval: 3,
-//                 showTitles: true,
-//               ),
-//             ),
-//             bottomTitles: AxisTitles(
-//               sideTitles: SideTitles(
-//                 showTitles: true,
-//                 getTitlesWidget: (i, _) => Text(
-//                   BoulderRating.values[i.toInt()].displayName,
-//                 ),
-//               ),
-//             ),
-//           ),
-//         ),
-//       ),
-//     );

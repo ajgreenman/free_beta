@@ -144,15 +144,20 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
   } else {
     unfilteredRoutes = await ref.watch(fetchActiveRoutesProvider.future);
   }
+
+  final includeGraphDetails = ref.watch(includeGraphDetailsProvider);
+
   final routeGraphApi = ref.watch(routeGraphApiProvider);
 
   return routeGraphApi.getUserRatings(
     climbType: climbType,
     unfilteredRoutes: unfilteredRoutes,
+    includeGraphDetails: includeGraphDetails,
   );
 }
 
 final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
+final includeGraphDetailsProvider = StateProvider<bool>((_) => false);
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
 final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
