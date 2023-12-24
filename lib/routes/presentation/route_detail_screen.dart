@@ -561,7 +561,6 @@ class _AreYouSureDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        SizedBox(width: FreeBetaSizes.s),
         TextButton(
           child: Text(
             'Exit',
@@ -574,7 +573,6 @@ class _AreYouSureDialog extends StatelessWidget {
             }
           },
         ),
-        SizedBox(width: FreeBetaSizes.s),
         TextButton(
           child: Text(
             'Save & Exit',

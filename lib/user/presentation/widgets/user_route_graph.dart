@@ -23,8 +23,9 @@ class UserRouteGraph extends ConsumerWidget {
             climbType: climbType,
             userRatings: userRatings,
             includeGraphDetails: ref.watch(includeGraphDetailsProvider),
+            includeRemovedRoutes: ref.watch(includeRemovedRoutesProvider),
           ),
-          loading: () => CircularProgressIndicator(),
+          loading: () => _Loading(),
           error: (error, stackTrace) => _ErrorCard(
             key: Key('UserRouteGraph-error'),
             error: error,
@@ -40,16 +41,17 @@ class _RatingGraph extends StatelessWidget {
     required this.climbType,
     required this.userRatings,
     required this.includeGraphDetails,
+    required this.includeRemovedRoutes,
   }) : super(key: key);
 
   final ClimbType climbType;
   final List<UserRatingModel> userRatings;
   final bool includeGraphDetails;
-
-  static const _interval = 1.0;
+  final bool includeRemovedRoutes;
 
   @override
   Widget build(BuildContext context) {
+    var _interval = includeRemovedRoutes ? 10.0 : 1.0;
     return Padding(
       padding: const EdgeInsets.only(top: 16.0),
       child: AspectRatio(
@@ -57,6 +59,7 @@ class _RatingGraph extends StatelessWidget {
         child: BarChart(
           BarChartData(
             barGroups: userRatings.map(_mapBarGroupsByRating).toList(),
+            groupsSpace: 4,
             barTouchData: BarTouchData(
               touchTooltipData: BarTouchTooltipData(
                 tooltipBgColor: FreeBetaColors.grayBackground,
@@ -82,14 +85,15 @@ class _RatingGraph extends StatelessWidget {
               rightTitles: AxisTitles(),
               leftTitles: AxisTitles(
                 sideTitles: SideTitles(
-                  interval: _interval,
                   showTitles: true,
+                  interval: _interval,
+                  reservedSize: includeRemovedRoutes ? 28 : 22,
                 ),
               ),
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
                   showTitles: true,
-                  getTitlesWidget: _getAxisLabels,
+                  getTitlesWidget: _getBottomTitles,
                 ),
               ),
             ),
@@ -153,7 +157,7 @@ class _RatingGraph extends StatelessWidget {
     );
   }
 
-  Widget _getAxisLabels(double i, TitleMeta _) {
+  Widget _getBottomTitles(double i, TitleMeta _) {
     return SideTitleWidget(
       axisSide: AxisSide.bottom,
       child: Text(
@@ -161,6 +165,21 @@ class _RatingGraph extends StatelessWidget {
             ? BoulderRating.values[i.toInt()].displayName
             : CondensedYosemiteRating.values[i.toInt()].displayName,
         style: FreeBetaTextStyle.body6,
+      ),
+    );
+  }
+}
+
+class _Loading extends StatelessWidget {
+  const _Loading();
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox.square(
+      dimension: MediaQuery.of(context).size.width - FreeBetaSizes.xl,
+      child: SizedBox.square(
+        dimension: FreeBetaSizes.l,
+        child: Center(child: CircularProgressIndicator()),
       ),
     );
   }

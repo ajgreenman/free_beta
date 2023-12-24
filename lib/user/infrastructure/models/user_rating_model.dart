@@ -48,11 +48,12 @@ class YosemiteUserRatingModel {
       );
 
   BarChartGroupData get detailedBarChart => BarChartGroupData(
-      x: condensedYosemiteRating.index,
-      barRods: detailedUserProgressModels
-          .map((detailedUserProgressModel) =>
-              detailedUserProgressModel.userProgressModel._getRodData(8))
-          .toList());
+        x: condensedYosemiteRating.index,
+        barRods: detailedUserProgressModels
+            .map((detailedUserProgressModel) =>
+                detailedUserProgressModel.userProgressModel._getRodData(8))
+            .toList(),
+      );
 }
 
 class DetailedYosemiteUserRatingModel {
