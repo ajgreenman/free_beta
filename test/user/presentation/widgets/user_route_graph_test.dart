@@ -1,5 +1,5 @@
-import 'package:charts_flutter/flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -23,7 +23,7 @@ void main() {
         .thenAnswer((_) => Future.value());
   });
 
-  Widget buildFrame(List<Series<UserRatingModel, String>> value) {
+  Widget buildFrame(List<UserRatingModel> value) {
     return ProviderScope(
       overrides: [
         fetchRatingUserGraphProvider(climbType: ClimbType.boulder)

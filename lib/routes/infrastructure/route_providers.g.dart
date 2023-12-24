@@ -98,7 +98,7 @@ final fetchAllRoutesProvider =
 );
 
 typedef FetchAllRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
-String _$fetchActiveRoutesHash() => r'1ff88317fa891b5164d8a449ad66121bdcbd40e3';
+String _$fetchActiveRoutesHash() => r'e6bd4fedb0fc89fd0f2dcf8f5e0b0b1962c2fb09';
 
 /// See also [fetchActiveRoutes].
 @ProviderFor(fetchActiveRoutes)
@@ -115,7 +115,7 @@ final fetchActiveRoutesProvider =
 
 typedef FetchActiveRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
 String _$fetchRemovedRoutesHash() =>
-    r'039338168519a81d79cd6d5394b4ff5f36018a88';
+    r'2a1365043683f4dda7ac383022035444b1244d43';
 
 /// See also [fetchRemovedRoutes].
 @ProviderFor(fetchRemovedRoutes)
@@ -185,7 +185,7 @@ final fetchLocationFilteredRoutesProvider =
 typedef FetchLocationFilteredRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchRatingUserGraphHash() =>
-    r'1401b10c0f96778a956a6513815e9f59f918c6ec';
+    r'0eec11c627db602ceb86ab7683c28b610542b3cd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -208,16 +208,13 @@ class _SystemHash {
   }
 }
 
-typedef FetchRatingUserGraphRef
-    = AutoDisposeFutureProviderRef<List<Series<UserRatingModel, String>>>;
-
 /// See also [fetchRatingUserGraph].
 @ProviderFor(fetchRatingUserGraph)
 const fetchRatingUserGraphProvider = FetchRatingUserGraphFamily();
 
 /// See also [fetchRatingUserGraph].
 class FetchRatingUserGraphFamily
-    extends Family<AsyncValue<List<Series<UserRatingModel, String>>>> {
+    extends Family<AsyncValue<List<UserRatingModel>>> {
   /// See also [fetchRatingUserGraph].
   const FetchRatingUserGraphFamily();
 
@@ -256,13 +253,13 @@ class FetchRatingUserGraphFamily
 
 /// See also [fetchRatingUserGraph].
 class FetchRatingUserGraphProvider
-    extends AutoDisposeFutureProvider<List<Series<UserRatingModel, String>>> {
+    extends AutoDisposeFutureProvider<List<UserRatingModel>> {
   /// See also [fetchRatingUserGraph].
   FetchRatingUserGraphProvider({
-    required this.climbType,
-  }) : super.internal(
+    required ClimbType climbType,
+  }) : this._internal(
           (ref) => fetchRatingUserGraph(
-            ref,
+            ref as FetchRatingUserGraphRef,
             climbType: climbType,
           ),
           from: fetchRatingUserGraphProvider,
@@ -274,9 +271,44 @@ class FetchRatingUserGraphProvider
           dependencies: FetchRatingUserGraphFamily._dependencies,
           allTransitiveDependencies:
               FetchRatingUserGraphFamily._allTransitiveDependencies,
+          climbType: climbType,
         );
 
+  FetchRatingUserGraphProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.climbType,
+  }) : super.internal();
+
   final ClimbType climbType;
+
+  @override
+  Override overrideWith(
+    FutureOr<List<UserRatingModel>> Function(FetchRatingUserGraphRef provider)
+        create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: FetchRatingUserGraphProvider._internal(
+        (ref) => create(ref as FetchRatingUserGraphRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        climbType: climbType,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<List<UserRatingModel>> createElement() {
+    return _FetchRatingUserGraphProviderElement(this);
+  }
 
   @override
   bool operator ==(Object other) {
@@ -292,4 +324,20 @@ class FetchRatingUserGraphProvider
     return _SystemHash.finish(hash);
   }
 }
-// ignore_for_file: unnecessary_raw_strings, subtype_of_sealed_class, invalid_use_of_internal_member, do_not_use_environment, prefer_const_constructors, public_member_api_docs, avoid_private_typedef_functions
+
+mixin FetchRatingUserGraphRef
+    on AutoDisposeFutureProviderRef<List<UserRatingModel>> {
+  /// The parameter `climbType` of this provider.
+  ClimbType get climbType;
+}
+
+class _FetchRatingUserGraphProviderElement
+    extends AutoDisposeFutureProviderElement<List<UserRatingModel>>
+    with FetchRatingUserGraphRef {
+  _FetchRatingUserGraphProviderElement(super.provider);
+
+  @override
+  ClimbType get climbType => (origin as FetchRatingUserGraphProvider).climbType;
+}
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

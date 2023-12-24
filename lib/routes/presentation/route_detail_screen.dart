@@ -511,7 +511,7 @@ class _BetaVideoButton extends StatelessWidget {
         ElevatedButton(
           onPressed: betaVideo != null
               ? () => Navigator.of(context).push(RouteVideoScreen.route(
-                    VideoPlayerController.network(betaVideo!),
+                    VideoPlayerController.networkUrl(Uri(path: betaVideo)),
                   ))
               : null,
           child: Row(
@@ -561,7 +561,6 @@ class _AreYouSureDialog extends StatelessWidget {
             Navigator.of(context).pop();
           },
         ),
-        SizedBox(width: FreeBetaSizes.s),
         TextButton(
           child: Text(
             'Exit',
@@ -574,7 +573,6 @@ class _AreYouSureDialog extends StatelessWidget {
             }
           },
         ),
-        SizedBox(width: FreeBetaSizes.s),
         TextButton(
           child: Text(
             'Save & Exit',

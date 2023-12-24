@@ -268,6 +268,14 @@ class FreeBetaTextStyle {
     color: FreeBetaColors.black,
   );
 
+  static const TextStyle body6 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 8,
+    fontWeight: FontWeight.w400,
+    height: 1.25,
+    color: FreeBetaColors.black,
+  );
+
   static const TextStyle mono = TextStyle(
     fontFamily: monoFontFamily,
     fontSize: 16,

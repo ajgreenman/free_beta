@@ -1,4 +1,5 @@
-import 'package:charts_flutter/flutter.dart';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -69,14 +70,14 @@ Future<List<RouteModel>> fetchAllRoutes(FetchAllRoutesRef ref) async {
 }
 
 @riverpod
-Future<List<RouteModel>> fetchActiveRoutes(FetchAllRoutesRef ref) async {
+Future<List<RouteModel>> fetchActiveRoutes(FetchActiveRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getActiveRoutes();
 }
 
 @riverpod
-Future<List<RouteModel>> fetchRemovedRoutes(FetchAllRoutesRef ref) async {
+Future<List<RouteModel>> fetchRemovedRoutes(FetchRemovedRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getRemovedRoutes();
@@ -133,7 +134,7 @@ FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
 }
 
 @riverpod
-Future<List<Series<UserRatingModel, String>>> fetchRatingUserGraph(
+Future<List<UserRatingModel>> fetchRatingUserGraph(
   FetchRatingUserGraphRef ref, {
   required ClimbType climbType,
 }) async {
@@ -145,15 +146,20 @@ Future<List<Series<UserRatingModel, String>>> fetchRatingUserGraph(
   } else {
     unfilteredRoutes = await ref.watch(fetchActiveRoutesProvider.future);
   }
+
+  final includeGraphDetails = ref.watch(includeGraphDetailsProvider);
+
   final routeGraphApi = ref.watch(routeGraphApiProvider);
 
   return routeGraphApi.getUserRatings(
     climbType: climbType,
     unfilteredRoutes: unfilteredRoutes,
+    includeGraphDetails: includeGraphDetails,
   );
 }
 
 final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
+final includeGraphDetailsProvider = StateProvider<bool>((_) => false);
 final routeTextFilterProvider = StateProvider<String?>((_) => null);
 final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
 final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);

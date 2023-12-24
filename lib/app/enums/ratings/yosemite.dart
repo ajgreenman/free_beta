@@ -137,6 +137,52 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
         return 'Speed';
     }
   }
+
+  List<YosemiteRating> get uncondensedRatings {
+    switch (this) {
+      case CondensedYosemiteRating.six:
+        return [YosemiteRating.six];
+      case CondensedYosemiteRating.seven:
+        return [YosemiteRating.seven];
+      case CondensedYosemiteRating.eight:
+        return [
+          YosemiteRating.eight,
+          YosemiteRating.eightPlus,
+        ];
+      case CondensedYosemiteRating.nine:
+        return [
+          YosemiteRating.nineMinus,
+          YosemiteRating.nine,
+          YosemiteRating.ninePlus,
+        ];
+      case CondensedYosemiteRating.ten:
+        return [
+          YosemiteRating.tenMinus,
+          YosemiteRating.ten,
+          YosemiteRating.tenPlus,
+        ];
+      case CondensedYosemiteRating.eleven:
+        return [
+          YosemiteRating.elevenMinus,
+          YosemiteRating.eleven,
+          YosemiteRating.elevenPlus,
+        ];
+      case CondensedYosemiteRating.twelve:
+        return [
+          YosemiteRating.twelveMinus,
+          YosemiteRating.twelve,
+          YosemiteRating.twelvePlus,
+        ];
+      case CondensedYosemiteRating.thirteen:
+        return [
+          YosemiteRating.thirteenMinus,
+          YosemiteRating.thirteen,
+          YosemiteRating.thirteenPlus,
+        ];
+      case CondensedYosemiteRating.speed:
+        return [YosemiteRating.speed];
+    }
+  }
 }
 
 YosemiteRating yosemiteRatingFromString(String yosemiteRating) {
