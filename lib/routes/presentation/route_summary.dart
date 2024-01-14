@@ -8,7 +8,7 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/gym/infrastructure/gym_providers.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
-import 'package:free_beta/routes/presentation/route_color_square.dart';
+import 'package:free_beta/app/presentation/widgets/color_square.dart';
 import 'package:intl/intl.dart';
 
 class RouteSummary extends StatelessWidget {
@@ -34,7 +34,7 @@ class RouteSummary extends StatelessWidget {
               children: [
                 _ColorSquare(
                   name: route.name,
-                  color: route.routeColor,
+                  color: route.routeColor.displayColor,
                   isDetailed: isDetailed,
                 ),
                 _NameText(
@@ -124,15 +124,15 @@ class _ColorSquare extends StatelessWidget {
   }) : super(key: key);
 
   final String name;
-  final RouteColor color;
+  final Color color;
   final bool isDetailed;
 
   @override
   Widget build(BuildContext context) {
     if (!isDetailed) return SizedBox.shrink();
 
-    var colorSquare = RouteColorSquare(
-      routeColor: color,
+    var colorSquare = ColorSquare(
+      color: color,
       size: FreeBetaSizes.xl,
     );
 

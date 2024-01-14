@@ -339,5 +339,23 @@ class _FetchRatingUserGraphProviderElement
   @override
   ClimbType get climbType => (origin as FetchRatingUserGraphProvider).climbType;
 }
+
+String _$fetchUserTypesGraphHash() =>
+    r'045d6089faf8b349546242bd70773338644418f3';
+
+/// See also [fetchUserTypesGraph].
+@ProviderFor(fetchUserTypesGraph)
+final fetchUserTypesGraphProvider =
+    AutoDisposeFutureProvider<UserTypesModel>.internal(
+  fetchUserTypesGraph,
+  name: r'fetchUserTypesGraphProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$fetchUserTypesGraphHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef FetchUserTypesGraphRef = AutoDisposeFutureProviderRef<UserTypesModel>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

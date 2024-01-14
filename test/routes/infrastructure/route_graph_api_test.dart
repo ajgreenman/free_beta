@@ -16,6 +16,7 @@ void main() {
         boulderRouteModel,
         hardYosemiteRouteModel,
       ],
+      includeGraphDetails: false,
     );
 
     expect(userRatings.length, 3);
@@ -41,6 +42,7 @@ void main() {
         yosemiteRouteModel,
         boulderRouteModel,
       ],
+      includeGraphDetails: false,
     );
 
     expect(userRatings.length, 3);

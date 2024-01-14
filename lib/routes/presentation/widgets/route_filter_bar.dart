@@ -6,7 +6,7 @@ import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
-import 'package:free_beta/routes/presentation/route_color_square.dart';
+import 'package:free_beta/app/presentation/widgets/color_square.dart';
 
 class RouteFilterBar extends SliverPersistentHeaderDelegate {
   RouteFilterBar({required this.routeProvider});
@@ -352,7 +352,7 @@ class _RouteColorFilter extends ConsumerWidget {
                   padding: const EdgeInsets.only(
                     right: FreeBetaSizes.m,
                   ),
-                  child: RouteColorSquare(routeColor: routeColor),
+                  child: ColorSquare(color: routeColor.displayColor),
                 ),
                 Text(routeColor.displayName),
               ],

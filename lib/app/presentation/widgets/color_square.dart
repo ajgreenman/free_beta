@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/enums/route_color.dart';
 import 'package:free_beta/app/theme.dart';
 
-class RouteColorSquare extends StatelessWidget {
-  const RouteColorSquare({
-    required this.routeColor,
+class ColorSquare extends StatelessWidget {
+  const ColorSquare({
+    required this.color,
     this.size = FreeBetaSizes.l,
     Key? key,
   }) : super(key: key);
 
-  final RouteColor routeColor;
+  final Color color;
   final double size;
 
   @override
@@ -19,7 +18,7 @@ class RouteColorSquare extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           border: Border.all(),
-          color: routeColor.displayColor,
+          color: color,
         ),
       ),
     );

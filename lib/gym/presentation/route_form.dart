@@ -10,7 +10,7 @@ import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_form_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
-import 'package:free_beta/routes/presentation/route_color_square.dart';
+import 'package:free_beta/app/presentation/widgets/color_square.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
@@ -423,7 +423,7 @@ class _RouteFormState extends ConsumerState<RouteForm> {
                 padding: const EdgeInsets.only(
                   right: FreeBetaSizes.m,
                 ),
-                child: RouteColorSquare(routeColor: routeColor),
+                child: ColorSquare(color: routeColor.displayColor),
               ),
               Text(routeColor.displayName),
             ],
