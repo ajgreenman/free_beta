@@ -146,14 +146,11 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
     unfilteredRoutes = await ref.watch(fetchActiveRoutesProvider.future);
   }
 
-  final includeGraphDetails = ref.watch(includeGraphDetailsProvider);
-
   final routeGraphApi = ref.watch(routeGraphApiProvider);
 
   return routeGraphApi.getUserRatings(
     climbType: climbType,
     unfilteredRoutes: unfilteredRoutes,
-    includeGraphDetails: includeGraphDetails,
   );
 }
 

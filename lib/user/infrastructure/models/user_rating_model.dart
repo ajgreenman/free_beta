@@ -67,6 +67,12 @@ class DetailedYosemiteUserRatingModel {
 }
 
 class UserProgressModel {
+  UserProgressModel({
+    required this.unattempted,
+    required this.inProgress,
+    required this.completed,
+  });
+
   UserProgressModel.fromRoutes({
     required Iterable<RouteModel> routes,
   })  : unattempted =

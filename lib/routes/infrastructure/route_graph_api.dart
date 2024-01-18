@@ -7,7 +7,6 @@ class RouteGraphApi {
   List<UserRatingModel> getUserRatings({
     required ClimbType climbType,
     required List<RouteModel> unfilteredRoutes,
-    required bool includeGraphDetails,
   }) {
     var routes = unfilteredRoutes
         .sortRoutes()
