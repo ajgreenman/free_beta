@@ -91,7 +91,12 @@ class _AddReset extends StatelessWidget {
               onPressed: () => Navigator.of(context).push(
                 ResetFormScreen.add(),
               ),
-              child: Text('Add new reset'),
+              child: Text(
+                'Add new reset',
+                style: FreeBetaTextStyle.h4.copyWith(
+                  color: FreeBetaColors.white,
+                ),
+              ),
             ),
             if (latestReset != null) ...[
               SizedBox(height: FreeBetaSizes.m),

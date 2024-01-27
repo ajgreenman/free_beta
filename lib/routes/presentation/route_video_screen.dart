@@ -114,6 +114,9 @@ class _RouteVideoScreenState extends State<RouteVideoScreen> {
                         width: FreeBetaSizes.xxxl,
                         child: Text(
                           _isPlaying ? 'Pause' : 'Play',
+                          style: FreeBetaTextStyle.h4.copyWith(
+                            color: FreeBetaColors.white,
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),

@@ -161,6 +161,10 @@ class _ResetFormScreen extends ConsumerState<ResetFormScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedDate = await showDatePicker(
+      builder: (context, child) => Theme(
+        data: ThemeData.light(),
+        child: child!,
+      ),
       context: context,
       initialDate: _resetFormModel.date ?? DateTime.now(),
       firstDate: DateTime(2021),

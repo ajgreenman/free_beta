@@ -119,8 +119,14 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                       ClassFormScreen.add(_currentDay),
                     ),
                     child: SizedBox(
-                      width: 100.0,
-                      child: Center(child: Text('Add new class')),
+                      width: 150.0,
+                      child: Center(
+                          child: Text(
+                        'Add new class',
+                        style: FreeBetaTextStyle.h4.copyWith(
+                          color: FreeBetaColors.white,
+                        ),
+                      )),
                     ),
                   ),
                   SizedBox(height: FreeBetaSizes.s),
@@ -166,12 +172,15 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                         ElevatedButton(
                           onPressed: _onAddImage,
                           child: SizedBox(
-                            width: 100.0,
+                            width: 150.0,
                             child: Center(
                               child: Text(
                                 _currentSchedule.image != null
                                     ? 'Update image'
                                     : 'Add image',
+                                style: FreeBetaTextStyle.h4.copyWith(
+                                  color: FreeBetaColors.white,
+                                ),
                               ),
                             ),
                           ),
@@ -340,13 +349,23 @@ class _ImageSourceDialog extends StatelessWidget {
       title: Text('Upload media'),
       actions: [
         ElevatedButton(
-          child: Text('Camera'),
+          child: Text(
+            'Camera',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.camera);
           },
         ),
         ElevatedButton(
-          child: Text('Photos'),
+          child: Text(
+            'Photos',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.gallery);
           },
@@ -382,6 +401,9 @@ class _DeleteButton extends ConsumerWidget {
         child: Center(
           child: Text(
             'Delete image',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
           ),
         ),
       ),

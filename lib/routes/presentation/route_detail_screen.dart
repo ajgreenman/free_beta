@@ -521,6 +521,9 @@ class _BetaVideoButton extends StatelessWidget {
                 betaVideo != null
                     ? 'View beta video'
                     : 'Beta video not available',
+                style: FreeBetaTextStyle.h4.copyWith(
+                  color: FreeBetaColors.white,
+                ),
               ),
               if (betaVideo != null)
                 Padding(

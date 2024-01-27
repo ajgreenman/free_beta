@@ -115,7 +115,12 @@ class _ErrorList extends ConsumerWidget {
     return ErrorCard(
       child: ElevatedButton(
         onPressed: onRefresh,
-        child: Text('Try again'),
+        child: Text(
+          'Try again',
+          style: FreeBetaTextStyle.h4.copyWith(
+            color: FreeBetaColors.white,
+          ),
+        ),
       ),
     );
   }

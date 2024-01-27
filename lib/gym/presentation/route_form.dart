@@ -304,6 +304,10 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedDate = await showDatePicker(
+      builder: (context, child) => Theme(
+        data: ThemeData.light(),
+        child: child!,
+      ),
       context: context,
       initialDate: _formModel.creationDate ?? DateTime.now(),
       firstDate: DateTime(2021),
@@ -324,6 +328,10 @@ class _RouteFormState extends ConsumerState<RouteForm> {
     FocusScope.of(context).requestFocus(FocusNode());
 
     var pickedDate = await showDatePicker(
+      builder: (context, child) => Theme(
+        data: ThemeData.light(),
+        child: child!,
+      ),
       context: context,
       initialDate: _formModel.removalDate ?? DateTime.now(),
       firstDate: DateTime(2021),
@@ -594,13 +602,23 @@ class _ImageSourceDialog extends StatelessWidget {
       title: Text('Upload media'),
       actions: [
         ElevatedButton(
-          child: Text('Camera'),
+          child: Text(
+            'Camera',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.camera);
           },
         ),
         ElevatedButton(
-          child: Text('Photos'),
+          child: Text(
+            'Photos',
+            style: FreeBetaTextStyle.h4.copyWith(
+              color: FreeBetaColors.white,
+            ),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.gallery);
           },
