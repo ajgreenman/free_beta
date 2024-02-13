@@ -63,5 +63,19 @@ final messagingApiProvider = AutoDisposeProvider<MessagingApi>.internal(
 );
 
 typedef MessagingApiRef = AutoDisposeProviderRef<MessagingApi>;
+String _$bottomNavHash() => r'1d7bed45d76287bac36ac5a76ab8cfd0356174b0';
+
+/// See also [BottomNav].
+@ProviderFor(BottomNav)
+final bottomNavProvider = AutoDisposeNotifierProvider<BottomNav, int>.internal(
+  BottomNav.new,
+  name: r'bottomNavProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$bottomNavHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$BottomNav = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

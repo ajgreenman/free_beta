@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/theme.dart';
 
-class FreeBetaBottomNavigationBar extends StatelessWidget {
-  final int currentIndex;
-  final void Function(int) navigateTo;
-
+class FreeBetaBottomNavigationBar extends ConsumerWidget {
   const FreeBetaBottomNavigationBar({
-    required this.currentIndex,
-    required this.navigateTo,
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return BottomNavigationBar(
       key: const Key('bottom-navigation'),
       type: BottomNavigationBarType.fixed,
-      currentIndex: currentIndex,
-      onTap: navigateTo,
+      currentIndex: ref.watch(bottomNavProvider),
+      onTap: (index) => ref.read(bottomNavProvider.notifier).setIndex(index),
       unselectedItemColor: FreeBetaColors.grayLight,
       items: [
         BottomNavigationBarItem(
