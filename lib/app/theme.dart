@@ -231,6 +231,14 @@ class FreeBetaTextStyle {
     color: FreeBetaColors.black,
   );
 
+  static const TextStyle h5 = TextStyle(
+    fontFamily: fontFamily,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.5,
+    color: FreeBetaColors.black,
+  );
+
   static const TextStyle body1 = TextStyle(
     fontFamily: fontFamily,
     fontSize: 20,

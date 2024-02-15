@@ -32,11 +32,11 @@ class RouteSummary extends StatelessWidget {
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
-                _ColorSquare(
-                  name: route.name,
-                  color: route.routeColor.displayColor,
-                  isDetailed: isDetailed,
-                ),
+                if (isDetailed)
+                  _ColorSquare(
+                    name: route.name,
+                    color: route.routeColor.displayColor,
+                  ),
                 _NameText(
                   name: route.name,
                   isDetailed: isDetailed,
@@ -96,7 +96,7 @@ class _NameText extends StatelessWidget {
   final bool isDetailed;
 
   TextStyle get headingTextStyle =>
-      isDetailed ? FreeBetaTextStyle.h3 : FreeBetaTextStyle.h4;
+      isDetailed ? FreeBetaTextStyle.h4 : FreeBetaTextStyle.h5;
 
   @override
   Widget build(BuildContext context) {
@@ -120,17 +120,13 @@ class _ColorSquare extends StatelessWidget {
     Key? key,
     required this.name,
     required this.color,
-    required this.isDetailed,
   }) : super(key: key);
 
   final String name;
   final Color color;
-  final bool isDetailed;
 
   @override
   Widget build(BuildContext context) {
-    if (!isDetailed) return SizedBox.shrink();
-
     var colorSquare = ColorSquare(
       color: color,
       size: FreeBetaSizes.xl,
@@ -158,7 +154,7 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
   final bool isDetailed;
 
   TextStyle get textStyle =>
-      isDetailed ? FreeBetaTextStyle.body2 : FreeBetaTextStyle.body3;
+      isDetailed ? FreeBetaTextStyle.body3 : FreeBetaTextStyle.body4;
 
   @override
   Widget build(BuildContext context) {
