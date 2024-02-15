@@ -255,7 +255,7 @@ class _CheckboxRow extends StatelessWidget {
       children: [
         Text(
           label,
-          style: FreeBetaTextStyle.body2,
+          style: FreeBetaTextStyle.body3,
         ),
         Spacer(),
         SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
