@@ -14,7 +14,7 @@ class FreeBetaBottomNavigationBar extends ConsumerWidget {
       key: const Key('bottom-navigation'),
       type: BottomNavigationBarType.fixed,
       currentIndex: ref.watch(bottomNavProvider),
-      onTap: (index) => ref.read(bottomNavProvider.notifier).setIndex(index),
+      onTap: ref.read(bottomNavProvider.notifier).setIndex,
       unselectedItemColor: FreeBetaColors.grayLight,
       items: [
         BottomNavigationBarItem(
