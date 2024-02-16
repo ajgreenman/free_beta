@@ -27,39 +27,45 @@ class RouteSummary extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (isDetailed)
-                  _ColorSquare(
-                    name: route.name,
-                    color: route.routeColor.displayColor,
-                  ),
-                _NameText(
-                  name: route.name,
-                  isDetailed: isDetailed,
-                ),
-              ],
-            ),
-            if (isDetailed) ...[
-              Spacer(),
-              _DateText(label: 'Created', date: route.creationDate),
-            ]
-          ],
-        ),
-        Row(
-          children: [
-            _RouteTypeAndDifficultyRow(
-              route: route,
-              isDetailed: isDetailed,
-            ),
-            if (isDetailed && route.removalDate != null) ...[
-              Spacer(),
-              _DateText(label: 'Removed', date: route.removalDate),
+        if (isDetailed || route.name.isNotEmpty)
+          Row(
+            children: [
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (isDetailed)
+                    _ColorSquare(
+                      name: route.name,
+                      color: route.routeColor.displayColor,
+                    ),
+                  if (route.name.isNotEmpty)
+                    _NameText(
+                      name: route.name,
+                      isDetailed: isDetailed,
+                    ),
+                ],
+              ),
+              if (isDetailed) ...[
+                Spacer(),
+                _DateText(label: 'Created', date: route.creationDate),
+              ]
             ],
-          ],
+          ),
+        SizedBox(
+          height:
+              !isDetailed && !route.name.isNotEmpty ? FreeBetaSizes.xxl : null,
+          child: Row(
+            children: [
+              _RouteTypeAndDifficultyRow(
+                route: route,
+                isDetailed: isDetailed,
+              ),
+              if (isDetailed && route.removalDate != null) ...[
+                Spacer(),
+                _DateText(label: 'Removed', date: route.removalDate),
+              ],
+            ],
+          ),
         ),
       ],
     );
