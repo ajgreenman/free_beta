@@ -23,50 +23,143 @@ class RouteSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isDetailed) {
+      return _DetailedRouteSummary(route: route);
+    }
+
+    return _SimpleRouteSummary(route: route);
+  }
+}
+
+class _SimpleRouteSummary extends StatelessWidget {
+  const _SimpleRouteSummary({
+    required this.route,
+    Key? key,
+  }) : super(key: key);
+
+  final RouteModel route;
+
+  @override
+  Widget build(BuildContext context) {
+    if (route.name.isEmpty) {
+      return SizedBox(
+        height: FreeBetaSizes.xxl,
+        child: _RouteTypeAndDifficultyRow(
+          route: route,
+          isDetailed: false,
+        ),
+      );
+    }
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (isDetailed || route.name.isNotEmpty)
+        _NameText(
+          name: route.name,
+          isDetailed: false,
+        ),
+        _RouteTypeAndDifficultyRow(
+          route: route,
+          isDetailed: false,
+        ),
+      ],
+    );
+  }
+}
+
+class _DetailedRouteSummary extends StatelessWidget {
+  const _DetailedRouteSummary({
+    required this.route,
+    Key? key,
+  }) : super(key: key);
+
+  final RouteModel route;
+
+  @override
+  Widget build(BuildContext context) {
+    if (route.name.isEmpty) {
+      return _NoNameDetailedRouteSummary(route: route);
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _ColorSquare(
+                  color: route.routeColor.displayColor,
+                ),
+                _NameText(
+                  name: route.name,
+                  isDetailed: true,
+                ),
+              ],
+            ),
+            Spacer(),
+            _DateText(label: 'Created', date: route.creationDate),
+          ],
+        ),
+        Row(
+          children: [
+            _RouteTypeAndDifficultyRow(
+              route: route,
+              isDetailed: true,
+            ),
+            if (route.removalDate != null) ...[
+              Spacer(),
+              _DateText(label: 'Removed', date: route.removalDate),
+            ],
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _NoNameDetailedRouteSummary extends StatelessWidget {
+  const _NoNameDetailedRouteSummary({
+    required this.route,
+    Key? key,
+  }) : super(key: key);
+
+  final RouteModel route;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _ColorSquare(
+                  color: route.routeColor.displayColor,
+                ),
+                _RouteTypeAndDifficultyRow(
+                  route: route,
+                  isDetailed: true,
+                ),
+              ],
+            ),
+            Spacer(),
+            _DateText(label: 'Created', date: route.creationDate),
+          ],
+        ),
+        if (route.removalDate != null)
           Row(
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (isDetailed)
-                    _ColorSquare(
-                      name: route.name,
-                      color: route.routeColor.displayColor,
-                    ),
-                  if (route.name.isNotEmpty)
-                    _NameText(
-                      name: route.name,
-                      isDetailed: isDetailed,
-                    ),
-                ],
-              ),
-              if (isDetailed) ...[
-                Spacer(),
-                _DateText(label: 'Created', date: route.creationDate),
-              ]
+              Spacer(),
+              _DateText(label: 'Removed', date: route.removalDate),
             ],
           ),
-        SizedBox(
-          height:
-              !isDetailed && !route.name.isNotEmpty ? FreeBetaSizes.xxl : null,
-          child: Row(
-            children: [
-              _RouteTypeAndDifficultyRow(
-                route: route,
-                isDetailed: isDetailed,
-              ),
-              if (isDetailed && route.removalDate != null) ...[
-                Spacer(),
-                _DateText(label: 'Removed', date: route.removalDate),
-              ],
-            ],
-          ),
-        ),
       ],
     );
   }
@@ -124,27 +217,19 @@ class _NameText extends StatelessWidget {
 class _ColorSquare extends StatelessWidget {
   const _ColorSquare({
     Key? key,
-    required this.name,
     required this.color,
   }) : super(key: key);
 
-  final String name;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
-    var colorSquare = ColorSquare(
-      color: color,
-      size: FreeBetaSizes.xl,
-    );
-
-    if (name.isEmpty) {
-      return colorSquare;
-    }
-
     return Padding(
       padding: const EdgeInsets.only(right: FreeBetaSizes.m),
-      child: colorSquare,
+      child: ColorSquare(
+        color: color,
+        size: FreeBetaSizes.xl,
+      ),
     );
   }
 }
