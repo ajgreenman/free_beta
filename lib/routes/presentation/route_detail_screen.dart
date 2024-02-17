@@ -87,8 +87,8 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 _DetailScreenDivider(),
                 _RemovalWarningMessage(routeModel: _routeModel),
                 RouteImages(images: _routeModel.images),
-                _BetaVideoButton(betaVideo: _routeModel.betaVideo),
-                _DetailScreenDivider(),
+                if (_routeModel.betaVideo != null)
+                  _BetaVideoButton(betaVideo: _routeModel.betaVideo!),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,7 +501,7 @@ class _BetaVideoButton extends StatelessWidget {
     required this.betaVideo,
   }) : super(key: key);
 
-  final String? betaVideo;
+  final String betaVideo;
 
   @override
   Widget build(BuildContext context) {
@@ -509,30 +509,26 @@ class _BetaVideoButton extends StatelessWidget {
       children: [
         SizedBox(height: FreeBetaSizes.ml),
         ElevatedButton(
-          onPressed: betaVideo != null
-              ? () => Navigator.of(context).push(RouteVideoScreen.route(
-                    VideoPlayerController.networkUrl(Uri(path: betaVideo)),
-                  ))
-              : null,
+          onPressed: () => Navigator.of(context).push(RouteVideoScreen.route(
+            VideoPlayerController.networkUrl(Uri(path: betaVideo)),
+          )),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                betaVideo != null
-                    ? 'View beta video'
-                    : 'Beta video not available',
+                'View beta video',
                 style: FreeBetaTextStyle.h4.copyWith(
                   color: FreeBetaColors.white,
                 ),
               ),
-              if (betaVideo != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
-                  child: Icon(
-                    Icons.tap_and_play,
-                    size: FreeBetaSizes.l,
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
+                child: Icon(
+                  Icons.tap_and_play,
+                  size: FreeBetaSizes.l,
+                  color: FreeBetaColors.white,
                 ),
+              ),
             ],
           ),
         ),
