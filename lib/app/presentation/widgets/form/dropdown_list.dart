@@ -28,7 +28,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
       children: [
         Text(
           label,
-          style: FreeBetaTextStyle.h3,
+          style: FreeBetaTextStyle.h4,
         ),
         SizedBox(height: FreeBetaSizes.m),
         DropdownButtonFormField<T?>(
@@ -51,14 +51,14 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
               ),
             ),
             contentPadding: FreeBetaPadding.mAll,
-            hintStyle: FreeBetaTextStyle.h4.copyWith(
+            hintStyle: FreeBetaTextStyle.h5.copyWith(
               color: FreeBetaColors.grayLight,
             ),
             hintText: hintText ?? 'Enter ${label.toLowerCase()}',
           ),
           icon: Icon(
             Icons.keyboard_arrow_down,
-            size: FreeBetaSizes.xxl,
+            size: FreeBetaSizes.xl,
             color: FreeBetaColors.blueDark,
           ),
           items: items,
@@ -69,7 +69,7 @@ class FreeBetaDropdownList<T> extends StatelessWidget {
             }
             return null;
           },
-          style: FreeBetaTextStyle.h4,
+          style: FreeBetaTextStyle.h5,
           value: initialValue,
         ),
       ],

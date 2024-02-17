@@ -23,6 +23,60 @@ class RouteSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (isDetailed) {
+      return _DetailedRouteSummary(route: route);
+    }
+
+    return _SimpleRouteSummary(route: route);
+  }
+}
+
+class _SimpleRouteSummary extends StatelessWidget {
+  const _SimpleRouteSummary({
+    required this.route,
+    Key? key,
+  }) : super(key: key);
+
+  final RouteModel route;
+
+  @override
+  Widget build(BuildContext context) {
+    if (route.name.isEmpty) {
+      return SizedBox(
+        height: FreeBetaSizes.xxl,
+        child: _RouteTypeAndDifficultyRow(
+          route: route,
+          isDetailed: false,
+        ),
+      );
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _NameText(
+          name: route.name,
+        ),
+        _RouteTypeAndDifficultyRow(
+          route: route,
+          isDetailed: false,
+        ),
+      ],
+    );
+  }
+}
+
+class _DetailedRouteSummary extends StatelessWidget {
+  const _DetailedRouteSummary({
+    required this.route,
+    Key? key,
+  }) : super(key: key);
+
+  final RouteModel route;
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,35 +87,52 @@ class RouteSummary extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _ColorSquare(
-                  name: route.name,
                   color: route.routeColor.displayColor,
-                  isDetailed: isDetailed,
                 ),
-                _NameText(
-                  name: route.name,
-                  isDetailed: isDetailed,
+                _RouteTypeAndDifficultyRow(
+                  route: route,
+                  isDetailed: true,
                 ),
               ],
             ),
-            if (isDetailed) ...[
-              Spacer(),
-              _DateText(label: 'Created', date: route.creationDate),
-            ]
+            Spacer(),
+            _DateText(label: 'Created', date: route.creationDate),
           ],
         ),
         Row(
           children: [
-            _RouteTypeAndDifficultyRow(
-              route: route,
-              isDetailed: isDetailed,
-            ),
-            if (isDetailed && route.removalDate != null) ...[
+            if (route.removalDate != null) ...[
               Spacer(),
               _DateText(label: 'Removed', date: route.removalDate),
             ],
           ],
         ),
       ],
+    );
+  }
+}
+
+class _NameText extends StatelessWidget {
+  const _NameText({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    return Flexible(
+      child: SizedBox(
+        width: width / 2,
+        child: AutoSizeText(
+          name,
+          style: FreeBetaTextStyle.h5.copyWith(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          minFontSize: 10,
+        ),
+      ),
     );
   }
 }
@@ -80,37 +151,7 @@ class _DateText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label + ': ' + DateFormat('MM/dd').formatWithNull(date),
-      style: FreeBetaTextStyle.body2,
-    );
-  }
-}
-
-class _NameText extends StatelessWidget {
-  const _NameText({
-    Key? key,
-    required this.name,
-    required this.isDetailed,
-  }) : super(key: key);
-
-  final String name;
-  final bool isDetailed;
-
-  TextStyle get headingTextStyle =>
-      isDetailed ? FreeBetaTextStyle.h3 : FreeBetaTextStyle.h4;
-
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    return Flexible(
-      child: SizedBox(
-        width: width / 2,
-        child: AutoSizeText(
-          name,
-          style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
-          maxLines: 1,
-          minFontSize: 10,
-        ),
-      ),
+      style: FreeBetaTextStyle.body3,
     );
   }
 }
@@ -118,31 +159,19 @@ class _NameText extends StatelessWidget {
 class _ColorSquare extends StatelessWidget {
   const _ColorSquare({
     Key? key,
-    required this.name,
     required this.color,
-    required this.isDetailed,
   }) : super(key: key);
 
-  final String name;
   final Color color;
-  final bool isDetailed;
 
   @override
   Widget build(BuildContext context) {
-    if (!isDetailed) return SizedBox.shrink();
-
-    var colorSquare = ColorSquare(
-      color: color,
-      size: FreeBetaSizes.xl,
-    );
-
-    if (name.isEmpty) {
-      return colorSquare;
-    }
-
     return Padding(
       padding: const EdgeInsets.only(right: FreeBetaSizes.m),
-      child: colorSquare,
+      child: ColorSquare(
+        color: color,
+        size: FreeBetaSizes.xl,
+      ),
     );
   }
 }
@@ -158,7 +187,7 @@ class _RouteTypeAndDifficultyRow extends StatelessWidget {
   final bool isDetailed;
 
   TextStyle get textStyle =>
-      isDetailed ? FreeBetaTextStyle.body2 : FreeBetaTextStyle.body3;
+      isDetailed ? FreeBetaTextStyle.body3 : FreeBetaTextStyle.body4;
 
   @override
   Widget build(BuildContext context) {

@@ -41,7 +41,7 @@ class RouteCard extends StatelessWidget {
             ),
             Icon(
               Icons.keyboard_arrow_right,
-              size: FreeBetaSizes.xxl,
+              size: FreeBetaSizes.xl,
               color: FreeBetaColors.blueDark,
             ),
           ],

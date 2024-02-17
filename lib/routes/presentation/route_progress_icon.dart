@@ -14,20 +14,29 @@ class RouteProgressIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: FreeBetaPadding.lHorizontal,
+      padding: FreeBetaPadding.sHorizontal,
       child: _getIcon(),
     );
   }
 
   Widget _getIcon() {
     if (!isAttempted) {
-      return Icon(Icons.check_box_outline_blank);
+      return Icon(
+        Icons.check_box_outline_blank,
+        size: 20.0,
+      );
     }
 
     if (!isCompleted) {
-      return Icon(Icons.disabled_by_default_outlined);
+      return Icon(
+        Icons.disabled_by_default_outlined,
+        size: 20.0,
+      );
     }
 
-    return Icon(Icons.check_box);
+    return Icon(
+      Icons.check_box,
+      size: 20.0,
+    );
   }
 }
