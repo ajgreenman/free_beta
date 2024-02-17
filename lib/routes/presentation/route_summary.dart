@@ -57,7 +57,6 @@ class _SimpleRouteSummary extends StatelessWidget {
       children: [
         _NameText(
           name: route.name,
-          isDetailed: false,
         ),
         _RouteTypeAndDifficultyRow(
           route: route,
@@ -70,59 +69,6 @@ class _SimpleRouteSummary extends StatelessWidget {
 
 class _DetailedRouteSummary extends StatelessWidget {
   const _DetailedRouteSummary({
-    required this.route,
-    Key? key,
-  }) : super(key: key);
-
-  final RouteModel route;
-
-  @override
-  Widget build(BuildContext context) {
-    if (route.name.isEmpty) {
-      return _NoNameDetailedRouteSummary(route: route);
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _ColorSquare(
-                  color: route.routeColor.displayColor,
-                ),
-                _NameText(
-                  name: route.name,
-                  isDetailed: true,
-                ),
-              ],
-            ),
-            Spacer(),
-            _DateText(label: 'Created', date: route.creationDate),
-          ],
-        ),
-        Row(
-          children: [
-            _RouteTypeAndDifficultyRow(
-              route: route,
-              isDetailed: true,
-            ),
-            if (route.removalDate != null) ...[
-              Spacer(),
-              _DateText(label: 'Removed', date: route.removalDate),
-            ],
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _NoNameDetailedRouteSummary extends StatelessWidget {
-  const _NoNameDetailedRouteSummary({
     required this.route,
     Key? key,
   }) : super(key: key);
@@ -153,14 +99,40 @@ class _NoNameDetailedRouteSummary extends StatelessWidget {
             _DateText(label: 'Created', date: route.creationDate),
           ],
         ),
-        if (route.removalDate != null)
-          Row(
-            children: [
+        Row(
+          children: [
+            if (route.removalDate != null) ...[
               Spacer(),
               _DateText(label: 'Removed', date: route.removalDate),
             ],
-          ),
+          ],
+        ),
       ],
+    );
+  }
+}
+
+class _NameText extends StatelessWidget {
+  const _NameText({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    var width = MediaQuery.of(context).size.width;
+    return Flexible(
+      child: SizedBox(
+        width: width / 2,
+        child: AutoSizeText(
+          name,
+          style: FreeBetaTextStyle.h5.copyWith(fontWeight: FontWeight.bold),
+          maxLines: 1,
+          minFontSize: 10,
+        ),
+      ),
     );
   }
 }
@@ -179,37 +151,7 @@ class _DateText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label + ': ' + DateFormat('MM/dd').formatWithNull(date),
-      style: FreeBetaTextStyle.body2,
-    );
-  }
-}
-
-class _NameText extends StatelessWidget {
-  const _NameText({
-    Key? key,
-    required this.name,
-    required this.isDetailed,
-  }) : super(key: key);
-
-  final String name;
-  final bool isDetailed;
-
-  TextStyle get headingTextStyle =>
-      isDetailed ? FreeBetaTextStyle.h4 : FreeBetaTextStyle.h5;
-
-  @override
-  Widget build(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    return Flexible(
-      child: SizedBox(
-        width: width / 2,
-        child: AutoSizeText(
-          name,
-          style: headingTextStyle.copyWith(fontWeight: FontWeight.bold),
-          maxLines: 1,
-          minFontSize: 10,
-        ),
-      ),
+      style: FreeBetaTextStyle.body3,
     );
   }
 }

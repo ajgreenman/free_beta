@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
@@ -70,7 +71,14 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: Text(_routeModel.name),
+        title: AutoSizeText(
+          _routeModel.name,
+          style: FreeBetaTextStyle.h2.copyWith(
+            color: FreeBetaColors.white,
+          ),
+          maxLines: 1,
+          minFontSize: 10,
+        ),
         leading: FreeBetaBackButton(onPressed: _onBack),
         actions: [_EditButton(routeModel: _routeModel)],
       ),
