@@ -14,10 +14,9 @@ class RemovedRoutesSwitch extends ConsumerWidget {
     return FreeBetaSwitch(
       label: 'Include removed routes: ',
       labelStyle: FreeBetaTextStyle.body3,
-      initialValue: ref.watch(includeRemovedRoutesProvider.notifier).state,
-      onChanged: (value) {
-        ref.read(includeRemovedRoutesProvider.notifier).state = value;
-      },
+      initialValue: ref.watch(includeRemovedRoutesProvider),
+      onChanged: (value) =>
+          ref.read(includeRemovedRoutesProvider.notifier).update(value),
       expanded: true,
     );
   }

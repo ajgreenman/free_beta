@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
@@ -81,8 +83,10 @@ class _WallLocationCard extends ConsumerWidget {
     int index,
     WallLocation location,
   ) {
-    ref.read(routeWallLocationFilterProvider.notifier).state = location;
-    ref.read(routeWallLocationIndexFilterProvider.notifier).state = index;
+    log(location.toString());
+    log(index.toString());
+    ref.read(routeWallLocationFilterProvider.notifier).update(location);
+    ref.read(routeWallLocationIndexFilterProvider.notifier).update(index);
     return Navigator.of(context).push(
       RouteLocationListScreen.route(
         wallLocation: location,

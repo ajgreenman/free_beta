@@ -10,21 +10,21 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'class_providers.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [classRepository])
 ClassApi classApi(ClassApiRef ref) {
   return ClassApi(
     classRepository: ref.watch(classRepositoryProvider),
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [classRemoteData])
 ClassRepository classRepository(ClassRepositoryRef ref) {
   return ClassRepository(
     classRemoteDataProvider: ref.watch(classRemoteDataProvider),
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 ClassRemoteDataProvider classRemoteData(
   ClassRemoteDataRef ref,
 ) {
@@ -34,21 +34,21 @@ ClassRemoteDataProvider classRemoteData(
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [classApi])
 Future<List<ClassModel>> fetchClasses(FetchClassesRef ref) async {
   final classApi = ref.watch(classApiProvider);
 
   return classApi.getClassSchedule();
 }
 
-@riverpod
+@Riverpod(dependencies: [classApi])
 Future<List<DayModel>> fetchDays(FetchDaysRef ref) async {
   final classApi = ref.watch(classApiProvider);
 
   return classApi.getDays();
 }
 
-@riverpod
+@Riverpod(dependencies: [fetchDays, fetchClasses])
 Future<List<ClassScheduleModel>> getClassSchedule(
     GetClassScheduleRef ref) async {
   final days = await ref.watch(fetchDaysProvider.future);

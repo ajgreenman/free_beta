@@ -59,7 +59,7 @@ class RouteGraphApi {
     List<RouteModel> routes,
   ) {
     return CondensedYosemiteRating.values
-        .where((rating) => rating != CondensedYosemiteRating.speed)
+        .where((rating) => rating.isIncludedInGraph)
         .map((condensedYosemiteRating) {
       var ratingRoutes = routes.where(
         (route) =>

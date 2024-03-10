@@ -14,10 +14,9 @@ class IncludeGraphDetailsSwitch extends ConsumerWidget {
     return FreeBetaSwitch(
       label: 'Detailed view',
       labelStyle: FreeBetaTextStyle.body3,
-      initialValue: ref.watch(includeGraphDetailsProvider.notifier).state,
-      onChanged: (value) {
-        ref.read(includeGraphDetailsProvider.notifier).state = value;
-      },
+      initialValue: ref.watch(includeGraphDetailsProvider),
+      onChanged: (value) =>
+          ref.read(includeGraphDetailsProvider.notifier).update(value),
     );
   }
 }

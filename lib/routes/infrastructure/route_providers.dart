@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
@@ -17,7 +16,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'route_providers.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [routeRepository])
 RouteApi routeApi(RouteApiRef ref) {
   return RouteApi(
     routeRepository: ref.watch(routeRepositoryProvider),
@@ -29,7 +28,7 @@ RouteGraphApi routeGraphApi(RouteGraphApiRef ref) {
   return RouteGraphApi();
 }
 
-@riverpod
+@Riverpod(dependencies: [routeRemoteData, authenticationStream])
 RouteRepository routeRepository(RouteRepositoryRef ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
@@ -39,7 +38,7 @@ RouteRepository routeRepository(RouteRepositoryRef ref) {
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 RouteRemoteDataProvider routeRemoteData(
   RouteRemoteDataRef ref,
 ) {
@@ -49,7 +48,7 @@ RouteRemoteDataProvider routeRemoteData(
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi])
 Future<UserStatsModel> fetchUserStats(FetchUserStatsRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
@@ -61,34 +60,34 @@ Future<UserStatsModel> fetchUserStats(FetchUserStatsRef ref) async {
   }
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi])
 Future<List<RouteModel>> fetchAllRoutes(FetchAllRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getAllRoutes();
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi])
 Future<List<RouteModel>> fetchActiveRoutes(FetchActiveRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getActiveRoutes();
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi])
 Future<List<RouteModel>> fetchRemovedRoutes(FetchRemovedRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getRemovedRoutes();
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi, fetchActiveRoutes])
 Future<RouteFilterModel> fetchFilteredRoutes(FetchFilteredRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchActiveRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
   final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
-  final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  final routeColorFilter = ref.watch(routeColorFilterProvider);
   final routeAttemptedFilter = ref.watch(routeAttemptedFilterProvider);
   return routeApi.getFilteredRoutes(
     routes,
@@ -99,14 +98,14 @@ Future<RouteFilterModel> fetchFilteredRoutes(FetchFilteredRoutesRef ref) async {
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi, fetchRemovedRoutes])
 Future<RouteFilterModel> fetchFilteredRemovedRoutes(
     FetchFilteredRemovedRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchRemovedRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
   final climbTypeFilter = ref.watch(routeClimbTypeFilterProvider);
-  final routeColorFilter = ref.watch(routeRouteColorFilterProvider);
+  final routeColorFilter = ref.watch(routeColorFilterProvider);
   final routeAttemptedFilter = ref.watch(routeAttemptedFilterProvider);
   return routeApi.getFilteredRoutes(
     routes,
@@ -117,7 +116,7 @@ Future<RouteFilterModel> fetchFilteredRemovedRoutes(
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [routeApi, fetchActiveRoutes])
 FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
     FetchLocationFilteredRoutesRef ref) async {
   final routeApi = ref.watch(routeApiProvider);
@@ -132,7 +131,7 @@ FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [fetchAllRoutes, fetchActiveRoutes])
 Future<List<UserRatingModel>> fetchRatingUserGraph(
   FetchRatingUserGraphRef ref, {
   required ClimbType climbType,
@@ -154,7 +153,7 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [fetchAllRoutes, fetchActiveRoutes])
 Future<UserTypesModel> fetchUserTypesGraph(FetchUserTypesGraphRef ref) async {
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
@@ -172,12 +171,66 @@ Future<UserTypesModel> fetchUserTypesGraph(FetchUserTypesGraphRef ref) async {
   );
 }
 
-final includeRemovedRoutesProvider = StateProvider<bool>((_) => false);
-final includeGraphDetailsProvider = StateProvider<bool>((_) => false);
-final routeTextFilterProvider = StateProvider<String?>((_) => null);
-final routeClimbTypeFilterProvider = StateProvider<ClimbType?>((_) => null);
-final routeRouteColorFilterProvider = StateProvider<RouteColor?>((_) => null);
-final routeAttemptedFilterProvider = StateProvider<bool?>((_) => null);
-final routeWallLocationFilterProvider =
-    StateProvider<WallLocation?>((_) => null);
-final routeWallLocationIndexFilterProvider = StateProvider<int?>((_) => null);
+@riverpod
+class IncludeRemovedRoutes extends _$IncludeRemovedRoutes {
+  @override
+  bool build() => false;
+
+  void update(bool value) => state = value;
+}
+
+@riverpod
+class IncludeGraphDetails extends _$IncludeGraphDetails {
+  @override
+  bool build() => false;
+
+  void update(bool value) => state = value;
+}
+
+@riverpod
+class RouteTextFilter extends _$RouteTextFilter {
+  @override
+  String? build() => null;
+
+  void update(String value) => state = value;
+}
+
+@riverpod
+class RouteClimbTypeFilter extends _$RouteClimbTypeFilter {
+  @override
+  ClimbType? build() => null;
+
+  void update(ClimbType? value) => state = value;
+}
+
+@riverpod
+class RouteColorFilter extends _$RouteColorFilter {
+  @override
+  RouteColor? build() => null;
+
+  void update(RouteColor? value) => state = value;
+}
+
+@riverpod
+class RouteAttemptedFilter extends _$RouteAttemptedFilter {
+  @override
+  bool? build() => null;
+
+  void update(bool? value) => state = value;
+}
+
+@Riverpod(keepAlive: true)
+class RouteWallLocationFilter extends _$RouteWallLocationFilter {
+  @override
+  WallLocation? build() => null;
+
+  void update(WallLocation value) => state = value;
+}
+
+@Riverpod(keepAlive: true)
+class RouteWallLocationIndexFilter extends _$RouteWallLocationIndexFilter {
+  @override
+  int? build() => null;
+
+  void update(int value) => state = value;
+}

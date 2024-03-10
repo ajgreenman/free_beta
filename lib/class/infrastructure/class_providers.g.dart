@@ -6,7 +6,7 @@ part of 'class_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$classApiHash() => r'b51c682667dd1740992813889399e7a549c26260';
+String _$classApiHash() => r'45fd44fa6f6e73fa5bcb46c20962b63b6c9217db';
 
 /// See also [classApi].
 @ProviderFor(classApi)
@@ -15,12 +15,15 @@ final classApiProvider = AutoDisposeProvider<ClassApi>.internal(
   name: r'classApiProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$classApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[classRepositoryProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    classRepositoryProvider,
+    ...?classRepositoryProvider.allTransitiveDependencies
+  },
 );
 
 typedef ClassApiRef = AutoDisposeProviderRef<ClassApi>;
-String _$classRepositoryHash() => r'f3a4a0aa1728c0b39e23f4c790ab9b165033098c';
+String _$classRepositoryHash() => r'133278a30ebfaeb2942d4daa8ec39127d8ae1c48';
 
 /// See also [classRepository].
 @ProviderFor(classRepository)
@@ -30,12 +33,15 @@ final classRepositoryProvider = AutoDisposeProvider<ClassRepository>.internal(
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$classRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[classRemoteDataProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    classRemoteDataProvider,
+    ...?classRemoteDataProvider.allTransitiveDependencies
+  },
 );
 
 typedef ClassRepositoryRef = AutoDisposeProviderRef<ClassRepository>;
-String _$classRemoteDataHash() => r'e5ee7c48243ec39381b3e50bfaff3b62b4293a15';
+String _$classRemoteDataHash() => r'6973363c5ce65711357eec9dd26aac8ad1f82f6a';
 
 /// See also [classRemoteData].
 @ProviderFor(classRemoteData)
@@ -46,12 +52,15 @@ final classRemoteDataProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$classRemoteDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[crashlyticsApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    crashlyticsApiProvider,
+    ...?crashlyticsApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef ClassRemoteDataRef = AutoDisposeProviderRef<ClassRemoteDataProvider>;
-String _$fetchClassesHash() => r'3cd708e72ffbb05cc1d3b8c60922ffbef19c0fee';
+String _$fetchClassesHash() => r'bfd53b6cd0b189f9965226fb880ea779b5a3f37a';
 
 /// See also [fetchClasses].
 @ProviderFor(fetchClasses)
@@ -61,12 +70,15 @@ final fetchClassesProvider =
   name: r'fetchClassesProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$fetchClassesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[classApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    classApiProvider,
+    ...?classApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchClassesRef = AutoDisposeFutureProviderRef<List<ClassModel>>;
-String _$fetchDaysHash() => r'3da69fc423183a6302cdcef4b5cbfd32cae8ac8c';
+String _$fetchDaysHash() => r'bf0dbb15e667355b8da5ea3ac376a48a61804ef0';
 
 /// See also [fetchDays].
 @ProviderFor(fetchDays)
@@ -75,12 +87,15 @@ final fetchDaysProvider = AutoDisposeFutureProvider<List<DayModel>>.internal(
   name: r'fetchDaysProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$fetchDaysHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[classApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    classApiProvider,
+    ...?classApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchDaysRef = AutoDisposeFutureProviderRef<List<DayModel>>;
-String _$getClassScheduleHash() => r'ee7dd1cf556a25095cba88e7573f728568005085';
+String _$getClassScheduleHash() => r'48507345b888a1971dc2651fcfa0d779e5840fa9';
 
 /// See also [getClassSchedule].
 @ProviderFor(getClassSchedule)
@@ -91,8 +106,13 @@ final getClassScheduleProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$getClassScheduleHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[fetchDaysProvider, fetchClassesProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    fetchDaysProvider,
+    ...?fetchDaysProvider.allTransitiveDependencies,
+    fetchClassesProvider,
+    ...?fetchClassesProvider.allTransitiveDependencies
+  },
 );
 
 typedef GetClassScheduleRef

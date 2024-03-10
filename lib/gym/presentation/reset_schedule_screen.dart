@@ -200,8 +200,8 @@ class _Reset extends ConsumerWidget {
     int index,
     WallLocation location,
   ) {
-    ref.read(routeWallLocationFilterProvider.notifier).state = location;
-    ref.read(routeWallLocationIndexFilterProvider.notifier).state = index;
+    ref.read(routeWallLocationFilterProvider.notifier).update(location);
+    ref.read(routeWallLocationIndexFilterProvider.notifier).update(index);
     return Navigator.of(context).push(
       RouteLocationListScreen.route(
         wallLocation: location,

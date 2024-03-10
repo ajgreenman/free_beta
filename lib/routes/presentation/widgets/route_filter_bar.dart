@@ -104,17 +104,15 @@ class _FilterTextField extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var routeFilterText = ref.watch(routeTextFilterProvider);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: FreeBetaPadding.mAll,
           child: TextFormField(
-            initialValue: routeFilterText,
-            onChanged: (value) {
-              ref.read(routeTextFilterProvider.notifier).state = value;
-            },
+            initialValue: ref.watch(routeTextFilterProvider),
+            onChanged: (value) =>
+                ref.read(routeTextFilterProvider.notifier).update(value),
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderSide: BorderSide(
@@ -151,34 +149,20 @@ class _FilterTextField extends ConsumerWidget {
   }
 }
 
-class _AttemptedFilter extends ConsumerStatefulWidget {
-  const _AttemptedFilter({Key? key}) : super(key: key);
-
+class _AttemptedFilter extends ConsumerWidget {
   @override
-  ConsumerState<_AttemptedFilter> createState() => __AttemptedFilterState();
-}
-
-class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
-  late bool? attemptedFilter;
-
-  @override
-  void initState() {
-    super.initState();
-    attemptedFilter = ref.read(routeAttemptedFilterProvider.notifier).state;
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    var attemptedFilterValue = ref.watch(routeAttemptedFilterProvider);
     return Row(
       children: [
         Flexible(
           child: InkWell(
-            onTap: _onAttemptedTap,
+            onTap: () => _onAttemptedTap(attemptedFilterValue, ref),
             child: _CheckboxRow(
               label: 'Attempted',
               checkbox: _Checkbox(
-                value: attemptedFilter == true,
-                onChanged: _onAttemptedChanged,
+                value: attemptedFilterValue == true,
+                onChanged: (_) => _onAttemptedTap(attemptedFilterValue, ref),
               ),
             ),
           ),
@@ -186,12 +170,12 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
         SizedBox(width: FreeBetaSizes.xl),
         Flexible(
           child: InkWell(
-            onTap: _onUnattemptedTap,
+            onTap: () => _onUnattemptedTap(attemptedFilterValue, ref),
             child: _CheckboxRow(
               label: 'Unattempted',
               checkbox: _Checkbox(
-                value: attemptedFilter == false,
-                onChanged: _onUnattemptedChanged,
+                value: attemptedFilterValue == false,
+                onChanged: (_) => _onUnattemptedTap(attemptedFilterValue, ref),
               ),
             ),
           ),
@@ -200,42 +184,20 @@ class __AttemptedFilterState extends ConsumerState<_AttemptedFilter> {
     );
   }
 
-  void _onAttemptedTap() {
-    if (attemptedFilter == true) {
-      setState(() => attemptedFilter = null);
+  void _onAttemptedTap(bool? currentValue, WidgetRef ref) {
+    if (currentValue == true) {
+      ref.read(routeAttemptedFilterProvider.notifier).update(null);
     } else {
-      setState(() => attemptedFilter = true);
+      ref.read(routeAttemptedFilterProvider.notifier).update(true);
     }
-    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
   }
 
-  void _onUnattemptedTap() {
-    if (attemptedFilter == false) {
-      setState(() => attemptedFilter = null);
+  void _onUnattemptedTap(bool? currentValue, WidgetRef ref) {
+    if (currentValue == false) {
+      ref.read(routeAttemptedFilterProvider.notifier).update(null);
     } else {
-      setState(() => attemptedFilter = false);
+      ref.read(routeAttemptedFilterProvider.notifier).update(false);
     }
-    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
-  }
-
-  void _onAttemptedChanged(value) {
-    if (value == null) return;
-    if (attemptedFilter == true) {
-      setState(() => attemptedFilter = null);
-    } else {
-      setState(() => attemptedFilter = true);
-    }
-    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
-  }
-
-  void _onUnattemptedChanged(value) {
-    if (value == null) return;
-    if (attemptedFilter == false) {
-      setState(() => attemptedFilter = null);
-    } else {
-      setState(() => attemptedFilter = false);
-    }
-    ref.read(routeAttemptedFilterProvider.notifier).state = attemptedFilter;
   }
 }
 
@@ -294,10 +256,9 @@ class _ClimbTypeFilter extends ConsumerWidget {
       hintText: 'Tap to filter',
       borderWidth: 1.0,
       items: _getTypes(),
-      onChanged: (climbType) {
-        ref.read(routeClimbTypeFilterProvider.notifier).state = climbType;
-      },
-      initialValue: ref.read(routeClimbTypeFilterProvider.notifier).state,
+      onChanged: (climbType) =>
+          ref.read(routeClimbTypeFilterProvider.notifier).update(climbType),
+      initialValue: ref.watch(routeClimbTypeFilterProvider),
     );
   }
 
@@ -329,10 +290,9 @@ class _RouteColorFilter extends ConsumerWidget {
       hintText: 'Tap to filter',
       borderWidth: 1.0,
       items: _getColors(),
-      onChanged: (routeColor) {
-        ref.read(routeRouteColorFilterProvider.notifier).state = routeColor;
-      },
-      initialValue: ref.read(routeRouteColorFilterProvider.notifier).state,
+      onChanged: (routeColor) =>
+          ref.read(routeColorFilterProvider.notifier).update(routeColor),
+      initialValue: ref.watch(routeColorFilterProvider),
     );
   }
 

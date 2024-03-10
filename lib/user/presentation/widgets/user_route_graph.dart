@@ -135,7 +135,7 @@ class _RatingGraph extends StatelessWidget {
 
     if (!includeGraphDetails) {
       return BarTooltipItem(
-        '${CondensedYosemiteRating.values[groupIndex].displayName}\n',
+        '${CondensedYosemiteRating.values.where((value) => value.isIncludedInGraph).elementAt(groupIndex).displayName}\n',
         FreeBetaTextStyle.h4,
         textAlign: TextAlign.left,
         children: userRatings[groupIndex]

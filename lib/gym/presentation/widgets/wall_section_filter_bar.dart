@@ -85,7 +85,7 @@ class _WallSectionMapFilterState extends ConsumerState<_WallSectionMapFilter> {
         setState(() {
           _wallLocationIndex = index;
         });
-        ref.read(routeWallLocationIndexFilterProvider.notifier).state = index;
+        ref.read(routeWallLocationIndexFilterProvider.notifier).update(index);
       },
     );
   }

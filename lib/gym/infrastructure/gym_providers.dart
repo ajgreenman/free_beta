@@ -8,21 +8,21 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'gym_providers.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [gymRepository])
 GymApi gymApi(GymApiRef ref) {
   return GymApi(
     gymRepository: ref.watch(gymRepositoryProvider),
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [gymRemoteData])
 GymRepository gymRepository(GymRepositoryRef ref) {
   return GymRepository(
     gymRemoteDataProvider: ref.watch(gymRemoteDataProvider),
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 GymRemoteDataProvider gymRemoteData(GymRemoteDataRef ref) {
   return GymRemoteDataProvider(
     firebaseFirestore: FirebaseFirestore.instance,
@@ -30,7 +30,7 @@ GymRemoteDataProvider gymRemoteData(GymRemoteDataRef ref) {
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [gymApi])
 Future<List<ResetModel>> resetSchedule(ResetScheduleRef ref) {
   final gymApi = ref.watch(gymApiProvider);
 

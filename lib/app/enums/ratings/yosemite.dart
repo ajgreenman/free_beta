@@ -154,6 +154,19 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
     }
   }
 
+  bool get isIncludedInGraph {
+    switch (this) {
+      case CondensedYosemiteRating.speed:
+        return false;
+      case CondensedYosemiteRating.consensus:
+        return false;
+      case CondensedYosemiteRating.competition:
+        return false;
+      default:
+        return true;
+    }
+  }
+
   List<YosemiteRating> get uncondensedRatings {
     switch (this) {
       case CondensedYosemiteRating.six:

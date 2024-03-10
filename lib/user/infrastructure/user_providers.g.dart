@@ -6,7 +6,7 @@ part of 'user_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userApiHash() => r'2b6205eef1ccaa0c2bbe237b6dd600fdc0a3184b';
+String _$userApiHash() => r'fd64c3b9baaa388ce3264031c9f4fc14c715ce4a';
 
 /// See also [userApi].
 @ProviderFor(userApi)
@@ -15,13 +15,16 @@ final userApiProvider = AutoDisposeProvider<UserApi>.internal(
   name: r'userApiProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$userApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[crashlyticsApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    crashlyticsApiProvider,
+    ...?crashlyticsApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef UserApiRef = AutoDisposeProviderRef<UserApi>;
 String _$authenticationStreamHash() =>
-    r'1003b1c8ef0dc96111b7b21561bb589b330751ae';
+    r'f2dd4059aabb956569ddbf1b8c150365b6caac8b';
 
 /// See also [authenticationStream].
 @ProviderFor(authenticationStream)
@@ -32,8 +35,11 @@ final authenticationStreamProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$authenticationStreamHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[userApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    userApiProvider,
+    ...?userApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef AuthenticationStreamRef = AutoDisposeStreamProviderRef<UserModel?>;

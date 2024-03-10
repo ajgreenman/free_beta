@@ -9,17 +9,17 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_providers.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 MediaApi mediaApi(MediaApiRef ref) {
   return MediaApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider));
 }
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 EmailApi emailApi(EmailApiRef ref) {
   return EmailApi(ref.read(crashlyticsApiProvider));
 }
 
-@riverpod
+@Riverpod(dependencies: [])
 CrashlyticsApi crashlyticsApi(CrashlyticsApiRef ref) {
   return CrashlyticsApi(FirebaseCrashlytics.instance);
 }

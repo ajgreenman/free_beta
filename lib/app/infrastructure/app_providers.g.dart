@@ -6,7 +6,7 @@ part of 'app_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediaApiHash() => r'9928c143acd57dcc9c30946ab119840eb438bf67';
+String _$mediaApiHash() => r'2eef553ccf21bf9a4cf93e756cdbee43dd60ddc1';
 
 /// See also [mediaApi].
 @ProviderFor(mediaApi)
@@ -15,12 +15,15 @@ final mediaApiProvider = AutoDisposeProvider<MediaApi>.internal(
   name: r'mediaApiProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$mediaApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[crashlyticsApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    crashlyticsApiProvider,
+    ...?crashlyticsApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef MediaApiRef = AutoDisposeProviderRef<MediaApi>;
-String _$emailApiHash() => r'c42fbca2ad75a34e982ec0ac14e904fd3a25c153';
+String _$emailApiHash() => r'cf5e1523afb6512710ee6a4bb1bcd3b707ef1a8e';
 
 /// See also [emailApi].
 @ProviderFor(emailApi)
@@ -29,12 +32,15 @@ final emailApiProvider = AutoDisposeProvider<EmailApi>.internal(
   name: r'emailApiProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$emailApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[crashlyticsApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    crashlyticsApiProvider,
+    ...?crashlyticsApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef EmailApiRef = AutoDisposeProviderRef<EmailApi>;
-String _$crashlyticsApiHash() => r'df553d108e14e2778cfe44e51ade27bdbd3c6a96';
+String _$crashlyticsApiHash() => r'6366ff27fa3a8ed4007bcb0b6623b027df841378';
 
 /// See also [crashlyticsApi].
 @ProviderFor(crashlyticsApi)
@@ -44,8 +50,8 @@ final crashlyticsApiProvider = AutoDisposeProvider<CrashlyticsApi>.internal(
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$crashlyticsApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: const <ProviderOrFamily>[],
+  allTransitiveDependencies: const <ProviderOrFamily>{},
 );
 
 typedef CrashlyticsApiRef = AutoDisposeProviderRef<CrashlyticsApi>;

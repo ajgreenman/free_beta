@@ -209,15 +209,24 @@ class _SymbolColumn extends StatelessWidget {
           label: 'Not favorited',
         ),
         _IconRow(
-          icon: RouteProgressIcon(isAttempted: false, isCompleted: false),
+          icon: Padding(
+            padding: FreeBetaPadding.lHorizontal,
+            child: RouteProgressIcon(isAttempted: false, isCompleted: false),
+          ),
           label: 'Unattempted',
         ),
         _IconRow(
-          icon: RouteProgressIcon(isAttempted: true, isCompleted: false),
+          icon: Padding(
+            padding: FreeBetaPadding.lHorizontal,
+            child: RouteProgressIcon(isAttempted: true, isCompleted: false),
+          ),
           label: 'Attempted but not completed',
         ),
         _IconRow(
-          icon: RouteProgressIcon(isAttempted: true, isCompleted: true),
+          icon: Padding(
+            padding: FreeBetaPadding.lHorizontal,
+            child: RouteProgressIcon(isAttempted: true, isCompleted: true),
+          ),
           label: 'Attempted and completed',
         ),
         _IconRow(

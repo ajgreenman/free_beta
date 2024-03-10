@@ -6,7 +6,7 @@ part of 'route_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routeApiHash() => r'8b0c7a03461c2478354087388d67ca3b14db7b57';
+String _$routeApiHash() => r'a4571fb5da01f1d1b9d2e9952632e54551d50eb7';
 
 /// See also [routeApi].
 @ProviderFor(routeApi)
@@ -15,8 +15,11 @@ final routeApiProvider = AutoDisposeProvider<RouteApi>.internal(
   name: r'routeApiProvider',
   debugGetCreateSourceHash:
       const bool.fromEnvironment('dart.vm.product') ? null : _$routeApiHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeRepositoryProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeRepositoryProvider,
+    ...?routeRepositoryProvider.allTransitiveDependencies
+  },
 );
 
 typedef RouteApiRef = AutoDisposeProviderRef<RouteApi>;
@@ -35,7 +38,7 @@ final routeGraphApiProvider = AutoDisposeProvider<RouteGraphApi>.internal(
 );
 
 typedef RouteGraphApiRef = AutoDisposeProviderRef<RouteGraphApi>;
-String _$routeRepositoryHash() => r'6be01b3de193a5860b4650cfd911c4b7bc96d730';
+String _$routeRepositoryHash() => r'9a570b74e60035ed0275ec81b8cf67aebe1f5d9b';
 
 /// See also [routeRepository].
 @ProviderFor(routeRepository)
@@ -45,12 +48,20 @@ final routeRepositoryProvider = AutoDisposeProvider<RouteRepository>.internal(
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$routeRepositoryHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[
+    routeRemoteDataProvider,
+    authenticationStreamProvider
+  ],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeRemoteDataProvider,
+    ...?routeRemoteDataProvider.allTransitiveDependencies,
+    authenticationStreamProvider,
+    ...?authenticationStreamProvider.allTransitiveDependencies
+  },
 );
 
 typedef RouteRepositoryRef = AutoDisposeProviderRef<RouteRepository>;
-String _$routeRemoteDataHash() => r'76ec5926d69e465dc8dbf2a00e65d1d9eb42fc80';
+String _$routeRemoteDataHash() => r'7686c05ad9d83a3f3786abe0b63aff68957e933a';
 
 /// See also [routeRemoteData].
 @ProviderFor(routeRemoteData)
@@ -61,12 +72,15 @@ final routeRemoteDataProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$routeRemoteDataHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[crashlyticsApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    crashlyticsApiProvider,
+    ...?crashlyticsApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef RouteRemoteDataRef = AutoDisposeProviderRef<RouteRemoteDataProvider>;
-String _$fetchUserStatsHash() => r'8ba0c442336af6d2090007bfe58fcd151a8190a2';
+String _$fetchUserStatsHash() => r'42c921fec02927e33836b5c21aa2dcfca04e1ca8';
 
 /// See also [fetchUserStats].
 @ProviderFor(fetchUserStats)
@@ -77,12 +91,15 @@ final fetchUserStatsProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchUserStatsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchUserStatsRef = AutoDisposeFutureProviderRef<UserStatsModel>;
-String _$fetchAllRoutesHash() => r'556ac147dc747cf990853dbe2b075875abe8d91d';
+String _$fetchAllRoutesHash() => r'575dfeb020f2d9730747b22decc903edf1f49d4e';
 
 /// See also [fetchAllRoutes].
 @ProviderFor(fetchAllRoutes)
@@ -93,12 +110,15 @@ final fetchAllRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchAllRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchAllRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
-String _$fetchActiveRoutesHash() => r'e6bd4fedb0fc89fd0f2dcf8f5e0b0b1962c2fb09';
+String _$fetchActiveRoutesHash() => r'9092109ebf76139fa5a3155535c03b10cb5aa360';
 
 /// See also [fetchActiveRoutes].
 @ProviderFor(fetchActiveRoutes)
@@ -109,13 +129,16 @@ final fetchActiveRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchActiveRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchActiveRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
 String _$fetchRemovedRoutesHash() =>
-    r'2a1365043683f4dda7ac383022035444b1244d43';
+    r'c32ca1cb90303fb9f9425622c22f4b25f9e00116';
 
 /// See also [fetchRemovedRoutes].
 @ProviderFor(fetchRemovedRoutes)
@@ -126,13 +149,16 @@ final fetchRemovedRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchRemovedRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchRemovedRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
 String _$fetchFilteredRoutesHash() =>
-    r'1939c16b2602062b1da2143a987472fb29eb5fa9';
+    r'475af9df31e1e1c8cb44d46113aa7490d5585b3e';
 
 /// See also [fetchFilteredRoutes].
 @ProviderFor(fetchFilteredRoutes)
@@ -143,13 +169,18 @@ final fetchFilteredRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchFilteredRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider, fetchActiveRoutesProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies,
+    fetchActiveRoutesProvider,
+    ...?fetchActiveRoutesProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchFilteredRoutesRef = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchFilteredRemovedRoutesHash() =>
-    r'ca1b8ee8b75a275b1ffa91489adb1d53ac25ef86';
+    r'7fc35014aea3b98f86a7d8a87f423c3cbb61d0d4';
 
 /// See also [fetchFilteredRemovedRoutes].
 @ProviderFor(fetchFilteredRemovedRoutes)
@@ -160,14 +191,22 @@ final fetchFilteredRemovedRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchFilteredRemovedRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[
+    routeApiProvider,
+    fetchRemovedRoutesProvider
+  ],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies,
+    fetchRemovedRoutesProvider,
+    ...?fetchRemovedRoutesProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchFilteredRemovedRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchLocationFilteredRoutesHash() =>
-    r'9c9c56bb90ee1d8695373009d82974c791c4f096';
+    r'47e8a0e3ae8d4fac424c3727a13b5a268b584d00';
 
 /// See also [fetchLocationFilteredRoutes].
 @ProviderFor(fetchLocationFilteredRoutes)
@@ -178,14 +217,19 @@ final fetchLocationFilteredRoutesProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchLocationFilteredRoutesHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: <ProviderOrFamily>[routeApiProvider, fetchActiveRoutesProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    routeApiProvider,
+    ...?routeApiProvider.allTransitiveDependencies,
+    fetchActiveRoutesProvider,
+    ...?fetchActiveRoutesProvider.allTransitiveDependencies
+  },
 );
 
 typedef FetchLocationFilteredRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchRatingUserGraphHash() =>
-    r'314f2248d35ecdb3ccc8e3c2c903fec5fa2c0e02';
+    r'5818761231e882d4e1a94188bbfaec724aca1ebd';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -236,12 +280,21 @@ class FetchRatingUserGraphFamily
     );
   }
 
-  static const Iterable<ProviderOrFamily>? _dependencies = null;
+  static final Iterable<ProviderOrFamily> _dependencies = <ProviderOrFamily>[
+    fetchAllRoutesProvider,
+    fetchActiveRoutesProvider
+  ];
 
   @override
   Iterable<ProviderOrFamily>? get dependencies => _dependencies;
 
-  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+  static final Iterable<ProviderOrFamily> _allTransitiveDependencies =
+      <ProviderOrFamily>{
+    fetchAllRoutesProvider,
+    ...?fetchAllRoutesProvider.allTransitiveDependencies,
+    fetchActiveRoutesProvider,
+    ...?fetchActiveRoutesProvider.allTransitiveDependencies
+  };
 
   @override
   Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
@@ -341,7 +394,7 @@ class _FetchRatingUserGraphProviderElement
 }
 
 String _$fetchUserTypesGraphHash() =>
-    r'045d6089faf8b349546242bd70773338644418f3';
+    r'87c657de036d083295c39878fd857a9c56fb9925';
 
 /// See also [fetchUserTypesGraph].
 @ProviderFor(fetchUserTypesGraph)
@@ -352,10 +405,152 @@ final fetchUserTypesGraphProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$fetchUserTypesGraphHash,
+  dependencies: <ProviderOrFamily>[
+    fetchAllRoutesProvider,
+    fetchActiveRoutesProvider
+  ],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    fetchAllRoutesProvider,
+    ...?fetchAllRoutesProvider.allTransitiveDependencies,
+    fetchActiveRoutesProvider,
+    ...?fetchActiveRoutesProvider.allTransitiveDependencies
+  },
+);
+
+typedef FetchUserTypesGraphRef = AutoDisposeFutureProviderRef<UserTypesModel>;
+String _$includeRemovedRoutesHash() =>
+    r'cb0df3883752a1209bee67eaaaa487993f7f00e0';
+
+/// See also [IncludeRemovedRoutes].
+@ProviderFor(IncludeRemovedRoutes)
+final includeRemovedRoutesProvider =
+    AutoDisposeNotifierProvider<IncludeRemovedRoutes, bool>.internal(
+  IncludeRemovedRoutes.new,
+  name: r'includeRemovedRoutesProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includeRemovedRoutesHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef FetchUserTypesGraphRef = AutoDisposeFutureProviderRef<UserTypesModel>;
+typedef _$IncludeRemovedRoutes = AutoDisposeNotifier<bool>;
+String _$includeGraphDetailsHash() =>
+    r'6d45755a10fba63e46102ccbb097c532755faecc';
+
+/// See also [IncludeGraphDetails].
+@ProviderFor(IncludeGraphDetails)
+final includeGraphDetailsProvider =
+    AutoDisposeNotifierProvider<IncludeGraphDetails, bool>.internal(
+  IncludeGraphDetails.new,
+  name: r'includeGraphDetailsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includeGraphDetailsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IncludeGraphDetails = AutoDisposeNotifier<bool>;
+String _$routeTextFilterHash() => r'068d94e972b83ca124a0ebd065229b1189d23778';
+
+/// See also [RouteTextFilter].
+@ProviderFor(RouteTextFilter)
+final routeTextFilterProvider =
+    AutoDisposeNotifierProvider<RouteTextFilter, String?>.internal(
+  RouteTextFilter.new,
+  name: r'routeTextFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeTextFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteTextFilter = AutoDisposeNotifier<String?>;
+String _$routeClimbTypeFilterHash() =>
+    r'dce455f3cf2d33380ec3da23037669c0c3886ab6';
+
+/// See also [RouteClimbTypeFilter].
+@ProviderFor(RouteClimbTypeFilter)
+final routeClimbTypeFilterProvider =
+    AutoDisposeNotifierProvider<RouteClimbTypeFilter, ClimbType?>.internal(
+  RouteClimbTypeFilter.new,
+  name: r'routeClimbTypeFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeClimbTypeFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteClimbTypeFilter = AutoDisposeNotifier<ClimbType?>;
+String _$routeColorFilterHash() => r'1edb95f9f3f67932e3bcd5ccf094e7b4d2f3b38e';
+
+/// See also [RouteColorFilter].
+@ProviderFor(RouteColorFilter)
+final routeColorFilterProvider =
+    AutoDisposeNotifierProvider<RouteColorFilter, RouteColor?>.internal(
+  RouteColorFilter.new,
+  name: r'routeColorFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeColorFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteColorFilter = AutoDisposeNotifier<RouteColor?>;
+String _$routeAttemptedFilterHash() =>
+    r'ef27e21bfcc13d6f4866dcbf73e397a319d6c2f2';
+
+/// See also [RouteAttemptedFilter].
+@ProviderFor(RouteAttemptedFilter)
+final routeAttemptedFilterProvider =
+    AutoDisposeNotifierProvider<RouteAttemptedFilter, bool?>.internal(
+  RouteAttemptedFilter.new,
+  name: r'routeAttemptedFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeAttemptedFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteAttemptedFilter = AutoDisposeNotifier<bool?>;
+String _$routeWallLocationFilterHash() =>
+    r'ad14acee0d1391c988ba52aedb33ece281a19283';
+
+/// See also [RouteWallLocationFilter].
+@ProviderFor(RouteWallLocationFilter)
+final routeWallLocationFilterProvider =
+    NotifierProvider<RouteWallLocationFilter, WallLocation?>.internal(
+  RouteWallLocationFilter.new,
+  name: r'routeWallLocationFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeWallLocationFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteWallLocationFilter = Notifier<WallLocation?>;
+String _$routeWallLocationIndexFilterHash() =>
+    r'1e70fa7abd90206c8c7b4ab9300a7b48667dc76a';
+
+/// See also [RouteWallLocationIndexFilter].
+@ProviderFor(RouteWallLocationIndexFilter)
+final routeWallLocationIndexFilterProvider =
+    NotifierProvider<RouteWallLocationIndexFilter, int?>.internal(
+  RouteWallLocationIndexFilter.new,
+  name: r'routeWallLocationIndexFilterProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeWallLocationIndexFilterHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$RouteWallLocationIndexFilter = Notifier<int?>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

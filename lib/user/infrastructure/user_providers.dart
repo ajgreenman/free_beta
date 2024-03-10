@@ -7,7 +7,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'user_providers.g.dart';
 
-@riverpod
+@Riverpod(dependencies: [crashlyticsApi])
 UserApi userApi(UserApiRef ref) {
   return UserApi(
     FirebaseAuth.instance,
@@ -16,7 +16,7 @@ UserApi userApi(UserApiRef ref) {
   );
 }
 
-@riverpod
+@Riverpod(dependencies: [userApi])
 Stream<UserModel?> authenticationStream(AuthenticationStreamRef ref) {
   return ref.read(userApiProvider).authenticationStream;
 }
