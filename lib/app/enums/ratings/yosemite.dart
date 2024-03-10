@@ -18,7 +18,9 @@ enum YosemiteRating {
   thirteenMinus,
   thirteen,
   thirteenPlus,
-  speed
+  speed,
+  consensus,
+  competition,
 }
 
 enum CondensedYosemiteRating {
@@ -31,6 +33,8 @@ enum CondensedYosemiteRating {
   twelve,
   thirteen,
   speed,
+  consensus,
+  competition,
 }
 
 extension YosemiteRatingExtensions on YosemiteRating {
@@ -76,6 +80,10 @@ extension YosemiteRatingExtensions on YosemiteRating {
         return '5.13+';
       case YosemiteRating.speed:
         return 'Speed';
+      case YosemiteRating.consensus:
+        return 'Consensus';
+      case YosemiteRating.competition:
+        return 'Competition';
     }
   }
 
@@ -110,6 +118,10 @@ extension YosemiteRatingExtensions on YosemiteRating {
         return CondensedYosemiteRating.thirteen;
       case YosemiteRating.speed:
         return CondensedYosemiteRating.speed;
+      case YosemiteRating.consensus:
+        return CondensedYosemiteRating.consensus;
+      case YosemiteRating.competition:
+        return CondensedYosemiteRating.competition;
     }
   }
 }
@@ -135,6 +147,10 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
         return '5.13';
       case CondensedYosemiteRating.speed:
         return 'Speed';
+      case CondensedYosemiteRating.consensus:
+        return 'Consensus';
+      case CondensedYosemiteRating.competition:
+        return 'Competition';
     }
   }
 
@@ -181,6 +197,10 @@ extension CondensedYosemiteRatingExtensions on CondensedYosemiteRating {
         ];
       case CondensedYosemiteRating.speed:
         return [YosemiteRating.speed];
+      case CondensedYosemiteRating.consensus:
+        return [YosemiteRating.consensus];
+      case CondensedYosemiteRating.competition:
+        return [YosemiteRating.competition];
     }
   }
 }
@@ -227,6 +247,10 @@ YosemiteRating yosemiteRatingFromString(String yosemiteRating) {
       return YosemiteRating.thirteenPlus;
     case 'speed':
       return YosemiteRating.speed;
+    case 'consensus':
+      return YosemiteRating.consensus;
+    case 'competition':
+      return YosemiteRating.competition;
     default:
       return YosemiteRating.six;
   }

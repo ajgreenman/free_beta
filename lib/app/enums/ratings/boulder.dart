@@ -17,6 +17,7 @@ enum BoulderRating {
   v8,
   v9,
   consensus,
+  competition,
 }
 
 extension BoulderRatingExtensions on BoulderRating {
@@ -58,12 +59,16 @@ extension BoulderRatingExtensions on BoulderRating {
         return 'V9+';
       case BoulderRating.consensus:
         return 'Consensus';
+      case BoulderRating.competition:
+        return 'Competition';
     }
   }
 
   bool get isIncludedInDropdown {
     switch (this) {
       case BoulderRating.consensus:
+        return true;
+      case BoulderRating.competition:
         return true;
       default:
         return isIncludedInGraph;
@@ -108,6 +113,8 @@ extension BoulderRatingExtensions on BoulderRating {
         return true;
       case BoulderRating.consensus:
         return false;
+      case BoulderRating.competition:
+        return false;
     }
   }
 }
@@ -151,6 +158,10 @@ BoulderRating boulderRatingFromString(String boulderRating) {
     case 'consensus':
     case 'con.':
       return BoulderRating.consensus;
+    case 'competition':
+    case 'comp':
+    case 'comp.':
+      return BoulderRating.competition;
     default:
       return BoulderRating.v0;
   }
