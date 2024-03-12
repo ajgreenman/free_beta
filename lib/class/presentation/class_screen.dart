@@ -13,14 +13,10 @@ import 'package:free_beta/class/infrastructure/models/class_schedule_model.p.dar
 import 'package:free_beta/class/presentation/class_chalkboard.dart';
 
 class ClassScreen extends ConsumerWidget {
-  static Route<dynamic> route() => MaterialPageRoute<dynamic>(
-        builder: (_) => ClassScreen(),
-      );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      key: Key('class'),
+      key: Key('class-screen'),
       body: ref.watch(getClassScheduleProvider).when(
             data: (schedule) => _Schedule(schedule: schedule),
             error: (error, stackTrace) => _Error(
