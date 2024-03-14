@@ -35,6 +35,8 @@ class ClassModel {
         return FreeBetaColors.purpleBrand;
       case ClassType.climbing:
         return FreeBetaColors.yellowBrand;
+      case ClassType.event:
+        return FreeBetaColors.warning;
     }
   }
 
@@ -45,10 +47,12 @@ class ClassModel {
       notes: json['notes'],
       classType: ClassType.values.firstWhere(
         (classType) => classType.name == json['classType'],
+        orElse: () => ClassType.yoga,
       ),
       instructor: json['instructor'],
       day: Day.values.firstWhere(
         (day) => day.name == json['day'],
+        orElse: () => Day.sunday,
       ),
       hour: json['hour'],
       minute: json['minute'],

@@ -69,6 +69,23 @@ void main() {
       verify(() => mockRouteRemoteDataProvider.getRemovedRoutes()).called(1);
     });
 
+    test('getAllRoutes returns all routes', () async {
+      when(() => mockRouteRemoteDataProvider.getAllRoutes())
+          .thenAnswer((_) => Future.value([routeModel]));
+      when(() => mockRouteRemoteDataProvider.getUserRoutes(any()))
+          .thenAnswer((_) => Future.value([userRouteModel]));
+
+      var routeRepository = RouteRepository(
+        routeRemoteDataProvider: mockRouteRemoteDataProvider,
+        user: userModel,
+      );
+
+      var allRoutes = await routeRepository.getRoutes(RouteType.all);
+
+      expect(allRoutes.length, 1);
+      verify(() => mockRouteRemoteDataProvider.getAllRoutes()).called(1);
+    });
+
     test('saveRoute calls data provider', () async {
       when(() => mockRouteRemoteDataProvider.saveUserRoute(any()))
           .thenAnswer((_) => Future.value());

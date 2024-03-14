@@ -10,10 +10,6 @@ import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
 
 class GymMapsScreen extends StatelessWidget {
-  static Route route() => MaterialPageRoute(
-        builder: (_) => GymMapsScreen(),
-      );
-
   const GymMapsScreen({Key? key}) : super(key: key);
 
   @override

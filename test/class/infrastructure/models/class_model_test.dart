@@ -40,11 +40,17 @@ void main() {
     test('fromClassModel creates ClassFormModel correctly', () {
       var classFormModel = ClassFormModel.fromClassModel(class1);
 
-      expect(classFormModel.name, class1.name);
-      expect(classFormModel.day, class1.day);
-      expect(classFormModel.classType, class1.classType);
-      expect(classFormModel.hour, class1.hour);
-      expect(classFormModel.minute, class1.minute);
+      var expected = ClassFormModel(
+        name: '',
+        classType: ClassType.yoga,
+        instructor: '',
+        day: Day.tuesday,
+        hour: 0,
+        minute: 0,
+        notes: 'note',
+      );
+
+      expect(classFormModel, expected);
     });
 
     test('toString parses correctly', () {

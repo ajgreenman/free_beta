@@ -197,6 +197,11 @@ class _LegendDialog extends StatelessWidget {
                   type: "Fitness/Other",
                   color: FreeBetaColors.purpleBrand,
                 ),
+                _LegendRow(
+                  name: "Orange",
+                  type: "Event",
+                  color: FreeBetaColors.warning,
+                ),
               ],
             ),
           ),

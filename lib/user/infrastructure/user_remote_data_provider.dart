@@ -4,8 +4,9 @@ import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/gym/infrastructure/models/gym_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
 
-class UserApi {
-  UserApi(this._firebaseAuth, this._firestoreGyms, this._crashlyticsApi);
+class UserRemoteDataProvider {
+  UserRemoteDataProvider(
+      this._firebaseAuth, this._firestoreGyms, this._crashlyticsApi);
 
   final FirebaseAuth _firebaseAuth;
   final FirebaseFirestore _firestoreGyms;

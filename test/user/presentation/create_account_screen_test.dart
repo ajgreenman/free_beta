@@ -4,7 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
-import 'package:free_beta/user/infrastructure/user_api.dart';
+import 'package:free_beta/user/infrastructure/user_remote_data_provider.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:free_beta/user/presentation/create_account_screen.dart';
 import 'package:mocktail/mocktail.dart';
@@ -137,7 +137,7 @@ Future<void> _fillOutForm(WidgetTester tester) async {
 
 class MockCrashlyticsApi extends Mock implements CrashlyticsApi {}
 
-class MockUserApi extends Mock implements UserApi {}
+class MockUserApi extends Mock implements UserRemoteDataProvider {}
 
 var anonymousUserModel = UserModel(
   email: 'test@test.com',

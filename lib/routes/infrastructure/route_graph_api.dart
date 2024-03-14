@@ -1,7 +1,6 @@
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
-import 'package:free_beta/user/infrastructure/models/user_types_model.dart';
 
 class RouteGraphApi {
   List<UserRatingModel> getUserRatings({
@@ -18,24 +17,6 @@ class RouteGraphApi {
     }
 
     return _getYosemiteRatingGraph(routes);
-  }
-
-  UserTypesModel getUserTypes({
-    required List<RouteModel> unfilteredRoutes,
-  }) {
-    var routes = unfilteredRoutes.sortRoutes().toList();
-
-    return UserTypesModel(
-      total: routes.length,
-      boulders:
-          routes.where((route) => route.climbType == ClimbType.boulder).length,
-      topRopes:
-          routes.where((route) => route.climbType == ClimbType.topRope).length,
-      autoBelays: routes
-          .where((route) => route.climbType == ClimbType.autoBelay)
-          .length,
-      leads: routes.where((route) => route.climbType == ClimbType.lead).length,
-    );
   }
 
   List<UserRatingModel> _getBoulderRatingGraph(List<RouteModel> routes) {

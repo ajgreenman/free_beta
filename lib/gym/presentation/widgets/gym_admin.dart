@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
@@ -43,6 +42,7 @@ class _CreateRouteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
+      key: Key('GymAdmin-create'),
       onPressed: () => Navigator.of(context).push(CreateRouteScreen.route()),
       child: Padding(
         padding: FreeBetaPadding.xlHorizontal,

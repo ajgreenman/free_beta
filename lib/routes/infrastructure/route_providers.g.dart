@@ -393,31 +393,6 @@ class _FetchRatingUserGraphProviderElement
   ClimbType get climbType => (origin as FetchRatingUserGraphProvider).climbType;
 }
 
-String _$fetchUserTypesGraphHash() =>
-    r'87c657de036d083295c39878fd857a9c56fb9925';
-
-/// See also [fetchUserTypesGraph].
-@ProviderFor(fetchUserTypesGraph)
-final fetchUserTypesGraphProvider =
-    AutoDisposeFutureProvider<UserTypesModel>.internal(
-  fetchUserTypesGraph,
-  name: r'fetchUserTypesGraphProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$fetchUserTypesGraphHash,
-  dependencies: <ProviderOrFamily>[
-    fetchAllRoutesProvider,
-    fetchActiveRoutesProvider
-  ],
-  allTransitiveDependencies: <ProviderOrFamily>{
-    fetchAllRoutesProvider,
-    ...?fetchAllRoutesProvider.allTransitiveDependencies,
-    fetchActiveRoutesProvider,
-    ...?fetchActiveRoutesProvider.allTransitiveDependencies
-  },
-);
-
-typedef FetchUserTypesGraphRef = AutoDisposeFutureProviderRef<UserTypesModel>;
 String _$includeRemovedRoutesHash() =>
     r'cb0df3883752a1209bee67eaaaa487993f7f00e0';
 

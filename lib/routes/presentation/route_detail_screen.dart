@@ -14,10 +14,8 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_images.dart';
 import 'package:free_beta/routes/presentation/route_summary.dart';
-import 'package:free_beta/routes/presentation/route_video_screen.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
-import 'package:video_player/video_player.dart';
 
 class RouteDetailScreen extends ConsumerStatefulWidget {
   static Route<dynamic> route(List<RouteModel> routes, int index,
@@ -95,8 +93,6 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                 _DetailScreenDivider(),
                 _RemovalWarningMessage(routeModel: _routeModel),
                 RouteImages(images: _routeModel.images),
-                if (_routeModel.betaVideo != null)
-                  _BetaVideoButton(betaVideo: _routeModel.betaVideo!),
                 Form(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -499,48 +495,6 @@ class _DetailScreenDivider extends StatelessWidget {
         height: 2,
         thickness: 2,
       ),
-    );
-  }
-}
-
-class _BetaVideoButton extends StatelessWidget {
-  const _BetaVideoButton({
-    Key? key,
-    required this.betaVideo,
-  }) : super(key: key);
-
-  final String betaVideo;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(height: FreeBetaSizes.ml),
-        ElevatedButton(
-          onPressed: () => Navigator.of(context).push(RouteVideoScreen.route(
-            VideoPlayerController.networkUrl(Uri(path: betaVideo)),
-          )),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                'View beta video',
-                style: FreeBetaTextStyle.h4.copyWith(
-                  color: FreeBetaColors.white,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: FreeBetaSizes.ml),
-                child: Icon(
-                  Icons.tap_and_play,
-                  size: FreeBetaSizes.l,
-                  color: FreeBetaColors.white,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
     );
   }
 }

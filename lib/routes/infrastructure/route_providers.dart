@@ -10,7 +10,6 @@ import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
-import 'package:free_beta/user/infrastructure/models/user_types_model.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -149,24 +148,6 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
 
   return routeGraphApi.getUserRatings(
     climbType: climbType,
-    unfilteredRoutes: unfilteredRoutes,
-  );
-}
-
-@Riverpod(dependencies: [fetchAllRoutes, fetchActiveRoutes])
-Future<UserTypesModel> fetchUserTypesGraph(FetchUserTypesGraphRef ref) async {
-  final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
-
-  List<RouteModel> unfilteredRoutes;
-  if (includeRemovedRoutes) {
-    unfilteredRoutes = await ref.watch(fetchAllRoutesProvider.future);
-  } else {
-    unfilteredRoutes = await ref.watch(fetchActiveRoutesProvider.future);
-  }
-
-  final routeGraphApi = ref.watch(routeGraphApiProvider);
-
-  return routeGraphApi.getUserTypes(
     unfilteredRoutes: unfilteredRoutes,
   );
 }
