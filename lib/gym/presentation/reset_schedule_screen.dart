@@ -4,7 +4,6 @@ import 'package:free_beta/app/extensions/string_extensions.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
-import 'package:intl/intl.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/extensions/date_extensions.dart';
@@ -18,10 +17,6 @@ import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 import 'package:free_beta/gym/presentation/widgets/wall_section_map.dart';
 
 class ResetScheduleScreen extends ConsumerWidget {
-  static Route<dynamic> route() => MaterialPageRoute<dynamic>(
-        builder: (_) => ResetScheduleScreen(),
-      );
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
@@ -52,7 +47,6 @@ class _ResetSchedule extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (resetSchedule.isEmpty) {
       return _EmptySchedule(
-        resetModel: null,
         onReset: () => _onRefresh(ref),
       );
     }
@@ -248,16 +242,10 @@ class _Loading extends StatelessWidget {
 class _EmptySchedule extends ConsumerWidget {
   const _EmptySchedule({
     Key? key,
-    required this.resetModel,
     required this.onReset,
   }) : super(key: key);
 
-  final ResetModel? resetModel;
   final Future<void> Function()? onReset;
-
-  String get _resetText => resetModel == null
-      ? 'Last reset: n/a'
-      : 'Last reset: ${DateFormat('MM/dd').format(resetModel!.date)}';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -267,7 +255,7 @@ class _EmptySchedule extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            _resetText,
+            'Last reset: n/a',
             style: FreeBetaTextStyle.h3,
           ),
           SizedBox(height: FreeBetaSizes.m),
