@@ -133,7 +133,7 @@ FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
 @Riverpod(dependencies: [fetchAllRoutes, fetchActiveRoutes])
 Future<List<UserRatingModel>> fetchRatingUserGraph(
   FetchRatingUserGraphRef ref, {
-  required ClimbType climbType,
+  required bool isBoulder,
 }) async {
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
@@ -146,10 +146,30 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
 
   final routeGraphApi = ref.watch(routeGraphApiProvider);
 
-  return routeGraphApi.getUserRatings(
-    climbType: climbType,
+  if (isBoulder) {
+    return routeGraphApi.getBoulderUserRatings(
+        unfilteredRoutes: unfilteredRoutes);
+  }
+
+  return routeGraphApi.getRopeUserRatings(
+    climbTypes: ref.watch(includedClimbTypesProvider),
     unfilteredRoutes: unfilteredRoutes,
   );
+}
+
+@riverpod
+List<ClimbType> includedClimbTypes(IncludedClimbTypesRef ref) {
+  var climbTypes = <ClimbType>[];
+  if (ref.watch(includeTopRopeInGraphProvider)) {
+    climbTypes.add(ClimbType.topRope);
+  }
+  if (ref.watch(includeAutoBelayInGraphProvider)) {
+    climbTypes.add(ClimbType.autoBelay);
+  }
+  if (ref.watch(includeLeadInGraphProvider)) {
+    climbTypes.add(ClimbType.lead);
+  }
+  return climbTypes;
 }
 
 @riverpod
@@ -166,6 +186,30 @@ class IncludeGraphDetails extends _$IncludeGraphDetails {
   bool build() => false;
 
   void update(bool value) => state = value;
+}
+
+@riverpod
+class IncludeTopRopeInGraph extends _$IncludeTopRopeInGraph {
+  @override
+  bool build() => true;
+
+  void toggle() => state = !state;
+}
+
+@riverpod
+class IncludeAutoBelayInGraph extends _$IncludeAutoBelayInGraph {
+  @override
+  bool build() => true;
+
+  void toggle() => state = !state;
+}
+
+@riverpod
+class IncludeLeadInGraph extends _$IncludeLeadInGraph {
+  @override
+  bool build() => false;
+
+  void toggle() => state = !state;
 }
 
 @riverpod

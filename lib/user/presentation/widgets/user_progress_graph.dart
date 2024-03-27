@@ -1,7 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';
 import 'package:free_beta/app/theme.dart';
@@ -11,19 +10,16 @@ import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model_extensions.dart';
 
 class UserProgressGraph extends ConsumerWidget {
-  const UserProgressGraph({
-    Key? key,
-    required this.climbType,
-  }) : super(key: key);
+  const UserProgressGraph({Key? key, required this.isBoulder})
+      : super(key: key);
 
-  final ClimbType climbType;
+  final bool isBoulder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchRatingUserGraphProvider(climbType: climbType)).when(
+    return ref.watch(fetchRatingUserGraphProvider(isBoulder: isBoulder)).when(
           data: (userRatings) => _ProgressGraph(
-            climbType: climbType,
-            userRatings: userRatings,
+            userProgressModel: userRatings.getProgressModel(isBoulder),
           ),
           loading: () => _Loading(),
           error: (error, stackTrace) => _ErrorCard(
@@ -38,15 +34,10 @@ class UserProgressGraph extends ConsumerWidget {
 class _ProgressGraph extends StatelessWidget {
   const _ProgressGraph({
     Key? key,
-    required this.climbType,
-    required this.userRatings,
+    required this.userProgressModel,
   }) : super(key: key);
 
-  final ClimbType climbType;
-  final List<UserRatingModel> userRatings;
-
-  UserProgressModel get _progressModel =>
-      userRatings.getProgressModel(climbType);
+  final UserProgressModel userProgressModel;
 
   @override
   Widget build(BuildContext context) {
@@ -75,17 +66,17 @@ class _ProgressGraph extends StatelessWidget {
               sectionsSpace: 0.0,
               sections: [
                 _getSection(
-                  _progressModel.unattempted / _progressModel.totalCount,
+                  userProgressModel.unattempted / userProgressModel.totalCount,
                   FreeBetaColors.black,
                   FreeBetaColors.red.withOpacity(0.7),
                 ),
                 _getSection(
-                  _progressModel.inProgress / _progressModel.totalCount,
+                  userProgressModel.inProgress / userProgressModel.totalCount,
                   FreeBetaColors.black,
                   FreeBetaColors.yellowBrand.withOpacity(0.7),
                 ),
                 _getSection(
-                  _progressModel.completed / _progressModel.totalCount,
+                  userProgressModel.completed / userProgressModel.totalCount,
                   FreeBetaColors.black,
                   FreeBetaColors.green.withOpacity(0.7),
                 ),

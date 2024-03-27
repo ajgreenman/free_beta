@@ -229,7 +229,7 @@ final fetchLocationFilteredRoutesProvider =
 typedef FetchLocationFilteredRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchRatingUserGraphHash() =>
-    r'5818761231e882d4e1a94188bbfaec724aca1ebd';
+    r'4c17520f318dc09bf8894061db6da4eecbdc4fde';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -264,10 +264,10 @@ class FetchRatingUserGraphFamily
 
   /// See also [fetchRatingUserGraph].
   FetchRatingUserGraphProvider call({
-    required ClimbType climbType,
+    required bool isBoulder,
   }) {
     return FetchRatingUserGraphProvider(
-      climbType: climbType,
+      isBoulder: isBoulder,
     );
   }
 
@@ -276,7 +276,7 @@ class FetchRatingUserGraphFamily
     covariant FetchRatingUserGraphProvider provider,
   ) {
     return call(
-      climbType: provider.climbType,
+      isBoulder: provider.isBoulder,
     );
   }
 
@@ -309,11 +309,11 @@ class FetchRatingUserGraphProvider
     extends AutoDisposeFutureProvider<List<UserRatingModel>> {
   /// See also [fetchRatingUserGraph].
   FetchRatingUserGraphProvider({
-    required ClimbType climbType,
+    required bool isBoulder,
   }) : this._internal(
           (ref) => fetchRatingUserGraph(
             ref as FetchRatingUserGraphRef,
-            climbType: climbType,
+            isBoulder: isBoulder,
           ),
           from: fetchRatingUserGraphProvider,
           name: r'fetchRatingUserGraphProvider',
@@ -324,7 +324,7 @@ class FetchRatingUserGraphProvider
           dependencies: FetchRatingUserGraphFamily._dependencies,
           allTransitiveDependencies:
               FetchRatingUserGraphFamily._allTransitiveDependencies,
-          climbType: climbType,
+          isBoulder: isBoulder,
         );
 
   FetchRatingUserGraphProvider._internal(
@@ -334,10 +334,10 @@ class FetchRatingUserGraphProvider
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.climbType,
+    required this.isBoulder,
   }) : super.internal();
 
-  final ClimbType climbType;
+  final bool isBoulder;
 
   @override
   Override overrideWith(
@@ -353,7 +353,7 @@ class FetchRatingUserGraphProvider
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        climbType: climbType,
+        isBoulder: isBoulder,
       ),
     );
   }
@@ -366,13 +366,13 @@ class FetchRatingUserGraphProvider
   @override
   bool operator ==(Object other) {
     return other is FetchRatingUserGraphProvider &&
-        other.climbType == climbType;
+        other.isBoulder == isBoulder;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, climbType.hashCode);
+    hash = _SystemHash.combine(hash, isBoulder.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -380,8 +380,8 @@ class FetchRatingUserGraphProvider
 
 mixin FetchRatingUserGraphRef
     on AutoDisposeFutureProviderRef<List<UserRatingModel>> {
-  /// The parameter `climbType` of this provider.
-  ClimbType get climbType;
+  /// The parameter `isBoulder` of this provider.
+  bool get isBoulder;
 }
 
 class _FetchRatingUserGraphProviderElement
@@ -390,9 +390,26 @@ class _FetchRatingUserGraphProviderElement
   _FetchRatingUserGraphProviderElement(super.provider);
 
   @override
-  ClimbType get climbType => (origin as FetchRatingUserGraphProvider).climbType;
+  bool get isBoulder => (origin as FetchRatingUserGraphProvider).isBoulder;
 }
 
+String _$includedClimbTypesHash() =>
+    r'5c92506d9a23e967a811244000b925933ceb0d60';
+
+/// See also [includedClimbTypes].
+@ProviderFor(includedClimbTypes)
+final includedClimbTypesProvider =
+    AutoDisposeProvider<List<ClimbType>>.internal(
+  includedClimbTypes,
+  name: r'includedClimbTypesProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includedClimbTypesHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef IncludedClimbTypesRef = AutoDisposeProviderRef<List<ClimbType>>;
 String _$includeRemovedRoutesHash() =>
     r'cb0df3883752a1209bee67eaaaa487993f7f00e0';
 
@@ -427,6 +444,57 @@ final includeGraphDetailsProvider =
 );
 
 typedef _$IncludeGraphDetails = AutoDisposeNotifier<bool>;
+String _$includeTopRopeInGraphHash() =>
+    r'de3e20a4149d3a9b7f27da005507aa66c663a2d5';
+
+/// See also [IncludeTopRopeInGraph].
+@ProviderFor(IncludeTopRopeInGraph)
+final includeTopRopeInGraphProvider =
+    AutoDisposeNotifierProvider<IncludeTopRopeInGraph, bool>.internal(
+  IncludeTopRopeInGraph.new,
+  name: r'includeTopRopeInGraphProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includeTopRopeInGraphHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IncludeTopRopeInGraph = AutoDisposeNotifier<bool>;
+String _$includeAutoBelayInGraphHash() =>
+    r'a664dbf33970386a11acfa00f793bffb0d37504c';
+
+/// See also [IncludeAutoBelayInGraph].
+@ProviderFor(IncludeAutoBelayInGraph)
+final includeAutoBelayInGraphProvider =
+    AutoDisposeNotifierProvider<IncludeAutoBelayInGraph, bool>.internal(
+  IncludeAutoBelayInGraph.new,
+  name: r'includeAutoBelayInGraphProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includeAutoBelayInGraphHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IncludeAutoBelayInGraph = AutoDisposeNotifier<bool>;
+String _$includeLeadInGraphHash() =>
+    r'4c7281b1504d55289183ca2aa3162dd231086387';
+
+/// See also [IncludeLeadInGraph].
+@ProviderFor(IncludeLeadInGraph)
+final includeLeadInGraphProvider =
+    AutoDisposeNotifierProvider<IncludeLeadInGraph, bool>.internal(
+  IncludeLeadInGraph.new,
+  name: r'includeLeadInGraphProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$includeLeadInGraphHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$IncludeLeadInGraph = AutoDisposeNotifier<bool>;
 String _$routeTextFilterHash() => r'068d94e972b83ca124a0ebd065229b1189d23778';
 
 /// See also [RouteTextFilter].

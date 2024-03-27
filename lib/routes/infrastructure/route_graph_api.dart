@@ -3,18 +3,25 @@ import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 
 class RouteGraphApi {
-  List<UserRatingModel> getUserRatings({
-    required ClimbType climbType,
+  List<UserRatingModel> getBoulderUserRatings({
     required List<RouteModel> unfilteredRoutes,
   }) {
     var routes = unfilteredRoutes
         .sortRoutes()
-        .where((route) => route.climbType == climbType)
+        .where((route) => route.climbType == ClimbType.boulder)
         .toList();
 
-    if (climbType == ClimbType.boulder) {
-      return _getBoulderRatingGraph(routes);
-    }
+    return _getBoulderRatingGraph(routes);
+  }
+
+  List<UserRatingModel> getRopeUserRatings({
+    required List<ClimbType> climbTypes,
+    required List<RouteModel> unfilteredRoutes,
+  }) {
+    var routes = unfilteredRoutes
+        .sortRoutes()
+        .where((route) => climbTypes.contains(route.climbType))
+        .toList();
 
     return _getYosemiteRatingGraph(routes);
   }

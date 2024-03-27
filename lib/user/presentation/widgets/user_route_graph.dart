@@ -11,16 +11,16 @@ import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 class UserRouteGraph extends ConsumerWidget {
   const UserRouteGraph({
     Key? key,
-    required this.climbType,
+    required this.isBoulder,
   }) : super(key: key);
 
-  final ClimbType climbType;
+  final bool isBoulder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(fetchRatingUserGraphProvider(climbType: climbType)).when(
+    return ref.watch(fetchRatingUserGraphProvider(isBoulder: isBoulder)).when(
           data: (userRatings) => _RatingGraph(
-            climbType: climbType,
+            isBoulder: isBoulder,
             userRatings: userRatings,
             includeGraphDetails: ref.watch(includeGraphDetailsProvider),
             includeRemovedRoutes: ref.watch(includeRemovedRoutesProvider),
@@ -38,13 +38,13 @@ class UserRouteGraph extends ConsumerWidget {
 class _RatingGraph extends StatelessWidget {
   const _RatingGraph({
     Key? key,
-    required this.climbType,
+    required this.isBoulder,
     required this.userRatings,
     required this.includeGraphDetails,
     required this.includeRemovedRoutes,
   }) : super(key: key);
 
-  final ClimbType climbType;
+  final bool isBoulder;
   final List<UserRatingModel> userRatings;
   final bool includeGraphDetails;
   final bool includeRemovedRoutes;
@@ -104,7 +104,7 @@ class _RatingGraph extends StatelessWidget {
   }
 
   BarChartGroupData _mapBarGroupsByRating(UserRatingModel userRating) {
-    if (climbType == ClimbType.boulder) {
+    if (isBoulder) {
       return userRating.boulderUserRatingModel!.barChart;
     }
 
@@ -121,7 +121,7 @@ class _RatingGraph extends StatelessWidget {
     BarChartRodData rod,
     int rodIndex,
   ) {
-    if (climbType == ClimbType.boulder) {
+    if (isBoulder) {
       return BarTooltipItem(
         '${BoulderRating.values.where((value) => value.isIncludedInGraph).elementAt(groupIndex).displayName}\n',
         FreeBetaTextStyle.h4,
@@ -161,7 +161,7 @@ class _RatingGraph extends StatelessWidget {
     return SideTitleWidget(
       axisSide: AxisSide.bottom,
       child: Text(
-        climbType == ClimbType.boulder
+        isBoulder
             ? BoulderRating.values[i.toInt()].displayName
             : CondensedYosemiteRating.values[i.toInt()].displayName,
         style: FreeBetaTextStyle.body6,

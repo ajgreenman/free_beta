@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/detailed_graph_switch.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/app/presentation/widgets/color_square.dart';
 import 'package:free_beta/user/presentation/widgets/user_route_graph.dart';
 
 class UserGraphSection extends StatelessWidget {
-  const UserGraphSection({
-    Key? key,
-    required this.climbType,
-  }) : super(key: key);
+  const UserGraphSection({Key? key, required this.isBoulder}) : super(key: key);
 
-  final ClimbType climbType;
+  final bool isBoulder;
 
   @override
   Widget build(BuildContext context) {
@@ -41,10 +37,10 @@ class UserGraphSection extends StatelessWidget {
               ],
             ),
             Spacer(),
-            if (climbType != ClimbType.boulder) IncludeGraphDetailsSwitch(),
+            if (!isBoulder) IncludeGraphDetailsSwitch(),
           ],
         ),
-        UserRouteGraph(climbType: climbType),
+        UserRouteGraph(isBoulder: isBoulder),
         SizedBox(height: FreeBetaSizes.m),
         _Disclaimer()
       ],

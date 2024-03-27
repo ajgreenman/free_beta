@@ -57,26 +57,14 @@ class _SuccessCard extends StatelessWidget {
           FreeBetaDivider(),
           _UserStatsSection(
             key: Key('UserStatsCard-section-boulders'),
-            climbType: ClimbType.boulder,
-            routeStatsModel: userStatsModel.boulders,
+            isBoulder: true,
+            userStatsModel: userStatsModel,
           ),
           FreeBetaDivider(),
           _UserStatsSection(
-            key: Key('UserStatsCard-section-topRopes'),
-            climbType: ClimbType.topRope,
-            routeStatsModel: userStatsModel.topRopes,
-          ),
-          FreeBetaDivider(),
-          _UserStatsSection(
-            key: Key('UserStatsCard-section-autoBelays'),
-            climbType: ClimbType.autoBelay,
-            routeStatsModel: userStatsModel.autoBelays,
-          ),
-          FreeBetaDivider(),
-          _UserStatsSection(
-            key: Key('UserStatsCard-section-leads'),
-            climbType: ClimbType.lead,
-            routeStatsModel: userStatsModel.leads,
+            key: Key('UserStatsCard-section-ropes'),
+            isBoulder: false,
+            userStatsModel: userStatsModel,
           ),
         ],
       ),
@@ -129,20 +117,22 @@ class _TitleRow extends StatelessWidget {
 class _UserStatsSection extends StatelessWidget {
   const _UserStatsSection({
     Key? key,
-    required this.climbType,
-    required this.routeStatsModel,
+    required this.isBoulder,
+    required this.userStatsModel,
   }) : super(key: key);
 
-  final ClimbType climbType;
-  final RouteStatsModel routeStatsModel;
+  final bool isBoulder;
+  final UserStatsModel userStatsModel;
+
+  String get label => isBoulder ? 'Boulders' : 'Rope climbs';
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => Navigator.of(context).push(
         UserStatsScreen.route(
-          climbType: climbType,
-          routeStatsModel: routeStatsModel,
+          isBoulder: isBoulder,
+          userStatsModel: userStatsModel,
         ),
       ),
       child: Padding(
@@ -150,12 +140,12 @@ class _UserStatsSection extends StatelessWidget {
         child: Row(
           children: [
             Text(
-              climbType.pluralDisplayName,
+              label,
               style: FreeBetaTextStyle.h3,
             ),
             SizedBox(width: FreeBetaSizes.m),
             Text(
-              '(${routeStatsModel.total})',
+              '(${isBoulder ? userStatsModel.boulders.total : userStatsModel.ropes.total})',
               style: FreeBetaTextStyle.h4,
             ),
             Spacer(),
@@ -193,11 +183,7 @@ class _UserStatsSkeleton extends StatelessWidget {
           FreeBetaDivider(),
           _SkeletonCard(label: ClimbType.boulder.pluralDisplayName),
           FreeBetaDivider(),
-          _SkeletonCard(label: ClimbType.topRope.pluralDisplayName),
-          FreeBetaDivider(),
-          _SkeletonCard(label: ClimbType.autoBelay.pluralDisplayName),
-          FreeBetaDivider(),
-          _SkeletonCard(label: ClimbType.lead.pluralDisplayName),
+          _SkeletonCard(label: 'Rope climbs'),
         ],
       ),
     );

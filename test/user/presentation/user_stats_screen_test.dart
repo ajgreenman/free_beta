@@ -14,14 +14,13 @@ void main() {
   Widget buildFrame(ClimbType climbType) {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraphProvider(climbType: ClimbType.boulder)
-            .overrideWith((_) => []),
+        fetchRatingUserGraphProvider(isBoulder: true).overrideWith((_) => []),
         fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
       ],
       child: MaterialApp(
         home: UserStatsScreen(
-          climbType: climbType,
-          routeStatsModel: routeStatsModel,
+          isBoulder: true,
+          userStatsModel: userStatsModel,
         ),
       ),
     );
@@ -35,7 +34,7 @@ void main() {
   });
 }
 
-var routeStatsModel = RouteStatsModel.fromRouteList([routeModel]);
+var userStatsModel = UserStatsModel.fromRouteList([routeModel]);
 
 var userRouteModel = UserRouteModel(
   routeId: 'abcd1234',

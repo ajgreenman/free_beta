@@ -26,14 +26,14 @@ void main() {
   Widget buildFrame(List<UserRatingModel> value) {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraphProvider(climbType: ClimbType.boulder)
+        fetchRatingUserGraphProvider(isBoulder: false)
             .overrideWith((_) => value),
         fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
         crashlyticsApiProvider.overrideWithValue(mockCrashlyticsApi),
       ],
       child: MaterialApp(
         home: UserRouteGraph(
-          climbType: ClimbType.boulder,
+          isBoulder: true,
         ),
       ),
     );
@@ -58,7 +58,7 @@ void main() {
         ],
         child: MaterialApp(
           home: UserRouteGraph(
-            climbType: ClimbType.topRope,
+            isBoulder: false,
           ),
         ),
       ),
@@ -82,7 +82,7 @@ void main() {
         child: MaterialApp(
           theme: FreeBetaTheme.blueTheme,
           home: UserRouteGraph(
-            climbType: ClimbType.boulder,
+            isBoulder: true,
           ),
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 
 extension UserRatingModelListExtensions on List<UserRatingModel> {
@@ -12,8 +11,8 @@ extension UserRatingModelListExtensions on List<UserRatingModel> {
       .map((e) => e.yosemiteUserRatingModel!)
       .toList();
 
-  UserProgressModel getProgressModel(ClimbType climbType) {
-    if (climbType == ClimbType.boulder) {
+  UserProgressModel getProgressModel(bool isBoulder) {
+    if (isBoulder) {
       return _boulderProgress;
     }
 
