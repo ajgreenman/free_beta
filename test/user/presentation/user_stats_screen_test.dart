@@ -11,15 +11,15 @@ import 'package:free_beta/user/presentation/widgets/user_graph_section.dart';
 import 'package:free_beta/user/presentation/widgets/user_stats_section.dart';
 
 void main() {
-  Widget buildFrame(ClimbType climbType) {
+  Widget buildFrame() {
     return ProviderScope(
       overrides: [
-        fetchRatingUserGraphProvider(isBoulder: true).overrideWith((_) => []),
+        fetchRatingUserGraphProvider(isBoulder: false).overrideWith((_) => []),
         fetchActiveRoutesProvider.overrideWith((_) => [routeModel]),
       ],
       child: MaterialApp(
         home: UserStatsScreen(
-          isBoulder: true,
+          isBoulder: false,
           userStatsModel: userStatsModel,
         ),
       ),
@@ -27,7 +27,7 @@ void main() {
   }
 
   testWidgets('smoke test', (tester) async {
-    await tester.pumpWidget(buildFrame(ClimbType.boulder));
+    await tester.pumpWidget(buildFrame());
 
     expect(find.byType(UserStatsSection), findsOneWidget);
     expect(find.byType(UserGraphSection), findsOneWidget);

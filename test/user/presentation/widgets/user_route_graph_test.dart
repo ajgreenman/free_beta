@@ -42,6 +42,8 @@ void main() {
   testWidgets('smoke test', (tester) async {
     await tester.pumpWidget(buildFrame([]));
 
+    await tester.pump();
+
     expect(find.byType(BarChart), findsOneWidget);
     expect(find.byType(CircularProgressIndicator), findsNothing);
     expect(find.byKey(Key('UserRouteGraph-error')), findsNothing);
