@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/extensions/date_extensions.dart';
+import 'package:free_beta/app/extensions/extensions.dart';
 import 'package:free_beta/app/presentation/widgets/back_button.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
 import 'package:free_beta/app/presentation/widgets/info_card.dart';

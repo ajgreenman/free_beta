@@ -1,5 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:free_beta/app/extensions/date_extensions.dart';
+import 'package:free_beta/app/extensions/extensions.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
 import 'package:free_beta/gym/infrastructure/models/wall_section_model_extensions.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';

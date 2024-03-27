@@ -1,7 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:free_beta/app/extensions/date_extensions.dart';
-import 'package:free_beta/app/extensions/string_extensions.dart';
+import 'package:free_beta/app/extensions/extensions.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
 import 'package:intl/intl.dart';

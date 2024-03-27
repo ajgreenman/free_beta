@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:free_beta/app/extensions/string_extensions.dart';
+import 'package:free_beta/app/extensions/extensions.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model_extensions.dart';
 import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/route_location_list_screen.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
-import 'package:free_beta/app/extensions/date_extensions.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/presentation/widgets/help_tooltip.dart';

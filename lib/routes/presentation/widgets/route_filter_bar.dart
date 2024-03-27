@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/app/presentation/widgets/divider.dart';
+import 'package:free_beta/app/presentation/widgets/form/checkbox.dart';
 import 'package:free_beta/app/presentation/widgets/form/dropdown_list.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
@@ -156,28 +159,18 @@ class _AttemptedFilter extends ConsumerWidget {
     return Row(
       children: [
         Flexible(
-          child: InkWell(
+          child: FreeBetaCheckbox(
+            label: 'Attempted',
+            value: attemptedFilterValue == true,
             onTap: () => _onAttemptedTap(attemptedFilterValue, ref),
-            child: _CheckboxRow(
-              label: 'Attempted',
-              checkbox: _Checkbox(
-                value: attemptedFilterValue == true,
-                onChanged: (_) => _onAttemptedTap(attemptedFilterValue, ref),
-              ),
-            ),
           ),
         ),
         SizedBox(width: FreeBetaSizes.xl),
         Flexible(
-          child: InkWell(
+          child: FreeBetaCheckbox(
+            label: 'Unattempted',
+            value: attemptedFilterValue == false,
             onTap: () => _onUnattemptedTap(attemptedFilterValue, ref),
-            child: _CheckboxRow(
-              label: 'Unattempted',
-              checkbox: _Checkbox(
-                value: attemptedFilterValue == false,
-                onChanged: (_) => _onUnattemptedTap(attemptedFilterValue, ref),
-              ),
-            ),
           ),
         ),
       ],
@@ -198,51 +191,6 @@ class _AttemptedFilter extends ConsumerWidget {
     } else {
       ref.read(routeAttemptedFilterProvider.notifier).update(false);
     }
-  }
-}
-
-class _CheckboxRow extends StatelessWidget {
-  const _CheckboxRow({
-    Key? key,
-    required this.label,
-    required this.checkbox,
-  }) : super(key: key);
-
-  final String label;
-  final _Checkbox checkbox;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Text(
-          label,
-          style: FreeBetaTextStyle.body3,
-        ),
-        Spacer(),
-        SizedBox.square(dimension: FreeBetaSizes.xxl, child: checkbox),
-      ],
-    );
-  }
-}
-
-class _Checkbox extends StatelessWidget {
-  const _Checkbox({
-    Key? key,
-    required this.value,
-    required this.onChanged,
-  }) : super(key: key);
-
-  final bool value;
-  final void Function(bool?) onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Checkbox(
-      activeColor: FreeBetaColors.blueDark,
-      value: value,
-      onChanged: onChanged,
-    );
   }
 }
 

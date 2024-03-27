@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/day.dart';
-import 'package:free_beta/app/extensions/string_extensions.dart';
+import 'package:free_beta/app/extensions/extensions.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/app/presentation/widgets/error_card.dart';

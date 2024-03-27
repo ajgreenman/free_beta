@@ -40,6 +40,10 @@ class UserStatsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            if (climbType != ClimbType.boulder)
+              InfoCard(
+                child: Text('Not a boulder'),
+              ),
             InfoCard(
               child: UserStatsSection(routeStatsModel: routeStatsModel),
             ),
