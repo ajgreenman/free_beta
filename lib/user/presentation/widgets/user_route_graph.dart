@@ -87,7 +87,7 @@ class _RatingGraph extends StatelessWidget {
                 sideTitles: SideTitles(
                   showTitles: true,
                   interval: _interval,
-                  reservedSize: includeRemovedRoutes ? 28 : 22,
+                  reservedSize: includeRemovedRoutes ? 36 : 28,
                 ),
               ),
               bottomTitles: AxisTitles(
