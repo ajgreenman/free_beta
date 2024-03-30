@@ -69,6 +69,20 @@ final messagingApiProvider = AutoDisposeProvider<MessagingApi>.internal(
 );
 
 typedef MessagingApiRef = AutoDisposeProviderRef<MessagingApi>;
+String _$cacheManagerHash() => r'f5ac2ca7279ca01ff12f56ddba40c3f5e012f9ba';
+
+/// See also [cacheManager].
+@ProviderFor(cacheManager)
+final cacheManagerProvider = AutoDisposeProvider<BaseCacheManager>.internal(
+  cacheManager,
+  name: r'cacheManagerProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$cacheManagerHash,
+  dependencies: const <ProviderOrFamily>[],
+  allTransitiveDependencies: const <ProviderOrFamily>{},
+);
+
+typedef CacheManagerRef = AutoDisposeProviderRef<BaseCacheManager>;
 String _$bottomNavHash() => r'1d7bed45d76287bac36ac5a76ab8cfd0356174b0';
 
 /// See also [BottomNav].

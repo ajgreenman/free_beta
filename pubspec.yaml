@@ -26,6 +26,7 @@ dependencies:
   flutter_app_badger: ^1.5.0
   riverpod_annotation: ^2.0.2
   fl_chart: ^0.65.0
+  flutter_cache_manager: ^3.3.1
 
 dev_dependencies:
   flutter_test:

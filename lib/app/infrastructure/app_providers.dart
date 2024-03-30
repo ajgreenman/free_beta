@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/infrastructure/email_api.dart';
 import 'package:free_beta/app/infrastructure/media_api.dart';
@@ -27,6 +28,11 @@ CrashlyticsApi crashlyticsApi(CrashlyticsApiRef ref) {
 @riverpod
 MessagingApi messagingApi(MessagingApiRef ref) {
   return MessagingApi(FirebaseMessaging.instance);
+}
+
+@Riverpod(dependencies: [])
+BaseCacheManager cacheManager(CacheManagerRef ref) {
+  return DefaultCacheManager();
 }
 
 @riverpod

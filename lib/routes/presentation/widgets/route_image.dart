@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/theme.dart';
 
-class RouteImage extends StatelessWidget {
+class RouteImage extends ConsumerWidget {
   const RouteImage({
     required this.imageUrl,
     Key? key,
@@ -11,7 +13,7 @@ class RouteImage extends StatelessWidget {
   final String imageUrl;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Hero(
       tag: imageUrl,
       child: CachedNetworkImage(
@@ -19,6 +21,7 @@ class RouteImage extends StatelessWidget {
         memCacheWidth: 576,
         imageUrl: imageUrl,
         placeholder: (_, __) => _LoadingColumn(),
+        cacheManager: ref.read(cacheManagerProvider),
       ),
     );
   }
