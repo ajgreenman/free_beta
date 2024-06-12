@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 
 import 'package:free_beta/app/enums/enums.dart';
 import 'package:free_beta/user/infrastructure/models/user_route_model.dart';
@@ -127,6 +130,7 @@ extension RouteModelListExtensions on List<RouteModel> {
 
     if (a.name.trim().isEmpty && b.name.trim().isNotEmpty) return 1;
     if (b.name.trim().isEmpty && a.name.trim().isNotEmpty) return -1;
-    return a.name.compareTo(b.name);
+
+    return compareNatural(a.name, b.name);
   }
 }
