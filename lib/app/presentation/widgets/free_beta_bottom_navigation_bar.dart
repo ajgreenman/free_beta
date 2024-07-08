@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/infrastructure/app_providers.dart';
 import 'package:free_beta/app/theme.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 
 class FreeBetaBottomNavigationBar extends ConsumerWidget {
   const FreeBetaBottomNavigationBar({
@@ -14,7 +15,7 @@ class FreeBetaBottomNavigationBar extends ConsumerWidget {
       key: const Key('bottom-navigation'),
       type: BottomNavigationBarType.fixed,
       currentIndex: ref.watch(bottomNavProvider),
-      onTap: ref.read(bottomNavProvider.notifier).setIndex,
+      onTap: (i) => setIndex(i, ref),
       unselectedItemColor: FreeBetaColors.grayLight,
       items: [
         BottomNavigationBarItem(
@@ -39,6 +40,15 @@ class FreeBetaBottomNavigationBar extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  void setIndex(int index, WidgetRef ref) {
+    var currentIndex = ref.read(bottomNavProvider);
+    if (currentIndex == 0 && index == 0) {
+      ref.read(routeListScrollControllerProvider).scrollToTop();
+    }
+
+    ref.read(bottomNavProvider.notifier).setIndex(index);
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:free_beta/app/presentation/widgets/error_card.dart';
 import 'package:free_beta/app/theme.dart';
 import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
+import 'package:free_beta/routes/infrastructure/route_providers.dart';
 import 'package:free_beta/routes/presentation/widgets/route_filter_bar.dart';
 import 'package:free_beta/routes/presentation/widgets/route_list.dart';
 
@@ -42,7 +43,8 @@ class RouteListScreen extends ConsumerWidget {
       body: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: NestedScrollView(
-          controller: ScrollController(),
+          controller:
+              ref.watch(routeListScrollControllerProvider).scrollController,
           headerSliverBuilder: (_, __) => [
             SliverPersistentHeader(
               delegate: RouteFilterBar(routeProvider: routeProvider),

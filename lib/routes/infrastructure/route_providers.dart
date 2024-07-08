@@ -5,6 +5,7 @@ import 'package:free_beta/routes/infrastructure/models/route_filter_model.dart';
 import 'package:free_beta/routes/infrastructure/models/route_model.dart';
 import 'package:free_beta/routes/infrastructure/route_api.dart';
 import 'package:free_beta/routes/infrastructure/route_graph_api.dart';
+import 'package:free_beta/routes/infrastructure/route_list_scroll_controller.dart';
 import 'package:free_beta/routes/infrastructure/route_remote_data_provider.dart';
 import 'package:free_beta/routes/infrastructure/route_repository.dart';
 import 'package:free_beta/user/infrastructure/models/user_model.dart';
@@ -45,6 +46,13 @@ RouteRemoteDataProvider routeRemoteData(
     FirebaseFirestore.instance,
     ref.read(crashlyticsApiProvider),
   );
+}
+
+@riverpod
+RouteListScrollController routeListScrollController(
+  RouteListScrollControllerRef ref,
+) {
+  return RouteListScrollController();
 }
 
 @Riverpod(dependencies: [routeApi])

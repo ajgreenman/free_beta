@@ -101,7 +101,7 @@ class _Resets extends ConsumerWidget {
                 '${label.withFirstLetterCapitalized} resets',
                 style: FreeBetaTextStyle.h2,
               ),
-              if (label == 'upcoming') ...[
+              if (label == 'upcoming' && resets.isNotEmpty) ...[
                 SizedBox(width: FreeBetaSizes.l),
                 HelpTooltip(
                   message:

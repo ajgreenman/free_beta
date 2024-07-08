@@ -80,6 +80,24 @@ final routeRemoteDataProvider =
 );
 
 typedef RouteRemoteDataRef = AutoDisposeProviderRef<RouteRemoteDataProvider>;
+String _$routeListScrollControllerHash() =>
+    r'68351487cee0fd34c4c134dea00477f9429891d3';
+
+/// See also [routeListScrollController].
+@ProviderFor(routeListScrollController)
+final routeListScrollControllerProvider =
+    AutoDisposeProvider<RouteListScrollController>.internal(
+  routeListScrollController,
+  name: r'routeListScrollControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$routeListScrollControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef RouteListScrollControllerRef
+    = AutoDisposeProviderRef<RouteListScrollController>;
 String _$fetchUserStatsHash() => r'42c921fec02927e33836b5c21aa2dcfca04e1ca8';
 
 /// See also [fetchUserStats].
