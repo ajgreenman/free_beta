@@ -188,7 +188,7 @@ class IncludeRemovedRoutes extends _$IncludeRemovedRoutes {
   void update(bool value) => state = value;
 }
 
-@riverpod
+@Riverpod(dependencies: [])
 class IncludeGraphDetails extends _$IncludeGraphDetails {
   @override
   bool build() => false;

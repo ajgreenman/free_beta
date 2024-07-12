@@ -11,6 +11,7 @@ class FreeBetaSwitch extends StatelessWidget {
     this.labelStyle = FreeBetaTextStyle.h4,
     this.width = 48.0,
     this.expanded = false,
+    this.switchKey,
   }) : super(key: key);
 
   final String? label;
@@ -18,8 +19,8 @@ class FreeBetaSwitch extends StatelessWidget {
   final void Function(bool) onChanged;
   final bool initialValue;
   final bool expanded;
-
   final double width;
+  final Key? switchKey;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +35,7 @@ class FreeBetaSwitch extends StatelessWidget {
           SizedBox(width: FreeBetaSizes.m),
         ],
         _Switch(
+          key: switchKey,
           initialValue: initialValue,
           onChanged: onChanged,
           width: width,

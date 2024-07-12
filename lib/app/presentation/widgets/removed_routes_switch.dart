@@ -12,6 +12,7 @@ class RemovedRoutesSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FreeBetaSwitch(
+      switchKey: Key('removed-routes-switch'),
       label: 'Include removed routes: ',
       labelStyle: FreeBetaTextStyle.body3,
       initialValue: ref.watch(includeRemovedRoutesProvider),

@@ -111,6 +111,7 @@ class _FilterTextField extends ConsumerWidget {
         Padding(
           padding: FreeBetaPadding.mAll,
           child: TextFormField(
+            key: Key('FilterTextField'),
             initialValue: ref.watch(routeTextFilterProvider),
             onChanged: (value) =>
                 ref.read(routeTextFilterProvider.notifier).update(value),

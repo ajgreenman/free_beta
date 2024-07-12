@@ -12,6 +12,7 @@ class IncludeGraphDetailsSwitch extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FreeBetaSwitch(
+      switchKey: Key('details-graph-switch'),
       label: 'Detailed view',
       labelStyle: FreeBetaTextStyle.body3,
       initialValue: ref.watch(includeGraphDetailsProvider),
