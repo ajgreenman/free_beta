@@ -524,8 +524,9 @@ class _CreateRouteButton extends StatelessWidget {
       ),
       style: ButtonStyle(
         alignment: Alignment.centerLeft,
-        side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-          if (states.contains(MaterialState.disabled)) {
+        backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+        side: WidgetStateProperty.resolveWith<BorderSide>((states) {
+          if (states.contains(WidgetState.disabled)) {
             return BorderSide(
               color: FreeBetaColors.grayLight,
               width: 2,
@@ -535,7 +536,7 @@ class _CreateRouteButton extends StatelessWidget {
             width: 2,
           );
         }),
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(
             horizontal: FreeBetaSizes.m,
             vertical: FreeBetaSizes.ml,
@@ -569,8 +570,9 @@ class _EditRouteButton extends StatelessWidget {
       ),
       style: ButtonStyle(
         alignment: Alignment.centerLeft,
-        side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-          if (states.contains(MaterialState.disabled)) {
+        backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+        side: WidgetStateProperty.resolveWith<BorderSide>((states) {
+          if (states.contains(WidgetState.disabled)) {
             return BorderSide(
               color: FreeBetaColors.grayLight,
               width: 2,
@@ -580,7 +582,7 @@ class _EditRouteButton extends StatelessWidget {
             width: 2,
           );
         }),
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(
             horizontal: FreeBetaSizes.m,
             vertical: FreeBetaSizes.ml,
@@ -608,6 +610,9 @@ class _ImageSourceDialog extends StatelessWidget {
               color: FreeBetaColors.white,
             ),
           ),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.camera);
           },
@@ -618,6 +623,9 @@ class _ImageSourceDialog extends StatelessWidget {
             style: FreeBetaTextStyle.h4.copyWith(
               color: FreeBetaColors.white,
             ),
+          ),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
           ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.gallery);

@@ -125,6 +125,10 @@ class _RouteDetailScreenState extends ConsumerState<RouteDetailScreen> {
                       ElevatedButton(
                         key: Key('ElevatedButton-save'),
                         onPressed: widget.isHelp ? null : _onSave,
+                        style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(FreeBetaColors.black),
+                        ),
                         child: Text(
                           'Save',
                           style: FreeBetaTextStyle.body2.copyWith(

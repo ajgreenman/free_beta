@@ -29,15 +29,14 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
+      case TargetPlatform.linux:
+      case TargetPlatform.fuchsia:
+      case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
           'you can reconfigure this by running the FlutterFire CLI again.',
         );
     }
-
-    throw UnsupportedError(
-      'DefaultFirebaseOptions are not supported for this platform.',
-    );
   }
 
   static const FirebaseOptions android = FirebaseOptions(
@@ -54,7 +53,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '356903882644',
     projectId: 'free-beta-d83c0',
     storageBucket: 'free-beta-d83c0.appspot.com',
-    iosClientId: '356903882644-mu2bmme4pd87153124dq8rni1kofbm0c.apps.googleusercontent.com',
+    iosClientId:
+        '356903882644-mu2bmme4pd87153124dq8rni1kofbm0c.apps.googleusercontent.com',
     iosBundleId: 'com.codejsoftware.freeBeta',
   );
 }

@@ -265,6 +265,9 @@ class _EmptySchedule extends ConsumerWidget {
           SizedBox(height: FreeBetaSizes.m),
           ElevatedButton(
             onPressed: () async => ref.refresh(resetScheduleProvider),
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+            ),
             child: Text(
               'Refresh',
               style: FreeBetaTextStyle.h4.copyWith(

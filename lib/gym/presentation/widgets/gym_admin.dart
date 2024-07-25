@@ -54,12 +54,13 @@ class _CreateRouteButton extends StatelessWidget {
         ),
       ),
       style: ButtonStyle(
-        side: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+        side: WidgetStateProperty.all(
           BorderSide(
             width: 2,
           ),
         ),
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(
             vertical: FreeBetaSizes.ml,
           ),
@@ -75,8 +76,8 @@ class _DeleteAccountButton extends ConsumerWidget {
     return ElevatedButton(
       key: Key('GymAdmin-delete'),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(FreeBetaColors.red),
-        side: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(FreeBetaColors.red),
+        side: WidgetStateProperty.all(
           BorderSide(
             width: 2.0,
             color: FreeBetaColors.red,

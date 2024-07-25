@@ -118,6 +118,10 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                     onPressed: () => Navigator.of(context).push(
                       ClassFormScreen.add(_currentDay),
                     ),
+                    style: ButtonStyle(
+                      backgroundColor:
+                          WidgetStateProperty.all(FreeBetaColors.black),
+                    ),
                     child: SizedBox(
                       width: 150.0,
                       child: Center(
@@ -183,6 +187,10 @@ class _ClassesAdminState extends ConsumerState<_ClassAdmin> {
                                 ),
                               ),
                             ),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                WidgetStateProperty.all(FreeBetaColors.black),
                           ),
                         ),
                         Spacer(),
@@ -355,6 +363,9 @@ class _ImageSourceDialog extends StatelessWidget {
               color: FreeBetaColors.white,
             ),
           ),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+          ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.camera);
           },
@@ -365,6 +376,9 @@ class _ImageSourceDialog extends StatelessWidget {
             style: FreeBetaTextStyle.h4.copyWith(
               color: FreeBetaColors.white,
             ),
+          ),
+          style: ButtonStyle(
+            backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
           ),
           onPressed: () {
             Navigator.of(context).pop(ImageSource.gallery);
@@ -387,8 +401,8 @@ class _DeleteButton extends ConsumerWidget {
     return ElevatedButton(
       key: Key('day-image-delete'),
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all(FreeBetaColors.red),
-        side: MaterialStateProperty.all(
+        backgroundColor: WidgetStateProperty.all(FreeBetaColors.red),
+        side: WidgetStateProperty.all(
           BorderSide(
             width: 2.0,
             color: FreeBetaColors.red,

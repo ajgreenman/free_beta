@@ -28,8 +28,8 @@ class FreeBetaSubmitButton extends StatelessWidget {
       ),
       style: ButtonStyle(
         alignment: Alignment.centerLeft,
-        side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-          if (states.contains(MaterialState.disabled)) {
+        side: WidgetStateProperty.resolveWith<BorderSide>((states) {
+          if (states.contains(WidgetState.disabled)) {
             return BorderSide(
               color: FreeBetaColors.grayLight,
               width: 2,
@@ -39,7 +39,7 @@ class FreeBetaSubmitButton extends StatelessWidget {
             width: 2,
           );
         }),
-        padding: MaterialStateProperty.all(
+        padding: WidgetStateProperty.all(
           const EdgeInsets.symmetric(
             horizontal: FreeBetaSizes.m,
             vertical: FreeBetaSizes.ml,

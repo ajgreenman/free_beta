@@ -280,12 +280,14 @@ class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
                         ),
                       ),
                       style: ButtonStyle(
-                        side: MaterialStateProperty.all(
+                        backgroundColor:
+                            WidgetStateProperty.all(FreeBetaColors.black),
+                        side: WidgetStateProperty.all(
                           BorderSide(
                             width: 2,
                           ),
                         ),
-                        padding: MaterialStateProperty.all(
+                        padding: WidgetStateProperty.all(
                           const EdgeInsets.symmetric(
                             vertical: FreeBetaSizes.ml,
                           ),

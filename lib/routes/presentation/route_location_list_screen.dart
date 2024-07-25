@@ -58,6 +58,10 @@ class RouteLocationListScreen extends ConsumerWidget {
               error: (error, stackTrace) => ErrorCard(
                 child: ElevatedButton(
                   onPressed: () => _refreshRoutes(ref),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        WidgetStateProperty.all(FreeBetaColors.black),
+                  ),
                   child: Text(
                     'Try again',
                     style: FreeBetaTextStyle.h4.copyWith(

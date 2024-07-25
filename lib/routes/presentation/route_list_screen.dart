@@ -116,6 +116,9 @@ class _ErrorList extends ConsumerWidget {
 
     return ErrorCard(
       child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: WidgetStateProperty.all(FreeBetaColors.black),
+        ),
         onPressed: onRefresh,
         child: Text(
           'Try again',
