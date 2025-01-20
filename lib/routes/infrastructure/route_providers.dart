@@ -12,24 +12,25 @@ import 'package:free_beta/user/infrastructure/models/user_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_rating_model.dart';
 import 'package:free_beta/user/infrastructure/models/user_stats_model.dart';
 import 'package:free_beta/user/infrastructure/user_providers.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'route_providers.g.dart';
 
 @Riverpod(dependencies: [routeRepository])
-RouteApi routeApi(RouteApiRef ref) {
+RouteApi routeApi(Ref ref) {
   return RouteApi(
     routeRepository: ref.watch(routeRepositoryProvider),
   );
 }
 
 @riverpod
-RouteGraphApi routeGraphApi(RouteGraphApiRef ref) {
+RouteGraphApi routeGraphApi(Ref ref) {
   return RouteGraphApi();
 }
 
 @Riverpod(dependencies: [routeRemoteData, authenticationStream])
-RouteRepository routeRepository(RouteRepositoryRef ref) {
+RouteRepository routeRepository(Ref ref) {
   return RouteRepository(
     routeRemoteDataProvider: ref.watch(routeRemoteDataProvider),
     user: ref.watch(authenticationStreamProvider).whenOrNull<UserModel?>(
@@ -40,7 +41,7 @@ RouteRepository routeRepository(RouteRepositoryRef ref) {
 
 @Riverpod(dependencies: [crashlyticsApi])
 RouteRemoteDataProvider routeRemoteData(
-  RouteRemoteDataRef ref,
+  Ref ref,
 ) {
   return RouteRemoteDataProvider(
     FirebaseFirestore.instance,
@@ -50,13 +51,13 @@ RouteRemoteDataProvider routeRemoteData(
 
 @riverpod
 RouteListScrollController routeListScrollController(
-  RouteListScrollControllerRef ref,
+  Ref ref,
 ) {
   return RouteListScrollController();
 }
 
 @Riverpod(dependencies: [routeApi])
-Future<UserStatsModel> fetchUserStats(FetchUserStatsRef ref) async {
+Future<UserStatsModel> fetchUserStats(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
 
@@ -68,28 +69,28 @@ Future<UserStatsModel> fetchUserStats(FetchUserStatsRef ref) async {
 }
 
 @Riverpod(dependencies: [routeApi])
-Future<List<RouteModel>> fetchAllRoutes(FetchAllRoutesRef ref) async {
+Future<List<RouteModel>> fetchAllRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getAllRoutes();
 }
 
 @Riverpod(dependencies: [routeApi])
-Future<List<RouteModel>> fetchActiveRoutes(FetchActiveRoutesRef ref) async {
+Future<List<RouteModel>> fetchActiveRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getActiveRoutes();
 }
 
 @Riverpod(dependencies: [routeApi])
-Future<List<RouteModel>> fetchRemovedRoutes(FetchRemovedRoutesRef ref) async {
+Future<List<RouteModel>> fetchRemovedRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
 
   return await routeApi.getRemovedRoutes();
 }
 
 @Riverpod(dependencies: [routeApi, fetchActiveRoutes])
-Future<RouteFilterModel> fetchFilteredRoutes(FetchFilteredRoutesRef ref) async {
+Future<RouteFilterModel> fetchFilteredRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchActiveRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
@@ -106,8 +107,7 @@ Future<RouteFilterModel> fetchFilteredRoutes(FetchFilteredRoutesRef ref) async {
 }
 
 @Riverpod(dependencies: [routeApi, fetchRemovedRoutes])
-Future<RouteFilterModel> fetchFilteredRemovedRoutes(
-    FetchFilteredRemovedRoutesRef ref) async {
+Future<RouteFilterModel> fetchFilteredRemovedRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchRemovedRoutesProvider.future);
   final textFilter = ref.watch(routeTextFilterProvider);
@@ -124,8 +124,7 @@ Future<RouteFilterModel> fetchFilteredRemovedRoutes(
 }
 
 @Riverpod(dependencies: [routeApi, fetchActiveRoutes])
-FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
-    FetchLocationFilteredRoutesRef ref) async {
+FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(Ref ref) async {
   final routeApi = ref.watch(routeApiProvider);
   final routes = await ref.watch(fetchActiveRoutesProvider.future);
   final wallLocationFilter = ref.watch(routeWallLocationFilterProvider);
@@ -140,7 +139,7 @@ FutureOr<RouteFilterModel> fetchLocationFilteredRoutes(
 
 @Riverpod(dependencies: [fetchAllRoutes, fetchActiveRoutes])
 Future<List<UserRatingModel>> fetchRatingUserGraph(
-  FetchRatingUserGraphRef ref, {
+  Ref ref, {
   required bool isBoulder,
 }) async {
   final includeRemovedRoutes = ref.watch(includeRemovedRoutesProvider);
@@ -166,7 +165,7 @@ Future<List<UserRatingModel>> fetchRatingUserGraph(
 }
 
 @riverpod
-List<ClimbType> includedClimbTypes(IncludedClimbTypesRef ref) {
+List<ClimbType> includedClimbTypes(Ref ref) {
   var climbTypes = <ClimbType>[];
   if (ref.watch(includeTopRopeInGraphProvider)) {
     climbTypes.add(ClimbType.topRope);

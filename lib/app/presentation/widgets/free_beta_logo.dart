@@ -4,9 +4,9 @@ import 'package:free_beta/app/theme.dart';
 class FreeBetaLogo extends StatelessWidget {
   const FreeBetaLogo({Key? key}) : super(key: key);
 
-  final double _borderRadius = FreeBetaSizes.xxl;
+  final _borderRadius = FreeBetaSizes.xxl;
 
-  final double _colorOpacity = 0.5;
+  final _colorOpacity = 127;
 
   @override
   Widget build(BuildContext context) {
@@ -27,18 +27,18 @@ class FreeBetaLogo extends StatelessWidget {
                   topLeft: Radius.circular(_borderRadius),
                   topRight: Radius.circular(_borderRadius),
                 ),
-                color: FreeBetaColors.greenBrand.withOpacity(_colorOpacity),
+                color: FreeBetaColors.greenBrand.withAlpha(_colorOpacity),
               ),
             ),
           ),
           Flexible(
             child: Container(
-              color: FreeBetaColors.purpleBrand.withOpacity(_colorOpacity),
+              color: FreeBetaColors.purpleBrand.withAlpha(_colorOpacity),
             ),
           ),
           Flexible(
             child: Container(
-              color: FreeBetaColors.blueLight.withOpacity(_colorOpacity),
+              color: FreeBetaColors.blueLight.withAlpha(_colorOpacity),
             ),
           ),
           Flexible(
@@ -48,7 +48,7 @@ class FreeBetaLogo extends StatelessWidget {
                   bottomLeft: Radius.circular(_borderRadius),
                   bottomRight: Radius.circular(_borderRadius),
                 ),
-                color: FreeBetaColors.yellowBrand.withOpacity(_colorOpacity),
+                color: FreeBetaColors.yellowBrand.withAlpha(_colorOpacity),
               ),
             ),
           ),

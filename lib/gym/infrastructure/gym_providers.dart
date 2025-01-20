@@ -4,26 +4,27 @@ import 'package:free_beta/gym/infrastructure/gym_api.dart';
 import 'package:free_beta/gym/infrastructure/gym_remote_data_provider.dart';
 import 'package:free_beta/gym/infrastructure/gym_repository.dart';
 import 'package:free_beta/gym/infrastructure/models/reset_model.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'gym_providers.g.dart';
 
 @Riverpod(dependencies: [gymRepository])
-GymApi gymApi(GymApiRef ref) {
+GymApi gymApi(Ref ref) {
   return GymApi(
     gymRepository: ref.watch(gymRepositoryProvider),
   );
 }
 
 @Riverpod(dependencies: [gymRemoteData])
-GymRepository gymRepository(GymRepositoryRef ref) {
+GymRepository gymRepository(Ref ref) {
   return GymRepository(
     gymRemoteDataProvider: ref.watch(gymRemoteDataProvider),
   );
 }
 
 @Riverpod(dependencies: [crashlyticsApi])
-GymRemoteDataProvider gymRemoteData(GymRemoteDataRef ref) {
+GymRemoteDataProvider gymRemoteData(Ref ref) {
   return GymRemoteDataProvider(
     firebaseFirestore: FirebaseFirestore.instance,
     crashlyticsApi: ref.read(crashlyticsApiProvider),
@@ -31,7 +32,7 @@ GymRemoteDataProvider gymRemoteData(GymRemoteDataRef ref) {
 }
 
 @Riverpod(dependencies: [gymApi])
-Future<List<ResetModel>> resetSchedule(ResetScheduleRef ref) {
+Future<List<ResetModel>> resetSchedule(Ref ref) {
   final gymApi = ref.watch(gymApiProvider);
 
   return gymApi.getResetSchedule();

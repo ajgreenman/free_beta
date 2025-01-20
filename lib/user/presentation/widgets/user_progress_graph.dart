@@ -68,17 +68,17 @@ class _ProgressGraph extends StatelessWidget {
                 _getSection(
                   userProgressModel.unattempted / userProgressModel.totalCount,
                   FreeBetaColors.black,
-                  FreeBetaColors.red.withOpacity(0.7),
+                  FreeBetaColors.red.withAlpha(175),
                 ),
                 _getSection(
                   userProgressModel.inProgress / userProgressModel.totalCount,
                   FreeBetaColors.black,
-                  FreeBetaColors.yellowBrand.withOpacity(0.7),
+                  FreeBetaColors.yellowBrand.withAlpha(175),
                 ),
                 _getSection(
                   userProgressModel.completed / userProgressModel.totalCount,
                   FreeBetaColors.black,
-                  FreeBetaColors.green.withOpacity(0.7),
+                  FreeBetaColors.green.withAlpha(175),
                 ),
               ],
             ),

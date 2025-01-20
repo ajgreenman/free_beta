@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide CarouselController;
 import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/routes/presentation/route_image_screen.dart';
 import 'package:free_beta/routes/presentation/widgets/route_image.dart';

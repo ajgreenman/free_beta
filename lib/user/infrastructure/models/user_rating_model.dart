@@ -105,17 +105,17 @@ class UserProgressModel {
           BarChartRodStackItem(
             completed + inProgress,
             totalCount,
-            FreeBetaColors.red.withOpacity(0.7),
+            FreeBetaColors.red.withAlpha(175),
           ),
           BarChartRodStackItem(
             completed,
             completed + inProgress,
-            FreeBetaColors.yellowBrand.withOpacity(0.7),
+            FreeBetaColors.yellowBrand.withAlpha(175),
           ),
           BarChartRodStackItem(
             0,
             completed,
-            FreeBetaColors.green.withOpacity(0.7),
+            FreeBetaColors.green.withAlpha(175),
           ),
         ],
       );

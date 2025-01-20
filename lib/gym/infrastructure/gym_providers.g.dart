@@ -6,7 +6,7 @@ part of 'gym_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$gymApiHash() => r'd02386a499e840986ce59c7bf3ca66a51d8b8825';
+String _$gymApiHash() => r'd7f116828a2ce78f2cbe942c954f73412758f411';
 
 /// See also [gymApi].
 @ProviderFor(gymApi)
@@ -22,8 +22,10 @@ final gymApiProvider = AutoDisposeProvider<GymApi>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GymApiRef = AutoDisposeProviderRef<GymApi>;
-String _$gymRepositoryHash() => r'e408202a33a719a9132b2c13e90e1b3c37e46d9d';
+String _$gymRepositoryHash() => r'7e0819f5f8b73d3aed0204f9df8a0cab7c837afa';
 
 /// See also [gymRepository].
 @ProviderFor(gymRepository)
@@ -40,8 +42,10 @@ final gymRepositoryProvider = AutoDisposeProvider<GymRepository>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GymRepositoryRef = AutoDisposeProviderRef<GymRepository>;
-String _$gymRemoteDataHash() => r'f4c097a55d22d8d1c302d2ccfd857942adfb97dc';
+String _$gymRemoteDataHash() => r'abdf1a6a42c299141ea39f2d5c6c30b1233d474a';
 
 /// See also [gymRemoteData].
 @ProviderFor(gymRemoteData)
@@ -59,8 +63,10 @@ final gymRemoteDataProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef GymRemoteDataRef = AutoDisposeProviderRef<GymRemoteDataProvider>;
-String _$resetScheduleHash() => r'f456213400484f9e7e4bce0d30d88dfe5f41dbee';
+String _$resetScheduleHash() => r'a0c80b461f12229f3b441159ba0dd04f748f6c13';
 
 /// See also [resetSchedule].
 @ProviderFor(resetSchedule)
@@ -78,6 +84,8 @@ final resetScheduleProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef ResetScheduleRef = AutoDisposeFutureProviderRef<List<ResetModel>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -296,7 +296,7 @@ class FreeBetaTextStyle {
 
 class FreeBetaShadows {
   static final BoxShadow fluffy = BoxShadow(
-    color: FreeBetaColors.black.withOpacity(0.1),
+    color: FreeBetaColors.black.withAlpha(25),
     blurRadius: 25.0,
     offset: Offset(0, 10),
   );

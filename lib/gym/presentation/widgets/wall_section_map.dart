@@ -77,17 +77,17 @@ class WallSectionMap extends StatelessWidget {
       return FreeBetaColors.white;
     }
 
-    var opacity = highlightedSections.isNotEmpty ? 0.1 : 0.7;
+    var opacity = highlightedSections.isNotEmpty ? 25 : 175;
 
     switch (index % 3) {
       case 0:
-        return FreeBetaColors.greenBrand.withOpacity(opacity);
+        return FreeBetaColors.greenBrand.withAlpha(opacity);
       case 1:
-        return FreeBetaColors.yellowBrand.withOpacity(opacity);
+        return FreeBetaColors.yellowBrand.withAlpha(opacity);
       case 2:
-        return FreeBetaColors.purpleBrand.withOpacity(opacity);
+        return FreeBetaColors.purpleBrand.withAlpha(opacity);
       default:
-        return FreeBetaColors.greenBrand.withOpacity(opacity);
+        return FreeBetaColors.greenBrand.withAlpha(opacity);
     }
   }
 }

@@ -6,32 +6,33 @@ import 'package:free_beta/app/infrastructure/crashlytics_api.dart';
 import 'package:free_beta/app/infrastructure/email_api.dart';
 import 'package:free_beta/app/infrastructure/media_api.dart';
 import 'package:free_beta/app/infrastructure/messaging_api.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'app_providers.g.dart';
 
 @Riverpod(dependencies: [crashlyticsApi])
-MediaApi mediaApi(MediaApiRef ref) {
+MediaApi mediaApi(Ref ref) {
   return MediaApi(FirebaseStorage.instance, ref.read(crashlyticsApiProvider));
 }
 
 @Riverpod(dependencies: [crashlyticsApi])
-EmailApi emailApi(EmailApiRef ref) {
+EmailApi emailApi(Ref ref) {
   return EmailApi(ref.read(crashlyticsApiProvider));
 }
 
 @Riverpod(dependencies: [])
-CrashlyticsApi crashlyticsApi(CrashlyticsApiRef ref) {
+CrashlyticsApi crashlyticsApi(Ref ref) {
   return CrashlyticsApi(FirebaseCrashlytics.instance);
 }
 
 @riverpod
-MessagingApi messagingApi(MessagingApiRef ref) {
+MessagingApi messagingApi(Ref ref) {
   return MessagingApi(FirebaseMessaging.instance);
 }
 
 @Riverpod(dependencies: [])
-BaseCacheManager cacheManager(CacheManagerRef ref) {
+BaseCacheManager cacheManager(Ref ref) {
   return DefaultCacheManager();
 }
 

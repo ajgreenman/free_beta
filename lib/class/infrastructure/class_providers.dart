@@ -6,19 +6,20 @@ import 'package:free_beta/class/infrastructure/class_repository.dart';
 import 'package:free_beta/class/infrastructure/models/class_model.dart';
 import 'package:free_beta/class/infrastructure/models/class_schedule_model.dart';
 import 'package:free_beta/class/infrastructure/models/day_model.dart';
+import 'package:riverpod/riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'class_providers.g.dart';
 
 @Riverpod(dependencies: [classRepository])
-ClassApi classApi(ClassApiRef ref) {
+ClassApi classApi(Ref ref) {
   return ClassApi(
     classRepository: ref.watch(classRepositoryProvider),
   );
 }
 
 @Riverpod(dependencies: [classRemoteData])
-ClassRepository classRepository(ClassRepositoryRef ref) {
+ClassRepository classRepository(Ref ref) {
   return ClassRepository(
     classRemoteDataProvider: ref.watch(classRemoteDataProvider),
   );
@@ -26,7 +27,7 @@ ClassRepository classRepository(ClassRepositoryRef ref) {
 
 @Riverpod(dependencies: [crashlyticsApi])
 ClassRemoteDataProvider classRemoteData(
-  ClassRemoteDataRef ref,
+  Ref ref,
 ) {
   return ClassRemoteDataProvider(
     firebaseFirestore: FirebaseFirestore.instance,
@@ -35,22 +36,21 @@ ClassRemoteDataProvider classRemoteData(
 }
 
 @Riverpod(dependencies: [classApi])
-Future<List<ClassModel>> fetchClasses(FetchClassesRef ref) async {
+Future<List<ClassModel>> fetchClasses(Ref ref) async {
   final classApi = ref.watch(classApiProvider);
 
   return classApi.getClassSchedule();
 }
 
 @Riverpod(dependencies: [classApi])
-Future<List<DayModel>> fetchDays(FetchDaysRef ref) async {
+Future<List<DayModel>> fetchDays(Ref ref) async {
   final classApi = ref.watch(classApiProvider);
 
   return classApi.getDays();
 }
 
 @Riverpod(dependencies: [fetchDays, fetchClasses])
-Future<List<ClassScheduleModel>> getClassSchedule(
-    GetClassScheduleRef ref) async {
+Future<List<ClassScheduleModel>> getClassSchedule(Ref ref) async {
   final days = await ref.watch(fetchDaysProvider.future);
   final classes = await ref.watch(fetchClassesProvider.future);
 

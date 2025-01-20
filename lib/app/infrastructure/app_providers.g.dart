@@ -6,7 +6,7 @@ part of 'app_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$mediaApiHash() => r'2eef553ccf21bf9a4cf93e756cdbee43dd60ddc1';
+String _$mediaApiHash() => r'29dbdae2a721c79ba25adce83da4695f2ee55513';
 
 /// See also [mediaApi].
 @ProviderFor(mediaApi)
@@ -22,8 +22,10 @@ final mediaApiProvider = AutoDisposeProvider<MediaApi>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef MediaApiRef = AutoDisposeProviderRef<MediaApi>;
-String _$emailApiHash() => r'cf5e1523afb6512710ee6a4bb1bcd3b707ef1a8e';
+String _$emailApiHash() => r'db7a8e772440b5d4da432b7c13040d79f5e5e69c';
 
 /// See also [emailApi].
 @ProviderFor(emailApi)
@@ -39,8 +41,10 @@ final emailApiProvider = AutoDisposeProvider<EmailApi>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef EmailApiRef = AutoDisposeProviderRef<EmailApi>;
-String _$crashlyticsApiHash() => r'6366ff27fa3a8ed4007bcb0b6623b027df841378';
+String _$crashlyticsApiHash() => r'69047fdb278febb3e418b700ac7224c515c90e95';
 
 /// See also [crashlyticsApi].
 @ProviderFor(crashlyticsApi)
@@ -54,8 +58,10 @@ final crashlyticsApiProvider = AutoDisposeProvider<CrashlyticsApi>.internal(
   allTransitiveDependencies: const <ProviderOrFamily>{},
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CrashlyticsApiRef = AutoDisposeProviderRef<CrashlyticsApi>;
-String _$messagingApiHash() => r'6b460e5dc3d976a32212a7e6c72b18ac404b711c';
+String _$messagingApiHash() => r'3ba1d7aa1331f295c7c21e33f26a599797a82140';
 
 /// See also [messagingApi].
 @ProviderFor(messagingApi)
@@ -68,8 +74,10 @@ final messagingApiProvider = AutoDisposeProvider<MessagingApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef MessagingApiRef = AutoDisposeProviderRef<MessagingApi>;
-String _$cacheManagerHash() => r'f5ac2ca7279ca01ff12f56ddba40c3f5e012f9ba';
+String _$cacheManagerHash() => r'aceabf7ce09ee4387ce2c7f5c8c458b260b7bb1b';
 
 /// See also [cacheManager].
 @ProviderFor(cacheManager)
@@ -82,6 +90,8 @@ final cacheManagerProvider = AutoDisposeProvider<BaseCacheManager>.internal(
   allTransitiveDependencies: const <ProviderOrFamily>{},
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef CacheManagerRef = AutoDisposeProviderRef<BaseCacheManager>;
 String _$bottomNavHash() => r'1d7bed45d76287bac36ac5a76ab8cfd0356174b0';
 
@@ -98,4 +108,4 @@ final bottomNavProvider = AutoDisposeNotifierProvider<BottomNav, int>.internal(
 
 typedef _$BottomNav = AutoDisposeNotifier<int>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

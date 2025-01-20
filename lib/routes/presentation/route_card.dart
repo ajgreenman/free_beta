@@ -50,7 +50,7 @@ class RouteCard extends StatelessWidget {
     );
   }
 
-  Color get _backgroundColor => route.routeColor.displayColor.withOpacity(0.3);
+  Color get _backgroundColor => route.routeColor.displayColor.withAlpha(75);
 }
 
 class _FavoriteIcon extends StatelessWidget {

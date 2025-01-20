@@ -6,7 +6,7 @@ part of 'user_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userApiHash() => r'dd2eff5dbd52d962af1256f483eac4e5afd99902';
+String _$userApiHash() => r'e79a9bd3f15642fa9cb3d8103ec2c35fbe28d369';
 
 /// See also [userApi].
 @ProviderFor(userApi)
@@ -22,9 +22,11 @@ final userApiProvider = AutoDisposeProvider<UserRemoteDataProvider>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserApiRef = AutoDisposeProviderRef<UserRemoteDataProvider>;
 String _$authenticationStreamHash() =>
-    r'f2dd4059aabb956569ddbf1b8c150365b6caac8b';
+    r'5dac208c8c089de552f64d986fa9f4ad65ef1625';
 
 /// See also [authenticationStream].
 @ProviderFor(authenticationStream)
@@ -42,6 +44,8 @@ final authenticationStreamProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef AuthenticationStreamRef = AutoDisposeStreamProviderRef<UserModel?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

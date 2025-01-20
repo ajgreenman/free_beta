@@ -43,8 +43,6 @@ extension RouteColorExtensions on RouteColor {
         return 'White';
       case RouteColor.yellow:
         return 'Yellow';
-      default:
-        return 'Unknown';
     }
   }
 
@@ -74,8 +72,6 @@ extension RouteColorExtensions on RouteColor {
         return FreeBetaColors.white;
       case RouteColor.yellow:
         return FreeBetaColors.yellowBrand;
-      default:
-        return FreeBetaColors.white;
     }
   }
 }

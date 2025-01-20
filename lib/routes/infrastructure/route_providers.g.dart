@@ -6,7 +6,7 @@ part of 'route_providers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$routeApiHash() => r'a4571fb5da01f1d1b9d2e9952632e54551d50eb7';
+String _$routeApiHash() => r'9781339c65d67887a6e05fe873e1372d67e4d2b3';
 
 /// See also [routeApi].
 @ProviderFor(routeApi)
@@ -22,8 +22,10 @@ final routeApiProvider = AutoDisposeProvider<RouteApi>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RouteApiRef = AutoDisposeProviderRef<RouteApi>;
-String _$routeGraphApiHash() => r'd17e6ad152e49e0269ac123ee42e43c359970fef';
+String _$routeGraphApiHash() => r'3484aae4ae12ed6da1755127969a598831784eb3';
 
 /// See also [routeGraphApi].
 @ProviderFor(routeGraphApi)
@@ -37,8 +39,10 @@ final routeGraphApiProvider = AutoDisposeProvider<RouteGraphApi>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RouteGraphApiRef = AutoDisposeProviderRef<RouteGraphApi>;
-String _$routeRepositoryHash() => r'9a570b74e60035ed0275ec81b8cf67aebe1f5d9b';
+String _$routeRepositoryHash() => r'154ace4ce516e8060ac663d1f8fc48e8749bc03f';
 
 /// See also [routeRepository].
 @ProviderFor(routeRepository)
@@ -60,8 +64,10 @@ final routeRepositoryProvider = AutoDisposeProvider<RouteRepository>.internal(
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RouteRepositoryRef = AutoDisposeProviderRef<RouteRepository>;
-String _$routeRemoteDataHash() => r'7686c05ad9d83a3f3786abe0b63aff68957e933a';
+String _$routeRemoteDataHash() => r'8242acc5b2a1dd7431f3163fd50c8a9b61befe5e';
 
 /// See also [routeRemoteData].
 @ProviderFor(routeRemoteData)
@@ -79,9 +85,11 @@ final routeRemoteDataProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RouteRemoteDataRef = AutoDisposeProviderRef<RouteRemoteDataProvider>;
 String _$routeListScrollControllerHash() =>
-    r'68351487cee0fd34c4c134dea00477f9429891d3';
+    r'6fc16846eaf3e77d38fe6665581e0ea04af04df8';
 
 /// See also [routeListScrollController].
 @ProviderFor(routeListScrollController)
@@ -96,9 +104,11 @@ final routeListScrollControllerProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef RouteListScrollControllerRef
     = AutoDisposeProviderRef<RouteListScrollController>;
-String _$fetchUserStatsHash() => r'42c921fec02927e33836b5c21aa2dcfca04e1ca8';
+String _$fetchUserStatsHash() => r'e937d035bb8a69aabec05251ba3ea7e180ba9416';
 
 /// See also [fetchUserStats].
 @ProviderFor(fetchUserStats)
@@ -116,8 +126,10 @@ final fetchUserStatsProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchUserStatsRef = AutoDisposeFutureProviderRef<UserStatsModel>;
-String _$fetchAllRoutesHash() => r'575dfeb020f2d9730747b22decc903edf1f49d4e';
+String _$fetchAllRoutesHash() => r'10a3bd738ea509ca2213f0b291293c51adcbb74f';
 
 /// See also [fetchAllRoutes].
 @ProviderFor(fetchAllRoutes)
@@ -135,8 +147,10 @@ final fetchAllRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchAllRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
-String _$fetchActiveRoutesHash() => r'9092109ebf76139fa5a3155535c03b10cb5aa360';
+String _$fetchActiveRoutesHash() => r'8a0a55f67c7edd1855cfbbab387ae7cf78a37def';
 
 /// See also [fetchActiveRoutes].
 @ProviderFor(fetchActiveRoutes)
@@ -154,9 +168,11 @@ final fetchActiveRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchActiveRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
 String _$fetchRemovedRoutesHash() =>
-    r'c32ca1cb90303fb9f9425622c22f4b25f9e00116';
+    r'518098a00b19f65d46ca993ab014ad5f73cd7020';
 
 /// See also [fetchRemovedRoutes].
 @ProviderFor(fetchRemovedRoutes)
@@ -174,9 +190,11 @@ final fetchRemovedRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchRemovedRoutesRef = AutoDisposeFutureProviderRef<List<RouteModel>>;
 String _$fetchFilteredRoutesHash() =>
-    r'475af9df31e1e1c8cb44d46113aa7490d5585b3e';
+    r'5d26ed9814f00ef060e12e0636b660bb25ed9e4f';
 
 /// See also [fetchFilteredRoutes].
 @ProviderFor(fetchFilteredRoutes)
@@ -196,9 +214,11 @@ final fetchFilteredRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchFilteredRoutesRef = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchFilteredRemovedRoutesHash() =>
-    r'7fc35014aea3b98f86a7d8a87f423c3cbb61d0d4';
+    r'ca76f54ffa7d182ef024388c745b0b76ea95e4a6';
 
 /// See also [fetchFilteredRemovedRoutes].
 @ProviderFor(fetchFilteredRemovedRoutes)
@@ -221,10 +241,12 @@ final fetchFilteredRemovedRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchFilteredRemovedRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchLocationFilteredRoutesHash() =>
-    r'47e8a0e3ae8d4fac424c3727a13b5a268b584d00';
+    r'0f00e61ec9acbac47ced44c4e87ef09df186f867';
 
 /// See also [fetchLocationFilteredRoutes].
 @ProviderFor(fetchLocationFilteredRoutes)
@@ -244,10 +266,12 @@ final fetchLocationFilteredRoutesProvider =
   },
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef FetchLocationFilteredRoutesRef
     = AutoDisposeFutureProviderRef<RouteFilterModel>;
 String _$fetchRatingUserGraphHash() =>
-    r'4c17520f318dc09bf8894061db6da4eecbdc4fde';
+    r'7a0c9a0754b6836cddc4d9de4fd92b279a631465';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -396,6 +420,8 @@ class FetchRatingUserGraphProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin FetchRatingUserGraphRef
     on AutoDisposeFutureProviderRef<List<UserRatingModel>> {
   /// The parameter `isBoulder` of this provider.
@@ -412,7 +438,7 @@ class _FetchRatingUserGraphProviderElement
 }
 
 String _$includedClimbTypesHash() =>
-    r'5c92506d9a23e967a811244000b925933ceb0d60';
+    r'e2aa3fbdf5bce98230e91402bf7d519e803c203b';
 
 /// See also [includedClimbTypes].
 @ProviderFor(includedClimbTypes)
@@ -427,6 +453,8 @@ final includedClimbTypesProvider =
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef IncludedClimbTypesRef = AutoDisposeProviderRef<List<ClimbType>>;
 String _$includeRemovedRoutesHash() =>
     r'cb0df3883752a1209bee67eaaaa487993f7f00e0';
@@ -446,7 +474,7 @@ final includeRemovedRoutesProvider =
 
 typedef _$IncludeRemovedRoutes = AutoDisposeNotifier<bool>;
 String _$includeGraphDetailsHash() =>
-    r'6d45755a10fba63e46102ccbb097c532755faecc';
+    r'8756edf4a0328b20992be6d373b1c5e37f1c3968';
 
 /// See also [IncludeGraphDetails].
 @ProviderFor(IncludeGraphDetails)
@@ -457,8 +485,8 @@ final includeGraphDetailsProvider =
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
       : _$includeGraphDetailsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
+  dependencies: const <ProviderOrFamily>[],
+  allTransitiveDependencies: const <ProviderOrFamily>{},
 );
 
 typedef _$IncludeGraphDetails = AutoDisposeNotifier<bool>;
@@ -614,4 +642,4 @@ final routeWallLocationIndexFilterProvider =
 
 typedef _$RouteWallLocationIndexFilter = Notifier<int?>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
