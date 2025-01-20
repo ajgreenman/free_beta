@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter/material.dart';
 import 'package:free_beta/app/presentation/widgets/dots.dart';
 import 'package:free_beta/routes/presentation/route_image_screen.dart';
 import 'package:free_beta/routes/presentation/widgets/route_image.dart';
@@ -15,7 +15,7 @@ class RouteImages extends StatefulWidget {
 
 class _RouteImagesState extends State<RouteImages> {
   var _currentImage = 0;
-  final _carouselController = CarouselController();
+  final _carouselController = CarouselSliderController();
   final _imageHeight = 256.0;
 
   @override

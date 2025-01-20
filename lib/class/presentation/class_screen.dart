@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart' hide CarouselController;
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:free_beta/app/enums/day.dart';
 import 'package:free_beta/app/extensions/extensions.dart';
@@ -41,7 +41,7 @@ class _Schedule extends StatefulWidget {
 }
 
 class _ScheduleState extends State<_Schedule> {
-  final _carouselController = CarouselController();
+  final _carouselController = CarouselSliderController();
 
   var _currentDay = currentDay();
 

@@ -79,8 +79,6 @@ class _WallLocationCard extends ConsumerWidget {
     int index,
     WallLocation location,
   ) {
-    log(location.toString());
-    log(index.toString());
     ref.read(routeWallLocationFilterProvider.notifier).update(location);
     ref.read(routeWallLocationIndexFilterProvider.notifier).update(index);
     return Navigator.of(context).push(
